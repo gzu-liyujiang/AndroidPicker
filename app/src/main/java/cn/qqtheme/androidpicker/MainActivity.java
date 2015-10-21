@@ -1,18 +1,42 @@
-# AndroidPicker
-安卓选择器类库，包括日期时间选择器、一二三级联动选择器、颜色选择器、文件目录选择器。
-Picker for android, include date&amp;time/option/color/file&amp;directory.
+package cn.qqtheme.androidpicker;
 
-### Screenshots
-![](/screenshots/datepicker.jpg)
-![](/screenshots/timepicker.jpg)
-![](/screenshots/1optionpicker.jpg)
-![](/screenshots/2optionpicker.jpg)
-![](/screenshots/colorpicker.jpg)
-![](/screenshots/filepicker.jpg)
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
-#Simple
-日期选择器：   
-```java
+import java.util.ArrayList;
+import java.util.Date;
+
+import cn.qqtheme.framework.helper.Common;
+import cn.qqtheme.framework.picker.ColorPicker;
+import cn.qqtheme.framework.picker.DateTimePicker;
+import cn.qqtheme.framework.picker.FilePicker;
+import cn.qqtheme.framework.picker.OptionPicker;
+import cn.qqtheme.framework.picker.WheelPicker;
+
+public class MainActivity extends Activity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+    }
+
+    @Override
+    public void onBackPressed() {
+        System.exit(0);
+        android.os.Process.killProcess(android.os.Process.myPid());
+        finish();
+    }
+
+    private void showToast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    public void onDatePicker(View view) {
         DateTimePicker picker = new DateTimePicker(this);
         picker.setMode(DateTimePicker.Mode.YEAR_MONTH_DAY);
         picker.setRange(1990, 2015);
@@ -20,14 +44,13 @@ Picker for android, include date&amp;time/option/color/file&amp;directory.
         picker.setOnWheelListener(new WheelPicker.OnWheelListener<Date>() {
             @Override
             public void onSubmit(Date result) {
-                
+                showToast(result.toString());
             }
         });
         picker.showAtBottom();
-```
+    }
 
-时间选择器：   
-```java
+    public void onTimePicker(View view) {
         DateTimePicker picker = new DateTimePicker(this);
         picker.setMode(DateTimePicker.Mode.HOUR_MINUTE);
         picker.setOnWheelListener(new WheelPicker.OnWheelListener<Date>() {
@@ -37,10 +60,9 @@ Picker for android, include date&amp;time/option/color/file&amp;directory.
             }
         });
         picker.showAtBottom();
-```
+    }
 
-单项选择器：   
-```java
+    public void on1OptionPicker(View view) {
         OptionPicker picker = new OptionPicker(this);
         final String[] sex = {"男", "女", "保密"};
         picker.setOptions(sex);
@@ -48,14 +70,13 @@ Picker for android, include date&amp;time/option/color/file&amp;directory.
         picker.setOnWheelListener(new WheelPicker.OnWheelListener<int[]>() {
             @Override
             public void onSubmit(int[] result) {
-                String result = sex[result[0]];
+                showToast(sex[result[0]]);
             }
         });
         picker.showAtBottom();
-```
+    }
 
-二级联动选择器：   
-```java
+    public void on2OptionPicker(View view) {
         final ArrayList<String> option1 = new ArrayList<String>();
         option1.add("技术方案");
         option1.add("开发工具");
@@ -82,54 +103,59 @@ Picker for android, include date&amp;time/option/color/file&amp;directory.
         picker.setOnWheelListener(new WheelPicker.OnWheelListener<int[]>() {
             @Override
             public void onSubmit(int[] result) {
-                String result = option1.get(result[0]) + "-" + option2.get(result[0]).get(result[1]);
+                showToast(option1.get(result[0]) + "-" + option2.get(result[0]).get(result[1]));
             }
         });
         picker.showAtBottom();
-```
+    }
 
-颜色选择器：
-```java
+    public void onColorPicker(View view) {
         ColorPicker picker = new ColorPicker(this);
         picker.setInitColor(0xDD00DD);
         picker.setOnColorPickListener(new ColorPicker.OnColorPickListener() {
             @Override
             public void onColorPicked(int pickedColor) {
-            
+                showToast(Common.toColorString(pickedColor));
             }
         });
         picker.showAtBottom();
-```
+    }
 
-文件选择器：
-```java
+    public void onFilePicker(View view) {
         FilePicker picker = new FilePicker(this, FilePicker.PickMode.File);
         picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {
             @Override
             public void onPicked(String currentPath) {
-            
+                showToast(currentPath);
             }
         });
         picker.showAtBottom();
-```
+    }
 
-目录选择器：
-```java
+    public void onDirPicker(View view) {
         FilePicker picker = new FilePicker(this, FilePicker.PickMode.Directory);
         picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {
             @Override
             public void onPicked(String currentPath) {
-            
+                showToast(currentPath);
             }
         });
         picker.showAtBottom();
-```
+    }
 
-# Thanks
-https://code.google.com/p/android-wheel
-https://github.com/saiwu-bigkoo/PickerView
-https://github.com/jbruchanov/AndroidColorPicker
-https://github.com/JoanZapata/base-adapter-helper
+    public void onGithub(View view) {
+        Intent intent = new Intent(this, GithubActivity.class);
+        startActivity(intent);
+    }
 
-# Contact
-李玉江, QQ:1032694760, Email:liyujiang_tk@yeah.net
+    public void onContact(View view) {
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:liyujiang_tk@yeah.net"));
+        intent.putExtra(Intent.EXTRA_CC, new String[]
+                {"1032694760@qq.com"});
+        intent.putExtra(Intent.EXTRA_EMAIL, "");
+        intent.putExtra(Intent.EXTRA_TEXT, "欢迎提供意您的见或建议");
+        startActivity(Intent.createChooser(intent, "选择邮件客户端"));
+    }
+
+}
