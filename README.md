@@ -2,14 +2,6 @@
 安卓选择器类库，包括日期时间选择器、一二三级联动选择器、颜色选择器、文件目录选择器。
 Picker for android, include date&amp;time/option/color/file&amp;directory.
 
-### Screenshots
-![](/screenshots/datepicker.png)   
-![](/screenshots/timepicker.png)   
-![](/screenshots/1optionpicker.png)   
-![](/screenshots/2optionpicker.png)   
-![](/screenshots/colorpicker.png)   
-![](/screenshots/filepicker.png)   
-
 #Simple
 日期选择器：   
 ```java
@@ -130,6 +122,14 @@ https://code.google.com/p/android-wheel
 https://github.com/saiwu-bigkoo/PickerView   
 https://github.com/jbruchanov/AndroidColorPicker   
 https://github.com/JoanZapata/base-adapter-helper   
+
+# Screenshots
+![](/screenshots/datepicker.png)   
+![](/screenshots/timepicker.png)   
+![](/screenshots/1optionpicker.png)   
+![](/screenshots/2optionpicker.png)   
+![](/screenshots/colorpicker.png)   
+![](/screenshots/filepicker.png)   
 
 # Contact
 李玉江, QQ:1032694760, Email:liyujiang_tk@yeah.net
