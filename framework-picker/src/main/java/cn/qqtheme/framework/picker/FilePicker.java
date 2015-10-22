@@ -29,6 +29,9 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
         super(activity);
         this.mode = mode;
         adapter = new FileAdapter(activity);
+        if (mode.equals(Mode.Directory)) {
+            adapter.setOnlyListDir(true);
+        }
     }
 
     @Override

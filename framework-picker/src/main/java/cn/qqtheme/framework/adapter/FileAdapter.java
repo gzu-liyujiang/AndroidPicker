@@ -17,6 +17,7 @@ public class FileAdapter extends IconTextAdapter<FileItem> {
     private String rootPath = null;
     private String currentPath = null;
     private String[] allowExtensions = null;//允许的扩展名
+    private boolean onlyListDir = false;//是否仅仅读取目录
     private boolean showHomeDir = false;//是否显示返回主目录
     private boolean showUpDir = true;//是否显示返回上一级
     private boolean showHideDir = true;//是否显示隐藏的目录（以“.”开头）
@@ -47,6 +48,10 @@ public class FileAdapter extends IconTextAdapter<FileItem> {
 
     public void setAllowExtensions(String[] allowExtensions) {
         this.allowExtensions = allowExtensions;
+    }
+
+    public void setOnlyListDir(boolean onlyListDir) {
+        this.onlyListDir = onlyListDir;
     }
 
     public void setShowHomeDir(boolean showHomeDir) {
@@ -98,9 +103,17 @@ public class FileAdapter extends IconTextAdapter<FileItem> {
         }
         File[] files;
         if (allowExtensions == null) {
-            files = FileUtils.listDirsAndFiles(path);
+            if (onlyListDir) {
+                files = FileUtils.listDirs(path);
+            } else {
+                files = FileUtils.listDirsAndFiles(path);
+            }
         } else {
-            files = FileUtils.listDirsAndFiles(path, allowExtensions);
+            if (onlyListDir) {
+                files = FileUtils.listDirs(path, allowExtensions);
+            } else {
+                files = FileUtils.listDirsAndFiles(path, allowExtensions);
+            }
         }
         if (files != null) {
             for (File file : files) {

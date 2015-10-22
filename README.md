@@ -2,7 +2,18 @@
 安卓选择器类库，包括日期时间选择器、一二三级联动选择器、颜色选择器、文件目录选择器。
 Picker for android, include date&amp;time/option/color/file&amp;directory.
 
-#Simple
+# Install
+1、通过SVN或GIT工具下载本项目，复制“framework-picker”到你的电脑上；
+2、用Android Studio或IntelliJ IDEA打开你的项目，New->Import Module，选择“framework-picker”；
+3、修改你的项目的build.gradle，加入依赖项“framework-picker”，如：
+```
+dependencies {
+    compile 'com.android.support:support-v4:+'
+    compile project(':framework-picker')
+}
+```
+
+# Simple
 日期选择器：   
 ```java
         DateTimePicker picker = new DateTimePicker(this);
@@ -25,7 +36,7 @@ Picker for android, include date&amp;time/option/color/file&amp;directory.
         picker.setOnWheelListener(new WheelPicker.OnWheelListener<Date>() {
             @Override
             public void onSubmit(Date result) {
-                showToast(result.toString());
+                
             }
         });
         picker.showAtBottom();
@@ -95,7 +106,7 @@ Picker for android, include date&amp;time/option/color/file&amp;directory.
 
 文件选择器：
 ```java
-        FilePicker picker = new FilePicker(this, FilePicker.PickMode.File);
+        FilePicker picker = new FilePicker(this, FilePicker.Mode.File);
         picker.setShowHideDir(false);
         picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {
             @Override
@@ -108,7 +119,7 @@ Picker for android, include date&amp;time/option/color/file&amp;directory.
 
 目录选择器：
 ```java
-        FilePicker picker = new FilePicker(this, FilePicker.PickMode.Directory);
+        FilePicker picker = new FilePicker(this, FilePicker.Mode.Directory);
         picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {
             @Override
             public void onFilePicked(String currentPath) {
@@ -125,12 +136,13 @@ https://github.com/jbruchanov/AndroidColorPicker
 https://github.com/JoanZapata/base-adapter-helper   
 
 # Screenshots
-![](/screenshots/datepicker.png)   
-![](/screenshots/timepicker.png)   
-![](/screenshots/1optionpicker.png)   
-![](/screenshots/2optionpicker.png)   
-![](/screenshots/colorpicker.png)   
-![](/screenshots/filepicker.png)   
+![](/screenshots/datepicker.jpg)   
+![](/screenshots/timepicker.jpg)   
+![](/screenshots/1optionpicker.jpg)   
+![](/screenshots/2optionpicker.jpg)   
+![](/screenshots/colorpicker.jpg)   
+![](/screenshots/filepicker.jpg)   
+![](/screenshots/dirpicker.jpg)   
 
 # Contact
 李玉江, QQ:1032694760, Email:liyujiang_tk@yeah.net
