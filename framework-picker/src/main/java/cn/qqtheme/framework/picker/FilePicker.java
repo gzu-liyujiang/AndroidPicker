@@ -88,7 +88,7 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
                     String currentPath = adapter.getCurrentPath();
                     Logger.debug("已选择目录：" + currentPath);
                     if (onFilePickListener != null) {
-                        onFilePickListener.onPicked(currentPath);
+                        onFilePickListener.onFilePicked(currentPath);
                     }
                 }
             }
@@ -117,7 +117,7 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
                 dismiss();
                 Logger.debug("已选择文件：" + clickPath);
                 if (onFilePickListener != null) {
-                    onFilePickListener.onPicked(clickPath);
+                    onFilePickListener.onFilePicked(clickPath);
                 }
             }
         }
@@ -144,7 +144,7 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
 
     public static abstract class OnFilePickListener {
 
-        public abstract void onPicked(String currentPath);
+        public abstract void onFilePicked(String currentPath);
 
         public void onCancel() {
 

@@ -99,7 +99,7 @@ Picker for android, include date&amp;time/option/color/file&amp;directory.
         picker.setShowHideDir(false);
         picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {
             @Override
-            public void onPicked(String currentPath) {
+            public void onFilePicked(String currentPath) {
             
             }
         });
@@ -111,7 +111,7 @@ Picker for android, include date&amp;time/option/color/file&amp;directory.
         FilePicker picker = new FilePicker(this, FilePicker.PickMode.Directory);
         picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {
             @Override
-            public void onPicked(String currentPath) {
+            public void onFilePicked(String currentPath) {
             
             }
         });

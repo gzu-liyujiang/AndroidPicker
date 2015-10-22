@@ -126,7 +126,7 @@ public class MainActivity extends Activity {
         picker.setShowHideDir(false);
         picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {
             @Override
-            public void onPicked(String currentPath) {
+            public void onFilePicked(String currentPath) {
                 showToast(currentPath);
             }
         });
@@ -137,7 +137,7 @@ public class MainActivity extends Activity {
         FilePicker picker = new FilePicker(this, FilePicker.Mode.Directory);
         picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {
             @Override
-            public void onPicked(String currentPath) {
+            public void onFilePicked(String currentPath) {
                 showToast(currentPath);
             }
         });
