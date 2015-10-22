@@ -88,7 +88,7 @@ public class MainActivity extends Activity {
         language.add("H5+/MUI");
         option2.add(language);
         ArrayList<String> tool = new ArrayList<String>();
-        tool.add("Android Studio");
+        tool.add("IntelliJ IDEA");
         tool.add("PhpStorm");
         tool.add("HBuilder");
         option2.add(tool);
@@ -122,7 +122,8 @@ public class MainActivity extends Activity {
     }
 
     public void onFilePicker(View view) {
-        FilePicker picker = new FilePicker(this, FilePicker.PickMode.File);
+        FilePicker picker = new FilePicker(this, FilePicker.Mode.File);
+        picker.setShowHideDir(false);
         picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {
             @Override
             public void onPicked(String currentPath) {
@@ -133,7 +134,7 @@ public class MainActivity extends Activity {
     }
 
     public void onDirPicker(View view) {
-        FilePicker picker = new FilePicker(this, FilePicker.PickMode.Directory);
+        FilePicker picker = new FilePicker(this, FilePicker.Mode.Directory);
         picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {
             @Override
             public void onPicked(String currentPath) {

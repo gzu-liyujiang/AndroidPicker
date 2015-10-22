@@ -163,27 +163,26 @@ public class DateTimePicker extends WheelPicker<Date> {
             year = endYear;
         }
         int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
 
-        yearView.setAdapter(new WheelNumericAdapter(startYear, endYear));
+        yearView.setAdapter(new DateTimeAdapter(startYear, endYear));
         yearView.setLabel("年");
         yearView.setCurrentItem(currentYear - startYear);
 
-        monthView.setAdapter(new WheelNumericAdapter(1, 12));
+        monthView.setAdapter(new DateTimeAdapter(1, 12));
         monthView.setLabel("月");
         monthView.setCurrentItem(currentMonth - 1);
 
-        dayView.setAdapter(new WheelNumericAdapter(1, calculateDaysInMonth(year, month + 1)));
+        dayView.setAdapter(new DateTimeAdapter(1, calculateDaysInMonth(year, month + 1)));
         dayView.setLabel("日");
         dayView.setCurrentItem(currentDay - 1);
 
-        hourView.setAdapter(new WheelNumericAdapter(0, 23));
+        hourView.setAdapter(new DateTimeAdapter(0, 23));
         hourView.setLabel("时");
         hourView.setCurrentItem(hour);
 
-        minuteView.setAdapter(new WheelNumericAdapter(0, 59));
+        minuteView.setAdapter(new DateTimeAdapter(0, 59));
         minuteView.setLabel("分");
         minuteView.setCurrentItem(minute);
 
@@ -192,7 +191,7 @@ public class DateTimePicker extends WheelPicker<Date> {
             @Override
             public void onChanged(WheelView wheel, int oldValue, int newValue) {
                 int maxItem = calculateDaysInMonth(newValue + startYear, monthView.getCurrentItem() + 1);
-                dayView.setAdapter(new WheelNumericAdapter(1, maxItem));
+                dayView.setAdapter(new DateTimeAdapter(1, maxItem));
                 if (dayView.getCurrentItem() > maxItem - 1) {
                     dayView.setCurrentItem(maxItem - 1);
                 }
@@ -203,7 +202,7 @@ public class DateTimePicker extends WheelPicker<Date> {
             @Override
             public void onChanged(WheelView wheel, int oldValue, int newValue) {
                 int maxItem = calculateDaysInMonth(yearView.getCurrentItem() + startYear, newValue + 1);
-                dayView.setAdapter(new WheelNumericAdapter(1, maxItem));
+                dayView.setAdapter(new DateTimeAdapter(1, maxItem));
                 if (dayView.getCurrentItem() > maxItem - 1) {
                     dayView.setCurrentItem(maxItem - 1);
                 }
@@ -261,6 +260,32 @@ public class DateTimePicker extends WheelPicker<Date> {
                 return 28;
             }
         }
+    }
+
+    private class DateTimeAdapter extends WheelNumericAdapter {
+
+        public DateTimeAdapter() {
+            super();
+        }
+
+        public DateTimeAdapter(int minValue, int maxValue) {
+            super(minValue, maxValue);
+        }
+
+        public DateTimeAdapter(int minValue, int maxValue, String format) {
+            super(minValue, maxValue, format);
+        }
+
+        @Override
+        public String getItem(int index) {
+            String item = super.getItem(index);
+            //0-9前面补0
+            if (item != null && item.length() == 1) {
+                item = "0" + item;
+            }
+            return item;
+        }
+
     }
 
 }

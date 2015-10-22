@@ -47,7 +47,7 @@ public abstract class ConfirmPopup<V extends View> extends BasePopup<LinearLayou
     @Override
     protected LinearLayout getView() {
         LinearLayout rootLayout = new LinearLayout(activity);
-        rootLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+        rootLayout.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
         rootLayout.setBackgroundColor(Color.WHITE);
         rootLayout.setOrientation(LinearLayout.VERTICAL);
         rootLayout.setGravity(Gravity.CENTER);

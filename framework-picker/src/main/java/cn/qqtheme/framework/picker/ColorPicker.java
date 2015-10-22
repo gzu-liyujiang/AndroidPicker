@@ -17,10 +17,10 @@ import cn.qqtheme.framework.view.ColorPanelView;
 import java.util.Locale;
 
 public class ColorPicker extends ConfirmPopup<LinearLayout> implements TextView.OnEditorActionListener {
-    private static final int TOP_ID = 0x1;
-    private static final int BOTTOM_ID = 0x2;
+    private static final int MULTI_ID = 0x1;
+    private static final int BLACK_ID = 0x2;
     private int initColor = Color.WHITE;
-    private ColorPanelView topColorView, bottomColorView;
+    private ColorPanelView multiColorView, blackColorView;
     private EditText hexValView;
     private ColorStateList hexValDefaultColor;
     private OnColorPickListener onColorPickListener;
@@ -32,41 +32,40 @@ public class ColorPicker extends ConfirmPopup<LinearLayout> implements TextView.
     @Override
     protected LinearLayout initContentView() {
         LinearLayout rootLayout = new LinearLayout(activity);
-        rootLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        rootLayout.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
         rootLayout.setOrientation(LinearLayout.VERTICAL);
-        topColorView = new ColorPanelView(activity);
+        blackColorView = new ColorPanelView(activity);
         //noinspection ResourceType
-        topColorView.setId(TOP_ID);
-        int screenHeight = Common.getPixels(activity)[1];
-        topColorView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, screenHeight / 3));
-        topColorView.setPointerDrawable(Common.getDrawable(activity, R.drawable.color_picker_cursor_top));
-        topColorView.setLockPointerInBounds(true);
-        topColorView.setOnColorChangedListener(new ColorPanelView.OnColorChangedListener() {
+        blackColorView.setId(BLACK_ID);
+        blackColorView.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, Common.toPx(activity, 30)));
+        blackColorView.setPointerDrawable(Common.getDrawable(activity, R.drawable.color_picker_cursor_bottom));
+        blackColorView.setLockPointerInBounds(false);
+        blackColorView.setOnColorChangedListener(new ColorPanelView.OnColorChangedListener() {
             @Override
             public void onColorChanged(ColorPanelView view, int color) {
                 updateCurrentColor(color);
             }
         });
-        rootLayout.addView(topColorView);
-        bottomColorView = new ColorPanelView(activity);
+        rootLayout.addView(blackColorView);
+        multiColorView = new ColorPanelView(activity);
         //noinspection ResourceType
-        bottomColorView.setId(BOTTOM_ID);
-        bottomColorView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Common.toPx(activity, 30)));
-        bottomColorView.setPointerDrawable(Common.getDrawable(activity, R.drawable.color_picker_cursor_bottom));
-        bottomColorView.setLockPointerInBounds(false);
-        bottomColorView.setOnColorChangedListener(new ColorPanelView.OnColorChangedListener() {
+        multiColorView.setId(MULTI_ID);
+        multiColorView.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, 0, 1.0f));
+        multiColorView.setPointerDrawable(Common.getDrawable(activity, R.drawable.color_picker_cursor_top));
+        multiColorView.setLockPointerInBounds(true);
+        multiColorView.setOnColorChangedListener(new ColorPanelView.OnColorChangedListener() {
             @Override
             public void onColorChanged(ColorPanelView view, int color) {
                 updateCurrentColor(color);
             }
         });
-        rootLayout.addView(bottomColorView);
+        rootLayout.addView(multiColorView);
         LinearLayout previewLayout = new LinearLayout(activity);
         previewLayout.setOrientation(LinearLayout.HORIZONTAL);
         previewLayout.setGravity(Gravity.CENTER);
-        previewLayout.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, Common.toPx(activity, 40)));
+        previewLayout.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, Common.toPx(activity, 30)));
         hexValView = new EditText(activity);
-        hexValView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+        hexValView.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
         hexValView.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         hexValView.setImeOptions(EditorInfo.IME_ACTION_DONE);
         hexValView.setGravity(Gravity.CENTER);
@@ -85,15 +84,15 @@ public class ColorPicker extends ConfirmPopup<LinearLayout> implements TextView.
     }
 
     @Override
-    protected void onShowPrepare() {
-        super.onShowPrepare();
-        topColorView.setColor(initColor);//将触发onColorChanged，故必须先待其他控件初始化完成后才能调用
-        topColorView.setBrightnessGradientView(bottomColorView);
+    protected void setContentViewAfter(View contentView) {
+        setHeight(screenHeight / 2);
+        multiColorView.setColor(initColor);//将触发onColorChanged，故必须先待其他控件初始化完成后才能调用
+        multiColorView.setBrightnessGradientView(blackColorView);
         if (onColorPickListener != null) {
             super.setOnConfirmListener(new OnConfirmListener() {
                 @Override
                 public void onConfirm() {
-                    onColorPickListener.onColorPicked(bottomColorView.getSelectedColor());
+                    onColorPickListener.onColorPicked(blackColorView.getSelectedColor());
                 }
 
                 @Override
@@ -138,7 +137,7 @@ public class ColorPicker extends ConfirmPopup<LinearLayout> implements TextView.
             if (length == 6 || length == 8) {
                 try {
                     int color = Color.parseColor("#" + hexString);
-                    topColorView.setColor(color);
+                    multiColorView.setColor(color);
                     hexValView.setTextColor(hexValDefaultColor);
                 } catch (IllegalArgumentException e) {
                     hexValView.setTextColor(Color.RED);

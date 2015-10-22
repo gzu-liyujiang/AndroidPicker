@@ -81,7 +81,6 @@ public class FileUtils {
         if (dirs == null) {
             return new File[0];
         }
-        int len = dirs.length;
         if (excludeDirs == null) {
             excludeDirs = new String[0];
         }

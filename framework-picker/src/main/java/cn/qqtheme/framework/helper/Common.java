@@ -31,12 +31,12 @@ public class Common {
     /**
      * 判断外置存储是否可用
      */
-    public static boolean externalAvailable() {
+    public static boolean externalMounted() {
         String state = Environment.getExternalStorageState();
-        if (state.equals(Environment.MEDIA_MOUNTED) && Environment.getExternalStorageDirectory().canWrite()) {
+        if (state.equals(Environment.MEDIA_MOUNTED)) {
             return true;
         }
-        Logger.warn("external storage unavailable (unmounted or can't write)");
+        Logger.warn("external storage unmounted");
         return false;
     }
 
@@ -47,7 +47,7 @@ public class Common {
      */
     public static String getRootPath(Context context) {
         File file;
-        if (externalAvailable()) {
+        if (externalMounted()) {
             file = Environment.getExternalStorageDirectory();
         } else {
             file = context.getFilesDir();

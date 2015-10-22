@@ -96,6 +96,7 @@ Picker for android, include date&amp;time/option/color/file&amp;directory.
 文件选择器：
 ```java
         FilePicker picker = new FilePicker(this, FilePicker.PickMode.File);
+        picker.setShowHideDir(false);
         picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {
             @Override
             public void onPicked(String currentPath) {

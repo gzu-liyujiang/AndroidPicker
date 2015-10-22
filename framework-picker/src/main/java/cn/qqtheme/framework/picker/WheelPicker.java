@@ -1,6 +1,7 @@
 package cn.qqtheme.framework.picker;
 
 import android.app.Activity;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
@@ -32,8 +33,7 @@ public abstract class WheelPicker<T> extends ConfirmPopup<ScrollView> {
     }
 
     @Override
-    protected void onShowPrepare() {
-        super.onShowPrepare();
+    protected void setContentViewAfter(View contentView) {
         checkMaxHeight(view);
         if (onWheelListener != null) {
             super.setOnConfirmListener(new OnConfirmListener() {

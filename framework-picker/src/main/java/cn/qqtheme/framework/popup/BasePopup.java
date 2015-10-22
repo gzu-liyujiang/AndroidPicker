@@ -20,8 +20,8 @@ import cn.qqtheme.framework.helper.Logger;
  * Created by IntelliJ IDEA
  */
 public abstract class BasePopup<V extends View> extends PopupWindow {
-    protected static final int MATCH_PARENT = LayoutParams.MATCH_PARENT;
-    protected static final int WRAP_CONTENT = LayoutParams.WRAP_CONTENT;
+    protected static final int MATCH_PARENT = ViewGroup.LayoutParams.MATCH_PARENT;
+    protected static final int WRAP_CONTENT = ViewGroup.LayoutParams.WRAP_CONTENT;
     protected Activity activity;
     protected int screenWidth;
     protected int screenHeight;
@@ -53,17 +53,25 @@ public abstract class BasePopup<V extends View> extends PopupWindow {
     /**
      * 弹出窗显示之前调用
      */
-    protected void onShowPrepare() {
-        view = getView();//在构造函数之后窗口显示之前调用，以便可以设置视图各种参数，如默认文字颜色
+    private void onShowPrepare() {
+        setContentViewBefore();
+        view = getView();//在构造函数初始化之后且窗口显示之前调用，以便可以设置视图各种参数，如设置图片
         view.setLayoutParams(new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
         setContentView(view);// 设置弹出窗体的布局
+        setContentViewAfter(view);
         Logger.debug("do something before popup window show");
         layoutParams.alpha = 0.7f;
         layoutParams.dimAmount = 0.7f;
         activity.getWindow().setAttributes(layoutParams);
     }
 
-    protected void checkMaxHeight(ViewGroup v) {
+    protected void setContentViewBefore() {
+    }
+
+    protected void setContentViewAfter(View contentView) {
+    }
+
+    protected void checkMaxHeight(View v) {
         checkMaxHeight(Common.calculateHeight(v));
     }
 
@@ -138,8 +146,9 @@ public abstract class BasePopup<V extends View> extends PopupWindow {
     }
 
     public final void showAtBottom() {
+        onShowPrepare();
         View parent = activity.getWindow().getDecorView();
-        showAtLocation(parent, Gravity.BOTTOM, 0, 0);
+        super.showAtLocation(parent, Gravity.BOTTOM, 0, 0);
     }
 
 }

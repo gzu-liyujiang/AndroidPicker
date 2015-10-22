@@ -16,21 +16,19 @@ import cn.qqtheme.framework.popup.ConfirmPopup;
 import cn.qqtheme.framework.view.MarqueeTextView;
 
 public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterView.OnItemClickListener {
-    private PickMode pickMode;
+    private Mode mode;
     private FileAdapter adapter;
-    private String currentPath = "/";
     private MarqueeTextView textView;
-    private ListView listView;
     private OnFilePickListener onFilePickListener;
 
-    public enum PickMode {
+    public enum Mode {
         Directory, File
     }
 
-    public FilePicker(Activity activity, PickMode pickMode) {
+    public FilePicker(Activity activity, Mode mode) {
         super(activity);
-        this.pickMode = pickMode;
-        setHeight(screenHeight / 2);
+        this.mode = mode;
+        adapter = new FileAdapter(activity);
     }
 
     @Override
@@ -43,32 +41,40 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
         textView.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
         textView.setTextColor(Color.BLACK);
         textView.setGravity(Gravity.CENTER_VERTICAL);
+        textView.setPadding(8, 8, 8, 8);
         rootLayout.addView(textView);
-        View lineView = new View(activity);
-        lineView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 1));
-        lineView.setBackgroundColor(0xDDDDDDDD);
-        rootLayout.addView(lineView);
-        listView = new ListView(activity);
+        ListView listView = new ListView(activity);
         listView.setBackgroundColor(Color.WHITE);
         listView.setDivider(new ColorDrawable(0xDDDDDDDD));
         listView.setDividerHeight(1);
         listView.setCacheColorHint(Color.TRANSPARENT);
         listView.setLayoutParams(new ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
+        listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
         rootLayout.addView(listView);
         return rootLayout;
     }
 
-    public void setAdapter(FileAdapter adapter) {
-        this.adapter = adapter;
-        //noinspection unchecked
-        listView.setAdapter(adapter);
+    public void setAllowExtensions(String[] allowExtensions) {
+        adapter.setAllowExtensions(allowExtensions);
+    }
+
+    public void setShowUpDir(boolean showUpDir) {
+        adapter.setShowUpDir(showUpDir);
+    }
+
+    public void setShowHomeDir(boolean showHomeDir) {
+        adapter.setShowHomeDir(showHomeDir);
+    }
+
+    public void setShowHideDir(boolean showHideDir) {
+        adapter.setShowHideDir(showHideDir);
     }
 
     @Override
-    protected void onShowPrepare() {
+    protected void setContentViewBefore() {
         setCancelVisible(false);
-        final boolean isPickFile = pickMode.equals(PickMode.File);
+        final boolean isPickFile = mode.equals(Mode.File);
         setSubmitText(isPickFile ? "取消" : "确定");
         super.setOnConfirmListener(new OnConfirmListener() {
             @Override
@@ -79,6 +85,7 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
                         onFilePickListener.onCancel();
                     }
                 } else {
+                    String currentPath = adapter.getCurrentPath();
                     Logger.debug("已选择目录：" + currentPath);
                     if (onFilePickListener != null) {
                         onFilePickListener.onPicked(currentPath);
@@ -86,14 +93,12 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
                 }
             }
         });
-        super.onShowPrepare();
-        if (adapter == null) {
-            FileAdapter adapter = new FileAdapter(activity);
-            currentPath = Common.getRootPath(activity);
-            refreshCurrentDirPath();
-            adapter.loadData(currentPath);
-            setAdapter(adapter);
-        }
+    }
+
+    @Override
+    protected void setContentViewAfter(View contentView) {
+        setHeight(screenHeight / 2);
+        refreshCurrentDirPath(Common.getRootPath(activity));
     }
 
     /**
@@ -103,12 +108,10 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         FileItem fileItem = adapter.getItem(position);
         if (fileItem.isDirectory()) {
-            currentPath = fileItem.getPath();
-            refreshCurrentDirPath();
-            adapter.loadData(currentPath);
+            refreshCurrentDirPath(fileItem.getPath());
         } else {
             String clickPath = fileItem.getPath();
-            if (pickMode.equals(PickMode.Directory)) {
+            if (mode.equals(Mode.Directory)) {
                 Logger.debug("选择的不是有效的目录: " + clickPath);
             } else {
                 dismiss();
@@ -120,12 +123,13 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
         }
     }
 
-    private void refreshCurrentDirPath() {
+    private void refreshCurrentDirPath(String currentPath) {
         if (currentPath.equals("/")) {
             textView.setText("根目录");
         } else {
             textView.setText(currentPath);
         }
+        adapter.loadData(currentPath, true);
     }
 
     @Deprecated
