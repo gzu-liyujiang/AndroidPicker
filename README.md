@@ -12,7 +12,7 @@ dependencies {
     compile project(':framework-picker')
 }
 ```   
-注：滑轮选择器名称较长时排版混乱问题，API级别>=8，项目编码为UTF-8。
+注：滑轮选择器名称较长时排版混乱问题还未得到很好解决。API级别>=8，项目编码为UTF-8。
 
 # Simple
 日期选择器：   
@@ -179,7 +179,7 @@ dependencies {
 ```
 
 # Thanks
-修改使用了以下项目：
+修改使用了以下项目：<br />
 https://code.google.com/p/android-wheel<br />
 https://github.com/saiwu-bigkoo/PickerView<br />
 https://github.com/jbruchanov/AndroidColorPicker<br />
