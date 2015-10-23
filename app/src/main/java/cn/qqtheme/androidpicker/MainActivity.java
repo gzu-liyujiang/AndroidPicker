@@ -44,7 +44,7 @@ public class MainActivity extends Activity {
         picker.setOnWheelListener(new WheelPicker.OnWheelListener<Date>() {
             @Override
             public void onSubmit(Date result) {
-                showToast(result.toString());
+                showToast(result.toLocaleString());
             }
         });
         picker.showAtBottom();
@@ -56,7 +56,7 @@ public class MainActivity extends Activity {
         picker.setOnWheelListener(new WheelPicker.OnWheelListener<Date>() {
             @Override
             public void onSubmit(Date result) {
-                showToast(result.toString());
+                showToast(result.toLocaleString());
             }
         });
         picker.showAtBottom();
@@ -104,6 +104,55 @@ public class MainActivity extends Activity {
             @Override
             public void onSubmit(int[] result) {
                 showToast(option1.get(result[0]) + "-" + option2.get(result[0]).get(result[1]));
+            }
+        });
+        picker.showAtBottom();
+    }
+
+    public void on3OptionPicker(View view) {
+        //选项1
+        final ArrayList<String> option1 = new ArrayList<String>();
+        option1.add("贵州");
+        option1.add("北京");
+        //选项2
+        final ArrayList<ArrayList<String>> option2 = new ArrayList<ArrayList<String>>();
+        ArrayList<String> options2_1 = new ArrayList<String>();
+        options2_1.add("贵阳");
+        options2_1.add("毕节");
+        ArrayList<String> options2_2 = new ArrayList<String>();
+        options2_2.add("北京");
+        option2.add(options2_1);
+        option2.add(options2_2);
+        //选项3
+        final ArrayList<ArrayList<ArrayList<String>>> option3 = new ArrayList<ArrayList<ArrayList<String>>>();
+        ArrayList<ArrayList<String>> option3_1 = new ArrayList<ArrayList<String>>();
+        ArrayList<String> option3_1_1 = new ArrayList<String>();
+        option3_1_1.add("花溪");
+        option3_1_1.add("南明");
+        option3_1_1.add("金阳");
+        option3_1.add(option3_1_1);
+        ArrayList<String> option3_1_2 = new ArrayList<String>();
+        option3_1_2.add("这里测试很长很长的文字");
+        option3_1_2.add("七星关");
+        option3_1_2.add("纳雍");
+        option3_1.add(option3_1_2);
+        ArrayList<ArrayList<String>> option3_2 = new ArrayList<ArrayList<String>>();
+        ArrayList<String> option3_2_1 = new ArrayList<String>();
+        option3_2_1.add("北京");
+        option3_2.add(option3_2_1);
+        option3.add(option3_1);
+        option3.add(option3_2);
+        OptionPicker picker = new OptionPicker(this);
+        picker.setLabels("省", "市", "县");
+        picker.setOptions(option1, option2, option3);
+        picker.setCurrentOptions(0, 1, 2);
+        picker.setOnWheelListener(new WheelPicker.OnWheelListener<int[]>() {
+            @Override
+            public void onSubmit(int[] result) {
+                String province = option1.get(result[0]);
+                String city = option2.get(result[0]).get(result[1]);
+                String district = option3.get(result[0]).get(result[1]).get(result[2]);
+                showToast(province + "-" + city + "-" + district);
             }
         });
         picker.showAtBottom();

@@ -11,7 +11,8 @@ dependencies {
     compile 'com.android.support:support-v4:+'
     compile project(':framework-picker')
 }
-```
+```   
+注：滑轮选择器名称较长时排版混乱问题，API级别>=8，项目编码为UTF-8。
 
 # Simple
 日期选择器：   
@@ -19,7 +20,7 @@ dependencies {
         DateTimePicker picker = new DateTimePicker(this);
         picker.setMode(DateTimePicker.Mode.YEAR_MONTH_DAY);
         picker.setRange(1990, 2015);
-        picker.setSelectedDate(1999, 10, 11);
+        picker.setSelectedDate(1990, 11, 4);
         picker.setOnWheelListener(new WheelPicker.OnWheelListener<Date>() {
             @Override
             public void onSubmit(Date result) {
@@ -45,6 +46,7 @@ dependencies {
 单项选择器：   
 ```java
         OptionPicker picker = new OptionPicker(this);
+        picker.setScrollingDuration(100);
         final String[] sex = {"男", "女", "保密"};
         picker.setOptions(sex);
         picker.setCurrentOptions(2);
@@ -91,6 +93,53 @@ dependencies {
         picker.showAtBottom();
 ```
 
+三级联动选择器：
+```java
+        final ArrayList<String> option1 = new ArrayList<String>();
+        option1.add("贵州");
+        option1.add("北京");
+        final ArrayList<ArrayList<String>> option2 = new ArrayList<ArrayList<String>>();
+        ArrayList<String> options2_1 = new ArrayList<String>();
+        options2_1.add("贵阳");
+        options2_1.add("毕节");
+        ArrayList<String> options2_2 = new ArrayList<String>();
+        options2_2.add("北京");
+        option2.add(options2_1);
+        option2.add(options2_2);
+        final ArrayList<ArrayList<ArrayList<String>>> option3 = new ArrayList<ArrayList<ArrayList<String>>>();
+        ArrayList<ArrayList<String>> option3_1 = new ArrayList<ArrayList<String>>();
+        ArrayList<String> option3_1_1 = new ArrayList<String>();
+        option3_1_1.add("花溪");
+        option3_1_1.add("南明");
+        option3_1_1.add("金阳");
+        option3_1.add(option3_1_1);
+        ArrayList<String> option3_1_2 = new ArrayList<String>();
+        option3_1_2.add("这里测试很长很长的文字");
+        option3_1_2.add("七星关");
+        option3_1_2.add("纳雍");
+        option3_1.add(option3_1_2);
+        ArrayList<ArrayList<String>> option3_2 = new ArrayList<ArrayList<String>>();
+        ArrayList<String> option3_2_1 = new ArrayList<String>();
+        option3_2_1.add("北京");
+        option3_2.add(option3_2_1);
+        option3.add(option3_1);
+        option3.add(option3_2);
+        OptionPicker picker = new OptionPicker(this);
+        picker.setLabels("省", "市", "县");
+        picker.setOptions(option1, option2, option3);
+        picker.setCurrentOptions(0, 1, 2);
+        picker.setOnWheelListener(new WheelPicker.OnWheelListener<int[]>() {
+            @Override
+            public void onSubmit(int[] result) {
+                String province = option1.get(result[0]);
+                String city = option2.get(result[0]).get(result[1]);
+                String district = option3.get(result[0]).get(result[1]).get(result[2]);
+                String result = province + "-" + city + "-" + district;
+            }
+        });
+        picker.showAtBottom();
+```
+
 颜色选择器：
 ```java
         ColorPicker picker = new ColorPicker(this);
@@ -130,6 +179,7 @@ dependencies {
 ```
 
 # Thanks
+修改使用了以下项目：
 https://code.google.com/p/android-wheel<br />
 https://github.com/saiwu-bigkoo/PickerView<br />
 https://github.com/jbruchanov/AndroidColorPicker<br />
@@ -140,6 +190,7 @@ https://github.com/JoanZapata/base-adapter-helper<br />
 ![](/screenshots/timepicker.jpg)   
 ![](/screenshots/1optionpicker.jpg)   
 ![](/screenshots/2optionpicker.jpg)   
+![](/screenshots/3optionpicker.jpg)   
 ![](/screenshots/colorpicker.jpg)   
 ![](/screenshots/filepicker.jpg)   
 ![](/screenshots/dirpicker.jpg)   

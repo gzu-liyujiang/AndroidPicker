@@ -10,7 +10,6 @@ import cn.qqtheme.framework.popup.ConfirmPopup;
  * 滚动轮子选择器。
  *
  * @author 李玉江[QQ:1032694760]
- * @link https://github.com/saiwu-bigkoo/PickerView
  * @since 2015/9/29
  * Created By Android Studio
  */

@@ -19,11 +19,11 @@ import android.view.MotionEvent;
 import android.view.View;
 
 /**
- * 颜色选择器。
+ * 颜色选择面板
  *
  * @author 李玉江[QQ:1023694760]
- * @version 2015/7/20
  * @link https://github.com/jbruchanov/AndroidColorPicker
+ * @since 2015/7/20
  * Created by IntelliJ IDEA 14.1
  */
 public class ColorPanelView extends View {

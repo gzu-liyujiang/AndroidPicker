@@ -6,19 +6,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import cn.qqtheme.framework.helper.Logger;
-import cn.qqtheme.framework.view.WheelView.WheelNumericAdapter;
-import cn.qqtheme.framework.view.WheelView;
-
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import cn.qqtheme.framework.helper.Logger;
+import cn.qqtheme.framework.view.WheelView;
+import cn.qqtheme.framework.view.WheelView.WheelNumericAdapter;
+
 /**
  * 日期时间选择器
  *
- * @author Sai
+ * @author 李玉江[QQ:1032694760]
+ * @since 2015/9/29
+ * Created By Android Studio
  */
 public class DateTimePicker extends WheelPicker<Date> {
     private WheelView yearView, monthView, dayView;
@@ -84,9 +86,7 @@ public class DateTimePicker extends WheelPicker<Date> {
     }
 
     /**
-     * 设置是否循环滚动
-     *
-     * @param cyclic
+     * 设置是否循环滚动。如果为true的话，建议修改{@link WheelView#SHADOWS_COLORS}加上阴影
      */
     public void setCyclic(boolean cyclic) {
         yearView.setCyclic(cyclic);
@@ -94,6 +94,17 @@ public class DateTimePicker extends WheelPicker<Date> {
         dayView.setCyclic(cyclic);
         hourView.setCyclic(cyclic);
         minuteView.setCyclic(cyclic);
+    }
+
+    /**
+     * 滑动幅度延迟时间，单位为毫秒
+     */
+    public void setScrollingDuration(int scrollingDuration) {
+        yearView.setScrollingDuration(scrollingDuration);
+        monthView.setScrollingDuration(scrollingDuration);
+        dayView.setScrollingDuration(scrollingDuration);
+        hourView.setScrollingDuration(scrollingDuration);
+        minuteView.setScrollingDuration(scrollingDuration);
     }
 
     public void setMode(Mode mode) {
@@ -211,24 +222,20 @@ public class DateTimePicker extends WheelPicker<Date> {
         });
 
         // 根据屏幕密度来指定选择器字体的大小(不同屏幕可能不同)
-        int textSize = 11;
+        int textSize = (int) ((screenHeight / 100) * 2.5f);
         switch (mode) {
             case ALL:
-                textSize = (screenHeight / 100) * 3;
                 break;
             case YEAR_MONTH_DAY:
-                textSize = (screenHeight / 100) * 4;
                 hourView.setVisibility(View.GONE);
                 minuteView.setVisibility(View.GONE);
                 break;
             case HOUR_MINUTE:
-                textSize = (screenHeight / 100) * 4;
                 yearView.setVisibility(View.GONE);
                 monthView.setVisibility(View.GONE);
                 dayView.setVisibility(View.GONE);
                 break;
             case MONTH_DAY_HOUR_MINUTE:
-                textSize = (screenHeight / 100) * 3;
                 yearView.setVisibility(View.GONE);
                 break;
         }
@@ -238,7 +245,6 @@ public class DateTimePicker extends WheelPicker<Date> {
         yearView.TEXT_SIZE = textSize;
         hourView.TEXT_SIZE = textSize;
         minuteView.TEXT_SIZE = textSize;
-
     }
 
     private int calculateDaysInMonth(int year, int month) {
@@ -279,7 +285,7 @@ public class DateTimePicker extends WheelPicker<Date> {
         @Override
         public String getItem(int index) {
             String item = super.getItem(index);
-            //0-9前面补0
+            // FIXME: 2015/10/22 0-9前面补0
             if (item != null && item.length() == 1) {
                 item = "0" + item;
             }

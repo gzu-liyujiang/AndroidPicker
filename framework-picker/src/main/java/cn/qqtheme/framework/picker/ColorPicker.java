@@ -16,6 +16,13 @@ import cn.qqtheme.framework.view.ColorPanelView;
 
 import java.util.Locale;
 
+/**
+ * 颜色选择器。
+ *
+ * @author 李玉江[QQ:1032694760]
+ * @since 2015/9/29
+ * Created By Android Studio
+ */
 public class ColorPicker extends ConfirmPopup<LinearLayout> implements TextView.OnEditorActionListener {
     private static final int MULTI_ID = 0x1;
     private static final int BLACK_ID = 0x2;
@@ -92,7 +99,7 @@ public class ColorPicker extends ConfirmPopup<LinearLayout> implements TextView.
             super.setOnConfirmListener(new OnConfirmListener() {
                 @Override
                 public void onConfirm() {
-                    onColorPickListener.onColorPicked(blackColorView.getSelectedColor());
+                    onColorPickListener.onColorPicked(Color.parseColor("#" + hexValView.getText()));
                 }
 
                 @Override

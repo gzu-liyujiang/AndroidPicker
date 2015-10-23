@@ -15,6 +15,13 @@ import cn.qqtheme.framework.helper.Logger;
 import cn.qqtheme.framework.popup.ConfirmPopup;
 import cn.qqtheme.framework.view.MarqueeTextView;
 
+/**
+ * 文件目录选择器
+ *
+ * @author 李玉江[QQ:1032694760]
+ * @since 2015/9/29
+ * Created By Android Studio
+ */
 public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterView.OnItemClickListener {
     private Mode mode;
     private FileAdapter adapter;

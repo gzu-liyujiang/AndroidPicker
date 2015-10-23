@@ -54,7 +54,7 @@ public abstract class ConfirmPopup<V extends View> extends BasePopup<LinearLayou
         rootLayout.setPadding(0, 0, 0, 0);
         rootLayout.setClipToPadding(false);
         RelativeLayout topButtonLayout = new RelativeLayout(activity);
-        topButtonLayout.setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, Common.toPx(activity, 50)));
+        topButtonLayout.setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, Common.toPx(activity, 40)));
         topButtonLayout.setBackgroundColor(Color.WHITE);
         topButtonLayout.setGravity(Gravity.CENTER_VERTICAL);
         Button cancelButton = new Button(activity);
@@ -88,8 +88,8 @@ public abstract class ConfirmPopup<V extends View> extends BasePopup<LinearLayou
         topButtonLayout.addView(submitButton);
         rootLayout.addView(topButtonLayout);
         View lineView = new View(activity);
+        lineView.setLayoutParams(new ViewGroup.LayoutParams(MATCH_PARENT, 1));
         lineView.setBackgroundColor(0xDDDDDDDD);
-        lineView.setLayoutParams(new ViewGroup.LayoutParams(MATCH_PARENT, Common.toPx(activity, 0.5f)));
         rootLayout.addView(lineView);
         rootLayout.addView(initContentView());
         return rootLayout;

@@ -39,13 +39,13 @@ import android.view.View;
 import android.view.animation.Interpolator;
 import android.widget.Scroller;
 
-import cn.qqtheme.framework.picker.R;
-import cn.qqtheme.framework.helper.Common;
-
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
+import cn.qqtheme.framework.helper.Common;
+import cn.qqtheme.framework.picker.R;
 
 /**
  * android-wheel
@@ -60,7 +60,7 @@ public class WheelView extends View {
     /**
      * Scrolling duration
      */
-    private static final int SCROLLING_DURATION = 400;
+    private static final int SCROLLING_DURATION = 200;
 
     /**
      * Minimum delta for scrolling
@@ -80,7 +80,7 @@ public class WheelView extends View {
     /**
      * Top and bottom shadows colors
      */
-    private static final int[] SHADOWS_COLORS = new int[]{0x55F1F1F1, 0x00000000};
+    private static final int[] SHADOWS_COLORS = new int[]{0x00000000, 0x00000000};
 
     /**
      * Additional items height (is added to standard text item height)
@@ -90,7 +90,7 @@ public class WheelView extends View {
     /**
      * Text size
      */
-    public int TEXT_SIZE;
+    public int TEXT_SIZE = 14;
 
     /**
      * Top and bottom items offset (to hide that)
@@ -105,16 +105,16 @@ public class WheelView extends View {
     /**
      * Label offset ,   dip
      */
-    private static final int LABEL_OFFSET_DIP = 20;
+    private static final int LABEL_OFFSET_DIP = 2;
     /**
      * Label offset
      */
-    private static int LABEL_OFFSET = 30;
+    private static int LABEL_OFFSET = 3;
 
     /**
      * Left and right padding value
      */
-    private static final int PADDING = 10;
+    private static int PADDING = 1;
 
     /**
      * Default count of visible items
@@ -163,6 +163,8 @@ public class WheelView extends View {
 
     // Cyclic
     boolean isCyclic = false;
+    // scrolling duration
+    int scrollingDuration = SCROLLING_DURATION;
 
     // Listeners
     private List<OnWheelChangedListener> changingListeners = new LinkedList<OnWheelChangedListener>();
@@ -374,7 +376,7 @@ public class WheelView extends View {
         }
         if (index != currentItem) {
             if (animated) {
-                scroll(index - currentItem, SCROLLING_DURATION);
+                scroll(index - currentItem, scrollingDuration);
             } else {
                 invalidateLayouts();
 
@@ -417,6 +419,15 @@ public class WheelView extends View {
         this.isCyclic = isCyclic;
         invalidate();
         invalidateLayouts();
+    }
+
+    /**
+     * 滑动幅度延迟时间
+     *
+     * @param scrollingDuration
+     */
+    public void setScrollingDuration(int scrollingDuration) {
+        this.scrollingDuration = scrollingDuration;
     }
 
     /**
@@ -537,9 +548,9 @@ public class WheelView extends View {
             return 0;
         }
 
-        int adapterLength = adapter.getMaximumLength();
-        if (adapterLength > 0) {
-            return adapterLength;
+        int maximumLength = adapter.getMaximumLength();
+        if (maximumLength > 0) {
+            return maximumLength;
         }
 
         String maxText = null;
@@ -941,7 +952,7 @@ public class WheelView extends View {
                 offset -= itemHeight + MIN_DELTA_FOR_SCROLLING;
         }
         if (Math.abs(offset) > MIN_DELTA_FOR_SCROLLING) {
-            scroller.startScroll(0, 0, 0, offset, SCROLLING_DURATION);
+            scroller.startScroll(0, 0, 0, offset, scrollingDuration);
             setNextMessage(MESSAGE_JUSTIFY);
         } else {
             finishScrolling();
@@ -1091,10 +1102,6 @@ public class WheelView extends View {
      * @param <T> the element type
      */
     public static class WheelArrayAdapter<T> implements WheelAdapter {
-        /**
-         * The default items length
-         */
-        public static final int DEFAULT_LENGTH = 4;
         private ArrayList<T> items;
         private int length;
 
@@ -1115,7 +1122,7 @@ public class WheelView extends View {
          * @param items the items
          */
         public WheelArrayAdapter(ArrayList<T> items) {
-            this(items, DEFAULT_LENGTH);
+            this(items, 4);
         }
 
         @Override
@@ -1142,21 +1149,9 @@ public class WheelView extends View {
      * Numeric Wheel adapter.
      */
     public static class WheelNumericAdapter implements WheelAdapter {
-
-        /**
-         * The default min value
-         */
-        public static final int DEFAULT_MAX_VALUE = 9;
-
-        /**
-         * The default max value
-         */
-        private static final int DEFAULT_MIN_VALUE = 0;
-
         // Values
         private int minValue;
         private int maxValue;
-
         // format
         private String format;
 
@@ -1164,7 +1159,7 @@ public class WheelView extends View {
          * Default constructor
          */
         public WheelNumericAdapter() {
-            this(DEFAULT_MIN_VALUE, DEFAULT_MAX_VALUE);
+            this(0, 9);
         }
 
         /**
