@@ -3,8 +3,8 @@
 Picker for android, include date&amp;time/option/color/file&amp;directory.
 
 # Install
-1、通过SVN或GIT工具下载本项目，复制“framework-picker”到你的电脑上；
-2、用Android Studio或IntelliJ IDEA打开你的项目，New->Import Module，选择“framework-picker”；
+1、通过SVN或GIT工具下载本项目，复制“framework-picker”到你的电脑上；<br />
+2、用Android Studio或IntelliJ IDEA打开你的项目，New->Import Module，选择“framework-picker”；<br />
 3、修改你的项目的build.gradle，加入依赖项“framework-picker”，如：
 ```
 dependencies {
@@ -130,10 +130,10 @@ dependencies {
 ```
 
 # Thanks
-https://code.google.com/p/android-wheel   
-https://github.com/saiwu-bigkoo/PickerView   
-https://github.com/jbruchanov/AndroidColorPicker   
-https://github.com/JoanZapata/base-adapter-helper   
+https://code.google.com/p/android-wheel<br />
+https://github.com/saiwu-bigkoo/PickerView<br />
+https://github.com/jbruchanov/AndroidColorPicker<br />
+https://github.com/JoanZapata/base-adapter-helper<br />
 
 # Screenshots
 ![](/screenshots/datepicker.jpg)   

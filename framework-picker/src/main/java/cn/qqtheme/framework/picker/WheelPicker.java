@@ -3,7 +3,6 @@ package cn.qqtheme.framework.picker;
 import android.app.Activity;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 
 import cn.qqtheme.framework.popup.ConfirmPopup;
 
@@ -15,7 +14,7 @@ import cn.qqtheme.framework.popup.ConfirmPopup;
  * @since 2015/9/29
  * Created By Android Studio
  */
-public abstract class WheelPicker<T> extends ConfirmPopup<ScrollView> {
+public abstract class WheelPicker<T> extends ConfirmPopup<LinearLayout> {
     private LinearLayout view;
     private OnWheelListener<T> onWheelListener;
 
@@ -25,11 +24,8 @@ public abstract class WheelPicker<T> extends ConfirmPopup<ScrollView> {
     }
 
     @Override
-    protected final ScrollView initContentView() {
-        ScrollView scrollView = new ScrollView(activity);
-        scrollView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-        scrollView.addView(view);
-        return scrollView;
+    protected final LinearLayout initContentView() {
+        return view;
     }
 
     @Override
