@@ -14,6 +14,7 @@ import cn.qqtheme.framework.helper.Common;
 import cn.qqtheme.framework.picker.ColorPicker;
 import cn.qqtheme.framework.picker.DateTimePicker;
 import cn.qqtheme.framework.picker.FilePicker;
+import cn.qqtheme.framework.picker.NumberPicker;
 import cn.qqtheme.framework.picker.OptionPicker;
 import cn.qqtheme.framework.picker.WheelPicker;
 
@@ -66,7 +67,7 @@ public class MainActivity extends Activity {
         OptionPicker picker = new OptionPicker(this);
         final String[] sex = {"男", "女", "保密"};
         picker.setOptions(sex);
-        picker.setCurrentOptions(2);
+        picker.setSelectedOption(2);
         picker.setOnWheelListener(new WheelPicker.OnWheelListener<int[]>() {
             @Override
             public void onSubmit(int[] result) {
@@ -81,6 +82,7 @@ public class MainActivity extends Activity {
         option1.add("技术方案");
         option1.add("开发工具");
         option1.add("运行环境");
+        option1.add("这里测试很长很长的内容，看看二级联动选择器如何显示");
         final ArrayList<ArrayList<String>> option2 = new ArrayList<ArrayList<String>>();
         ArrayList<String> language = new ArrayList<String>();
         language.add("Java/XML");
@@ -88,7 +90,7 @@ public class MainActivity extends Activity {
         language.add("H5+/MUI");
         option2.add(language);
         ArrayList<String> tool = new ArrayList<String>();
-        tool.add("IntelliJ IDEA");
+        tool.add("Android Studio");
         tool.add("PhpStorm");
         tool.add("HBuilder");
         option2.add(tool);
@@ -97,9 +99,12 @@ public class MainActivity extends Activity {
         environment.add("WAMP/LAMP");
         environment.add("Android/IOS");
         option2.add(environment);
+        ArrayList<String> length = new ArrayList<String>();
+        length.add("这里测试很长很长的内容，看看二级联动选择器如何显示");
+        option2.add(length);
         OptionPicker picker = new OptionPicker(this);
         picker.setOptions(option1, option2);
-        picker.setCurrentOptions(1);
+        picker.setSelectedOption(1, 1);
         picker.setOnWheelListener(new WheelPicker.OnWheelListener<int[]>() {
             @Override
             public void onSubmit(int[] result) {
@@ -110,42 +115,39 @@ public class MainActivity extends Activity {
     }
 
     public void on3OptionPicker(View view) {
-        //选项1
         final ArrayList<String> option1 = new ArrayList<String>();
-        option1.add("贵州");
-        option1.add("北京");
-        //选项2
+        option1.add("贵州省");
+        option1.add("北京市");
         final ArrayList<ArrayList<String>> option2 = new ArrayList<ArrayList<String>>();
         ArrayList<String> options2_1 = new ArrayList<String>();
-        options2_1.add("贵阳");
-        options2_1.add("毕节");
+        options2_1.add("贵阳市");
+        options2_1.add("毕节地区");
         ArrayList<String> options2_2 = new ArrayList<String>();
-        options2_2.add("北京");
+        options2_2.add("北京市");
         option2.add(options2_1);
         option2.add(options2_2);
-        //选项3
         final ArrayList<ArrayList<ArrayList<String>>> option3 = new ArrayList<ArrayList<ArrayList<String>>>();
         ArrayList<ArrayList<String>> option3_1 = new ArrayList<ArrayList<String>>();
         ArrayList<String> option3_1_1 = new ArrayList<String>();
-        option3_1_1.add("花溪");
-        option3_1_1.add("南明");
-        option3_1_1.add("金阳");
+        option3_1_1.add("花溪区");
+        option3_1_1.add("南明区");
+        option3_1_1.add("清镇市");
+        option3_1_1.add("息烽县");
         option3_1.add(option3_1_1);
         ArrayList<String> option3_1_2 = new ArrayList<String>();
-        option3_1_2.add("这里测试很长很长的文字");
-        option3_1_2.add("七星关");
-        option3_1_2.add("纳雍");
+        option3_1_2.add("这里测试很长很长的内容，看看三级联动选择器如何显示");
+        option3_1_2.add("七星关区");
+        option3_1_2.add("纳雍县");
         option3_1.add(option3_1_2);
         ArrayList<ArrayList<String>> option3_2 = new ArrayList<ArrayList<String>>();
         ArrayList<String> option3_2_1 = new ArrayList<String>();
-        option3_2_1.add("北京");
+        option3_2_1.add("北京市");
         option3_2.add(option3_2_1);
         option3.add(option3_1);
         option3.add(option3_2);
         OptionPicker picker = new OptionPicker(this);
-        picker.setLabels("省", "市", "县");
         picker.setOptions(option1, option2, option3);
-        picker.setCurrentOptions(0, 1, 2);
+        picker.setSelectedOption(0, 1, 2);
         picker.setOnWheelListener(new WheelPicker.OnWheelListener<int[]>() {
             @Override
             public void onSubmit(int[] result) {
@@ -171,8 +173,9 @@ public class MainActivity extends Activity {
     }
 
     public void onFilePicker(View view) {
-        FilePicker picker = new FilePicker(this, FilePicker.Mode.File);
+        FilePicker picker = new FilePicker(this);
         picker.setShowHideDir(false);
+        picker.setMode(FilePicker.Mode.File);
         picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {
             @Override
             public void onFilePicked(String currentPath) {
@@ -183,11 +186,26 @@ public class MainActivity extends Activity {
     }
 
     public void onDirPicker(View view) {
-        FilePicker picker = new FilePicker(this, FilePicker.Mode.Directory);
+        FilePicker picker = new FilePicker(this);
+        picker.setMode(FilePicker.Mode.Directory);
         picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {
             @Override
             public void onFilePicked(String currentPath) {
                 showToast(currentPath);
+            }
+        });
+        picker.showAtBottom();
+    }
+
+    public void onNumberPicker(View view) {
+        NumberPicker picker = new NumberPicker(this);
+        picker.setRange(0, 100);
+        picker.setSelectedNumber(50);
+        picker.setLabel("%");
+        picker.setOnWheelListener(new WheelPicker.OnWheelListener<Integer>() {
+            @Override
+            public void onSubmit(Integer result) {
+                showToast(result.toString());
             }
         });
         picker.showAtBottom();

@@ -6,7 +6,9 @@ import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import cn.qqtheme.framework.adapter.FileAdapter;
 import cn.qqtheme.framework.entity.FileItem;
@@ -32,19 +34,15 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
         Directory, File
     }
 
-    public FilePicker(Activity activity, Mode mode) {
+    public FilePicker(Activity activity) {
         super(activity);
-        this.mode = mode;
         adapter = new FileAdapter(activity);
-        if (mode.equals(Mode.Directory)) {
-            adapter.setOnlyListDir(true);
-        }
     }
 
     @Override
     protected LinearLayout initContentView() {
         LinearLayout rootLayout = new LinearLayout(activity);
-        rootLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+        rootLayout.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
         rootLayout.setBackgroundColor(Color.WHITE);
         rootLayout.setOrientation(LinearLayout.VERTICAL);
         textView = new MarqueeTextView(activity);
@@ -63,6 +61,13 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
         listView.setOnItemClickListener(this);
         rootLayout.addView(listView);
         return rootLayout;
+    }
+
+    public void setMode(Mode mode) {
+        this.mode = mode;
+        if (mode.equals(Mode.Directory)) {
+            adapter.setOnlyListDir(true);
+        }
     }
 
     public void setAllowExtensions(String[] allowExtensions) {

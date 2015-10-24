@@ -30,7 +30,7 @@ public class OptionPicker extends WheelPicker<int[]> {
     @Override
     protected LinearLayout initWheelView() {
         LinearLayout rootLayout = new LinearLayout(activity);
-        rootLayout.setLayoutParams(new ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
+        rootLayout.setLayoutParams(new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
         rootLayout.setOrientation(LinearLayout.HORIZONTAL);
         rootLayout.setBackgroundColor(Color.WHITE);
         optionView1 = new WheelView(activity);
@@ -47,11 +47,9 @@ public class OptionPicker extends WheelPicker<int[]> {
 
     /**
      * 返回当前选中的结果对应的位置数组 因为支持三级联动效果，分三个级别索引，0，1，2
-     *
-     * @return
      */
     @Override
-    public int[] getCurrentSelected() {
+    protected int[] getCurrentItem() {
         int[] currentItems = new int[3];
         currentItems[0] = optionView1.getCurrentItem();
         currentItems[1] = optionView2.getCurrentItem();
@@ -60,33 +58,29 @@ public class OptionPicker extends WheelPicker<int[]> {
         return currentItems;
     }
 
-    /**
-     * 设置是否循环滚动。如果为true的话，建议修改{@link WheelView#SHADOWS_COLORS}加上阴影
-     */
+    @Override
     public void setCyclic(boolean cyclic) {
         optionView1.setCyclic(cyclic);
         optionView2.setCyclic(cyclic);
         optionView3.setCyclic(cyclic);
     }
 
-    /**
-     * 滑动幅度延迟时间，单位为毫秒
-     */
+    @Override
     public void setScrollingDuration(int scrollingDuration) {
         optionView1.setScrollingDuration(scrollingDuration);
         optionView2.setScrollingDuration(scrollingDuration);
         optionView3.setScrollingDuration(scrollingDuration);
     }
 
-    public void setCurrentOptions(int index1) {
-        setCurrentOptions(index1, -1);
+    public void setSelectedOption(int index1) {
+        setSelectedOption(index1, -1);
     }
 
-    public void setCurrentOptions(int index1, int index2) {
-        setCurrentOptions(index1, index2, -1);
+    public void setSelectedOption(int index1, int index2) {
+        setSelectedOption(index1, index2, -1);
     }
 
-    public void setCurrentOptions(int index1, int index2, int index3) {
+    public void setSelectedOption(int index1, int index2, int index3) {
         if (index1 != -1) {
             optionView1.setCurrentItem(index1);
         }
@@ -99,7 +93,7 @@ public class OptionPicker extends WheelPicker<int[]> {
     }
 
     public void setOptions(String[] optionsItems) {
-        setOptions(new ArrayList<String>(Arrays.asList(optionsItems)), null, null);
+        setOptions(new ArrayList<String>(Arrays.asList(optionsItems)));
     }
 
     public void setOptions(ArrayList<String> optionsItems) {
@@ -113,14 +107,14 @@ public class OptionPicker extends WheelPicker<int[]> {
 
     public void setOptions(ArrayList<String> options1Items, final ArrayList<ArrayList<String>> options2Items,
                            final ArrayList<ArrayList<ArrayList<String>>> options3Items) {
-        int len = 4;
-        if (options2Items == null) {
-            len = 10;
+        int len;
+        if (options3Items != null) {
+            len = 4;//三级联动选择
+        } else if (options2Items != null) {
+            len = 10;//二级联动选择
+        } else {
+            len = 20;//单项选择
         }
-        if (options3Items == null) {
-            len = 8;
-        }
-
         // 选项1
         optionView1.setAdapter(new OptionAdapter(options1Items, len));// 设置显示数据
         optionView1.setCurrentItem(0);// 初始化时显示的数据
@@ -137,10 +131,9 @@ public class OptionPicker extends WheelPicker<int[]> {
 
         // 根据屏幕密度来指定选择器字体的大小(不同屏幕可能不同)
         int textSize = (int) ((screenHeight / 100) * 2.5f);
-
-        optionView1.TEXT_SIZE = textSize;
-        optionView2.TEXT_SIZE = textSize;
-        optionView3.TEXT_SIZE = textSize;
+        optionView1.setTextSize(textSize);
+        optionView2.setTextSize(textSize);
+        optionView3.setTextSize(textSize);
 
         if (options2Items == null) {
             optionView2.setVisibility(View.GONE);
@@ -181,29 +174,6 @@ public class OptionPicker extends WheelPicker<int[]> {
         }
     }
 
-    public void setLabels(String label1) {
-        setLabels(label1, null);
-    }
-
-    public void setLabels(String label1, String label2) {
-        setLabels(label1, label2, null);
-    }
-
-    /**
-     * 设置选项的单位
-     */
-    public void setLabels(String label1, String label2, String label3) {
-        if (label1 != null) {
-            optionView1.setLabel(label1);
-        }
-        if (label2 != null) {
-            optionView2.setLabel(label2);
-        }
-        if (label3 != null) {
-            optionView3.setLabel(label3);
-        }
-    }
-
     private class OptionAdapter extends WheelArrayAdapter<String> {
 
         public OptionAdapter(ArrayList<String> items, int length) {
@@ -214,7 +184,13 @@ public class OptionPicker extends WheelPicker<int[]> {
         public String getItem(int index) {
             String item = super.getItem(index);
             // FIXME: 2015/10/23 如果名称较长，整个文字排版上就容易有问题，故截取显条目字数
-            item = cutString(item, 4, "...");
+            if (optionView3.isShown()) {
+                item = cutString(item, 4, "...");
+            } else if (optionView2.isShown()) {
+                item = cutString(item, 10, "...");
+            } else {
+                item = cutString(item, 20, "...");
+            }
             return item;
         }
 

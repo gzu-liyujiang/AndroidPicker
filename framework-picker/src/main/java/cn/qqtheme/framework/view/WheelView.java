@@ -75,12 +75,16 @@ public class WheelView extends View {
     /**
      * Items text color
      */
-    private static final int ITEMS_TEXT_COLOR = 0xFF666666;
+    private static final int ITEMS_TEXT_COLOR = 0xEE999999;
 
     /**
      * Top and bottom shadows colors
      */
-    private static final int[] SHADOWS_COLORS = new int[]{0x00000000, 0x00000000};
+    private static final int[] SHADOWS_COLORS = new int[]{
+            0xFFEEEEEE,
+            0x00EEEEEE,
+            0x00EEEEEE
+    };
 
     /**
      * Additional items height (is added to standard text item height)
@@ -90,12 +94,12 @@ public class WheelView extends View {
     /**
      * Text size
      */
-    public int TEXT_SIZE = 14;
+    private int textSize = 18;
 
     /**
      * Top and bottom items offset (to hide that)
      */
-    private final int ITEM_OFFSET = TEXT_SIZE / 5;
+    private final int ITEM_OFFSET = textSize / 5;
 
     /**
      * Additional width for items layout
@@ -151,6 +155,7 @@ public class WheelView extends View {
     // Shadows drawables
     private GradientDrawable topShadow;
     private GradientDrawable bottomShadow;
+    private boolean shadowVisible = false;
 
     // Scrolling
     private boolean isScrollingPerformed;
@@ -430,6 +435,20 @@ public class WheelView extends View {
         this.scrollingDuration = scrollingDuration;
     }
 
+    public void setTextSize(int textSize) {
+        this.textSize = textSize;
+    }
+
+    public void setShadowVisible(boolean shadowVisible) {
+        this.shadowVisible = shadowVisible;
+    }
+
+    public void setShadow(GradientDrawable topShadow, GradientDrawable bottomShadow) {
+        this.shadowVisible = true;
+        this.topShadow = topShadow;
+        this.bottomShadow = bottomShadow;
+    }
+
     /**
      * Invalidates layouts
      */
@@ -445,13 +464,13 @@ public class WheelView extends View {
     private void initResourcesIfNecessary() {
         if (itemsPaint == null) {
             itemsPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-            itemsPaint.setTextSize(TEXT_SIZE);
+            itemsPaint.setTextSize(textSize);
             itemsPaint.setColor(0xFF666666);
         }
 
         if (valuePaint == null) {
             valuePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG);
-            valuePaint.setTextSize(TEXT_SIZE);
+            valuePaint.setTextSize(textSize);
         }
 
         if (centerDrawable == null) {
@@ -459,13 +478,11 @@ public class WheelView extends View {
         }
 
         if (topShadow == null) {
-            topShadow = new GradientDrawable(Orientation.TOP_BOTTOM,
-                    SHADOWS_COLORS);
+            topShadow = new GradientDrawable(Orientation.TOP_BOTTOM, SHADOWS_COLORS);
         }
 
         if (bottomShadow == null) {
-            bottomShadow = new GradientDrawable(Orientation.BOTTOM_TOP,
-                    SHADOWS_COLORS);
+            bottomShadow = new GradientDrawable(Orientation.BOTTOM_TOP, SHADOWS_COLORS);
         }
     }
 
@@ -734,7 +751,9 @@ public class WheelView extends View {
             drawValue(canvas);
             canvas.restore();
         }
-        drawShadows(canvas);
+        if (shadowVisible) {
+            drawShadows(canvas);
+        }
     }
 
     /**

@@ -47,7 +47,7 @@ public class DateTimePicker extends WheelPicker<Date> {
     @Override
     protected LinearLayout initWheelView() {
         LinearLayout rootLayout = new LinearLayout(activity);
-        rootLayout.setLayoutParams(new ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
+        rootLayout.setLayoutParams(new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
         rootLayout.setOrientation(LinearLayout.HORIZONTAL);
         rootLayout.setBackgroundColor(Color.WHITE);
         yearView = new WheelView(activity);
@@ -69,7 +69,7 @@ public class DateTimePicker extends WheelPicker<Date> {
     }
 
     @Override
-    public Date getCurrentSelected() {
+    protected Date getCurrentItem() {
         int yearIndex = yearView.getCurrentItem();
         int monthIndex = monthView.getCurrentItem();
         int dayIndex = dayView.getCurrentItem();
@@ -85,9 +85,7 @@ public class DateTimePicker extends WheelPicker<Date> {
         return calendar.getTime();
     }
 
-    /**
-     * 设置是否循环滚动。如果为true的话，建议修改{@link WheelView#SHADOWS_COLORS}加上阴影
-     */
+    @Override
     public void setCyclic(boolean cyclic) {
         yearView.setCyclic(cyclic);
         monthView.setCyclic(cyclic);
@@ -96,9 +94,7 @@ public class DateTimePicker extends WheelPicker<Date> {
         minuteView.setCyclic(cyclic);
     }
 
-    /**
-     * 滑动幅度延迟时间，单位为毫秒
-     */
+    @Override
     public void setScrollingDuration(int scrollingDuration) {
         yearView.setScrollingDuration(scrollingDuration);
         monthView.setScrollingDuration(scrollingDuration);
@@ -108,10 +104,13 @@ public class DateTimePicker extends WheelPicker<Date> {
     }
 
     public void setMode(Mode mode) {
-        if (mode == null) {
-            this.mode = Mode.YEAR_MONTH_DAY;
-        } else {
-            this.mode = mode;
+        this.mode = mode;
+        if (mode.equals(Mode.HOUR_MINUTE)) {
+            // FIXME: 2015/10/23 时间选择器，日期默认为今天
+            Calendar calendar = Calendar.getInstance();
+            currentYear = calendar.get(Calendar.YEAR);
+            currentMonth = calendar.get(Calendar.MONTH) + 1;
+            currentDay = calendar.get(Calendar.DAY_OF_MONTH);
         }
         setDate(System.currentTimeMillis());
     }
@@ -231,6 +230,7 @@ public class DateTimePicker extends WheelPicker<Date> {
                 minuteView.setVisibility(View.GONE);
                 break;
             case HOUR_MINUTE:
+                textSize = (int) ((screenHeight / 100) * 3f);
                 yearView.setVisibility(View.GONE);
                 monthView.setVisibility(View.GONE);
                 dayView.setVisibility(View.GONE);
@@ -240,11 +240,11 @@ public class DateTimePicker extends WheelPicker<Date> {
                 break;
         }
 
-        dayView.TEXT_SIZE = textSize;
-        monthView.TEXT_SIZE = textSize;
-        yearView.TEXT_SIZE = textSize;
-        hourView.TEXT_SIZE = textSize;
-        minuteView.TEXT_SIZE = textSize;
+        dayView.setTextSize(textSize);
+        monthView.setTextSize(textSize);
+        yearView.setTextSize(textSize);
+        hourView.setTextSize(textSize);
+        minuteView.setTextSize(textSize);
     }
 
     private int calculateDaysInMonth(int year, int month) {

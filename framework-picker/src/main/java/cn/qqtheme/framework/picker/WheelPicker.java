@@ -1,15 +1,18 @@
 package cn.qqtheme.framework.picker;
 
 import android.app.Activity;
+import android.graphics.drawable.GradientDrawable;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import cn.qqtheme.framework.popup.ConfirmPopup;
+import cn.qqtheme.framework.view.WheelView;
 
 /**
  * 滚动轮子选择器。
  *
  * @author 李玉江[QQ:1032694760]
+ * @link https://github.com/saiwu-bigkoo/PickerView
  * @since 2015/9/29
  * Created By Android Studio
  */
@@ -34,7 +37,7 @@ public abstract class WheelPicker<T> extends ConfirmPopup<LinearLayout> {
             super.setOnConfirmListener(new OnConfirmListener() {
                 @Override
                 public void onConfirm() {
-                    onWheelListener.onSubmit(getCurrentSelected());
+                    onWheelListener.onSubmit(getCurrentItem());
                 }
 
                 @Override
@@ -47,7 +50,26 @@ public abstract class WheelPicker<T> extends ConfirmPopup<LinearLayout> {
 
     protected abstract LinearLayout initWheelView();
 
-    public abstract T getCurrentSelected();
+    protected abstract T getCurrentItem();
+
+    /**
+     * 设置是否循环滚动。
+     * 如果为true的话，建议设置阴影
+     */
+    public abstract void setCyclic(boolean cyclic);
+
+    /**
+     * 设置阴影
+     * {@link WheelView#setShadow(GradientDrawable, GradientDrawable)}
+     */
+    public void setShadow(GradientDrawable topShadow, GradientDrawable bottomShadow) {
+        throw new RuntimeException("please implement the method");
+    }
+
+    /**
+     * 滑动幅度延迟时间，单位为毫秒
+     */
+    public abstract void setScrollingDuration(int scrollingDuration);
 
     @Deprecated
     @Override

@@ -59,6 +59,12 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="onNumberPicker"
+            android:text="number picker" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:onClick="onGithub"
             android:text="开源代码主页" />
 

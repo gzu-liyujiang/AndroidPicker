@@ -1,6 +1,6 @@
 # About
-安卓选择器类库，包括日期时间选择器、一二三级联动选择器、颜色选择器、文件目录选择器。
-Picker for android, include date&amp;time/option/color/file&amp;directory.
+安卓选择器类库，包括日期时间选择器、一二三级联动选择器、颜色选择器、文件目录选择器、数字选择器。
+Picker for android, include date&amp;time/option/color/file&amp;directory/number.
 
 # Install
 1、通过SVN或GIT工具下载本项目，复制“framework-picker”到你的电脑上；<br />
@@ -12,7 +12,9 @@ dependencies {
     compile project(':framework-picker')
 }
 ```   
-注：滑轮选择器名称较长时排版混乱问题还未得到很好解决。API级别>=8，项目编码为UTF-8。
+注：
+滑轮选择器名称较长时排版混乱问题还未得到很好解决。   
+API级别>=8，项目编码为UTF-8。
 
 # Simple
 日期选择器：   
@@ -65,6 +67,7 @@ dependencies {
         option1.add("技术方案");
         option1.add("开发工具");
         option1.add("运行环境");
+        option1.add("这里测试很长很长的内容，看看二级联动选择器如何显示");
         final ArrayList<ArrayList<String>> option2 = new ArrayList<ArrayList<String>>();
         ArrayList<String> language = new ArrayList<String>();
         language.add("Java/XML");
@@ -81,6 +84,9 @@ dependencies {
         environment.add("WAMP/LAMP");
         environment.add("Android/IOS");
         option2.add(environment);
+        ArrayList<String> length = new ArrayList<String>();
+        length.add("这里测试很长很长的内容，看看二级联动选择器如何显示");
+        option2.add(length);
         OptionPicker picker = new OptionPicker(this);
         picker.setOptions(option1, option2);
         picker.setCurrentOptions(1);
@@ -96,36 +102,36 @@ dependencies {
 三级联动选择器：
 ```java
         final ArrayList<String> option1 = new ArrayList<String>();
-        option1.add("贵州");
-        option1.add("北京");
+        option1.add("贵州省");
+        option1.add("北京市");
         final ArrayList<ArrayList<String>> option2 = new ArrayList<ArrayList<String>>();
         ArrayList<String> options2_1 = new ArrayList<String>();
-        options2_1.add("贵阳");
-        options2_1.add("毕节");
+        options2_1.add("贵阳市");
+        options2_1.add("毕节地区");
         ArrayList<String> options2_2 = new ArrayList<String>();
-        options2_2.add("北京");
+        options2_2.add("北京市");
         option2.add(options2_1);
         option2.add(options2_2);
         final ArrayList<ArrayList<ArrayList<String>>> option3 = new ArrayList<ArrayList<ArrayList<String>>>();
         ArrayList<ArrayList<String>> option3_1 = new ArrayList<ArrayList<String>>();
         ArrayList<String> option3_1_1 = new ArrayList<String>();
-        option3_1_1.add("花溪");
-        option3_1_1.add("南明");
-        option3_1_1.add("金阳");
+        option3_1_1.add("花溪区");
+        option3_1_1.add("南明区");
+        option3_1_1.add("清镇市");
+        option3_1_1.add("息烽县");
         option3_1.add(option3_1_1);
         ArrayList<String> option3_1_2 = new ArrayList<String>();
-        option3_1_2.add("这里测试很长很长的文字");
-        option3_1_2.add("七星关");
-        option3_1_2.add("纳雍");
+        option3_1_2.add("这里测试很长很长的内容，看看三级联动选择器如何显示");
+        option3_1_2.add("七星关区");
+        option3_1_2.add("纳雍县");
         option3_1.add(option3_1_2);
         ArrayList<ArrayList<String>> option3_2 = new ArrayList<ArrayList<String>>();
         ArrayList<String> option3_2_1 = new ArrayList<String>();
-        option3_2_1.add("北京");
+        option3_2_1.add("北京市");
         option3_2.add(option3_2_1);
         option3.add(option3_1);
         option3.add(option3_2);
         OptionPicker picker = new OptionPicker(this);
-        picker.setLabels("省", "市", "县");
         picker.setOptions(option1, option2, option3);
         picker.setCurrentOptions(0, 1, 2);
         picker.setOnWheelListener(new WheelPicker.OnWheelListener<int[]>() {
@@ -155,7 +161,8 @@ dependencies {
 
 文件选择器：
 ```java
-        FilePicker picker = new FilePicker(this, FilePicker.Mode.File);
+        FilePicker picker = new FilePicker(this);
+        picker.setMode(FilePicker.Mode.File);
         picker.setShowHideDir(false);
         picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {
             @Override
@@ -168,11 +175,26 @@ dependencies {
 
 目录选择器：
 ```java
-        FilePicker picker = new FilePicker(this, FilePicker.Mode.Directory);
+        FilePicker picker = new FilePicker(this);
+        picker.setMode(FilePicker.Mode.Directory);
         picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {
             @Override
             public void onFilePicked(String currentPath) {
             
+            }
+        });
+        picker.showAtBottom();
+```
+数字选择器：
+```java
+        NumberPicker picker = new NumberPicker(this);
+        picker.setRange(0, 100);
+        picker.setSelectedNumber(50);
+        picker.setLabel("%");
+        picker.setOnWheelListener(new WheelPicker.OnWheelListener<Integer>() {
+            @Override
+            public void onSubmit(Integer result) {
+
             }
         });
         picker.showAtBottom();
