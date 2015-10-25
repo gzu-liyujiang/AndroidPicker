@@ -164,6 +164,8 @@ API级别>=8，项目编码为UTF-8。
         FilePicker picker = new FilePicker(this);
         picker.setMode(FilePicker.Mode.File);
         picker.setShowHideDir(false);
+        picker.setInitPath(Common.getRootPath(this) + "Download/");
+        //picker.setAllowExtensions(new String[]{".apk"});
         picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {
             @Override
             public void onFilePicked(String currentPath) {

@@ -175,6 +175,8 @@ public class MainActivity extends Activity {
     public void onFilePicker(View view) {
         FilePicker picker = new FilePicker(this);
         picker.setShowHideDir(false);
+        picker.setInitPath(Common.getRootPath(this) + "Download/");
+        //picker.setAllowExtensions(new String[]{".apk"});
         picker.setMode(FilePicker.Mode.File);
         picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {
             @Override

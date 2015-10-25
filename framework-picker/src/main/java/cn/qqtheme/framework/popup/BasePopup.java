@@ -38,15 +38,10 @@ public abstract class BasePopup<V extends View> extends PopupWindow {
         screenWidth = pixels[0];
         screenHeight = pixels[1];
         Logger.debug("screen width=" + screenWidth + ", screen height=" + screenHeight);
-        // 设置弹出窗体的宽
         setWidth(MATCH_PARENT);
-        // 设置弹出窗体的高
         setHeight(WRAP_CONTENT);
-        // 设置弹出窗体可点击
         setFocusable(true);
-        // 设置弹出窗体动画效果
         setAnimationStyle(android.R.style.Animation_Dialog);
-        // 设置弹出窗体的背景
         setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 

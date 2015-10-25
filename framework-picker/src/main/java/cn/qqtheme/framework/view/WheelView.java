@@ -48,9 +48,9 @@ import cn.qqtheme.framework.helper.Common;
 import cn.qqtheme.framework.picker.R;
 
 /**
- * android-wheel
+ * 基于android-wheel修改
  *
- * @author Yuri Kanivets
+ * @author 李玉江[QQ:1023694760]
  * @link https://code.google.com/p/android-wheel
  * @link https://github.com/maarek/android-wheel
  * @link https://github.com/saiwu-bigkoo/PickerView

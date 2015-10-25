@@ -26,6 +26,7 @@ import cn.qqtheme.framework.view.MarqueeTextView;
  */
 public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterView.OnItemClickListener {
     private Mode mode;
+    private String initPath;
     private FileAdapter adapter;
     private MarqueeTextView textView;
     private OnFilePickListener onFilePickListener;
@@ -36,6 +37,7 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
 
     public FilePicker(Activity activity) {
         super(activity);
+        initPath = Common.getRootPath(activity);
         adapter = new FileAdapter(activity);
     }
 
@@ -68,6 +70,10 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
         if (mode.equals(Mode.Directory)) {
             adapter.setOnlyListDir(true);
         }
+    }
+
+    public void setInitPath(String initPath) {
+        this.initPath = initPath;
     }
 
     public void setAllowExtensions(String[] allowExtensions) {
@@ -113,7 +119,7 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
     @Override
     protected void setContentViewAfter(View contentView) {
         setHeight(screenHeight / 2);
-        refreshCurrentDirPath(Common.getRootPath(activity));
+        refreshCurrentDirPath(initPath);
     }
 
     /**
