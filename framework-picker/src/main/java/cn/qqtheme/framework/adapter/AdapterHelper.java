@@ -11,14 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
-import android.widget.Adapter;
-import android.widget.AdapterView;
-import android.widget.Checkable;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.RatingBar;
-import android.widget.TextView;
+import android.widget.*;
 
 /**
  * Allows an abstraction of the ViewHolder pattern.<br>
@@ -61,12 +54,12 @@ public class AdapterHelper {
     }
 
     /**
-     * This method is the only entry point to get a BaseAdapterHelper.
+     * This method is the only entry point to get a AdapterHelper.
      *
      * @param context     The current context.
      * @param convertView The convertView arg passed to the getView() method.
      * @param parent      The parent arg passed to the getView() method.
-     * @return A BaseAdapterHelper instance.
+     * @return A AdapterHelper instance.
      */
     public static AdapterHelper get(Context context, View convertView, ViewGroup parent, int layoutRes) {
         return get(context, convertView, parent, layoutRes, -1);
@@ -88,7 +81,7 @@ public class AdapterHelper {
 
     /**
      * This method allows you to retrieve a view and perform custom
-     * operations on it, not covered by the BaseAdapterHelper.<br/>
+     * operations on it, not covered by the AdapterHelper.<br/>
      * If you think it's a common use case, please consider creating
      * a new issue at https://github.com/JoanZapata/base-adapter-helper/issues.
      *
@@ -103,7 +96,7 @@ public class AdapterHelper {
      *
      * @param viewId The view id.
      * @param value  The text to put in the text view.
-     * @return The BaseAdapterHelper for chaining.
+     * @return The AdapterHelper for chaining.
      */
     public AdapterHelper setText(int viewId, CharSequence value) {
         TextView view = retrieveView(viewId);
@@ -116,7 +109,7 @@ public class AdapterHelper {
      *
      * @param viewId     The view id.
      * @param imageResId The image resource id.
-     * @return The BaseAdapterHelper for chaining.
+     * @return The AdapterHelper for chaining.
      */
     public AdapterHelper setImageResource(int viewId, int imageResId) {
         ImageView view = retrieveView(viewId);
@@ -125,25 +118,11 @@ public class AdapterHelper {
     }
 
     /**
-     * Will download an image from a URL or load an image from a path and put it in an ImageView.<br/>
-     * Modified by liyujiang at 2015.08.01
-     *
-     * @param viewId   The view id.
-     * @param imageUri The image URL.
-     * @return The BaseAdapterHelper for chaining.
-     */
-    public AdapterHelper setImageUri(int viewId, String imageUri) {
-        ImageView view = retrieveView(viewId);
-        //ImageLoader.getInstance(context).loadBitmap(imageUri, view);
-        return this;
-    }
-
-    /**
      * Will set background color of a view.
      *
      * @param viewId The view id.
      * @param color  A color, not a resource id.
-     * @return The BaseAdapterHelper for chaining.
+     * @return The AdapterHelper for chaining.
      */
     public AdapterHelper setBackgroundColor(int viewId, int color) {
         View view = retrieveView(viewId);
@@ -156,7 +135,7 @@ public class AdapterHelper {
      *
      * @param viewId        The view id.
      * @param backgroundRes A resource to use as a background.
-     * @return The BaseAdapterHelper for chaining.
+     * @return The AdapterHelper for chaining.
      */
     public AdapterHelper setBackgroundResource(int viewId, int backgroundRes) {
         View view = retrieveView(viewId);
@@ -169,7 +148,7 @@ public class AdapterHelper {
      *
      * @param viewId    The view id.
      * @param textColor The text color (not a resource id).
-     * @return The BaseAdapterHelper for chaining.
+     * @return The AdapterHelper for chaining.
      */
     public AdapterHelper setTextColor(int viewId, int textColor) {
         TextView view = retrieveView(viewId);
@@ -182,7 +161,7 @@ public class AdapterHelper {
      *
      * @param viewId       The view id.
      * @param textColorRes The text color resource id.
-     * @return The BaseAdapterHelper for chaining.
+     * @return The AdapterHelper for chaining.
      */
     public AdapterHelper setTextColorResource(int viewId, int textColorRes) {
         TextView view = retrieveView(viewId);
@@ -195,7 +174,7 @@ public class AdapterHelper {
      *
      * @param viewId   The view id.
      * @param drawable The image drawable.
-     * @return The BaseAdapterHelper for chaining.
+     * @return The AdapterHelper for chaining.
      */
     public AdapterHelper setImageDrawable(int viewId, Drawable drawable) {
         ImageView view = retrieveView(viewId);
@@ -209,6 +188,35 @@ public class AdapterHelper {
     public AdapterHelper setImageBitmap(int viewId, Bitmap bitmap) {
         ImageView view = retrieveView(viewId);
         view.setImageBitmap(bitmap);
+        return this;
+    }
+
+    /**
+     * Will download an image from a URL or load an image from a path and put it in an ImageView.<br/>
+     * Modified by liyujiang at 2015.08.01
+     *
+     * @param viewId   The view id.
+     * @param imageUrl The image URL.
+     * @return The AdapterHelper for chaining.
+     */
+    public AdapterHelper setImageUri(int viewId, String imageUrl) {
+        ImageView view = retrieveView(viewId);
+        //ImageLoader.getInstance(context).loadBitmap(imageUrl, view);
+        return this;
+    }
+
+    /**
+     * Add by liyujiang at 2015.08.01
+     *
+     * @param viewId
+     * @param imageUrl
+     * @param maxWidth
+     * @param maxHeight
+     * @return
+     */
+    public AdapterHelper setImageUri(int viewId, String imageUrl, int maxWidth, int maxHeight) {
+        ImageView view = retrieveView(viewId);
+        //ImageLoader.getInstance(context).loadBitmap(imageUrl, view, maxWidth, maxHeight);
         return this;
     }
 
@@ -231,7 +239,7 @@ public class AdapterHelper {
      *
      * @param viewId  The view id.
      * @param visible True for VISIBLE, false for GONE.
-     * @return The BaseAdapterHelper for chaining.
+     * @return The AdapterHelper for chaining.
      */
     public AdapterHelper setVisible(int viewId, boolean visible) {
         View view = retrieveView(viewId);
@@ -243,7 +251,7 @@ public class AdapterHelper {
      * Add links into a TextView.
      *
      * @param viewId The id of the TextView to linkify.
-     * @return The BaseAdapterHelper for chaining.
+     * @return The AdapterHelper for chaining.
      */
     public AdapterHelper linkify(int viewId) {
         TextView view = retrieveView(viewId);
@@ -287,7 +295,7 @@ public class AdapterHelper {
      *
      * @param viewId   The view id.
      * @param progress The progress.
-     * @return The BaseAdapterHelper for chaining.
+     * @return The AdapterHelper for chaining.
      */
     public AdapterHelper setProgress(int viewId, int progress) {
         ProgressBar view = retrieveView(viewId);
@@ -301,7 +309,7 @@ public class AdapterHelper {
      * @param viewId   The view id.
      * @param progress The progress.
      * @param max      The max value of a ProgressBar.
-     * @return The BaseAdapterHelper for chaining.
+     * @return The AdapterHelper for chaining.
      */
     public AdapterHelper setProgress(int viewId, int progress, int max) {
         ProgressBar view = retrieveView(viewId);
@@ -315,7 +323,7 @@ public class AdapterHelper {
      *
      * @param viewId The view id.
      * @param max    The max value of a ProgressBar.
-     * @return The BaseAdapterHelper for chaining.
+     * @return The AdapterHelper for chaining.
      */
     public AdapterHelper setMax(int viewId, int max) {
         ProgressBar view = retrieveView(viewId);
@@ -328,7 +336,7 @@ public class AdapterHelper {
      *
      * @param viewId The view id.
      * @param rating The rating.
-     * @return The BaseAdapterHelper for chaining.
+     * @return The AdapterHelper for chaining.
      */
     public AdapterHelper setRating(int viewId, float rating) {
         RatingBar view = retrieveView(viewId);
@@ -342,7 +350,7 @@ public class AdapterHelper {
      * @param viewId The view id.
      * @param rating The rating.
      * @param max    The range of the RatingBar to 0...max.
-     * @return The BaseAdapterHelper for chaining.
+     * @return The AdapterHelper for chaining.
      */
     public AdapterHelper setRating(int viewId, float rating, int max) {
         RatingBar view = retrieveView(viewId);
@@ -356,7 +364,7 @@ public class AdapterHelper {
      *
      * @param viewId   The view id.
      * @param listener The on click listener;
-     * @return The BaseAdapterHelper for chaining.
+     * @return The AdapterHelper for chaining.
      */
     public AdapterHelper setOnClickListener(int viewId, View.OnClickListener listener) {
         View view = retrieveView(viewId);
@@ -369,7 +377,7 @@ public class AdapterHelper {
      *
      * @param viewId   The view id.
      * @param listener The on touch listener;
-     * @return The BaseAdapterHelper for chaining.
+     * @return The AdapterHelper for chaining.
      */
     public AdapterHelper setOnTouchListener(int viewId, View.OnTouchListener listener) {
         View view = retrieveView(viewId);
@@ -382,7 +390,7 @@ public class AdapterHelper {
      *
      * @param viewId   The view id.
      * @param listener The on long click listener;
-     * @return The BaseAdapterHelper for chaining.
+     * @return The AdapterHelper for chaining.
      */
     public AdapterHelper setOnLongClickListener(int viewId, View.OnLongClickListener listener) {
         View view = retrieveView(viewId);
@@ -409,7 +417,7 @@ public class AdapterHelper {
      *
      * @param viewId The view id.
      * @param tag    The tag;
-     * @return The BaseAdapterHelper for chaining.
+     * @return The AdapterHelper for chaining.
      */
     public AdapterHelper setTag(int viewId, Object tag) {
         View view = retrieveView(viewId);
@@ -423,7 +431,7 @@ public class AdapterHelper {
      * @param viewId The view id.
      * @param key    The key of tag;
      * @param tag    The tag;
-     * @return The BaseAdapterHelper for chaining.
+     * @return The AdapterHelper for chaining.
      */
     public AdapterHelper setTag(int viewId, int key, Object tag) {
         View view = retrieveView(viewId);
@@ -436,11 +444,16 @@ public class AdapterHelper {
      *
      * @param viewId  The view id.
      * @param checked The checked status;
-     * @return The BaseAdapterHelper for chaining.
+     * @return The AdapterHelper for chaining.
      */
     public AdapterHelper setChecked(int viewId, boolean checked) {
-        Checkable view = retrieveView(viewId);
-        view.setChecked(checked);
+        View view = retrieveView(viewId);
+        // FIXME: 2015/10/26 View不能强制转换为Checkable, thanks https://github.com/Flywhiter
+        if (view instanceof CompoundButton) {
+            ((CompoundButton) view).setChecked(checked);
+        } else if (view instanceof CheckedTextView) {
+            ((CheckedTextView) view).setChecked(checked);
+        }
         return this;
     }
 
@@ -449,7 +462,7 @@ public class AdapterHelper {
      *
      * @param viewId  The view id.
      * @param adapter The adapter;
-     * @return The BaseAdapterHelper for chaining.
+     * @return The AdapterHelper for chaining.
      */
     public AdapterHelper setAdapter(int viewId, Adapter adapter) {
         AdapterView view = retrieveView(viewId);
@@ -472,7 +485,7 @@ public class AdapterHelper {
      */
     public int getPosition() {
         if (position == -1) {
-            throw new IllegalStateException("Use BaseAdapterHelper constructor " +
+            throw new IllegalStateException("Use AdapterHelper constructor " +
                     "with position if you need to retrieve the position.");
         }
         return position;
