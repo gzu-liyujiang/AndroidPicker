@@ -4,7 +4,7 @@ import android.content.Context;
 
 import cn.qqtheme.framework.entity.FileItem;
 import cn.qqtheme.framework.helper.FileUtils;
-import cn.qqtheme.framework.helper.Logger;
+import cn.qqtheme.framework.helper.LogUtils;
 import cn.qqtheme.framework.picker.R;
 
 import java.io.File;
@@ -73,13 +73,13 @@ public class FileAdapter extends IconTextAdapter<FileItem> {
     public ArrayList<FileItem> loadData(String path, boolean notifyDataSetChanged) {
         ArrayList<FileItem> datas = new ArrayList<FileItem>();
         if (path == null) {
-            Logger.warn("current directory is null");
+            LogUtils.warn("current directory is null");
             return datas;
         }
         if (rootPath == null) {
             rootPath = path;
         }
-        Logger.debug("current directory path: " + path);
+        LogUtils.debug("current directory path: " + path);
         currentPath = path;
         if (showHomeDir) {
             //添加“返回主目录”

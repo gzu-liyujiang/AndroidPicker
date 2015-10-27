@@ -1,5 +1,5 @@
 # About
-安卓选择器类库，包括日期时间选择器、一二三级联动选择器、颜色选择器、文件目录选择器、数字选择器。
+安卓选择器类库，包括日期时间选择器、一二三级联动选择器、城市选择器、颜色选择器、文件目录选择器、数字选择器。
 Picker for android, include date&amp;time/option/color/file&amp;directory/number.
 
 # Install
@@ -13,8 +13,8 @@ dependencies {
 }
 ```   
 注：
-滑轮选择器名称较长时排版混乱问题还未得到很好解决。   
-API级别>=8，项目编码为UTF-8。
+滑轮选择器的名称较长时，将以“...”显示超出的部分。      
+支持android2.2+，项目编码为UTF-8。   
 
 # Simple
 日期选择器：   
@@ -45,7 +45,7 @@ API级别>=8，项目编码为UTF-8。
         picker.showAtBottom();
 ```
 
-单项选择器：   
+单项选择器（可用于性别、学历、职业等选择）：   
 ```java
         OptionPicker picker = new OptionPicker(this);
         picker.setScrollingDuration(100);
@@ -99,7 +99,7 @@ API级别>=8，项目编码为UTF-8。
         picker.showAtBottom();
 ```
 
-三级联动选择器：
+三级联动选择器(参见城市选择器@CityPicker)：
 ```java
         final ArrayList<String> option1 = new ArrayList<String>();
         option1.add("贵州省");
@@ -187,12 +187,12 @@ API级别>=8，项目编码为UTF-8。
         });
         picker.showAtBottom();
 ```
-数字选择器：
+数字选择器(可用于身高、体重、年龄等选择)：
 ```java
         NumberPicker picker = new NumberPicker(this);
-        picker.setRange(0, 100);
-        picker.setSelectedNumber(50);
-        picker.setLabel("%");
+        picker.setRange(145, 200);
+        picker.setSelectedNumber(172);
+        picker.setLabel("cm");
         picker.setOnWheelListener(new WheelPicker.OnWheelListener<Integer>() {
             @Override
             public void onSubmit(Integer result) {
@@ -201,23 +201,38 @@ API级别>=8，项目编码为UTF-8。
         });
         picker.showAtBottom();
 ```
+城市选择器：
+```java
+        CityPicker picker = new CityPicker(activity);
+        picker.setSelectedCity("贵州", "毕节", "纳雍");
+        picker.setOnCityPickListener(new CityPicker.OnCityPickListener() {
+            @Override
+            public void onCityPicked(String province, String city, String county) {
+                
+            }
+        });
+        picker.showAtBottom();
+```
 
 # Thanks
-修改使用了以下项目：<br />
+修改了使用以下项目：<br />
 https://code.google.com/p/android-wheel<br />
 https://github.com/saiwu-bigkoo/PickerView<br />
 https://github.com/jbruchanov/AndroidColorPicker<br />
 https://github.com/JoanZapata/base-adapter-helper<br />
+直接使用了以下项目：<br />
+https://github.com/alibaba/fastjson<br />
 
 # Screenshots
-![](/screenshots/datepicker.jpg)   
-![](/screenshots/timepicker.jpg)   
-![](/screenshots/1optionpicker.jpg)   
-![](/screenshots/2optionpicker.jpg)   
-![](/screenshots/3optionpicker.jpg)   
-![](/screenshots/colorpicker.jpg)   
-![](/screenshots/filepicker.jpg)   
-![](/screenshots/dirpicker.jpg)   
+![日期选择器效果图](/screenshots/datepicker.jpg)   
+![时间选择器效果图](/screenshots/timepicker.jpg)   
+![单项选择器效果图](/screenshots/1optionpicker.jpg)   
+![二级联动选择器效果图](/screenshots/2optionpicker.jpg)   
+![三级联动选择器效果图](/screenshots/3optionpicker.jpg)   
+![颜色选择器效果图](/screenshots/colorpicker.jpg)   
+![文件选择器效果图](/screenshots/filepicker.jpg)   
+![目录选择器效果图](/screenshots/dirpicker.jpg)   
+![城市选择器效果图](/screenshots/citypicker.jpg)   
 
 # Contact
 李玉江, QQ:1032694760, Email:liyujiang_tk@yeah.net

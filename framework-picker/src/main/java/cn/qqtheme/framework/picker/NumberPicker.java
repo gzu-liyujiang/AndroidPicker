@@ -7,7 +7,7 @@ import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
-import cn.qqtheme.framework.helper.Logger;
+import cn.qqtheme.framework.helper.LogUtils;
 import cn.qqtheme.framework.view.WheelView;
 
 /**
@@ -44,7 +44,7 @@ public class NumberPicker extends WheelPicker<Integer> {
             return 0;
         }
         int index = wheelView.getCurrentItem();
-        Logger.debug(String.format("selected index: %s", index));
+        LogUtils.debug(String.format("selected index: %s", index));
         return Integer.parseInt(items.get(index));
     }
 

@@ -11,7 +11,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import cn.qqtheme.framework.helper.Logger;
+import cn.qqtheme.framework.helper.LogUtils;
 import cn.qqtheme.framework.view.WheelView;
 import cn.qqtheme.framework.view.WheelView.WheelNumericAdapter;
 
@@ -75,7 +75,7 @@ public class DateTimePicker extends WheelPicker<Date> {
         int dayIndex = dayView.getCurrentItem();
         int hourIndex = hourView.getCurrentItem();
         int minuteIndex = minuteView.getCurrentItem();
-        Logger.debug(String.format("selected index: %s,%s,%s,%s,%s", yearIndex, monthIndex, dayIndex, hourIndex, minuteIndex));
+        LogUtils.debug(String.format("selected index: %s,%s,%s,%s,%s", yearIndex, monthIndex, dayIndex, hourIndex, minuteIndex));
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, yearIndex + startYear);
         calendar.set(Calendar.MONTH, monthIndex);//月份从0开始计数

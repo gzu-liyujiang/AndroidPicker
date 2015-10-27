@@ -61,7 +61,7 @@ public class FileUtils {
      * @return
      */
     public static File[] listDirs(String startDirPath, String[] excludeDirs, SortType sortType) {
-        Logger.debug(String.format("list dir %s", startDirPath));
+        LogUtils.debug(String.format("list dir %s", startDirPath));
         ArrayList<File> dirList = new ArrayList<File>();
         File startDir = new File(startDirPath);
         if (!startDir.isDirectory()) {
@@ -169,7 +169,7 @@ public class FileUtils {
      * 列出指定目录下的所有文件
      */
     public static File[] listFiles(String startDirPath, final Pattern filterPattern, SortType sortType) {
-        Logger.debug(String.format("list file %s", startDirPath));
+        LogUtils.debug(String.format("list file %s", startDirPath));
         ArrayList<File> fileList = new ArrayList<File>();
         File f = new File(startDirPath);
         if (!f.isDirectory()) {
@@ -237,7 +237,7 @@ public class FileUtils {
      * 列出指定目录下的所有文件
      */
     public static File[] listFiles(String startDirPath, final String[] allowExtensions) {
-        Logger.debug(String.format("list file %s", startDirPath));
+        LogUtils.debug(String.format("list file %s", startDirPath));
         File file = new File(startDirPath);
         return file.listFiles(new FilenameFilter() {
 
@@ -273,7 +273,7 @@ public class FileUtils {
      * 删除文件或目录
      */
     public static boolean delete(File file, boolean deleteRootDir) {
-        Logger.debug(String.format("delete file %s", file.getAbsolutePath()));
+        LogUtils.debug(String.format("delete file %s", file.getAbsolutePath()));
         boolean result = false;
         if (file.isFile()) {
             //是文件
@@ -351,7 +351,7 @@ public class FileUtils {
      */
     public static boolean copy(File src, File tar) {
         try {
-            Logger.debug(String.format("copy %s to %s", src.getAbsolutePath(), tar.getAbsolutePath()));
+            LogUtils.debug(String.format("copy %s to %s", src.getAbsolutePath(), tar.getAbsolutePath()));
             if (src.isFile()) {
                 InputStream is = new FileInputStream(src);
                 OutputStream op = new FileOutputStream(tar);
@@ -376,7 +376,7 @@ public class FileUtils {
             }
             return true;
         } catch (Exception e) {
-            Logger.error(e);
+            LogUtils.error(e);
             return false;
         }
     }
@@ -401,10 +401,10 @@ public class FileUtils {
 
     public static boolean rename(File src, File tar) {
         try {
-            Logger.debug(String.format("rename %s to %s", src.getAbsolutePath(), tar.getAbsolutePath()));
+            LogUtils.debug(String.format("rename %s to %s", src.getAbsolutePath(), tar.getAbsolutePath()));
             return src.renameTo(tar);
         } catch (Exception e) {
-            Logger.warn(e);
+            LogUtils.warn(e);
             return false;
         }
     }
@@ -413,7 +413,7 @@ public class FileUtils {
      * 读取文本文件, 失败将返回空串
      */
     public static String readText(String filepath, String charset) {
-        Logger.debug(String.format("read %s use %s", filepath, charset));
+        LogUtils.debug(String.format("read %s use %s", filepath, charset));
         try {
             StringBuilder sb = new StringBuilder();
             FileInputStream fis = new FileInputStream(filepath);
@@ -429,7 +429,7 @@ public class FileUtils {
             fis.close();
             return sb.toString();
         } catch (Exception e) {
-            Logger.error(e);
+            LogUtils.error(e);
             return "";
         }
     }
@@ -445,7 +445,7 @@ public class FileUtils {
      * 读取文件内容, 失败将返回空串
      */
     public static byte[] readByte(String filepath) {
-        Logger.debug(String.format("read %s", filepath));
+        LogUtils.debug(String.format("read %s", filepath));
         try {
             FileInputStream fis = new FileInputStream(filepath);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -459,7 +459,7 @@ public class FileUtils {
             fis.close();
             return data;
         } catch (Exception e) {
-            Logger.error(e);
+            LogUtils.error(e);
             return null;
         }
     }
@@ -478,7 +478,7 @@ public class FileUtils {
             writer.close();
             return true;
         } catch (Exception e) {
-            Logger.error(e);
+            LogUtils.error(e);
             return false;
         }
     }
@@ -494,7 +494,7 @@ public class FileUtils {
      * @param data
      */
     public static boolean writeByte(String filepath, byte[] data) {
-        Logger.debug(String.format("write %s", filepath));
+        LogUtils.debug(String.format("write %s", filepath));
         File file = new File(filepath);
         try {
             if (!file.exists()) {
@@ -508,7 +508,7 @@ public class FileUtils {
             fos.close();
             return true;
         } catch (Exception e) {
-            Logger.error(e);
+            LogUtils.error(e);
             return false;
         }
     }
@@ -520,7 +520,7 @@ public class FileUtils {
      * @param content
      */
     public static boolean appendText(String path, String content) {
-        Logger.debug(String.format("append %s", path));
+        LogUtils.debug(String.format("append %s", path));
         File file = new File(path);
         try {
             if (!file.exists()) {
@@ -532,7 +532,7 @@ public class FileUtils {
             writer.close();
             return true;
         } catch (IOException e) {
-            Logger.error(e);
+            LogUtils.error(e);
             return false;
         }
     }
@@ -584,7 +584,7 @@ public class FileUtils {
             String name = getName(pathOrUrl);
             return name.substring(0, name.lastIndexOf('.'));
         } catch (Exception e) {
-            Logger.warn(e.toString());
+            LogUtils.warn(e.toString());
             return "";
         }
     }
@@ -619,7 +619,7 @@ public class FileUtils {
         } else {
             mimeType = "*/*";
         }
-        Logger.debug(pathOrUrl + ": " + mimeType);
+        LogUtils.debug(pathOrUrl + ": " + mimeType);
         return mimeType;
     }
 

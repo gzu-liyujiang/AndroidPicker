@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import cn.qqtheme.framework.helper.Logger;
+import cn.qqtheme.framework.helper.LogUtils;
 import cn.qqtheme.framework.view.WheelView;
 import cn.qqtheme.framework.view.WheelView.WheelArrayAdapter;
 
@@ -54,7 +54,7 @@ public class OptionPicker extends WheelPicker<int[]> {
         currentItems[0] = optionView1.getCurrentItem();
         currentItems[1] = optionView2.getCurrentItem();
         currentItems[2] = optionView3.getCurrentItem();
-        Logger.debug(String.format("selected index: %s,%s,%s", currentItems[0], currentItems[1], currentItems[2]));
+        LogUtils.debug(String.format("selected index: %s,%s,%s", currentItems[0], currentItems[1], currentItems[2]));
         return currentItems;
     }
 

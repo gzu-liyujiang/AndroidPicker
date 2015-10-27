@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import cn.qqtheme.framework.helper.Common;
+import cn.qqtheme.framework.picker.CityPicker;
 import cn.qqtheme.framework.picker.ColorPicker;
 import cn.qqtheme.framework.picker.DateTimePicker;
 import cn.qqtheme.framework.picker.FilePicker;
@@ -201,13 +202,25 @@ public class MainActivity extends Activity {
 
     public void onNumberPicker(View view) {
         NumberPicker picker = new NumberPicker(this);
-        picker.setRange(0, 100);
-        picker.setSelectedNumber(50);
-        picker.setLabel("%");
+        picker.setRange(145, 200);//身高范围
+        picker.setSelectedNumber(172);
+        picker.setLabel("cm");
         picker.setOnWheelListener(new WheelPicker.OnWheelListener<Integer>() {
             @Override
             public void onSubmit(Integer result) {
                 showToast(result.toString());
+            }
+        });
+        picker.showAtBottom();
+    }
+
+    public void onCityPicker(View view) {
+        CityPicker picker = new CityPicker(this);
+        picker.setSelectedCity("贵州", "毕节", "纳雍");
+        picker.setOnCityPickListener(new CityPicker.OnCityPickListener() {
+            @Override
+            public void onCityPicked(String province, String city, String county) {
+                showToast(province + "-" + city + "-" + county);
             }
         });
         picker.showAtBottom();

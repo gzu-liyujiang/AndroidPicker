@@ -36,7 +36,7 @@ public class Common {
         if (state.equals(Environment.MEDIA_MOUNTED)) {
             return true;
         }
-        Logger.warn("external storage unmounted");
+        LogUtils.warn("external storage unmounted");
         return false;
     }
 
@@ -56,7 +56,7 @@ public class Common {
         if (file != null) {
             path = FileUtils.separator(file.getAbsolutePath());
         }
-        Logger.debug("storage root path: " + path);
+        LogUtils.debug("storage root path: " + path);
         return path;
     }
 
@@ -70,7 +70,7 @@ public class Common {
         windowMgr.getDefaultDisplay().getMetrics(dm);
         pixels[0] = dm.widthPixels;
         pixels[1] = dm.heightPixels;
-        Logger.debug("width=" + pixels[0] + ", height=" + pixels[1]);
+        LogUtils.debug("width=" + pixels[0] + ", height=" + pixels[1]);
         return pixels;// e.g. 720,1184
     }
 
@@ -80,7 +80,7 @@ public class Common {
     public static int toPx(Context context, float dpValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         int pxValue = (int) (dpValue * scale + 0.5f);
-        Logger.debug(dpValue + " dp == " + pxValue + " px");
+        LogUtils.debug(dpValue + " dp == " + pxValue + " px");
         return pxValue;
     }
 
@@ -114,10 +114,10 @@ public class Common {
         String colorString;
         if (includeAlpha) {
             colorString = alpha + red + green + blue;
-            Logger.debug(String.format("%d to color string is %s", color, colorString));
+            LogUtils.debug(String.format("%d to color string is %s", color, colorString));
         } else {
             colorString = red + green + blue;
-            Logger.debug(String.format("%d to color string is %s%s%s%s, exclude alpha is %s", color, alpha, red, green, blue, colorString));
+            LogUtils.debug(String.format("%d to color string is %s%s%s%s, exclude alpha is %s", color, alpha, red, green, blue, colorString));
         }
         return colorString;
     }
@@ -210,7 +210,7 @@ public class Common {
                     totalHeight += convertView.getMeasuredHeight();
                 }
                 totalHeight += listView.getDividerHeight() * (count - 1);
-                Logger.debug("ListView height is " + totalHeight + " dp");
+                LogUtils.debug("ListView height is " + totalHeight + " dp");
             }
         } else if (view instanceof ScrollView) {
             ScrollView scrollView = (ScrollView) view;
@@ -227,13 +227,13 @@ public class Common {
                 layout.measure(widthMeasureSpec, heightMeasureSpec);
                 totalHeight += layout.getMeasuredHeight();
             }
-            Logger.debug("LinearLayout height is " + totalHeight + " dp");
+            LogUtils.debug("LinearLayout height is " + totalHeight + " dp");
         } else {
             view.measure(widthMeasureSpec, heightMeasureSpec);
             totalHeight += view.getMeasuredHeight();
-            Logger.debug("View height is " + totalHeight + "");
+            LogUtils.debug("View height is " + totalHeight + "");
         }
-        Logger.debug("View total height is " + totalHeight + "");
+        LogUtils.debug("View total height is " + totalHeight + "");
         return totalHeight;
     }
 

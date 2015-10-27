@@ -88,7 +88,7 @@ public abstract class ConfirmPopup<V extends View> extends BasePopup<LinearLayou
         topButtonLayout.addView(submitButton);
         rootLayout.addView(topButtonLayout);
         View lineView = new View(activity);
-        lineView.setLayoutParams(new ViewGroup.LayoutParams(MATCH_PARENT, 1));
+        lineView.setLayoutParams(new ViewGroup.LayoutParams(MATCH_PARENT, Common.toPx(activity, 1)));
         lineView.setBackgroundColor(0xDDDDDDDD);
         rootLayout.addView(lineView);
         rootLayout.addView(initContentView());

@@ -10,7 +10,7 @@ import android.view.WindowManager.LayoutParams;
 import android.widget.*;
 
 import cn.qqtheme.framework.helper.Common;
-import cn.qqtheme.framework.helper.Logger;
+import cn.qqtheme.framework.helper.LogUtils;
 
 /**
  * 弹窗基类
@@ -37,7 +37,7 @@ public abstract class BasePopup<V extends View> extends PopupWindow {
         int[] pixels = Common.getPixels(activity);
         screenWidth = pixels[0];
         screenHeight = pixels[1];
-        Logger.debug("screen width=" + screenWidth + ", screen height=" + screenHeight);
+        LogUtils.debug("screen width=" + screenWidth + ", screen height=" + screenHeight);
         setWidth(MATCH_PARENT);
         setHeight(WRAP_CONTENT);
         setFocusable(true);
@@ -54,7 +54,7 @@ public abstract class BasePopup<V extends View> extends PopupWindow {
         view.setLayoutParams(new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
         setContentView(view);// 设置弹出窗体的布局
         setContentViewAfter(view);
-        Logger.debug("do something before popup window show");
+        LogUtils.debug("do something before popup window show");
         layoutParams.alpha = 0.7f;
         layoutParams.dimAmount = 0.7f;
         activity.getWindow().setAttributes(layoutParams);
@@ -79,13 +79,13 @@ public abstract class BasePopup<V extends View> extends PopupWindow {
 
     @Override
     public void setWidth(int width) {
-        Logger.debug("will set popup window width to: " + width);
+        LogUtils.debug("will set popup window width to: " + width);
         super.setWidth(width);
     }
 
     @Override
     public void setHeight(int height) {
-        Logger.debug("will set popup window height to: " + height);
+        LogUtils.debug("will set popup window height to: " + height);
         super.setHeight(height);
     }
 

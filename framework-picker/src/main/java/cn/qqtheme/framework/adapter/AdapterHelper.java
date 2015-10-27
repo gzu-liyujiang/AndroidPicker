@@ -448,7 +448,7 @@ public class AdapterHelper {
      */
     public AdapterHelper setChecked(int viewId, boolean checked) {
         View view = retrieveView(viewId);
-        // FIXME: 2015/10/26 View不能强制转换为Checkable, thanks https://github.com/Flywhiter
+        // FIXME: 2015/10/26 View涓嶈兘寮哄埗杞崲涓篊heckable, thanks https://github.com/Flywhiter
         if (view instanceof CompoundButton) {
             ((CompoundButton) view).setChecked(checked);
         } else if (view instanceof CheckedTextView) {

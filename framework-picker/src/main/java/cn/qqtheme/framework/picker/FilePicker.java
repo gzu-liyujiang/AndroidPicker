@@ -13,7 +13,7 @@ import android.widget.ListView;
 import cn.qqtheme.framework.adapter.FileAdapter;
 import cn.qqtheme.framework.entity.FileItem;
 import cn.qqtheme.framework.helper.Common;
-import cn.qqtheme.framework.helper.Logger;
+import cn.qqtheme.framework.helper.LogUtils;
 import cn.qqtheme.framework.popup.ConfirmPopup;
 import cn.qqtheme.framework.view.MarqueeTextView;
 
@@ -101,13 +101,13 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
             @Override
             public void onConfirm() {
                 if (isPickFile) {
-                    Logger.debug("已放弃选择！");
+                    LogUtils.debug("已放弃选择！");
                     if (onFilePickListener != null) {
                         onFilePickListener.onCancel();
                     }
                 } else {
                     String currentPath = adapter.getCurrentPath();
-                    Logger.debug("已选择目录：" + currentPath);
+                    LogUtils.debug("已选择目录：" + currentPath);
                     if (onFilePickListener != null) {
                         onFilePickListener.onFilePicked(currentPath);
                     }
@@ -133,10 +133,10 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
         } else {
             String clickPath = fileItem.getPath();
             if (mode.equals(Mode.Directory)) {
-                Logger.debug("选择的不是有效的目录: " + clickPath);
+                LogUtils.debug("选择的不是有效的目录: " + clickPath);
             } else {
                 dismiss();
-                Logger.debug("已选择文件：" + clickPath);
+                LogUtils.debug("已选择文件：" + clickPath);
                 if (onFilePickListener != null) {
                     onFilePickListener.onFilePicked(clickPath);
                 }
