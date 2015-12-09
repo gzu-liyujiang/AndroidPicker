@@ -1,4 +1,4 @@
-# About
+# Summary
 安卓选择器类库，包括日期时间选择器、一二三级联动选择器、城市选择器、颜色选择器、文件目录选择器、数字选择器。
 Picker for android, include date&amp;time/option/color/file&amp;directory/number.
 
@@ -13,12 +13,13 @@ dependencies {
 }
 ```   
 注：
+gradle为1.3.0，buildTools为23.0.1，sdk为23。
 滑轮选择器的名称较长时，将以“...”显示超出的部分。      
-支持android2.2+，项目编码为UTF-8。   
+支持android2.2+，项目编码为UTF-8。
 
-# Simple
+# Sample
 日期选择器：   
-```java
+```java   
         DateTimePicker picker = new DateTimePicker(this);
         picker.setMode(DateTimePicker.Mode.YEAR_MONTH_DAY);
         picker.setRange(1990, 2015);
@@ -33,7 +34,7 @@ dependencies {
 ```
 
 时间选择器：   
-```java
+```java   
         DateTimePicker picker = new DateTimePicker(this);
         picker.setMode(DateTimePicker.Mode.HOUR_MINUTE);
         picker.setOnWheelListener(new WheelPicker.OnWheelListener<Date>() {
@@ -46,7 +47,7 @@ dependencies {
 ```
 
 单项选择器（可用于性别、学历、职业等选择）：   
-```java
+```java   
         OptionPicker picker = new OptionPicker(this);
         picker.setScrollingDuration(100);
         final String[] sex = {"男", "女", "保密"};
@@ -62,7 +63,7 @@ dependencies {
 ```
 
 二级联动选择器：   
-```java
+```java   
         final ArrayList<String> option1 = new ArrayList<String>();
         option1.add("技术方案");
         option1.add("开发工具");
@@ -100,7 +101,7 @@ dependencies {
 ```
 
 三级联动选择器(参见城市选择器@CityPicker)：
-```java
+```java   
         final ArrayList<String> option1 = new ArrayList<String>();
         option1.add("贵州省");
         option1.add("北京市");
@@ -147,7 +148,7 @@ dependencies {
 ```
 
 颜色选择器：
-```java
+```java   
         ColorPicker picker = new ColorPicker(this);
         picker.setInitColor(0xDD00DD);
         picker.setOnColorPickListener(new ColorPicker.OnColorPickListener() {
@@ -160,7 +161,7 @@ dependencies {
 ```
 
 文件选择器：
-```java
+```java   
         FilePicker picker = new FilePicker(this);
         picker.setMode(FilePicker.Mode.File);
         picker.setShowHideDir(false);
@@ -176,7 +177,7 @@ dependencies {
 ```
 
 目录选择器：
-```java
+```java   
         FilePicker picker = new FilePicker(this);
         picker.setMode(FilePicker.Mode.Directory);
         picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {
@@ -188,7 +189,7 @@ dependencies {
         picker.showAtBottom();
 ```
 数字选择器(可用于身高、体重、年龄等选择)：
-```java
+```java   
         NumberPicker picker = new NumberPicker(this);
         picker.setRange(145, 200);
         picker.setSelectedNumber(172);
@@ -202,7 +203,7 @@ dependencies {
         picker.showAtBottom();
 ```
 城市选择器：
-```java
+```java   
         CityPicker picker = new CityPicker(activity);
         picker.setSelectedCity("贵州", "毕节", "纳雍");
         picker.setOnCityPickListener(new CityPicker.OnCityPickListener() {
@@ -228,7 +229,6 @@ https://github.com/alibaba/fastjson<br />
 ![时间选择器效果图](/screenshots/timepicker.jpg)   
 ![单项选择器效果图](/screenshots/1optionpicker.jpg)   
 ![二级联动选择器效果图](/screenshots/2optionpicker.jpg)   
-![三级联动选择器效果图](/screenshots/3optionpicker.jpg)   
 ![颜色选择器效果图](/screenshots/colorpicker.jpg)   
 ![文件选择器效果图](/screenshots/filepicker.jpg)   
 ![目录选择器效果图](/screenshots/dirpicker.jpg)   

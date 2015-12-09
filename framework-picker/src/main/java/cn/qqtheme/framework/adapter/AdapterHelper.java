@@ -192,35 +192,6 @@ public class AdapterHelper {
     }
 
     /**
-     * Will download an image from a URL or load an image from a path and put it in an ImageView.<br/>
-     * Modified by liyujiang at 2015.08.01
-     *
-     * @param viewId   The view id.
-     * @param imageUrl The image URL.
-     * @return The AdapterHelper for chaining.
-     */
-    public AdapterHelper setImageUri(int viewId, String imageUrl) {
-        ImageView view = retrieveView(viewId);
-        //ImageLoader.getInstance(context).loadBitmap(imageUrl, view);
-        return this;
-    }
-
-    /**
-     * Add by liyujiang at 2015.08.01
-     *
-     * @param viewId
-     * @param imageUrl
-     * @param maxWidth
-     * @param maxHeight
-     * @return
-     */
-    public AdapterHelper setImageUri(int viewId, String imageUrl, int maxWidth, int maxHeight) {
-        ImageView view = retrieveView(viewId);
-        //ImageLoader.getInstance(context).loadBitmap(imageUrl, view, maxWidth, maxHeight);
-        return this;
-    }
-
-    /**
      * Add an action to set the alpha of a view. Can be called multiple times.
      * Alpha between 0-1.
      */

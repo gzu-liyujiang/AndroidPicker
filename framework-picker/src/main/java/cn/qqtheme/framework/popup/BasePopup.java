@@ -97,10 +97,6 @@ public abstract class BasePopup<V extends View> extends PopupWindow {
         activity.getWindow().setAttributes(layoutParams);
     }
 
-    /**
-     * Use {@link #showAtBottom()} instead
-     */
-    @Deprecated
     @Override
     public final void showAtLocation(View parent, int gravity, int x, int y) {
         onShowPrepare();
@@ -110,30 +106,18 @@ public abstract class BasePopup<V extends View> extends PopupWindow {
         super.showAtLocation(parent, gravity, x, y);
     }
 
-    /**
-     * Use {@link #showAtBottom()} instead
-     */
-    @Deprecated
     @Override
     public final void showAsDropDown(View anchor) {
         onShowPrepare();
         super.showAsDropDown(anchor);
     }
 
-    /**
-     * Use {@link #showAtBottom()} instead
-     */
-    @Deprecated
     @Override
     public final void showAsDropDown(View anchor, int xoff, int yoff) {
         onShowPrepare();
         super.showAsDropDown(anchor, xoff, yoff);
     }
 
-    /**
-     * Use {@link #showAtBottom()} instead
-     */
-    @Deprecated
     @Override
     public final void showAsDropDown(View anchor, int xoff, int yoff, int gravity) {
         onShowPrepare();

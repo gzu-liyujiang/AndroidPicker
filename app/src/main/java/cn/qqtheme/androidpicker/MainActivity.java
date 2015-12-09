@@ -58,7 +58,7 @@ public class MainActivity extends Activity {
         picker.setOnWheelListener(new WheelPicker.OnWheelListener<Date>() {
             @Override
             public void onSubmit(Date result) {
-                showToast(result.toLocaleString());
+                showToast(result.getHours() + ":" + result.getMinutes());
             }
         });
         picker.showAtBottom();

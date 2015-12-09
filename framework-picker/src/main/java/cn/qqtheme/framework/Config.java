@@ -1,5 +1,7 @@
 package cn.qqtheme.framework;
 
+import cn.qqtheme.framework.picker.BuildConfig;
+
 /**
  * 框架配置
  *
@@ -8,6 +10,6 @@ package cn.qqtheme.framework;
  *          Created By IntelliJ IDEA
  */
 public class Config {
-    public static final boolean DEBUG_ENABLE = true;// 是否调试模式
+    public static final boolean DEBUG_ENABLE = BuildConfig.DEBUG;// 是否调试模式
     public static final String DEBUG_TAG = "liyujiang";// LogCat的标记
 }

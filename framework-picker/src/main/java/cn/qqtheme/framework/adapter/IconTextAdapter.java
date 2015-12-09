@@ -54,8 +54,6 @@ public class IconTextAdapter<T extends IconText> extends BeanAdapter<T> {
                 helper.setImageBitmap(getIconViewId(), (Bitmap) data);
             } else if (data instanceof Drawable) {
                 helper.setImageDrawable(getIconViewId(), (Drawable) data);
-            } else if (data instanceof String) {
-                helper.setImageUri(getIconViewId(), data.toString());
             } else {
                 Integer resId = (Integer) data;
                 if (resId == IconText.NO_ICON) {
