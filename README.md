@@ -12,10 +12,10 @@ dependencies {
     compile project(':framework-picker')
 }
 ```   
-注：
-gradle为1.3.0，buildTools为23.0.1，sdk为23。
+注：   
+gradle为1.3.0，buildTools为23.0.1，sdk为23。   
 滑轮选择器的名称较长时，将以“...”显示超出的部分。      
-支持android2.2+，项目编码为UTF-8。
+支持android2.2+，项目编码为UTF-8。   
 
 # Sample
 日期选择器：   
@@ -100,52 +100,7 @@ gradle为1.3.0，buildTools为23.0.1，sdk为23。
         picker.showAtBottom();
 ```
 
-三级联动选择器(参见城市选择器@CityPicker)：
-```java   
-        final ArrayList<String> option1 = new ArrayList<String>();
-        option1.add("贵州省");
-        option1.add("北京市");
-        final ArrayList<ArrayList<String>> option2 = new ArrayList<ArrayList<String>>();
-        ArrayList<String> options2_1 = new ArrayList<String>();
-        options2_1.add("贵阳市");
-        options2_1.add("毕节地区");
-        ArrayList<String> options2_2 = new ArrayList<String>();
-        options2_2.add("北京市");
-        option2.add(options2_1);
-        option2.add(options2_2);
-        final ArrayList<ArrayList<ArrayList<String>>> option3 = new ArrayList<ArrayList<ArrayList<String>>>();
-        ArrayList<ArrayList<String>> option3_1 = new ArrayList<ArrayList<String>>();
-        ArrayList<String> option3_1_1 = new ArrayList<String>();
-        option3_1_1.add("花溪区");
-        option3_1_1.add("南明区");
-        option3_1_1.add("清镇市");
-        option3_1_1.add("息烽县");
-        option3_1.add(option3_1_1);
-        ArrayList<String> option3_1_2 = new ArrayList<String>();
-        option3_1_2.add("这里测试很长很长的内容，看看三级联动选择器如何显示");
-        option3_1_2.add("七星关区");
-        option3_1_2.add("纳雍县");
-        option3_1.add(option3_1_2);
-        ArrayList<ArrayList<String>> option3_2 = new ArrayList<ArrayList<String>>();
-        ArrayList<String> option3_2_1 = new ArrayList<String>();
-        option3_2_1.add("北京市");
-        option3_2.add(option3_2_1);
-        option3.add(option3_1);
-        option3.add(option3_2);
-        OptionPicker picker = new OptionPicker(this);
-        picker.setOptions(option1, option2, option3);
-        picker.setCurrentOptions(0, 1, 2);
-        picker.setOnWheelListener(new WheelPicker.OnWheelListener<int[]>() {
-            @Override
-            public void onSubmit(int[] result) {
-                String province = option1.get(result[0]);
-                String city = option2.get(result[0]).get(result[1]);
-                String district = option3.get(result[0]).get(result[1]).get(result[2]);
-                String result = province + "-" + city + "-" + district;
-            }
-        });
-        picker.showAtBottom();
-```
+三级联动选择器(参见城市选择器@CityPicker)   
 
 颜色选择器：
 ```java   
