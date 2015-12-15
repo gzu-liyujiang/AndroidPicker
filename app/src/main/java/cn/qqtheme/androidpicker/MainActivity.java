@@ -2,22 +2,21 @@ package cn.qqtheme.androidpicker;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Date;
-
 import cn.qqtheme.framework.helper.Common;
-import cn.qqtheme.framework.picker.CityPicker;
+import cn.qqtheme.framework.picker.ChineseZodiacPicker;
 import cn.qqtheme.framework.picker.ColorPicker;
-import cn.qqtheme.framework.picker.DateTimePicker;
+import cn.qqtheme.framework.picker.ConstellationPicker;
+import cn.qqtheme.framework.picker.DatePicker;
 import cn.qqtheme.framework.picker.FilePicker;
 import cn.qqtheme.framework.picker.NumberPicker;
 import cn.qqtheme.framework.picker.OptionPicker;
-import cn.qqtheme.framework.picker.WheelPicker;
+import cn.qqtheme.framework.picker.TimePicker;
 
 public class MainActivity extends Activity {
 
@@ -38,127 +37,100 @@ public class MainActivity extends Activity {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
-    public void onDatePicker(View view) {
-        DateTimePicker picker = new DateTimePicker(this);
-        picker.setMode(DateTimePicker.Mode.YEAR_MONTH_DAY);
+    public void onYearMonthDayPicker(View view) {
+        DatePicker picker = new DatePicker(this);
         picker.setRange(1990, 2015);
-        picker.setSelectedDate(1999, 10, 11);
-        picker.setOnWheelListener(new WheelPicker.OnWheelListener<Date>() {
+        picker.setOnDatePickListener(new DatePicker.OnYearMonthDayPickListener() {
             @Override
-            public void onSubmit(Date result) {
-                showToast(result.toLocaleString());
+            public void onDatePicked(String year, String month, String day) {
+                showToast(year + "-" + month + "-" + day);
             }
         });
-        picker.showAtBottom();
+        picker.show();
+    }
+
+    public void onYearMonthPicker(View view) {
+        DatePicker picker = new DatePicker(this, DatePicker.Mode.YEAR_MONTH);
+        picker.setRange(1990, 2015);
+        picker.setOnDatePickListener(new DatePicker.OnYearMonthPickListener() {
+            @Override
+            public void onDatePicked(String year, String month) {
+                showToast(year + "-" + month);
+            }
+        });
+        picker.show();
+    }
+
+    public void onMonthDayPicker(View view) {
+        DatePicker picker = new DatePicker(this, DatePicker.Mode.MONTH_DAY);
+        picker.setOnDatePickListener(new DatePicker.OnMonthDayPickListener() {
+            @Override
+            public void onDatePicked(String month, String day) {
+                showToast(month + "-" + day);
+            }
+        });
+        picker.show();
     }
 
     public void onTimePicker(View view) {
-        DateTimePicker picker = new DateTimePicker(this);
-        picker.setMode(DateTimePicker.Mode.HOUR_MINUTE);
-        picker.setOnWheelListener(new WheelPicker.OnWheelListener<Date>() {
+        TimePicker picker = new TimePicker(this);
+        picker.setOnTimePickListener(new TimePicker.OnTimePickListener() {
             @Override
-            public void onSubmit(Date result) {
-                showToast(result.getHours() + ":" + result.getMinutes());
+            public void onTimePicked(String hour, String minute) {
+                showToast(hour + ":" + minute);
             }
         });
-        picker.showAtBottom();
+        picker.show();
     }
 
-    public void on1OptionPicker(View view) {
-        OptionPicker picker = new OptionPicker(this);
-        final String[] sex = {"男", "女", "保密"};
-        picker.setOptions(sex);
-        picker.setSelectedOption(2);
-        picker.setOnWheelListener(new WheelPicker.OnWheelListener<int[]>() {
+    public void onOptionPicker(View view) {
+        OptionPicker picker = new OptionPicker(this, new String[]{"第一项", "第二项", "这是一个很长很长很长很长很长很长很长很长的选项"});
+        picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
-            public void onSubmit(int[] result) {
-                showToast(sex[result[0]]);
+            public void onOptionPicked(String option) {
+                showToast(option);
             }
         });
-        picker.showAtBottom();
+        picker.show();
     }
 
-    public void on2OptionPicker(View view) {
-        final ArrayList<String> option1 = new ArrayList<String>();
-        option1.add("技术方案");
-        option1.add("开发工具");
-        option1.add("运行环境");
-        option1.add("这里测试很长很长的内容，看看二级联动选择器如何显示");
-        final ArrayList<ArrayList<String>> option2 = new ArrayList<ArrayList<String>>();
-        ArrayList<String> language = new ArrayList<String>();
-        language.add("Java/XML");
-        language.add("PHP/MySQL");
-        language.add("H5+/MUI");
-        option2.add(language);
-        ArrayList<String> tool = new ArrayList<String>();
-        tool.add("Android Studio");
-        tool.add("PhpStorm");
-        tool.add("HBuilder");
-        option2.add(tool);
-        ArrayList<String> environment = new ArrayList<String>();
-        environment.add("Android");
-        environment.add("WAMP/LAMP");
-        environment.add("Android/IOS");
-        option2.add(environment);
-        ArrayList<String> length = new ArrayList<String>();
-        length.add("这里测试很长很长的内容，看看二级联动选择器如何显示");
-        option2.add(length);
-        OptionPicker picker = new OptionPicker(this);
-        picker.setOptions(option1, option2);
-        picker.setSelectedOption(1, 1);
-        picker.setOnWheelListener(new WheelPicker.OnWheelListener<int[]>() {
+    public void onConstellationPicker(View view) {
+        ConstellationPicker picker = new ConstellationPicker(this);
+        picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
-            public void onSubmit(int[] result) {
-                showToast(option1.get(result[0]) + "-" + option2.get(result[0]).get(result[1]));
+            public void onOptionPicked(String option) {
+                showToast(option);
             }
         });
-        picker.showAtBottom();
+        picker.show();
     }
 
-    public void on3OptionPicker(View view) {
-        final ArrayList<String> option1 = new ArrayList<String>();
-        option1.add("贵州省");
-        option1.add("北京市");
-        final ArrayList<ArrayList<String>> option2 = new ArrayList<ArrayList<String>>();
-        ArrayList<String> options2_1 = new ArrayList<String>();
-        options2_1.add("贵阳市");
-        options2_1.add("毕节地区");
-        ArrayList<String> options2_2 = new ArrayList<String>();
-        options2_2.add("北京市");
-        option2.add(options2_1);
-        option2.add(options2_2);
-        final ArrayList<ArrayList<ArrayList<String>>> option3 = new ArrayList<ArrayList<ArrayList<String>>>();
-        ArrayList<ArrayList<String>> option3_1 = new ArrayList<ArrayList<String>>();
-        ArrayList<String> option3_1_1 = new ArrayList<String>();
-        option3_1_1.add("花溪区");
-        option3_1_1.add("南明区");
-        option3_1_1.add("清镇市");
-        option3_1_1.add("息烽县");
-        option3_1.add(option3_1_1);
-        ArrayList<String> option3_1_2 = new ArrayList<String>();
-        option3_1_2.add("这里测试很长很长的内容，看看三级联动选择器如何显示");
-        option3_1_2.add("七星关区");
-        option3_1_2.add("纳雍县");
-        option3_1.add(option3_1_2);
-        ArrayList<ArrayList<String>> option3_2 = new ArrayList<ArrayList<String>>();
-        ArrayList<String> option3_2_1 = new ArrayList<String>();
-        option3_2_1.add("北京市");
-        option3_2.add(option3_2_1);
-        option3.add(option3_1);
-        option3.add(option3_2);
-        OptionPicker picker = new OptionPicker(this);
-        picker.setOptions(option1, option2, option3);
-        picker.setSelectedOption(0, 1, 2);
-        picker.setOnWheelListener(new WheelPicker.OnWheelListener<int[]>() {
+    public void onChineseZodiacPicker(View view) {
+        ChineseZodiacPicker picker = new ChineseZodiacPicker(this);
+        picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
-            public void onSubmit(int[] result) {
-                String province = option1.get(result[0]);
-                String city = option2.get(result[0]).get(result[1]);
-                String district = option3.get(result[0]).get(result[1]).get(result[2]);
-                showToast(province + "-" + city + "-" + district);
+            public void onOptionPicked(String option) {
+                showToast(option);
             }
         });
-        picker.showAtBottom();
+        picker.show();
+    }
+
+    public void onNumberPicker(View view) {
+        NumberPicker picker = new NumberPicker(this);
+        picker.setRange(145, 200);//数字范围
+        picker.setLabel("厘米");
+        picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
+            @Override
+            public void onOptionPicked(String option) {
+                showToast(option);
+            }
+        });
+        picker.show();
+    }
+
+    public void onAddressPicker(View view) {
+        new AddressInitTask(this).execute();
     }
 
     public void onColorPicker(View view) {
@@ -170,13 +142,13 @@ public class MainActivity extends Activity {
                 showToast(Common.toColorString(pickedColor));
             }
         });
-        picker.showAtBottom();
+        picker.show();
     }
 
     public void onFilePicker(View view) {
         FilePicker picker = new FilePicker(this);
         picker.setShowHideDir(false);
-        picker.setInitPath(Common.getRootPath(this) + "Download/");
+        picker.setRootPath(Common.getRootPath(this) + "Download/");
         //picker.setAllowExtensions(new String[]{".apk"});
         picker.setMode(FilePicker.Mode.File);
         picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {
@@ -185,7 +157,7 @@ public class MainActivity extends Activity {
                 showToast(currentPath);
             }
         });
-        picker.showAtBottom();
+        picker.show();
     }
 
     public void onDirPicker(View view) {
@@ -197,33 +169,7 @@ public class MainActivity extends Activity {
                 showToast(currentPath);
             }
         });
-        picker.showAtBottom();
-    }
-
-    public void onNumberPicker(View view) {
-        NumberPicker picker = new NumberPicker(this);
-        picker.setRange(145, 200);//身高范围
-        picker.setSelectedNumber(172);
-        picker.setLabel("cm");
-        picker.setOnWheelListener(new WheelPicker.OnWheelListener<Integer>() {
-            @Override
-            public void onSubmit(Integer result) {
-                showToast(result.toString());
-            }
-        });
-        picker.showAtBottom();
-    }
-
-    public void onCityPicker(View view) {
-        CityPicker picker = new CityPicker(this);
-        picker.setSelectedCity("贵州", "毕节", "纳雍");
-        picker.setOnCityPickListener(new CityPicker.OnCityPickListener() {
-            @Override
-            public void onCityPicked(String province, String city, String county) {
-                showToast(province + "-" + city + "-" + county);
-            }
-        });
-        picker.showAtBottom();
+        picker.show();
     }
 
     public void onGithub(View view) {

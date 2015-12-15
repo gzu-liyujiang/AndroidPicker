@@ -1,1 +1,1 @@
-include ':app', ':framework-picker'
+include ':app', ':Picker'

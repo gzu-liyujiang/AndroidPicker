@@ -11,62 +11,74 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="onDatePicker"
-            android:text="date picker" />
+            android:onClick="onYearMonthDayPicker"
+            android:text="年月日选择" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onYearMonthPicker"
+            android:text="年月选择" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onMonthDayPicker"
+            android:text="月日选择" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onTimePicker"
-            android:text="time picker" />
+            android:text="时间选择" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="on1OptionPicker"
-            android:text="1 option picker" />
+            android:onClick="onOptionPicker"
+            android:text="单项选择" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="on2OptionPicker"
-            android:text="2 option picker" />
+            android:onClick="onConstellationPicker"
+            android:text="星座选择" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="on3OptionPicker"
-            android:text="3 option picker" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="onColorPicker"
-            android:text="color picker" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="onFilePicker"
-            android:text="file picker" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="onDirPicker"
-            android:text="directory picker" />
+            android:onClick="onChineseZodiacPicker"
+            android:text="生肖选择" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onNumberPicker"
-            android:text="number picker" />
+            android:text="数字选择（如身高、体重、年龄）" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="onCityPicker"
-            android:text="city picker" />
+            android:onClick="onAddressPicker"
+            android:text="地址选择（包括省级、地级、县级）" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onColorPicker"
+            android:text="颜色选择" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onFilePicker"
+            android:text="文件选择" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onDirPicker"
+            android:text="目录选择" />
 
         <Button
             android:layout_width="match_parent"
