@@ -59,6 +59,12 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="onSexPicker"
+            android:text="性别选择" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:onClick="onAddressPicker"
             android:text="地址选择（包括省级、地级、县级）" />
 

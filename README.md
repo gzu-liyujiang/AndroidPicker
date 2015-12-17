@@ -12,6 +12,7 @@ dependencies {
 }
 ```   
 注：   
+旧版的基于android-wheel，在分支“branch_OldAndroidPicker”，已放弃维护。   
 不断学习，持续完善，敬请关注。。。   
 gradle为1.3.0，buildTools为23.0.1，sdk为23。   
 滑轮选择器的名称较长时，将以“...”显示超出的部分。      
@@ -21,7 +22,7 @@ gradle为1.3.0，buildTools为23.0.1，sdk为23。
 日期选择器：   
 ```java   
         DatePicker picker = new DatePicker(this);
-        picker.setRange(1990, 2015);
+        picker.setRange(1990, 2015);//年份范围
         picker.setOnDatePickListener(new DatePicker.OnYearMonthDayPickListener() {
             @Override
             public void onDatePicked(String year, String month, String day) {

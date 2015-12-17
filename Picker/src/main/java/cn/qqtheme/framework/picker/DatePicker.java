@@ -60,27 +60,6 @@ public class DatePicker extends ConfirmPopup<View> {
         this.endYear = endYear;
     }
 
-//    public void setSelected(int year, int month, int day) {
-//        if (year > startYear && year < endYear) {
-//            selectedYear = year;
-//        }
-//        if (month > 0 && month < 13) {
-//            selectedMonth = month;
-//        }
-//        int maxDays = Common.calculateDaysInMonth(year, month);
-//        if (day > 0 && day <= maxDays) {
-//            selectedDay = day;
-//        }
-//    }
-//
-//    public void setSelected(int yearOrMonth, int monthOrDay) {
-//        if (mode.equals(Mode.YEAR_MONTH)) {
-//            setSelected(yearOrMonth, monthOrDay, 0);
-//        } else if (mode.equals(Mode.MONTH_DAY)) {
-//            setSelected(0, yearOrMonth, monthOrDay);
-//        }
-//    }
-
     public void setOnDatePickListener(OnDatePickListener listener) {
         this.onDatePickListener = listener;
     }
@@ -96,7 +75,7 @@ public class DatePicker extends ConfirmPopup<View> {
         TextView yearTextView = new TextView(activity);
         yearTextView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
         yearTextView.setTextSize(22);
-        yearTextView.setTextColor(WheelView.FOCUS_COLOR);
+        yearTextView.setTextColor(WheelView.TEXT_COLOR_FOCUS);
         if (!TextUtils.isEmpty(yearLabel)) {
             yearTextView.setText(yearLabel);
         }
@@ -107,7 +86,7 @@ public class DatePicker extends ConfirmPopup<View> {
         TextView monthTextView = new TextView(activity);
         monthTextView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
         monthTextView.setTextSize(22);
-        monthTextView.setTextColor(WheelView.FOCUS_COLOR);
+        monthTextView.setTextColor(WheelView.TEXT_COLOR_FOCUS);
         if (!TextUtils.isEmpty(monthLabel)) {
             monthTextView.setText(monthLabel);
         }
@@ -118,7 +97,7 @@ public class DatePicker extends ConfirmPopup<View> {
         TextView dayTextView = new TextView(activity);
         dayTextView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
         dayTextView.setTextSize(22);
-        dayTextView.setTextColor(WheelView.FOCUS_COLOR);
+        dayTextView.setTextColor(WheelView.TEXT_COLOR_FOCUS);
         if (!TextUtils.isEmpty(dayLabel)) {
             dayTextView.setText(dayLabel);
         }
@@ -139,10 +118,6 @@ public class DatePicker extends ConfirmPopup<View> {
                 years.add(String.valueOf(i));
             }
             yearView.setItems(years);
-//            int year = Calendar.getInstance().get(Calendar.YEAR);
-//            if (selectedYear == 0 && year > startYear && year < endYear) {
-//                selectedYear = year;
-//            }
             yearView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
                 @Override
                 public void onSelected(int selectedIndex, String item) {
@@ -158,10 +133,6 @@ public class DatePicker extends ConfirmPopup<View> {
             months.add(Common.fillZore(i));
         }
         monthView.setItems(months);
-//        if (selectedMonth == 0) {
-//            //月份是从0开始计数
-//            selectedMonth = Calendar.getInstance().get(Calendar.MONTH) + 1;
-//        }
         monthView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
             @Override
             public void onSelected(int selectedIndex, String item) {
@@ -179,18 +150,18 @@ public class DatePicker extends ConfirmPopup<View> {
             if (!TextUtils.isEmpty(dayLabel)) {
                 dayTextView.setText(dayLabel);
             }
-            int maxDays = Common.calculateDaysInMonth(selectedYear, selectedMonth);
+            //年月日选择时，最大天数根据年月来计算
+            int maxDays;
+            if (mode.equals(Mode.YEAR_MONTH_DAY)) {
+                maxDays = Common.calculateDaysInMonth(selectedYear, selectedMonth);
+            } else {
+                maxDays = Common.calculateDaysInMonth(selectedMonth);
+            }
             ArrayList<String> days = new ArrayList<String>();
             for (int i = 1; i <= maxDays; i++) {
                 days.add(Common.fillZore(i));
             }
             dayView.setItems(days);
-//            if (selectedDay == 0) {
-//                int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-//                if (day > 0 && day <= maxDays) {
-//                    selectedDay = day;
-//                }
-//            }
             dayView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
                 @Override
                 public void onSelected(int selectedIndex, String item) {

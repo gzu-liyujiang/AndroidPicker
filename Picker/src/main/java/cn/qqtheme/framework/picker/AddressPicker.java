@@ -12,7 +12,7 @@ import cn.qqtheme.framework.popup.ConfirmPopup;
 import cn.qqtheme.framework.view.WheelView;
 
 /**
- * 地址选择器（包括省级、地级、县级）
+ * 地址选择器（包括省级、地级、县级）。地址数据见“city.json”，来源于国家统计局官网（http://www.stats.gov.cn/tjsj/tjbz/xzqhdm）
  *
  * @author 李玉江[QQ:1032694760]
  * @since 2015/12/15
@@ -32,12 +32,6 @@ public class AddressPicker extends ConfirmPopup<View> {
         super(activity);
         this.data.addAll(data);
     }
-
-//    public void setSelected(String province, String city, String county) {
-//        this.selectedProvince = province;
-//        this.selectedCity = city;
-//        this.selectedCounty = county;
-//    }
 
     public void setOnAddressPickListener(OnAddressPickListener listener) {
         this.onAddressPickListener = listener;

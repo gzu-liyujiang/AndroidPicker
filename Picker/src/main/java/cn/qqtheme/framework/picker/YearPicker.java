@@ -22,8 +22,4 @@ public class YearPicker extends OptionPicker {
         }
     }
 
-    public void setSelected(int year) {
-        super.setSelected(String.valueOf(year));
-    }
-
 }

@@ -58,7 +58,7 @@ public class TimePicker extends ConfirmPopup<View> {
         TextView hourTextView = new TextView(activity);
         hourTextView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
         hourTextView.setTextSize(22);
-        hourTextView.setTextColor(WheelView.FOCUS_COLOR);
+        hourTextView.setTextColor(WheelView.TEXT_COLOR_FOCUS);
         if (!TextUtils.isEmpty(hourLabel)) {
             hourTextView.setText(hourLabel);
         }
@@ -69,7 +69,7 @@ public class TimePicker extends ConfirmPopup<View> {
         TextView minuteTextView = new TextView(activity);
         minuteTextView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
         minuteTextView.setTextSize(22);
-        minuteTextView.setTextColor(WheelView.FOCUS_COLOR);
+        minuteTextView.setTextColor(WheelView.TEXT_COLOR_FOCUS);
         if (!TextUtils.isEmpty(minuteLabel)) {
             minuteTextView.setText(minuteLabel);
         }

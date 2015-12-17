@@ -208,6 +208,10 @@ public class Common {
         return totalHeight;
     }
 
+    public static int calculateDaysInMonth(int month) {
+        return calculateDaysInMonth(0, month);
+    }
+
     public static int calculateDaysInMonth(int year, int month) {
         // 添加大小月月份并将其转换为list,方便之后的判断
         String[] bigMonths = {"1", "3", "5", "7", "8", "10", "12"};
@@ -220,6 +224,9 @@ public class Common {
         } else if (littleList.contains(String.valueOf(month))) {
             return 30;
         } else {
+            if (year <= 0) {
+                return 29;
+            }
             // 是否闰年
             if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) {
                 return 29;

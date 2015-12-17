@@ -2,7 +2,6 @@ package cn.qqtheme.androidpicker;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +15,7 @@ import cn.qqtheme.framework.picker.DatePicker;
 import cn.qqtheme.framework.picker.FilePicker;
 import cn.qqtheme.framework.picker.NumberPicker;
 import cn.qqtheme.framework.picker.OptionPicker;
+import cn.qqtheme.framework.picker.SexPicker;
 import cn.qqtheme.framework.picker.TimePicker;
 
 public class MainActivity extends Activity {
@@ -120,6 +120,18 @@ public class MainActivity extends Activity {
         NumberPicker picker = new NumberPicker(this);
         picker.setRange(145, 200);//数字范围
         picker.setLabel("厘米");
+        picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
+            @Override
+            public void onOptionPicked(String option) {
+                showToast(option);
+            }
+        });
+        picker.show();
+    }
+
+    public void onSexPicker(View view) {
+        SexPicker picker = new SexPicker(this);
+        picker.onlyMaleAndFemale();
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
             public void onOptionPicked(String option) {

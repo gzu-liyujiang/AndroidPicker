@@ -24,19 +24,6 @@ public class SexPicker extends OptionPicker {
      */
     public void onlyMaleAndFemale() {
         options.remove(options.size() - 1);
-        setSelected(options.size() - 1);
-    }
-
-    public void defaultSelected() {
-        setSelected(options.size() - 1);
-    }
-
-    public void maleSelected() {
-        setSelected(0);
-    }
-
-    public void femaleSelected() {
-        setSelected(1);
     }
 
 }

@@ -22,8 +22,4 @@ public class DayPicker extends OptionPicker {
         }
     }
 
-    public void setSelected(int day) {
-        super.setSelected(String.valueOf(day));
-    }
-
 }

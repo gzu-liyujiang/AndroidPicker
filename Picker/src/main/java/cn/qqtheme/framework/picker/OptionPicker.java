@@ -35,19 +35,6 @@ public class OptionPicker extends ConfirmPopup<View> {
         this.label = label;
     }
 
-    public void setSelected(String option) {
-//        if (options.contains(option)) {
-//            this.selectedOption = option;
-//        }
-    }
-
-    //
-    public void setSelected(int index) {
-//        if (index >= 0 && index < options.size()) {
-//            this.selectedOption = options.get(index);
-//        }
-    }
-
     public void setOnOptionPickListener(OnOptionPickListener listener) {
         this.onOptionPickListener = listener;
     }
@@ -65,19 +52,13 @@ public class OptionPicker extends ConfirmPopup<View> {
         layout.addView(optionView);
         TextView labelView = new TextView(activity);
         labelView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
-        labelView.setTextColor(WheelView.FOCUS_COLOR);
+        labelView.setTextColor(WheelView.TEXT_COLOR_FOCUS);
         labelView.setTextSize(22);
         layout.addView(labelView);
         if (!TextUtils.isEmpty(label)) {
             labelView.setText(label);
         }
         optionView.setItems(options);
-//        if (TextUtils.isEmpty(selectedOption)) {
-//            optionView.setSelected(0);
-//            selectedOption = optionView.getSelectedItem();
-//        } else {
-//            optionView.setSelected(selectedOption);
-//        }
         optionView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
             @Override
             public void onSelected(int selectedIndex, String item) {

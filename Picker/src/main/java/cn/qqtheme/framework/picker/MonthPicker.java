@@ -20,9 +20,4 @@ public class MonthPicker extends OptionPicker {
         }
     }
 
-    public void setSelected(int i) {
-        // 0-9前补0
-        super.setSelected(i < 10 ? "0" + i : "" + i);
-    }
-
 }

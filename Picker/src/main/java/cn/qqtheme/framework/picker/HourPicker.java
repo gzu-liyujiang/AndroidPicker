@@ -36,9 +36,4 @@ public class HourPicker extends OptionPicker {
         }
     }
 
-    public void setSelected(int hour) {
-        // 0-9前补0
-        super.setSelected(hour < 10 ? "0" + hour : "" + hour);
-    }
-
 }
