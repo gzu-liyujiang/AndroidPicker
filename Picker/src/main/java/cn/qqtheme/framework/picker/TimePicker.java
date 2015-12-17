@@ -34,15 +34,6 @@ public class TimePicker extends ConfirmPopup<View> {
         this.minuteLabel = minuteLabel;
     }
 
-//    public void setSelected(int hour, int minute) {
-//        if (hour >= 0 && hour < 24) {
-//            selectedHour = Common.fillZore(hour);
-//        }
-//        if (minute >= 0 && minute < 60) {
-//            selectedMinute = Common.fillZore(minute);
-//        }
-//    }
-
     public void setOnTimePickListener(OnTimePickListener listener) {
         this.onTimePickListener = listener;
     }
@@ -84,12 +75,6 @@ public class TimePicker extends ConfirmPopup<View> {
             minutes.add(Common.fillZore(i));
         }
         minuteView.setItems(minutes);
-//        if (TextUtils.isEmpty(selectedHour)) {
-//            selectedHour = Common.fillZore(Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
-//        }
-//        if (TextUtils.isEmpty(selectedMinute)) {
-//            selectedMinute = Common.fillZore(Calendar.getInstance().get(Calendar.MINUTE));
-//        }
         hourView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
             @Override
             public void onSelected(int selectedIndex, String item) {
