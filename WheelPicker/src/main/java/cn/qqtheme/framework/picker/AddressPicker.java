@@ -91,8 +91,10 @@ public class AddressPicker extends ConfirmPopup<View> {
                 selectedProvinceIndex = selectedIndex - provinceView.getOffset();
                 //根据省份获取地市
                 cityView.setItems(cityList.get(selectedProvinceIndex));
+                cityView.startScrollerTask();
                 //根据地市获取区县
                 countyView.setItems(countyList.get(selectedProvinceIndex).get(selectedCityIndex));
+                countyView.startScrollerTask();
             }
         });
         cityView.setItems(cityList.get(selectedProvinceIndex));
@@ -103,6 +105,7 @@ public class AddressPicker extends ConfirmPopup<View> {
                 selectedCityIndex = selectedIndex - cityView.getOffset();
                 //根据地市获取区县
                 countyView.setItems(countyList.get(selectedProvinceIndex).get(selectedCityIndex));
+                countyView.startScrollerTask();
             }
         });
         countyView.setItems(countyList.get(selectedProvinceIndex).get(selectedCityIndex));

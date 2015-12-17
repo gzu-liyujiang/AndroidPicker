@@ -129,11 +129,6 @@ public class WheelView extends ScrollView {
         postDelayed(scrollerTask, newCheck);
     }
 
-    private void startScrollerTask() {
-        initialY = getScrollY();
-        postDelayed(scrollerTask, newCheck);
-    }
-
     private void initData() {
         displayItemCount = offset * 2 + 1;
 
@@ -290,6 +285,11 @@ public class WheelView extends ScrollView {
             startScrollerTask();
         }
         return super.onTouchEvent(ev);
+    }
+
+    public void startScrollerTask() {
+        initialY = getScrollY();
+        postDelayed(scrollerTask, newCheck);
     }
 
     public void setItems(List<String> list) {

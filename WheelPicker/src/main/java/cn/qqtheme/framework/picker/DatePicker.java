@@ -144,6 +144,7 @@ public class DatePicker extends ConfirmPopup<View> {
                     days.add(DateUtils.fillZore(i));
                 }
                 dayView.setItems(days);
+                dayView.startScrollerTask();
             }
         });
         if (!mode.equals(Mode.YEAR_MONTH)) {
