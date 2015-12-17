@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import cn.qqtheme.framework.helper.Common;
 import cn.qqtheme.framework.picker.ChineseZodiacPicker;
 import cn.qqtheme.framework.picker.ColorPicker;
 import cn.qqtheme.framework.picker.ConstellationPicker;
@@ -17,6 +16,8 @@ import cn.qqtheme.framework.picker.NumberPicker;
 import cn.qqtheme.framework.picker.OptionPicker;
 import cn.qqtheme.framework.picker.SexPicker;
 import cn.qqtheme.framework.picker.TimePicker;
+import cn.qqtheme.framework.util.ConvertUtils;
+import cn.qqtheme.framework.util.StorageUtils;
 
 public class MainActivity extends Activity {
 
@@ -151,7 +152,7 @@ public class MainActivity extends Activity {
         picker.setOnColorPickListener(new ColorPicker.OnColorPickListener() {
             @Override
             public void onColorPicked(int pickedColor) {
-                showToast(Common.toColorString(pickedColor));
+                showToast(ConvertUtils.toColorString(pickedColor));
             }
         });
         picker.show();
@@ -160,7 +161,7 @@ public class MainActivity extends Activity {
     public void onFilePicker(View view) {
         FilePicker picker = new FilePicker(this);
         picker.setShowHideDir(false);
-        picker.setRootPath(Common.getRootPath(this) + "Download/");
+        picker.setRootPath(StorageUtils.getRootPath(this) + "Download/");
         //picker.setAllowExtensions(new String[]{".apk"});
         picker.setMode(FilePicker.Mode.File);
         picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {

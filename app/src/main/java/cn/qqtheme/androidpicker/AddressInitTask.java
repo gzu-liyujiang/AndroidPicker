@@ -9,7 +9,7 @@ import com.alibaba.fastjson.JSON;
 
 import java.util.ArrayList;
 
-import cn.qqtheme.framework.helper.AssetsUtils;
+import cn.qqtheme.framework.util.AssetsUtils;
 import cn.qqtheme.framework.picker.AddressPicker;
 
 /**
