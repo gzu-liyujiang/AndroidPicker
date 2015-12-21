@@ -75,6 +75,7 @@ public class MainActivity extends Activity {
 
     public void onTimePicker(View view) {
         TimePicker picker = new TimePicker(this);
+        picker.setTopLineVisible(false);
         picker.setOnTimePickListener(new TimePicker.OnTimePickListener() {
             @Override
             public void onTimePicked(String hour, String minute) {
@@ -100,7 +101,8 @@ public class MainActivity extends Activity {
 
     public void onConstellationPicker(View view) {
         ConstellationPicker picker = new ConstellationPicker(this);
-        picker.setTextColor(0xFFFF0000,0xFF999999);
+        picker.setTopLineColor(0xFFEE0000);
+        picker.setTextColor(0xFFFF0000, 0xFF999999);
         picker.setLineColor(0xFFEE0000);
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
@@ -113,6 +115,7 @@ public class MainActivity extends Activity {
 
     public void onChineseZodiacPicker(View view) {
         ChineseZodiacPicker picker = new ChineseZodiacPicker(this);
+        picker.setLineVisible(false);
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
             public void onOptionPicked(String option) {
