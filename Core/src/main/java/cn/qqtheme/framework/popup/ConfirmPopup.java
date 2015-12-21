@@ -23,8 +23,8 @@ import cn.qqtheme.framework.util.ConvertUtils;
 public abstract class ConfirmPopup<V extends View> extends BottomPopup<View> implements View.OnClickListener {
     protected static final String TAG_SUBMIT = "submit";
     protected static final String TAG_CANCEL = "cancel";
-    private boolean lineVisible = true;
-    private int lineColor = 0xFFDDDDDD;
+    private boolean topLineVisible = true;
+    private int topLineColor = 0xFFDDDDDD;
     private boolean cancelVisible = true;
     private CharSequence cancelText = "", submitText = "";
     private int cancelTextColor = Color.BLACK;
@@ -39,12 +39,12 @@ public abstract class ConfirmPopup<V extends View> extends BottomPopup<View> imp
 
     protected abstract V initContentView();
 
-    public void setLineColor(int lineColor) {
-        this.lineColor = lineColor;
+    public void setTopLineColor(int topLineColor) {
+        this.topLineColor = topLineColor;
     }
 
-    public void setLineVisible(boolean lineVisible) {
-        this.lineVisible = lineVisible;
+    public void setTopLineVisible(boolean topLineVisible) {
+        this.topLineVisible = topLineVisible;
     }
 
     public void setCancelVisible(boolean cancelVisible) {
@@ -110,10 +110,10 @@ public abstract class ConfirmPopup<V extends View> extends BottomPopup<View> imp
         submitButton.setOnClickListener(this);
         topButtonLayout.addView(submitButton);
         rootLayout.addView(topButtonLayout);
-        if (lineVisible) {
+        if (topLineVisible) {
             View lineView = new View(activity);
             lineView.setLayoutParams(new ViewGroup.LayoutParams(MATCH_PARENT, 1));
-            lineView.setBackgroundColor(lineColor);
+            lineView.setBackgroundColor(topLineColor);
             rootLayout.addView(lineView);
         }
         rootLayout.addView(initContentView());

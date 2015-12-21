@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 基于原版修改：可设置颜色、设置文字大小、去掉回弹阴影、修正以便支持联动效果
+ * 基于原版修改：可设置颜色、设置文字大小、分隔线是否可见、去掉回弹阴影、修正以便支持联动效果
  *
  * @author 李玉江[QQ:1023694760]
  * @version 2015-12-17
@@ -59,6 +59,7 @@ public class WheelView extends ScrollView {
     private int textColorNormal = TEXT_COLOR_NORMAL;
     private int textColorFocus = TEXT_COLOR_FOCUS;
     private int lineColor = LINE_COLOR;
+    private boolean lineVisible = true;
 
     public WheelView(Context context) {
         super(context);
@@ -242,6 +243,11 @@ public class WheelView extends ScrollView {
             Log.d(TAG, "viewWidth: " + viewWidth);
         }
 
+        // FIXME: 2015/12/22 可设置分隔线是否可见
+        if (!lineVisible){
+            return;
+        }
+
         if (null == paint) {
             paint = new Paint();
             paint.setColor(lineColor);
@@ -339,6 +345,14 @@ public class WheelView extends ScrollView {
 
     public void setTextColor(@ColorInt int textColor) {
         this.textColorFocus = textColor;
+    }
+
+    public boolean isLineVisible() {
+        return lineVisible;
+    }
+
+    public void setLineVisible(boolean lineVisible) {
+        this.lineVisible = lineVisible;
     }
 
     public int getLineColor() {

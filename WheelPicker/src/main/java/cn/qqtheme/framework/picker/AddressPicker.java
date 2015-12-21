@@ -49,6 +49,7 @@ public class AddressPicker extends WheelPicker {
         provinceView.setLayoutParams(new LinearLayout.LayoutParams(screenWidth / 3, WRAP_CONTENT));
         provinceView.setTextSize(textSize);
         provinceView.setTextColor(textColorNormal, textColorFocus);
+        provinceView.setLineVisible(lineVisible);
         provinceView.setLineColor(lineColor);
         provinceView.setOffset(offset);
         layout.addView(provinceView);
@@ -56,6 +57,7 @@ public class AddressPicker extends WheelPicker {
         cityView.setLayoutParams(new LinearLayout.LayoutParams(screenWidth / 3, WRAP_CONTENT));
         cityView.setTextSize(textSize);
         cityView.setTextColor(textColorNormal, textColorFocus);
+        cityView.setLineVisible(lineVisible);
         cityView.setLineColor(lineColor);
         cityView.setOffset(offset);
         layout.addView(cityView);
@@ -63,6 +65,7 @@ public class AddressPicker extends WheelPicker {
         countyView.setLayoutParams(new LinearLayout.LayoutParams(screenWidth / 3, WRAP_CONTENT));
         countyView.setTextSize(textSize);
         countyView.setTextColor(textColorNormal, textColorFocus);
+        countyView.setLineVisible(lineVisible);
         countyView.setLineColor(lineColor);
         countyView.setOffset(offset);
         layout.addView(countyView);

@@ -46,8 +46,8 @@ public class TimePicker extends WheelPicker {
         hourView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
         hourView.setTextSize(textSize);
         hourView.setTextColor(textColorNormal, textColorFocus);
+        hourView.setLineVisible(lineVisible);
         hourView.setLineColor(lineColor);
-        hourView.setOffset(offset);
         layout.addView(hourView);
         TextView hourTextView = new TextView(activity);
         hourTextView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
@@ -61,6 +61,7 @@ public class TimePicker extends WheelPicker {
         minuteView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
         minuteView.setTextSize(textSize);
         minuteView.setTextColor(textColorNormal, textColorFocus);
+        minuteView.setLineVisible(lineVisible);
         minuteView.setLineColor(lineColor);
         minuteView.setOffset(offset);
         layout.addView(minuteView);

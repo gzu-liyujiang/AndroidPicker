@@ -14,7 +14,7 @@ dependencies {
 }
 ```   
 注：   
-旧版的基于android-wheel，在分支“branch_OldAndroidPicker”，和新版的差别比较大。   
+旧版的基于android-wheel，在分支“branch_OldAndroidPicker”。   
 不断学习，持续完善，敬请关注。。。   
 gradle为1.3.0，buildTools为23.0.1，sdk为23。   
 滑轮选择器的名称较长时，将以“...”显示超出的部分。      
@@ -37,6 +37,7 @@ gradle为1.3.0，buildTools为23.0.1，sdk为23。
 时间选择器：   
 ```java   
         TimePicker picker = new TimePicker(this);
+        picker.setTopLineVisible(false);
         picker.setOnTimePickListener(new TimePicker.OnTimePickListener() {
             @Override
             public void onTimePicked(String hour, String minute) {
@@ -94,8 +95,22 @@ gradle为1.3.0，buildTools为23.0.1，sdk为23。
 星座选择器：
 ```java   
         ConstellationPicker picker = new ConstellationPicker(this);
-        picker.setTextColor(0xFFFF0000,0xFF999999);
+        picker.setTopLineColor(0xFFEE0000);
+        picker.setTextColor(0xFFFF0000, 0xFF999999);
         picker.setLineColor(0xFFEE0000);
+        picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
+            @Override
+            public void onOptionPicked(String option) {
+                showToast(option);
+            }
+        });
+        picker.show();
+```
+
+生肖选择器：
+```java   
+        ChineseZodiacPicker picker = new ChineseZodiacPicker(this);
+        picker.setLineVisible(false);
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
             public void onOptionPicked(String option) {
@@ -161,10 +176,11 @@ https://github.com/alibaba/fastjson<br />
 ![单项选择器效果图](/screenshots/option.gif)     
 ![地址选择器效果图](/screenshots/address.gif)    
 ![数字选择器效果图](/screenshots/number.gif)    
+![星座选择器效果图](/screenshots/constellation.gif)    
+![生肖选择器效果图](/screenshots/chinesezodiac.gif)    
 ![颜色选择器效果图](/screenshots/color.gif)    
 ![文件选择器效果图](/screenshots/file.gif)    
 ![目录选择器效果图](/screenshots/dir.gif)    
-![星座选择器效果图](/screenshots/constellation.gif)    
 
 # Contact
 李玉江, QQ:1032694760, Email:liyujiang_tk@yeah.net

@@ -18,6 +18,7 @@ public abstract class WheelPicker extends ConfirmPopup<View> {
     protected int textColorNormal = WheelView.TEXT_COLOR_NORMAL;
     protected int textColorFocus = WheelView.TEXT_COLOR_FOCUS;
     protected int lineColor = WheelView.LINE_COLOR;
+    protected boolean lineVisible = true;
     protected int offset = WheelView.OFF_SET;
 
     public WheelPicker(Activity activity) {
@@ -35,6 +36,10 @@ public abstract class WheelPicker extends ConfirmPopup<View> {
 
     public void setTextColor(int textColor) {
         this.textColorFocus = textColor;
+    }
+
+    public void setLineVisible(boolean lineVisible) {
+        this.lineVisible = lineVisible;
     }
 
     public void setLineColor(int lineColor) {

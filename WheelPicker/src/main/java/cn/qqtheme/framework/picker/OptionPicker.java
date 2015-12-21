@@ -50,6 +50,7 @@ public class OptionPicker extends WheelPicker {
         optionView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
         optionView.setTextSize(textSize);
         optionView.setTextColor(textColorNormal, textColorFocus);
+        optionView.setLineVisible(lineVisible);
         optionView.setLineColor(lineColor);
         optionView.setOffset(offset);
         layout.addView(optionView);
