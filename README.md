@@ -14,7 +14,7 @@ dependencies {
 }
 ```   
 注：   
-旧版的基于android-wheel，在分支“branch_OldAndroidPicker”，已放弃维护。   
+旧版的基于android-wheel，在分支“branch_OldAndroidPicker”，和新版的差别比较大。   
 不断学习，持续完善，敬请关注。。。   
 gradle为1.3.0，buildTools为23.0.1，sdk为23。   
 滑轮选择器的名称较长时，将以“...”显示超出的部分。      

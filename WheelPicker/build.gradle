@@ -46,5 +46,5 @@ android {
 }
 
 dependencies {
-    compile project(':Framework')
+    compile project(':Core')
 }

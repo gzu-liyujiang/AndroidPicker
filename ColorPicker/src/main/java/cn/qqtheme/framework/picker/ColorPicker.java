@@ -3,20 +3,24 @@ package cn.qqtheme.framework.picker;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.graphics.*;
+import android.graphics.Color;
 import android.text.InputType;
-import android.view.*;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.*;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import java.util.Locale;
 
 import cn.qqtheme.framework.picker.color.R;
 import cn.qqtheme.framework.popup.ConfirmPopup;
 import cn.qqtheme.framework.util.CompatUtils;
 import cn.qqtheme.framework.util.ConvertUtils;
-import cn.qqtheme.framework.view.ColorPanelView;
-
-import java.util.Locale;
+import cn.qqtheme.framework.widget.ColorPanelView;
 
 /**
  * 颜色选择器。
@@ -93,8 +97,12 @@ public class ColorPicker extends ConfirmPopup<LinearLayout> implements TextView.
     }
 
     @Override
+    protected boolean isFixedHeight() {
+        return true;
+    }
+
+    @Override
     protected void setContentViewAfter(View contentView) {
-        setHeight(screen.heightPixels / 2);
         multiColorView.setColor(initColor);//将触发onColorChanged，故必须先待其他控件初始化完成后才能调用
         multiColorView.setBrightnessGradientView(blackColorView);
         if (onColorPickListener != null) {

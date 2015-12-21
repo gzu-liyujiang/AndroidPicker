@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import cn.qqtheme.framework.popup.ConfirmPopup;
-import cn.qqtheme.framework.view.WheelView;
+import cn.qqtheme.framework.widget.WheelView;
 
 /**
  * 单项选择器

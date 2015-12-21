@@ -1,4 +1,4 @@
-package cn.qqtheme.framework.view;
+package cn.qqtheme.framework.widget;
 
 import android.content.Context;
 import android.text.TextUtils;

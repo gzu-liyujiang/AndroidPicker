@@ -1,4 +1,4 @@
-package cn.qqtheme.framework.view;
+package cn.qqtheme.framework.widget;
 
 import android.app.Activity;
 import android.content.Context;
@@ -37,7 +37,7 @@ public class WheelView extends ScrollView {
 
     private Context context;
     private LinearLayout views;
-    private List<String> items;
+    private List<String> items = new ArrayList<String>();
     private int offset = OFF_SET_DEFAULT; // 偏移量（需要在最前面和最后面补全）
 
     private int displayItemCount; // 每页显示的数量
@@ -130,6 +130,9 @@ public class WheelView extends ScrollView {
     }
 
     private void initData() {
+        // FIXME: 2015/12/21 默认选择第一项
+        setSelection(0);
+
         displayItemCount = offset * 2 + 1;
 
         // FIXME: 2015/12/15 添加此句才可以支持联动效果
@@ -293,9 +296,6 @@ public class WheelView extends ScrollView {
     }
 
     public void setItems(List<String> list) {
-        if (null == items) {
-            items = new ArrayList<String>();
-        }
         items.clear();
         items.addAll(list);
 
@@ -317,7 +317,7 @@ public class WheelView extends ScrollView {
         this.offset = offset;
     }
 
-    public void setSeletion(int position) {
+    public void setSelection(int position) {
         final int p = position;
         selectedIndex = p + offset;
         this.post(new Runnable() {

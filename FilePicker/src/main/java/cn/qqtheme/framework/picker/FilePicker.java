@@ -13,9 +13,10 @@ import android.widget.ListView;
 import cn.qqtheme.framework.adapter.FileAdapter;
 import cn.qqtheme.framework.bean.FileItem;
 import cn.qqtheme.framework.popup.ConfirmPopup;
+import cn.qqtheme.framework.util.ConvertUtils;
 import cn.qqtheme.framework.util.LogUtils;
 import cn.qqtheme.framework.util.StorageUtils;
-import cn.qqtheme.framework.view.MarqueeTextView;
+import cn.qqtheme.framework.widget.MarqueeTextView;
 
 /**
  * 文件目录选择器
@@ -51,11 +52,16 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
         textView.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
         textView.setTextColor(Color.BLACK);
         textView.setGravity(Gravity.CENTER_VERTICAL);
-        textView.setPadding(8, 8, 8, 8);
+        int padding = ConvertUtils.toDp(activity, 10);
+        textView.setPadding(padding, padding, padding, padding);
         rootLayout.addView(textView);
+        View lineView = new View(activity);
+        lineView.setLayoutParams(new ViewGroup.LayoutParams(MATCH_PARENT, 1));
+        lineView.setBackgroundColor(0xFFDDDDDD);
+        rootLayout.addView(lineView);
         ListView listView = new ListView(activity);
         listView.setBackgroundColor(Color.WHITE);
-        listView.setDivider(new ColorDrawable(0xDDDDDDDD));
+        listView.setDivider(new ColorDrawable(0xFFDDDDDD));
         listView.setDividerHeight(1);
         listView.setCacheColorHint(Color.TRANSPARENT);
         listView.setLayoutParams(new ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
@@ -93,6 +99,11 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
     }
 
     @Override
+    protected boolean isFixedHeight() {
+        return true;
+    }
+
+    @Override
     protected void setContentViewBefore() {
         setCancelVisible(false);
         final boolean isPickFile = mode.equals(Mode.File);
@@ -118,7 +129,6 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
 
     @Override
     protected void setContentViewAfter(View contentView) {
-        setHeight(screen.heightPixels / 2);
         refreshCurrentDirPath(initPath);
     }
 

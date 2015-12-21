@@ -20,7 +20,7 @@ import cn.qqtheme.framework.util.ConvertUtils;
  * @since 2015/10/21
  * Created By Android Studio
  */
-public abstract class ConfirmPopup<V extends View> extends BasePopup<View> implements View.OnClickListener {
+public abstract class ConfirmPopup<V extends View> extends BottomPopup<View> implements View.OnClickListener {
     protected static final String TAG_SUBMIT = "submit";
     protected static final String TAG_CANCEL = "cancel";
     private boolean cancelVisible = true;
@@ -122,10 +122,6 @@ public abstract class ConfirmPopup<V extends View> extends BasePopup<View> imple
             }
         }
         dismiss();
-    }
-
-    public void show() {
-        showAtGravity(Gravity.BOTTOM);
     }
 
     protected void setOnConfirmListener(OnConfirmListener onConfirmListener) {

@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 import java.util.ArrayList;
 
 import cn.qqtheme.framework.popup.ConfirmPopup;
-import cn.qqtheme.framework.view.WheelView;
+import cn.qqtheme.framework.widget.WheelView;
 
 /**
  * 地址选择器（包括省级、地级、县级）。地址数据见“city.json”，来源于国家统计局官网（http://www.stats.gov.cn/tjsj/tjbz/xzqhdm）
@@ -93,7 +93,7 @@ public class AddressPicker extends ConfirmPopup<View> {
                 cityView.setItems(cityList.get(selectedProvinceIndex));
                 cityView.startScrollerTask();
                 //根据地市获取区县
-                countyView.setItems(countyList.get(selectedProvinceIndex).get(selectedCityIndex));
+                countyView.setItems(countyList.get(selectedProvinceIndex).get(0));
                 countyView.startScrollerTask();
             }
         });

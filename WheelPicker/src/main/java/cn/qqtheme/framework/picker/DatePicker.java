@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 import cn.qqtheme.framework.popup.ConfirmPopup;
 import cn.qqtheme.framework.util.DateUtils;
-import cn.qqtheme.framework.view.WheelView;
+import cn.qqtheme.framework.widget.WheelView;
 
 /**
  * 日期选择器
@@ -122,6 +122,14 @@ public class DatePicker extends ConfirmPopup<View> {
                 @Override
                 public void onSelected(int selectedIndex, String item) {
                     selectedYear = stringToYearMonthDay(item);
+                    //需要根据年份及月份动态计算天数
+                    int maxDays = DateUtils.calculateDaysInMonth(selectedYear, selectedMonth);
+                    ArrayList<String> days = new ArrayList<String>();
+                    for (int i = 1; i <= maxDays; i++) {
+                        days.add(DateUtils.fillZore(i));
+                    }
+                    dayView.setItems(days);
+                    dayView.startScrollerTask();
                 }
             });
         }
