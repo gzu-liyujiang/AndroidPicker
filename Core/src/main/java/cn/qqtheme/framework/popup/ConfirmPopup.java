@@ -23,9 +23,12 @@ import cn.qqtheme.framework.util.ConvertUtils;
 public abstract class ConfirmPopup<V extends View> extends BottomPopup<View> implements View.OnClickListener {
     protected static final String TAG_SUBMIT = "submit";
     protected static final String TAG_CANCEL = "cancel";
+    private boolean lineVisible = true;
+    private int lineColor = 0xFFDDDDDD;
     private boolean cancelVisible = true;
     private CharSequence cancelText = "", submitText = "";
-    private int cancelTextColor = 0, submitTextColor = 0;
+    private int cancelTextColor = Color.BLACK;
+    private int submitTextColor = Color.BLACK;
     private OnConfirmListener onConfirmListener;
 
     public ConfirmPopup(Activity activity) {
@@ -35,6 +38,14 @@ public abstract class ConfirmPopup<V extends View> extends BottomPopup<View> imp
     }
 
     protected abstract V initContentView();
+
+    public void setLineColor(int lineColor) {
+        this.lineColor = lineColor;
+    }
+
+    public void setLineVisible(boolean lineVisible) {
+        this.lineVisible = lineVisible;
+    }
 
     public void setCancelVisible(boolean cancelVisible) {
         this.cancelVisible = cancelVisible;
@@ -81,9 +92,7 @@ public abstract class ConfirmPopup<V extends View> extends BottomPopup<View> imp
         if (!TextUtils.isEmpty(cancelText)) {
             cancelButton.setText(cancelText);
         }
-        if (cancelTextColor != 0) {
-            cancelButton.setTextColor(cancelTextColor);
-        }
+        cancelButton.setTextColor(cancelTextColor);
         cancelButton.setOnClickListener(this);
         topButtonLayout.addView(cancelButton);
         Button submitButton = new Button(activity);
@@ -97,16 +106,16 @@ public abstract class ConfirmPopup<V extends View> extends BottomPopup<View> imp
         if (!TextUtils.isEmpty(submitText)) {
             submitButton.setText(submitText);
         }
-        if (submitTextColor != 0) {
-            submitButton.setTextColor(submitTextColor);
-        }
+        submitButton.setTextColor(submitTextColor);
         submitButton.setOnClickListener(this);
         topButtonLayout.addView(submitButton);
         rootLayout.addView(topButtonLayout);
-        View lineView = new View(activity);
-        lineView.setLayoutParams(new ViewGroup.LayoutParams(MATCH_PARENT, 1));
-        lineView.setBackgroundColor(0xFFDDDDDD);
-        rootLayout.addView(lineView);
+        if (lineVisible) {
+            View lineView = new View(activity);
+            lineView.setLayoutParams(new ViewGroup.LayoutParams(MATCH_PARENT, 1));
+            lineView.setBackgroundColor(lineColor);
+            rootLayout.addView(lineView);
+        }
         rootLayout.addView(initContentView());
         return rootLayout;
     }

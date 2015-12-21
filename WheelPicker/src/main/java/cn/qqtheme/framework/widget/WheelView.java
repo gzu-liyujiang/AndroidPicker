@@ -3,11 +3,11 @@ package cn.qqtheme.framework.widget;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.ColorInt;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -23,26 +23,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 基于原版修改：颜色常量、去掉回弹阴影、修正以便支持联动效果
+ * 基于原版修改：可设置颜色、设置文字大小、去掉回弹阴影、修正以便支持联动效果
  *
  * @author 李玉江[QQ:1023694760]
  * @version 2015-12-17
  * @link https://github.com/wangjiegulu/WheelView
  */
 public class WheelView extends ScrollView {
+    public static final int TEXT_SIZE = 20;
     public static final int TEXT_COLOR_FOCUS = 0XFF0288CE;
     public static final int TEXT_COLOR_NORMAL = 0XFFBBBBBB;
+    public static final int LINE_COLOR = 0XFF83CDE6;
+    public static final int OFF_SET = 1;
     private static final String TAG = WheelView.class.getSimpleName();
-    private static final int OFF_SET_DEFAULT = 1;
 
     private Context context;
     private LinearLayout views;
     private List<String> items = new ArrayList<String>();
-    private int offset = OFF_SET_DEFAULT; // 偏移量（需要在最前面和最后面补全）
+    private int offset = OFF_SET; // 偏移量（需要在最前面和最后面补全）
 
     private int displayItemCount; // 每页显示的数量
 
-    private int selectedIndex = OFF_SET_DEFAULT;
+    private int selectedIndex = OFF_SET;
     private int initialY;
 
     private Runnable scrollerTask;
@@ -53,6 +55,10 @@ public class WheelView extends ScrollView {
 
     private Paint paint;
     private int viewWidth;
+    private int textSize = TEXT_SIZE;
+    private int textColorNormal = TEXT_COLOR_NORMAL;
+    private int textColorFocus = TEXT_COLOR_FOCUS;
+    private int lineColor = LINE_COLOR;
 
     public WheelView(Context context) {
         super(context);
@@ -137,6 +143,7 @@ public class WheelView extends ScrollView {
 
         // FIXME: 2015/12/15 添加此句才可以支持联动效果
         views.removeAllViews();
+
         for (String item : items) {
             views.addView(createView(item));
         }
@@ -147,10 +154,10 @@ public class WheelView extends ScrollView {
     private TextView createView(String item) {
         TextView tv = new TextView(context);
         tv.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        tv.setTextSize(20);
         tv.setSingleLine(true);
         tv.setEllipsize(TextUtils.TruncateAt.END);
         tv.setText(item);
+        tv.setTextSize(textSize);
         tv.setGravity(Gravity.CENTER);
         int padding = dip2px(15);
         tv.setPadding(padding, padding, padding, padding);
@@ -185,9 +192,9 @@ public class WheelView extends ScrollView {
             }
             // FIXME: 2015/12/15 颜色常量
             if (position == i) {
-                itemView.setTextColor(TEXT_COLOR_FOCUS);
+                itemView.setTextColor(textColorFocus);
             } else {
-                itemView.setTextColor(TEXT_COLOR_NORMAL);
+                itemView.setTextColor(textColorNormal);
             }
         }
     }
@@ -223,8 +230,13 @@ public class WheelView extends ScrollView {
     }
 
     @Override
-    public void setBackgroundDrawable(Drawable background) {
+    public void setBackground(Drawable background) {
+        setBackgroundDrawable(background);
+    }
 
+    @SuppressWarnings("deprecation")
+    @Override
+    public void setBackgroundDrawable(Drawable background) {
         if (viewWidth == 0) {
             viewWidth = ((Activity) context).getWindowManager().getDefaultDisplay().getWidth();
             Log.d(TAG, "viewWidth: " + viewWidth);
@@ -232,15 +244,16 @@ public class WheelView extends ScrollView {
 
         if (null == paint) {
             paint = new Paint();
-            paint.setColor(Color.parseColor("#83cde6"));
+            paint.setColor(lineColor);
             paint.setStrokeWidth(dip2px(1f));
         }
 
         background = new Drawable() {
             @Override
             public void draw(Canvas canvas) {
-                canvas.drawLine(viewWidth / 6, obtainSelectedAreaBorder()[0], viewWidth * 5 / 6, obtainSelectedAreaBorder()[0], paint);
-                canvas.drawLine(viewWidth / 6, obtainSelectedAreaBorder()[1], viewWidth * 5 / 6, obtainSelectedAreaBorder()[1], paint);
+                int[] areaBorder = obtainSelectedAreaBorder();
+                canvas.drawLine(viewWidth / 6, areaBorder[0], viewWidth * 5 / 6, areaBorder[0], paint);
+                canvas.drawLine(viewWidth / 6, areaBorder[1], viewWidth * 5 / 6, areaBorder[1], paint);
             }
 
             @Override
@@ -258,7 +271,6 @@ public class WheelView extends ScrollView {
                 return 0;
             }
         };
-
         super.setBackgroundDrawable(background);
     }
 
@@ -284,7 +296,6 @@ public class WheelView extends ScrollView {
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_UP) {
-
             startScrollerTask();
         }
         return super.onTouchEvent(ev);
@@ -307,6 +318,35 @@ public class WheelView extends ScrollView {
 
         initData();
 
+    }
+
+    public int getTextSize() {
+        return textSize;
+    }
+
+    public void setTextSize(int textSize) {
+        this.textSize = textSize;
+    }
+
+    public int getTextColor() {
+        return textColorFocus;
+    }
+
+    public void setTextColor(@ColorInt int textColorNormal, @ColorInt int textColorFocus) {
+        this.textColorNormal = textColorNormal;
+        this.textColorFocus = textColorFocus;
+    }
+
+    public void setTextColor(@ColorInt int textColor) {
+        this.textColorFocus = textColor;
+    }
+
+    public int getLineColor() {
+        return lineColor;
+    }
+
+    public void setLineColor(@ColorInt int lineColor) {
+        this.lineColor = lineColor;
     }
 
     public int getOffset() {

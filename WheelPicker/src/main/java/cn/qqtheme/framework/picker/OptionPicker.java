@@ -10,7 +10,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import cn.qqtheme.framework.popup.ConfirmPopup;
 import cn.qqtheme.framework.widget.WheelView;
 
 /**
@@ -20,7 +19,7 @@ import cn.qqtheme.framework.widget.WheelView;
  * @since 2015/9/29
  * Created By Android Studio
  */
-public class OptionPicker extends ConfirmPopup<View> {
+public class OptionPicker extends WheelPicker {
     protected ArrayList<String> options = new ArrayList<String>();
     private OnOptionPickListener onOptionPickListener;
     private String selectedOption = "";
@@ -49,11 +48,15 @@ public class OptionPicker extends ConfirmPopup<View> {
         layout.setGravity(Gravity.CENTER);
         WheelView optionView = new WheelView(activity);
         optionView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+        optionView.setTextSize(textSize);
+        optionView.setTextColor(textColorNormal, textColorFocus);
+        optionView.setLineColor(lineColor);
+        optionView.setOffset(offset);
         layout.addView(optionView);
         TextView labelView = new TextView(activity);
         labelView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
-        labelView.setTextColor(WheelView.TEXT_COLOR_FOCUS);
-        labelView.setTextSize(22);
+        labelView.setTextColor(textColorFocus);
+        labelView.setTextSize(textSize);
         layout.addView(labelView);
         if (!TextUtils.isEmpty(label)) {
             labelView.setText(label);

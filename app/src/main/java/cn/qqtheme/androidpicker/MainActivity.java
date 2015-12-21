@@ -85,7 +85,10 @@ public class MainActivity extends Activity {
     }
 
     public void onOptionPicker(View view) {
-        OptionPicker picker = new OptionPicker(this, new String[]{"第一项", "第二项", "这是一个很长很长很长很长很长很长很长很长的选项"});
+        OptionPicker picker = new OptionPicker(this,new String[]{
+                "第一项","第二项","这是一个很长很长很长很长很长很长很长很长很长的项"
+        });
+        picker.setTextSize(11);
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
             public void onOptionPicked(String option) {
@@ -97,6 +100,8 @@ public class MainActivity extends Activity {
 
     public void onConstellationPicker(View view) {
         ConstellationPicker picker = new ConstellationPicker(this);
+        picker.setTextColor(0xFFFF0000,0xFF999999);
+        picker.setLineColor(0xFFEE0000);
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
             public void onOptionPicked(String option) {
@@ -120,6 +125,7 @@ public class MainActivity extends Activity {
     public void onNumberPicker(View view) {
         NumberPicker picker = new NumberPicker(this);
         picker.setRange(145, 200);//数字范围
+        picker.setOffset(2);//偏移量
         picker.setLabel("厘米");
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override

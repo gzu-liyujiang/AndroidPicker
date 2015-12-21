@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import cn.qqtheme.framework.popup.ConfirmPopup;
 import cn.qqtheme.framework.util.DateUtils;
 import cn.qqtheme.framework.widget.WheelView;
 
@@ -20,7 +19,7 @@ import cn.qqtheme.framework.widget.WheelView;
  * @since 2015/12/14
  * Created By Android Studio
  */
-public class DatePicker extends ConfirmPopup<View> {
+public class DatePicker extends WheelPicker {
     private OnDatePickListener onDatePickListener;
     private String yearLabel = "年", monthLabel = "月", dayLabel = "日";
     private int startYear = 1970, endYear = 2050;
@@ -71,33 +70,45 @@ public class DatePicker extends ConfirmPopup<View> {
         layout.setGravity(Gravity.CENTER);
         WheelView yearView = new WheelView(activity);
         yearView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+        yearView.setTextSize(textSize);
+        yearView.setTextColor(textColorNormal, textColorFocus);
+        yearView.setLineColor(lineColor);
+        yearView.setOffset(offset);
         layout.addView(yearView);
         TextView yearTextView = new TextView(activity);
         yearTextView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
-        yearTextView.setTextSize(22);
-        yearTextView.setTextColor(WheelView.TEXT_COLOR_FOCUS);
+        yearTextView.setTextSize(textSize);
+        yearTextView.setTextColor(textColorFocus);
         if (!TextUtils.isEmpty(yearLabel)) {
             yearTextView.setText(yearLabel);
         }
         layout.addView(yearTextView);
         WheelView monthView = new WheelView(activity);
         monthView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+        monthView.setTextSize(textSize);
+        monthView.setTextColor(textColorNormal, textColorFocus);
+        monthView.setLineColor(lineColor);
+        monthView.setOffset(offset);
         layout.addView(monthView);
         TextView monthTextView = new TextView(activity);
         monthTextView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
-        monthTextView.setTextSize(22);
-        monthTextView.setTextColor(WheelView.TEXT_COLOR_FOCUS);
+        monthTextView.setTextSize(textSize);
+        monthTextView.setTextColor(textColorFocus);
         if (!TextUtils.isEmpty(monthLabel)) {
             monthTextView.setText(monthLabel);
         }
         layout.addView(monthTextView);
         final WheelView dayView = new WheelView(activity);
         dayView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+        dayView.setTextSize(textSize);
+        dayView.setTextColor(textColorNormal, textColorFocus);
+        dayView.setLineColor(lineColor);
+        dayView.setOffset(offset);
         layout.addView(dayView);
         TextView dayTextView = new TextView(activity);
         dayTextView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
-        dayTextView.setTextSize(22);
-        dayTextView.setTextColor(WheelView.TEXT_COLOR_FOCUS);
+        dayTextView.setTextSize(textSize);
+        dayTextView.setTextColor(textColorFocus);
         if (!TextUtils.isEmpty(dayLabel)) {
             dayTextView.setText(dayLabel);
         }

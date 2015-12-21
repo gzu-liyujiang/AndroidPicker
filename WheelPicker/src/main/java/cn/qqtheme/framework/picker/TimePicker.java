@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import cn.qqtheme.framework.popup.ConfirmPopup;
 import cn.qqtheme.framework.util.DateUtils;
 import cn.qqtheme.framework.widget.WheelView;
 
@@ -20,7 +19,7 @@ import cn.qqtheme.framework.widget.WheelView;
  * @since 2015/12/14
  * Created By Android Studio
  */
-public class TimePicker extends ConfirmPopup<View> {
+public class TimePicker extends WheelPicker {
     private OnTimePickListener onTimePickListener;
     private String hourLabel = "时", minuteLabel = "分";
     private String selectedHour = "", selectedMinute = "";
@@ -45,22 +44,30 @@ public class TimePicker extends ConfirmPopup<View> {
         layout.setGravity(Gravity.CENTER);
         WheelView hourView = new WheelView(activity);
         hourView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+        hourView.setTextSize(textSize);
+        hourView.setTextColor(textColorNormal, textColorFocus);
+        hourView.setLineColor(lineColor);
+        hourView.setOffset(offset);
         layout.addView(hourView);
         TextView hourTextView = new TextView(activity);
         hourTextView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
-        hourTextView.setTextSize(22);
-        hourTextView.setTextColor(WheelView.TEXT_COLOR_FOCUS);
+        hourTextView.setTextSize(textSize);
+        hourTextView.setTextColor(textColorFocus);
         if (!TextUtils.isEmpty(hourLabel)) {
             hourTextView.setText(hourLabel);
         }
         layout.addView(hourTextView);
         WheelView minuteView = new WheelView(activity);
         minuteView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+        minuteView.setTextSize(textSize);
+        minuteView.setTextColor(textColorNormal, textColorFocus);
+        minuteView.setLineColor(lineColor);
+        minuteView.setOffset(offset);
         layout.addView(minuteView);
         TextView minuteTextView = new TextView(activity);
         minuteTextView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
-        minuteTextView.setTextSize(22);
-        minuteTextView.setTextColor(WheelView.TEXT_COLOR_FOCUS);
+        minuteTextView.setTextSize(textSize);
+        minuteTextView.setTextColor(textColorFocus);
         if (!TextUtils.isEmpty(minuteLabel)) {
             minuteTextView.setText(minuteLabel);
         }

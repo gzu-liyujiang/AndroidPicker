@@ -105,17 +105,14 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
 
     @Override
     protected void setContentViewBefore() {
-        setCancelVisible(false);
         final boolean isPickFile = mode.equals(Mode.File);
+        setCancelVisible(!isPickFile);
         setSubmitText(isPickFile ? "取消" : "确定");
         super.setOnConfirmListener(new OnConfirmListener() {
             @Override
             public void onConfirm() {
                 if (isPickFile) {
                     LogUtils.debug("已放弃选择！");
-                    if (onFilePickListener != null) {
-                        onFilePickListener.onCancel();
-                    }
                 } else {
                     String currentPath = adapter.getCurrentPath();
                     LogUtils.debug("已选择目录：" + currentPath);
@@ -163,23 +160,13 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
         adapter.loadData(currentPath, true);
     }
 
-    @Deprecated
-    @Override
-    public final void setOnConfirmListener(OnConfirmListener onConfirmListener) {
-        throw new RuntimeException("Please use OnFilePickListener instead");
-    }
-
     public void setOnFilePickListener(OnFilePickListener listener) {
         this.onFilePickListener = listener;
     }
 
-    public static abstract class OnFilePickListener {
+    public interface OnFilePickListener {
 
-        public abstract void onFilePicked(String currentPath);
-
-        public void onCancel() {
-
-        }
+        void onFilePicked(String currentPath);
 
     }
 

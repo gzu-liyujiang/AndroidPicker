@@ -48,7 +48,10 @@ gradle为1.3.0，buildTools为23.0.1，sdk为23。
 
 单项选择器（可用于性别、学历、职业、星座等选择）：   
 ```java   
-        OptionPicker picker = new OptionPicker(this, new String[]{"第一项", "第二项", "这是一个很长很长的选项"});
+        OptionPicker picker = new OptionPicker(this, new String[]{
+                "第一项","第二项","这是一个很长很长很长很长很长很长很长很长很长的项"
+        });
+        picker.setTextSize(11);
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
             public void onOptionPicked(String option) {
@@ -62,6 +65,7 @@ gradle为1.3.0，buildTools为23.0.1，sdk为23。
 ```java   
         NumberPicker picker = new NumberPicker(this);
         picker.setRange(145, 200);//数字范围
+        picker.setOffset(2);//偏移量
         picker.setLabel("厘米");
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
@@ -81,7 +85,21 @@ gradle为1.3.0，buildTools为23.0.1，sdk为23。
         picker.setOnAddressPickListener(new AddressPicker.OnAddressPickListener() {
             @Override
             public void onAddressPicked(String province, String city, String county) {
-                Toast.makeText(activity, province + city + county, Toast.LENGTH_LONG).show();
+                showToast(activity, province + city + county);
+            }
+        });
+        picker.show();
+```
+
+星座选择器：
+```java   
+        ConstellationPicker picker = new ConstellationPicker(this);
+        picker.setTextColor(0xFFFF0000,0xFF999999);
+        picker.setLineColor(0xFFEE0000);
+        picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
+            @Override
+            public void onOptionPicked(String option) {
+                showToast(option);
             }
         });
         picker.show();
@@ -90,7 +108,7 @@ gradle为1.3.0，buildTools为23.0.1，sdk为23。
 颜色选择器：
 ```java   
         ColorPicker picker = new ColorPicker(this);
-        picker.setInitColor(0xDD00DD);
+        picker.setInitColor(0xFFDD00DD);
         picker.setOnColorPickListener(new ColorPicker.OnColorPickListener() {
             @Override
             public void onColorPicked(int pickedColor) {
@@ -124,18 +142,6 @@ gradle为1.3.0，buildTools为23.0.1，sdk为23。
             @Override
             public void onFilePicked(String currentPath) {
                 showToast(currentPath);
-            }
-        });
-        picker.show();
-```
-
-星座选择器：
-```java   
-        ConstellationPicker picker = new ConstellationPicker(this);
-        picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
-            @Override
-            public void onOptionPicked(String option) {
-                showToast(option);
             }
         });
         picker.show();

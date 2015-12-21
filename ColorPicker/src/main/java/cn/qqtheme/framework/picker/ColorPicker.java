@@ -126,15 +126,6 @@ public class ColorPicker extends ConfirmPopup<LinearLayout> implements TextView.
         this.initColor = initColor;
     }
 
-    /**
-     * Use {@link #setOnColorPickListener(OnColorPickListener)} instead
-     */
-    @Deprecated
-    @Override
-    public final void setOnConfirmListener(OnConfirmListener onConfirmListener) {
-        throw new RuntimeException("Please use setOnColorPickListener(OnColorPickListener) instead");
-    }
-
     public void setOnColorPickListener(OnColorPickListener onColorPickListener) {
         this.onColorPickListener = onColorPickListener;
     }

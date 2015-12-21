@@ -7,17 +7,17 @@ import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
-import cn.qqtheme.framework.popup.ConfirmPopup;
 import cn.qqtheme.framework.widget.WheelView;
 
 /**
- * 地址选择器（包括省级、地级、县级）。地址数据见“city.json”，来源于国家统计局官网（http://www.stats.gov.cn/tjsj/tjbz/xzqhdm）
+ * 地址选择器（包括省级、地级、县级）。
+ * 地址数据见示例项目的“city.json”，来源于国家统计局官网（http://www.stats.gov.cn/tjsj/tjbz/xzqhdm）
  *
  * @author 李玉江[QQ:1032694760]
  * @since 2015/12/15
  * Created By Android Studio
  */
-public class AddressPicker extends ConfirmPopup<View> {
+public class AddressPicker extends WheelPicker {
     private ArrayList<Province> data = new ArrayList<Province>();
     private ArrayList<String> provinceList = new ArrayList<String>();
     private ArrayList<ArrayList<String>> cityList = new ArrayList<ArrayList<String>>();
@@ -47,12 +47,24 @@ public class AddressPicker extends ConfirmPopup<View> {
         int screenWidth = screen.widthPixels;
         final WheelView provinceView = new WheelView(activity);
         provinceView.setLayoutParams(new LinearLayout.LayoutParams(screenWidth / 3, WRAP_CONTENT));
+        provinceView.setTextSize(textSize);
+        provinceView.setTextColor(textColorNormal, textColorFocus);
+        provinceView.setLineColor(lineColor);
+        provinceView.setOffset(offset);
         layout.addView(provinceView);
         final WheelView cityView = new WheelView(activity);
         cityView.setLayoutParams(new LinearLayout.LayoutParams(screenWidth / 3, WRAP_CONTENT));
+        cityView.setTextSize(textSize);
+        cityView.setTextColor(textColorNormal, textColorFocus);
+        cityView.setLineColor(lineColor);
+        cityView.setOffset(offset);
         layout.addView(cityView);
         final WheelView countyView = new WheelView(activity);
         countyView.setLayoutParams(new LinearLayout.LayoutParams(screenWidth / 3, WRAP_CONTENT));
+        countyView.setTextSize(textSize);
+        countyView.setTextColor(textColorNormal, textColorFocus);
+        countyView.setLineColor(lineColor);
+        countyView.setOffset(offset);
         layout.addView(countyView);
         int provinceSize = data.size();
         //添加省
