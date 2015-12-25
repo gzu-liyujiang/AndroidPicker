@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import cn.qqtheme.framework.util.DateUtils;
 import cn.qqtheme.framework.widget.WheelView;
@@ -21,16 +22,36 @@ import cn.qqtheme.framework.widget.WheelView;
  */
 public class TimePicker extends WheelPicker {
     private OnTimePickListener onTimePickListener;
+    private Mode mode;
     private String hourLabel = "时", minuteLabel = "分";
     private String selectedHour = "", selectedMinute = "";
 
+    public enum Mode {
+        //24小时
+        HOUR_OF_DAY,
+        //12小时
+        HOUR
+    }
+
     public TimePicker(Activity activity) {
+        this(activity, Mode.HOUR_OF_DAY);
+    }
+
+    public TimePicker(Activity activity, Mode mode) {
         super(activity);
+        this.mode = mode;
+        selectedHour = DateUtils.fillZore(Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
+        selectedMinute = DateUtils.fillZore(Calendar.getInstance().get(Calendar.MINUTE));
     }
 
     public void setLabel(String hourLabel, String minuteLabel) {
         this.hourLabel = hourLabel;
         this.minuteLabel = minuteLabel;
+    }
+
+    public void setSelectedItem(int hour, int minute) {
+        selectedHour = String.valueOf(hour);
+        selectedMinute = String.valueOf(minute);
     }
 
     public void setOnTimePickListener(OnTimePickListener listener) {
@@ -74,24 +95,30 @@ public class TimePicker extends WheelPicker {
         }
         layout.addView(minuteTextView);
         ArrayList<String> hours = new ArrayList<String>();
-        for (int i = 0; i < 24; i++) {
-            hours.add(DateUtils.fillZore(i));
+        if (mode.equals(Mode.HOUR)) {
+            for (int i = 1; i <= 12; i++) {
+                hours.add(DateUtils.fillZore(i));
+            }
+        } else {
+            for (int i = 0; i < 24; i++) {
+                hours.add(DateUtils.fillZore(i));
+            }
         }
-        hourView.setItems(hours);
+        hourView.setItems(hours, selectedHour);
         ArrayList<String> minutes = new ArrayList<String>();
         for (int i = 0; i < 60; i++) {
             minutes.add(DateUtils.fillZore(i));
         }
-        minuteView.setItems(minutes);
+        minuteView.setItems(minutes, selectedMinute);
         hourView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
             @Override
-            public void onSelected(int selectedIndex, String item) {
+            public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
                 selectedHour = item;
             }
         });
         minuteView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
             @Override
-            public void onSelected(int selectedIndex, String item) {
+            public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
                 selectedMinute = item;
             }
         });

@@ -74,6 +74,7 @@ public class MainActivity extends Activity {
     }
 
     public void onTimePicker(View view) {
+        //默认选中当前时间
         TimePicker picker = new TimePicker(this);
         picker.setTopLineVisible(false);
         picker.setOnTimePickListener(new TimePicker.OnTimePickListener() {
@@ -86,9 +87,11 @@ public class MainActivity extends Activity {
     }
 
     public void onOptionPicker(View view) {
-        OptionPicker picker = new OptionPicker(this,new String[]{
-                "第一项","第二项","这是一个很长很长很长很长很长很长很长很长很长的项"
+        OptionPicker picker = new OptionPicker(this, new String[]{
+                "第一项", "第二项", "这是一个很长很长很长很长很长很长很长很长很长的很长很长的很长很长的项"
         });
+        picker.setOffset(2);
+        picker.setSelectedIndex(1);
         picker.setTextSize(11);
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
@@ -104,6 +107,7 @@ public class MainActivity extends Activity {
         picker.setTopLineColor(0xFFEE0000);
         picker.setTextColor(0xFFFF0000, 0xFF999999);
         picker.setLineColor(0xFFEE0000);
+        picker.setSelectedItem("射手");
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
             public void onOptionPicked(String option) {
@@ -116,6 +120,7 @@ public class MainActivity extends Activity {
     public void onChineseZodiacPicker(View view) {
         ChineseZodiacPicker picker = new ChineseZodiacPicker(this);
         picker.setLineVisible(false);
+        picker.setSelectedItem("羊");
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
             public void onOptionPicked(String option) {
@@ -127,8 +132,9 @@ public class MainActivity extends Activity {
 
     public void onNumberPicker(View view) {
         NumberPicker picker = new NumberPicker(this);
-        picker.setRange(145, 200);//数字范围
         picker.setOffset(2);//偏移量
+        picker.setRange(145, 200);//数字范围
+        picker.setSelectedItem(172);
         picker.setLabel("厘米");
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
@@ -152,7 +158,7 @@ public class MainActivity extends Activity {
     }
 
     public void onAddressPicker(View view) {
-        new AddressInitTask(this).execute();
+        new AddressInitTask(this).execute("贵州", "毕节", "纳雍");
     }
 
     public void onColorPicker(View view) {

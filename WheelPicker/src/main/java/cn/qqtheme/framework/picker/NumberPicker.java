@@ -25,5 +25,9 @@ public class NumberPicker extends OptionPicker {
         }
     }
 
+    public void setSelectedItem(int number) {
+        setSelectedItem(String.valueOf(number));
+    }
+
 }
 

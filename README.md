@@ -36,6 +36,7 @@ gradle为1.3.0，buildTools为23.0.1，sdk为23。
 
 时间选择器：   
 ```java   
+        //默认选中当前时间
         TimePicker picker = new TimePicker(this);
         picker.setTopLineVisible(false);
         picker.setOnTimePickListener(new TimePicker.OnTimePickListener() {
@@ -50,8 +51,10 @@ gradle为1.3.0，buildTools为23.0.1，sdk为23。
 单项选择器（可用于性别、学历、职业、星座等选择）：   
 ```java   
         OptionPicker picker = new OptionPicker(this, new String[]{
-                "第一项","第二项","这是一个很长很长很长很长很长很长很长很长很长的项"
+                "第一项", "第二项", "这是一个很长很长很长很长很长很长很长很长很长的很长很长的很长很长的项"
         });
+        picker.setOffset(2);
+        picker.setSelectedIndex(1);
         picker.setTextSize(11);
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
@@ -65,8 +68,9 @@ gradle为1.3.0，buildTools为23.0.1，sdk为23。
 数字选择器(可用于身高、体重、年龄等选择)：
 ```java   
         NumberPicker picker = new NumberPicker(this);
-        picker.setRange(145, 200);//数字范围
         picker.setOffset(2);//偏移量
+        picker.setRange(145, 200);//数字范围
+        picker.setSelectedItem(172);
         picker.setLabel("厘米");
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
@@ -98,6 +102,7 @@ gradle为1.3.0，buildTools为23.0.1，sdk为23。
         picker.setTopLineColor(0xFFEE0000);
         picker.setTextColor(0xFFFF0000, 0xFF999999);
         picker.setLineColor(0xFFEE0000);
+        picker.setSelectedItem("射手");
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
             public void onOptionPicked(String option) {
@@ -111,6 +116,7 @@ gradle为1.3.0，buildTools为23.0.1，sdk为23。
 ```java   
         ChineseZodiacPicker picker = new ChineseZodiacPicker(this);
         picker.setLineVisible(false);
+        picker.setSelectedItem("羊");
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
             public void onOptionPicked(String option) {

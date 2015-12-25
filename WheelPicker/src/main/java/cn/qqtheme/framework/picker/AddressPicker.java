@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
+import cn.qqtheme.framework.util.LogUtils;
 import cn.qqtheme.framework.widget.WheelView;
 
 /**
@@ -18,18 +19,73 @@ import cn.qqtheme.framework.widget.WheelView;
  * Created By Android Studio
  */
 public class AddressPicker extends WheelPicker {
-    private ArrayList<Province> data = new ArrayList<Province>();
     private ArrayList<String> provinceList = new ArrayList<String>();
     private ArrayList<ArrayList<String>> cityList = new ArrayList<ArrayList<String>>();
     private ArrayList<ArrayList<ArrayList<String>>> countyList = new ArrayList<ArrayList<ArrayList<String>>>();
     private OnAddressPickListener onAddressPickListener;
     private String selectedProvince = "", selectedCity = "", selectedCounty = "";
-    private int selectedProvinceIndex = 0, selectedCityIndex = 0;
+    private int selectedProvinceIndex = 0, selectedCityIndex = 0, selectedCountyIndex = 0;
 
 
     public AddressPicker(Activity activity, ArrayList<Province> data) {
         super(activity);
-        this.data.addAll(data);
+        int provinceSize = data.size();
+        //添加省
+        for (int x = 0; x < provinceSize; x++) {
+            Province pro = data.get(x);
+            provinceList.add(pro.getAreaName());
+            ArrayList<City> cities = pro.getCities();
+            ArrayList<String> xCities = new ArrayList<String>();
+            ArrayList<ArrayList<String>> xCounties = new ArrayList<ArrayList<String>>();
+            int citySize = cities.size();
+            //添加地市
+            for (int y = 0; y < citySize; y++) {
+                City cit = cities.get(y);
+                xCities.add(cit.getAreaName());
+                ArrayList<County> counties = cit.getCounties();
+                ArrayList<String> yCounties = new ArrayList<String>();
+                int countySize = counties.size();
+                //添加区县
+                if (countySize == 0) {
+                    yCounties.add(cit.getAreaName());
+                } else {
+                    for (int z = 0; z < countySize; z++) {
+                        yCounties.add(counties.get(z).getAreaName());
+                    }
+                }
+                xCounties.add(yCounties);
+            }
+            cityList.add(xCities);
+            countyList.add(xCounties);
+        }
+    }
+
+    public void setSelectedItem(String province, String city, String county) {
+        for (int i = 0; i < provinceList.size(); i++) {
+            String pro = provinceList.get(i);
+            if (pro.contains(province)) {
+                selectedProvinceIndex = i;
+                LogUtils.debug("init select province: " + pro);
+                break;
+            }
+        }
+        for (int j = 0; j < cityList.size(); j++) {
+            String cit = cityList.get(selectedProvinceIndex).get(j);
+            if (cit.contains(city)) {
+                selectedCityIndex = j;
+                LogUtils.debug("init select city: " + cit);
+                break;
+            }
+        }
+        for (int k = 0; k < countyList.size(); k++) {
+            String cou = countyList.get(selectedProvinceIndex).get(selectedCityIndex).get(k);
+            if (cou.contains(county)) {
+                selectedCountyIndex = k;
+                LogUtils.debug("init select county: " + cou);
+                break;
+            }
+        }
+        LogUtils.debug(String.format("init select index: %s-%s-%s", selectedProvinceIndex, selectedCityIndex, selectedCountyIndex));
     }
 
     public void setOnAddressPickListener(OnAddressPickListener listener) {
@@ -38,7 +94,7 @@ public class AddressPicker extends WheelPicker {
 
     @Override
     protected View initContentView() {
-        if (data.size() == 0) {
+        if (provinceList.size() == 0) {
             throw new IllegalArgumentException("please initial options at first, can't be empty");
         }
         LinearLayout layout = new LinearLayout(activity);
@@ -69,65 +125,35 @@ public class AddressPicker extends WheelPicker {
         countyView.setLineColor(lineColor);
         countyView.setOffset(offset);
         layout.addView(countyView);
-        int provinceSize = data.size();
-        //添加省
-        for (int x = 0; x < provinceSize; x++) {
-            Province pro = data.get(x);
-            provinceList.add(pro.getAreaName());
-            ArrayList<City> cities = pro.getCities();
-            ArrayList<String> xCities = new ArrayList<String>();
-            ArrayList<ArrayList<String>> xCounties = new ArrayList<ArrayList<String>>();
-            int citySize = cities.size();
-            //添加地市
-            for (int y = 0; y < citySize; y++) {
-                City cit = cities.get(y);
-                xCities.add(cit.getAreaName());
-                ArrayList<County> counties = cit.getCounties();
-                ArrayList<String> yCounties = new ArrayList<String>();
-                int countySize = counties.size();
-                //添加区县
-                if (countySize == 0) {
-                    yCounties.add(cit.getAreaName());
-                } else {
-                    for (int z = 0; z < countySize; z++) {
-                        yCounties.add(counties.get(z).getAreaName());
-                    }
-                }
-                xCounties.add(yCounties);
-            }
-            cityList.add(xCities);
-            countyList.add(xCounties);
-        }
-        provinceView.setItems(provinceList);
+        provinceView.setItems(provinceList, selectedProvinceIndex);
         provinceView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
             @Override
-            public void onSelected(int selectedIndex, String item) {
+            public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
                 selectedProvince = item;
-                selectedProvinceIndex = selectedIndex - provinceView.getOffset();
+                selectedProvinceIndex = selectedIndex;
+                selectedCountyIndex = 0;
                 //根据省份获取地市
-                cityView.setItems(cityList.get(selectedProvinceIndex));
-                cityView.startScrollerTask();
+                cityView.setItems(cityList.get(selectedProvinceIndex), isUserScroll ? 0 : selectedCityIndex);
                 //根据地市获取区县
-                countyView.setItems(countyList.get(selectedProvinceIndex).get(0));
-                countyView.startScrollerTask();
+                countyView.setItems(countyList.get(selectedProvinceIndex).get(0), isUserScroll ? 0 : selectedCountyIndex);
             }
         });
-        cityView.setItems(cityList.get(selectedProvinceIndex));
+        cityView.setItems(cityList.get(selectedProvinceIndex), selectedCityIndex);
         cityView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
             @Override
-            public void onSelected(int selectedIndex, String item) {
+            public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
                 selectedCity = item;
-                selectedCityIndex = selectedIndex - cityView.getOffset();
+                selectedCityIndex = selectedIndex;
                 //根据地市获取区县
-                countyView.setItems(countyList.get(selectedProvinceIndex).get(selectedCityIndex));
-                countyView.startScrollerTask();
+                countyView.setItems(countyList.get(selectedProvinceIndex).get(selectedCityIndex), isUserScroll ? 0 : selectedCountyIndex);
             }
         });
-        countyView.setItems(countyList.get(selectedProvinceIndex).get(selectedCityIndex));
+        countyView.setItems(countyList.get(selectedProvinceIndex).get(selectedCityIndex), selectedCountyIndex);
         countyView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
             @Override
-            public void onSelected(int selectedIndex, String item) {
+            public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
                 selectedCounty = item;
+                selectedCountyIndex = selectedIndex;
             }
         });
         return layout;

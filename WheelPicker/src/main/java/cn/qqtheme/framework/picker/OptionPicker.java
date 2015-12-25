@@ -34,6 +34,19 @@ public class OptionPicker extends WheelPicker {
         this.label = label;
     }
 
+    public void setSelectedIndex(int index) {
+        for (int i = 0; i < options.size(); i++) {
+            if (index == i) {
+                selectedOption = options.get(index);
+                break;
+            }
+        }
+    }
+
+    public void setSelectedItem(String option) {
+        selectedOption = option;
+    }
+
     public void setOnOptionPickListener(OnOptionPickListener listener) {
         this.onOptionPickListener = listener;
     }
@@ -62,10 +75,14 @@ public class OptionPicker extends WheelPicker {
         if (!TextUtils.isEmpty(label)) {
             labelView.setText(label);
         }
-        optionView.setItems(options);
+        if (TextUtils.isEmpty(selectedOption)) {
+            optionView.setItems(options);
+        } else {
+            optionView.setItems(options, selectedOption);
+        }
         optionView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
             @Override
-            public void onSelected(int selectedIndex, String item) {
+            public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
                 selectedOption = item;
             }
         });

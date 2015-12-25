@@ -1,7 +1,10 @@
 package cn.qqtheme.framework.util;
 
+import android.os.Debug;
+import android.os.Environment;
 import android.util.Log;
 
+import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -17,46 +20,76 @@ public class LogUtils {
     private static final int MAX_STACK_TRACE_SIZE = 131071; //128 KB - 1
     // 是否开启日志输出,在Debug状态下开启，在Release状态下关闭以提高程序性能，避免日志被人抓取
     private static boolean isDebug = AppConfig.DEBUG_ENABLE;
+    private static String debugTag = AppConfig.DEBUG_TAG;
+
+    public static void debug(String message) {
+        debug(debugTag, message);
+    }
+
+    public static void debug(Object object, String message) {
+        debug(object.getClass().getSimpleName(), message);
+    }
 
     /**
      * 记录“debug”级别的信息
      *
      * @param message
      */
-    public static void debug(String message) {
+    public static void debug(String tag, String message) {
         if (isDebug) {
             try {
-                Log.d(AppConfig.DEBUG_TAG, message);
+                Log.d(debugTag + tag, message);
             } catch (Exception e) {
-                System.out.println(AppConfig.DEBUG_TAG + ">>>" + message);
+                System.out.println(tag + ">>>" + message);
             }
         }
     }
 
-    /**
-     * 记录“warn”级别的信息
-     *
-     * @param message
-     */
-    public static void warn(String message) {
-        if (isDebug) {
-            try {
-                Log.w(AppConfig.DEBUG_TAG, message);
-            } catch (Exception e) {
-                System.out.println(AppConfig.DEBUG_TAG + ">>>" + message);
-            }
-        }
-    }
-
-    /**
-     * 记录“warn”级别的信息
-     *
-     * @param e
-     */
     public static void warn(Throwable e) {
+        warn(toStackTraceString(e));
+    }
+
+    public static void warn(String message) {
+        warn(debugTag, message);
+    }
+
+    public static void warn(Object object, String message) {
+        warn(object.getClass().getSimpleName(), message);
+    }
+
+    public static void warn(Object object, Throwable e) {
+        warn(object.getClass().getSimpleName(), toStackTraceString(e));
+    }
+
+    /**
+     * 记录“warn”级别的信息
+     *
+     * @param message
+     */
+    public static void warn(String tag, String message) {
         if (isDebug) {
-            warn(toStackTraceString(e));
+            try {
+                Log.w(debugTag + tag, message);
+            } catch (Exception e) {
+                System.out.println(debugTag + ">>>" + message);
+            }
         }
+    }
+
+    public static void error(Throwable e) {
+        error(toStackTraceString(e));
+    }
+
+    public static void error(String message) {
+        error(debugTag, message);
+    }
+
+    public static void error(Object object, String message) {
+        error(object.getClass().getSimpleName(), message);
+    }
+
+    public static void error(Object object, Throwable e) {
+        error(object.getClass().getSimpleName(), toStackTraceString(e));
     }
 
     /**
@@ -64,28 +97,34 @@ public class LogUtils {
      *
      * @param message
      */
-    public static void error(String message) {
+    public static void error(String tag, String message) {
         if (isDebug) {
             try {
-                Log.e(AppConfig.DEBUG_TAG, message);
+                Log.e(debugTag + tag, message);
             } catch (Exception e) {
-                System.out.println(AppConfig.DEBUG_TAG + ">>>" + message);
+                System.out.println(debugTag + ">>>" + message);
             }
         }
     }
 
     /**
-     * 记录“error”级别的信息
+     * 在某个方法中调用生成.trace文件。然后拿到电脑上用DDMS工具打开分析
      *
-     * @param e
+     * @see #stopMethodTracing()
      */
-    public static void error(Throwable e) {
+    public static void startMethodTracing() {
         if (isDebug) {
-            error(toStackTraceString(e));
+            Debug.startMethodTracing(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + debugTag + ".trace");
         }
     }
 
-    private static String toStackTraceString(Throwable throwable){
+    public static void stopMethodTracing() {
+        if (isDebug) {
+            Debug.stopMethodTracing();
+        }
+    }
+
+    public static String toStackTraceString(Throwable throwable) {
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
         throwable.printStackTrace(pw);
