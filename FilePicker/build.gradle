@@ -1,46 +1,29 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion Integer.parseInt(System.properties['compileSdkVersion'].toString())
-    buildToolsVersion System.properties['buildToolsVersion']
+
+    compileSdkVersion COMPILE_SDK_VERSION as int
+    buildToolsVersion BUILD_TOOL_VERSION
 
     defaultConfig {
-        minSdkVersion Integer.parseInt(System.properties['minSdkVersion'].toString())
-        targetSdkVersion Integer.parseInt(System.properties['compileSdkVersion'].toString())
-        versionCode Integer.parseInt(System.properties['versionCode'].toString())
-        versionName System.properties['versionName']
+        minSdkVersion MIN_SDK_VERSION as int
+        targetSdkVersion COMPILE_SDK_VERSION as int
+        versionCode VERSION_CODE as int
+        versionName VERSION_NAME
     }
 
     buildTypes {
         release {
-            //是否zip优化
             zipAlignEnabled true
-            //是否移除无用的resource
             shrinkResources true
-            //是否混淆
             minifyEnabled false
-            //混淆配置文件
-            proguardFiles 'proguard-rules.pro'
+            proguardFile 'proguard-rules.pro'
         }
-    }
-
-    lintOptions {
-        //忽略lint错误
-        abortOnError false
-    }
-
-    packagingOptions {
-        exclude 'META-INF/DEPENDENCIES.txt'
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/NOTICE.txt'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/DEPENDENCIES'
-        exclude 'META-INF/notice.txt'
-        exclude 'META-INF/license.txt'
-        exclude 'META-INF/dependencies.txt'
-        exclude 'META-INF/LGPL2.1'
-        exclude 'META-INF/ASL2.0'
+        debug {
+            zipAlignEnabled false
+            shrinkResources false
+            minifyEnabled false
+        }
     }
 
 }

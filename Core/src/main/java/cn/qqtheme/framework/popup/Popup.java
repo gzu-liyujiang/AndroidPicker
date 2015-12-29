@@ -4,12 +4,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.annotation.StyleRes;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.FrameLayout;
 
+import cn.qqtheme.framework.R;
 import cn.qqtheme.framework.util.LogUtils;
 
 /**
@@ -17,12 +19,16 @@ import cn.qqtheme.framework.util.LogUtils;
  *
  * @author 李玉江[QQ:1023694760]
  * @version 2015-10-19
- * @see cn.qqtheme.framework.dialog.Dialog
  * @see android.widget.PopupWindow
  */
 public class Popup {
+    private static int animRes = R.style.Animation_Popup;
     private android.app.Dialog dialog;
     private FrameLayout contentLayout;
+
+    public static void setAnimation(@StyleRes int animRes) {
+        Popup.animRes = animRes;
+    }
 
     public Popup(Context context) {
         init(context);
@@ -38,6 +44,7 @@ public class Popup {
         dialog.setCanceledOnTouchOutside(true);
         Window window = dialog.getWindow();
         window.setGravity(Gravity.BOTTOM);
+        window.setWindowAnimations(animRes);
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         //android.util.AndroidRuntimeException: requestFeature() must be called before adding content
         window.requestFeature(Window.FEATURE_NO_TITLE);

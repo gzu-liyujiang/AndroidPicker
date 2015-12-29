@@ -13,6 +13,27 @@ dependencies {
     compile project(':ColorPicker')
 }
 ```   
+4、自定义窗口进入退出动画：在Application的子类中调用“Popup.setAnimation()”即可，如：   
+```xml
+<resources>
+    <style name="Animation.CustomPopup" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/popup_in</item>
+        <item name="android:windowExitAnimation">@anim/popup_out</item>
+    </style>
+</resources>
+```   
+```java
+public class DemoApp extends Application {
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Popup.setAnimation(R.style.Animation_CustomPopup);
+    }
+
+}
+```   
+
 注：   
 旧版的基于android-wheel，在分支“branch_OldAndroidPicker”。   
 不断学习，持续完善，敬请关注。。。   

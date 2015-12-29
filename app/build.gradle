@@ -1,25 +1,40 @@
 apply plugin: 'com.android.application'
+
 android {
-    compileSdkVersion Integer.parseInt(System.properties['compileSdkVersion'].toString())
-    buildToolsVersion System.properties['buildToolsVersion']
+    compileSdkVersion COMPILE_SDK_VERSION as int
+    buildToolsVersion BUILD_TOOL_VERSION
 
     defaultConfig {
-        minSdkVersion Integer.parseInt(System.properties['minSdkVersion'].toString())
-        targetSdkVersion Integer.parseInt(System.properties['compileSdkVersion'].toString())
-        versionCode Integer.parseInt(System.properties['versionCode'].toString())
-        versionName System.properties['versionName']
+        minSdkVersion MIN_SDK_VERSION as int
+        targetSdkVersion COMPILE_SDK_VERSION as int
+        versionCode VERSION_CODE as int
+        versionName VERSION_NAME
     }
 
     buildTypes {
         release {
+            //是否调试模式
+            debuggable false
+            jniDebuggable false
             //是否zip优化
             zipAlignEnabled true
-            //是否移除无用的resource
+            //是否移除无用的资源
             shrinkResources true
             //是否混淆
-            minifyEnabled false
+            minifyEnabled true
             //混淆配置文件
-            proguardFiles 'proguard-rules.pro'
+            proguardFile 'proguard-rules.pro'
+        }
+        debug {
+            //是否调试模式
+            debuggable true
+            jniDebuggable true
+            //是否zip优化
+            zipAlignEnabled false
+            //是否移除无用的资源
+            shrinkResources false
+            //是否混淆
+            minifyEnabled false
         }
     }
 
@@ -45,7 +60,7 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:'+System.properties['androidSupportVersion']
+    compile 'com.android.support:support-v4:' + ANDROID_SUPPORT_VERSION
     compile project(':WheelPicker')
     compile project(':FilePicker')
     compile project(':ColorPicker')
