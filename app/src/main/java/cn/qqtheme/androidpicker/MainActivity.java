@@ -40,7 +40,8 @@ public class MainActivity extends Activity {
 
     public void onYearMonthDayPicker(View view) {
         DatePicker picker = new DatePicker(this);
-        picker.setRange(1990, 2015);
+        picker.setRange(2000, 2016);
+        picker.setSelectedItem(2015, 10, 10);
         picker.setOnDatePickListener(new DatePicker.OnYearMonthDayPickListener() {
             @Override
             public void onDatePicked(String year, String month, String day) {
