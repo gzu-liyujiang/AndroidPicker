@@ -68,6 +68,7 @@ public class DatePicker extends WheelPicker {
      * @see Mode#YEAR_MONTH
      */
     public void setRange(int startYear, int endYear) {
+        years.clear();
         for (int i = startYear; i <= endYear; i++) {
             years.add(String.valueOf(i));
         }
