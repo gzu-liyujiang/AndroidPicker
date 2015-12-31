@@ -18,7 +18,7 @@ public class DayPicker extends OptionPicker {
         //需要根据年份及月份动态计算天数
         int maxDays = DateUtils.calculateDaysInMonth(year, month);
         for (int i = 1; i <= maxDays; i++) {
-            options.add(DateUtils.fillZore(i));
+            options.add(DateUtils.fillZero(i));
         }
     }
 

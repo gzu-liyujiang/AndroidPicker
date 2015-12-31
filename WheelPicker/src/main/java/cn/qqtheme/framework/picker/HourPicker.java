@@ -27,11 +27,11 @@ public class HourPicker extends OptionPicker {
         super(activity, new String[]{});
         if (mode.equals(Mode.HOUR)) {
             for (int i = 1; i <= 12; i++) {
-                options.add(DateUtils.fillZore(i));
+                options.add(DateUtils.fillZero(i));
             }
         } else {
             for (int i = 0; i < 24; i++) {
-                options.add(DateUtils.fillZore(i));
+                options.add(DateUtils.fillZero(i));
             }
         }
     }

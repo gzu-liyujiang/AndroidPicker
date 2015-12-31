@@ -40,8 +40,8 @@ public class TimePicker extends WheelPicker {
     public TimePicker(Activity activity, Mode mode) {
         super(activity);
         this.mode = mode;
-        selectedHour = DateUtils.fillZore(Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
-        selectedMinute = DateUtils.fillZore(Calendar.getInstance().get(Calendar.MINUTE));
+        selectedHour = DateUtils.fillZero(Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
+        selectedMinute = DateUtils.fillZero(Calendar.getInstance().get(Calendar.MINUTE));
     }
 
     public void setLabel(String hourLabel, String minuteLabel) {
@@ -97,17 +97,17 @@ public class TimePicker extends WheelPicker {
         ArrayList<String> hours = new ArrayList<String>();
         if (mode.equals(Mode.HOUR)) {
             for (int i = 1; i <= 12; i++) {
-                hours.add(DateUtils.fillZore(i));
+                hours.add(DateUtils.fillZero(i));
             }
         } else {
             for (int i = 0; i < 24; i++) {
-                hours.add(DateUtils.fillZore(i));
+                hours.add(DateUtils.fillZero(i));
             }
         }
         hourView.setItems(hours, selectedHour);
         ArrayList<String> minutes = new ArrayList<String>();
         for (int i = 0; i < 60; i++) {
-            minutes.add(DateUtils.fillZore(i));
+            minutes.add(DateUtils.fillZero(i));
         }
         minuteView.setItems(minutes, selectedMinute);
         hourView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {

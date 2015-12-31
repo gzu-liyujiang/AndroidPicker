@@ -8,6 +8,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import cn.qqtheme.framework.util.DateUtils;
 import cn.qqtheme.framework.widget.WheelView;
@@ -20,10 +22,12 @@ import cn.qqtheme.framework.widget.WheelView;
  * Created By Android Studio
  */
 public class DatePicker extends WheelPicker {
+    private ArrayList<String> years = new ArrayList<String>();
+    private ArrayList<String> months = new ArrayList<String>();
+    private ArrayList<String> days = new ArrayList<String>();
     private OnDatePickListener onDatePickListener;
     private String yearLabel = "年", monthLabel = "月", dayLabel = "日";
-    private int startYear = 1970, endYear = 2050;
-    private int selectedYear = 0, selectedMonth = 0, selectedDay = 0;
+    private int selectedYearIndex = 0, selectedMonthIndex = 0, selectedDayIndex = 0;
     private Mode mode = Mode.YEAR_MONTH_DAY;
 
     public enum Mode {
@@ -42,6 +46,15 @@ public class DatePicker extends WheelPicker {
     public DatePicker(Activity activity, Mode mode) {
         super(activity);
         this.mode = mode;
+        for (int i = 2000; i <= 2050; i++) {
+            years.add(String.valueOf(i));
+        }
+        for (int i = 1; i <= 12; i++) {
+            months.add(DateUtils.fillZero(i));
+        }
+        for (int i = 1; i <= 31; i++) {
+            days.add(DateUtils.fillZero(i));
+        }
     }
 
     public void setLabel(String yearLabel, String monthLabel, String dayLabel) {
@@ -55,23 +68,42 @@ public class DatePicker extends WheelPicker {
      * @see Mode#YEAR_MONTH
      */
     public void setRange(int startYear, int endYear) {
-        this.startYear = startYear;
-        this.endYear = endYear;
+        for (int i = startYear; i <= endYear; i++) {
+            years.add(String.valueOf(i));
+        }
     }
 
-    public void setSelectedItem(int year, int mouth, int day) {
-        selectedYear = year;
-        selectedMonth = mouth;
-        selectedDay = day;
+    private int findItemIndex(ArrayList<String> items, int item) {
+        //折半查找有序元素的索引
+        int index = Collections.binarySearch(items, item, new Comparator<Object>() {
+            @Override
+            public int compare(Object lhs, Object rhs) {
+                String lhsStr = lhs.toString();
+                String rhsStr = rhs.toString();
+                lhsStr = lhsStr.startsWith("0") ? lhsStr.substring(1) : lhsStr;
+                rhsStr = rhsStr.startsWith("0") ? rhsStr.substring(1) : rhsStr;
+                return Integer.parseInt(lhsStr) - Integer.parseInt(rhsStr);
+            }
+        });
+        if (index < 0) {
+            index = 0;
+        }
+        return index;
     }
 
-    public void setSelectedItem(int yearOrMonth, int mouthOrDay) {
+    public void setSelectedItem(int year, int month, int day) {
+        selectedYearIndex = findItemIndex(years, year);
+        selectedMonthIndex = findItemIndex(months, month);
+        selectedDayIndex = findItemIndex(days, day);
+    }
+
+    public void setSelectedItem(int yearOrMonth, int monthOrDay) {
         if (mode.equals(Mode.MONTH_DAY)) {
-            selectedMonth = yearOrMonth;
-            selectedDay = mouthOrDay;
+            selectedMonthIndex = findItemIndex(months, yearOrMonth);
+            selectedDayIndex = findItemIndex(days, monthOrDay);
         } else {
-            selectedYear = yearOrMonth;
-            selectedMonth = mouthOrDay;
+            selectedYearIndex = findItemIndex(years, yearOrMonth);
+            selectedMonthIndex = findItemIndex(months, monthOrDay);
         }
     }
 
@@ -143,73 +175,50 @@ public class DatePicker extends WheelPicker {
             if (!TextUtils.isEmpty(yearLabel)) {
                 yearTextView.setText(yearLabel);
             }
-            ArrayList<String> years = new ArrayList<String>();
-            for (int i = startYear; i <= endYear; i++) {
-                years.add(String.valueOf(i));
-            }
-            if (selectedYear == 0) {
+            if (selectedYearIndex == 0) {
                 yearView.setItems(years);
             } else {
-                yearView.setItems(years, selectedYear);
+                yearView.setItems(years, selectedYearIndex);
             }
             yearView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
                 @Override
                 public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
-                    selectedYear = stringToYearMonthDay(item);
-                    //需要根据年份及月份动态计算天数
-                    int maxDays = DateUtils.calculateDaysInMonth(selectedYear, selectedMonth);
-                    ArrayList<String> days = new ArrayList<String>();
-                    for (int i = 1; i <= maxDays; i++) {
-                        days.add(DateUtils.fillZore(i));
-                    }
-                    dayView.setItems(days, isUserScroll ? days.get(0) : String.valueOf(selectedDay));
+                    selectedYearIndex = stringToYearMonthDay(item);
+                    dayView.setItems(days, isUserScroll ? days.get(0) : String.valueOf(selectedDayIndex));
                 }
             });
         }
         if (!TextUtils.isEmpty(monthLabel)) {
             monthTextView.setText(monthLabel);
         }
-        ArrayList<String> months = new ArrayList<String>();
-        for (int i = 1; i <= 12; i++) {
-            months.add(DateUtils.fillZore(i));
-        }
-        if (selectedMonth == 0) {
+        if (selectedMonthIndex == 0) {
             monthView.setItems(months);
         } else {
-            monthView.setItems(months, selectedMonth);
+            monthView.setItems(months, selectedMonthIndex);
         }
         monthView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
             @Override
             public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
-                selectedMonth = stringToYearMonthDay(item);
-                //需要根据年份及月份动态计算天数
-                int maxDays = DateUtils.calculateDaysInMonth(selectedYear, selectedMonth);
-                ArrayList<String> days = new ArrayList<String>();
-                for (int i = 1; i <= maxDays; i++) {
-                    days.add(DateUtils.fillZore(i));
+                selectedMonthIndex = stringToYearMonthDay(item);
+                if (!mode.equals(Mode.YEAR_MONTH)) {
+                    //需要根据年份及月份动态计算天数
+                    days.clear();
+                    int maxDays = DateUtils.calculateDaysInMonth(selectedYearIndex, selectedMonthIndex);
+                    for (int i = 1; i <= maxDays; i++) {
+                        days.add(DateUtils.fillZero(i));
+                    }
+                    dayView.setItems(days, isUserScroll ? days.get(0) : String.valueOf(selectedDayIndex));
                 }
-                dayView.setItems(days, isUserScroll ? days.get(0) : String.valueOf(selectedDay));
             }
         });
         if (!mode.equals(Mode.YEAR_MONTH)) {
             if (!TextUtils.isEmpty(dayLabel)) {
                 dayTextView.setText(dayLabel);
             }
-            //年月日选择时，最大天数根据年月来计算
-            int maxDays;
-            if (mode.equals(Mode.YEAR_MONTH_DAY)) {
-                maxDays = DateUtils.calculateDaysInMonth(selectedYear, selectedMonth);
-            } else {
-                maxDays = DateUtils.calculateDaysInMonth(selectedMonth);
-            }
-            ArrayList<String> days = new ArrayList<String>();
-            for (int i = 1; i <= maxDays; i++) {
-                days.add(DateUtils.fillZore(i));
-            }
-            if (selectedDay == 0) {
+            if (selectedDayIndex == 0) {
                 dayView.setItems(days);
             } else {
-                dayView.setItems(days, selectedDay);
+                dayView.setItems(days, selectedDayIndex);
             }
             dayView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
                 @Override
@@ -217,7 +226,7 @@ public class DatePicker extends WheelPicker {
                     if (TextUtils.isEmpty(item)) {
                         return;
                     }
-                    selectedDay = stringToYearMonthDay(item);
+                    selectedDayIndex = stringToYearMonthDay(item);
                 }
             });
         }
@@ -239,9 +248,9 @@ public class DatePicker extends WheelPicker {
             @Override
             public void onConfirm() {
                 if (onDatePickListener != null) {
-                    String day = DateUtils.fillZore(selectedDay);
-                    String month = DateUtils.fillZore(selectedMonth);
-                    String year = String.valueOf(selectedYear);
+                    String day = DateUtils.fillZero(selectedDayIndex);
+                    String month = DateUtils.fillZero(selectedMonthIndex);
+                    String year = String.valueOf(selectedYearIndex);
                     switch (mode) {
                         case YEAR_MONTH:
                             ((OnYearMonthPickListener) onDatePickListener).onDatePicked(year, month);

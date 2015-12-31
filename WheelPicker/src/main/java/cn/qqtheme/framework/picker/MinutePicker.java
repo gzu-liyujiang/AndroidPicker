@@ -16,7 +16,7 @@ public class MinutePicker extends OptionPicker {
     public MinutePicker(Activity activity) {
         super(activity, new String[]{});
         for (int i = 0; i < 60; i++) {
-            options.add(DateUtils.fillZore(i));
+            options.add(DateUtils.fillZero(i));
         }
     }
 

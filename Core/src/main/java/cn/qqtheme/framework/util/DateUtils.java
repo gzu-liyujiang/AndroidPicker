@@ -124,7 +124,7 @@ public class DateUtils extends android.text.format.DateUtils {
      * 月日时分秒，0-9前补0
      */
     @NonNull
-    public static String fillZore(int number) {
+    public static String fillZero(int number) {
         return number < 10 ? "0" + number : "" + number;
     }
 
