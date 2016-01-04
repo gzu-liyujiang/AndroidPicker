@@ -71,6 +71,12 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="onAddress2Picker"
+            android:text="地址选择（只包括地级、县级）" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:onClick="onColorPicker"
             android:text="颜色选择" />
 

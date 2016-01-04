@@ -7,6 +7,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+
+import java.util.ArrayList;
+
+import cn.qqtheme.framework.picker.AddressPicker;
 import cn.qqtheme.framework.picker.ChineseZodiacPicker;
 import cn.qqtheme.framework.picker.ColorPicker;
 import cn.qqtheme.framework.picker.ConstellationPicker;
@@ -16,6 +21,7 @@ import cn.qqtheme.framework.picker.NumberPicker;
 import cn.qqtheme.framework.picker.OptionPicker;
 import cn.qqtheme.framework.picker.SexPicker;
 import cn.qqtheme.framework.picker.TimePicker;
+import cn.qqtheme.framework.util.AssetsUtils;
 import cn.qqtheme.framework.util.ConvertUtils;
 import cn.qqtheme.framework.util.StorageUtils;
 
@@ -160,6 +166,26 @@ public class MainActivity extends Activity {
 
     public void onAddressPicker(View view) {
         new AddressInitTask(this).execute("贵州", "毕节", "纳雍");
+    }
+
+    public void onAddress2Picker(View view) {
+        try {
+            ArrayList<AddressPicker.Province> data = new ArrayList<AddressPicker.Province>();
+            String json = AssetsUtils.readText(this, "city2.json");
+            data.addAll(JSON.parseArray(json, AddressPicker.Province.class));
+            AddressPicker picker = new AddressPicker(this, data);
+            picker.setHideProvince(true);
+            picker.setSelectedItem("贵州", "贵阳", "花溪");
+            picker.setOnAddressPickListener(new AddressPicker.OnAddressPickListener() {
+                @Override
+                public void onAddressPicked(String province, String city, String county) {
+                    showToast(province + city + county);
+                }
+            });
+            picker.show();
+        } catch (Exception e) {
+            showToast(e.toString());
+        }
     }
 
     public void onColorPicker(View view) {

@@ -102,19 +102,36 @@ gradle为1.3.0，buildTools为23.0.1，sdk为23。
         picker.show();
 ```
 
-地址选择器：
+地址选择器（含省级、地级、县级）：
 ```java   
         ArrayList<AddressPicker.Province> data = new ArrayList<AddressPicker.Province>();
-        String json = AssetsUtils.readText(activity, "city.json");
+        String json = AssetsUtils.readText(this, "city.json");
         data.addAll(JSON.parseArray(json, AddressPicker.Province.class));
-        AddressPicker picker = new AddressPicker(activity, result);
+        AddressPicker picker = new AddressPicker(this, result);
+        picker.setSelectedItem("贵州", "贵阳", "花溪");
         picker.setOnAddressPickListener(new AddressPicker.OnAddressPickListener() {
             @Override
             public void onAddressPicked(String province, String city, String county) {
-                showToast(activity, province + city + county);
+                showToast(province + city + county);
             }
         });
         picker.show();
+```
+
+地址选择器（含地级、县级）：
+```java   
+            ArrayList<AddressPicker.Province> data = new ArrayList<AddressPicker.Province>();
+            String json = AssetsUtils.readText(this, "city2.json");
+            data.addAll(JSON.parseArray(json, AddressPicker.Province.class));
+            AddressPicker picker = new AddressPicker(this, data);
+            picker.setHideProvince(true);
+            picker.setOnAddressPickListener(new AddressPicker.OnAddressPickListener() {
+                @Override
+                public void onAddressPicked(String province, String city, String county) {
+                    showToast(province + city + county);
+                }
+            });
+            picker.show();
 ```
 
 星座选择器：
@@ -202,6 +219,7 @@ https://github.com/alibaba/fastjson<br />
 ![时间选择器效果图](/screenshots/time.gif)    
 ![单项选择器效果图](/screenshots/option.gif)     
 ![地址选择器效果图](/screenshots/address.gif)    
+![地址选择器效果图](/screenshots/address.png)    
 ![数字选择器效果图](/screenshots/number.gif)    
 ![星座选择器效果图](/screenshots/constellation.gif)    
 ![生肖选择器效果图](/screenshots/chinesezodiac.gif)    
