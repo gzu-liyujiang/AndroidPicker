@@ -25,7 +25,7 @@ public class AddressPicker extends WheelPicker {
     private OnAddressPickListener onAddressPickListener;
     private String selectedProvince = "", selectedCity = "", selectedCounty = "";
     private int selectedProvinceIndex = 0, selectedCityIndex = 0, selectedCountyIndex = 0;
-
+    private boolean hideProvince = false;
 
     public AddressPicker(Activity activity, ArrayList<Province> data) {
         super(activity);
@@ -88,6 +88,15 @@ public class AddressPicker extends WheelPicker {
         LogUtils.debug(String.format("init select index: %s-%s-%s", selectedProvinceIndex, selectedCityIndex, selectedCountyIndex));
     }
 
+    /**
+     * 隐藏省级行政区，只显示地市级和区县级。
+     * 设置为true的话，地址数据中只需要某个省份的即可
+     * 参见示例中的“city2.json”
+     */
+    public void setHideProvince(boolean hideProvince) {
+        this.hideProvince = hideProvince;
+    }
+
     public void setOnAddressPickListener(OnAddressPickListener listener) {
         this.onAddressPickListener = listener;
     }
@@ -109,6 +118,9 @@ public class AddressPicker extends WheelPicker {
         provinceView.setLineColor(lineColor);
         provinceView.setOffset(offset);
         layout.addView(provinceView);
+        if (hideProvince) {
+            provinceView.setVisibility(View.GONE);
+        }
         final WheelView cityView = new WheelView(activity);
         cityView.setLayoutParams(new LinearLayout.LayoutParams(screenWidth / 3, WRAP_CONTENT));
         cityView.setTextSize(textSize);
