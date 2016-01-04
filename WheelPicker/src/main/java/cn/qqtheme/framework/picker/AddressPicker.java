@@ -69,16 +69,18 @@ public class AddressPicker extends WheelPicker {
                 break;
             }
         }
-        for (int j = 0; j < cityList.size(); j++) {
-            String cit = cityList.get(selectedProvinceIndex).get(j);
+        ArrayList<String> cities = cityList.get(selectedProvinceIndex);
+        for (int j = 0; j < cities.size(); j++) {
+            String cit = cities.get(j);
             if (cit.contains(city)) {
                 selectedCityIndex = j;
                 LogUtils.debug("init select city: " + cit);
                 break;
             }
         }
-        for (int k = 0; k < countyList.size(); k++) {
-            String cou = countyList.get(selectedProvinceIndex).get(selectedCityIndex).get(k);
+        ArrayList<String> counties = countyList.get(selectedProvinceIndex).get(selectedCityIndex);
+        for (int k = 0; k < counties.size(); k++) {
+            String cou = counties.get(k);
             if (cou.contains(county)) {
                 selectedCountyIndex = k;
                 LogUtils.debug("init select county: " + cou);
