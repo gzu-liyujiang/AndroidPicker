@@ -33,9 +33,9 @@ import android.widget.*;
  * Modified:扩展一些方法，移除Picasso相关的图片异步加载方法，by liyujiang at 2015.12.07
  * Allows an abstraction of the ViewHolder pattern.<br>
  * <br>
- * <p/>
+ * <p>
  * <b>Usage</b>
- * <p/>
+ * <p>
  * <pre>
  * return BaseAdapterHelper.get(context, convertView, parent, R.layout.item)
  *         .setText(R.id.tvName, contact.getName())
@@ -62,6 +62,14 @@ public class BaseAdapterHelper {
      */
     Object associatedObject;
 
+    /**
+     * Instantiates a new Base adapter helper.
+     *
+     * @param context  the context
+     * @param parent   the parent
+     * @param layoutId the layout id
+     * @param position the position
+     */
     protected BaseAdapterHelper(Context context, ViewGroup parent, int layoutId, int position) {
         this.context = context;
         this.position = position;
@@ -77,6 +85,7 @@ public class BaseAdapterHelper {
      * @param context     The current context.
      * @param convertView The convertView arg passed to the getView() method.
      * @param parent      The parent arg passed to the getView() method.
+     * @param layoutId    the layout id
      * @return A BaseAdapterHelper instance.
      */
     public static BaseAdapterHelper get(Context context, View convertView, ViewGroup parent, int layoutId) {
@@ -85,6 +94,13 @@ public class BaseAdapterHelper {
 
     /**
      * This method is package private and should only be used by QuickAdapter.
+     *
+     * @param context     the context
+     * @param convertView the convert view
+     * @param parent      the parent
+     * @param layoutId    the layout id
+     * @param position    the position
+     * @return the base adapter helper
      */
     static BaseAdapterHelper get(Context context, View convertView, ViewGroup parent, int layoutId, int position) {
         if (convertView == null) {
@@ -103,7 +119,9 @@ public class BaseAdapterHelper {
      * If you think it's a common use case, please consider creating
      * a new issue at https://github.com/JoanZapata/base-adapter-helper/issues.
      *
+     * @param <T>    the type parameter
      * @param viewId The id of the view you want to retrieve.
+     * @return the view
      */
     public <T extends View> T getView(int viewId) {
         return retrieveView(viewId);
@@ -135,6 +153,12 @@ public class BaseAdapterHelper {
 
     /**
      * Add by liyujiang at 2015.08.01
+     *
+     * @param viewId    the view id
+     * @param imageUri  the image uri
+     * @param maxWidth  the max width
+     * @param maxHeight the max height
+     * @return the image uri
      */
     public BaseAdapterHelper setImageUri(int viewId, String imageUri, int maxWidth, int maxHeight) {
 //        ImageView view = retrieveView(viewId);
@@ -145,6 +169,10 @@ public class BaseAdapterHelper {
     /**
      * Add by liyujiang at 2015.07.01
      * Sets the on checked change listener of the view.
+     *
+     * @param viewId   the view id
+     * @param listener the listener
+     * @return the on checked change listener
      */
     public BaseAdapterHelper setOnCheckedChangeListener(int viewId, CompoundButton.OnCheckedChangeListener listener) {
         CompoundButton view = retrieveView(viewId);
@@ -246,6 +274,10 @@ public class BaseAdapterHelper {
 
     /**
      * Add an action to set the image of an image view. Can be called multiple times.
+     *
+     * @param viewId the view id
+     * @param bitmap the bitmap
+     * @return the image bitmap
      */
     public BaseAdapterHelper setImageBitmap(int viewId, Bitmap bitmap) {
         ImageView view = retrieveView(viewId);
@@ -256,6 +288,10 @@ public class BaseAdapterHelper {
     /**
      * Add an action to set the alpha of a view. Can be called multiple times.
      * Alpha between 0-1.
+     *
+     * @param viewId the view id
+     * @param value  the value
+     * @return the alpha
      */
     public BaseAdapterHelper setAlpha(int viewId, float value) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -297,6 +333,10 @@ public class BaseAdapterHelper {
 
     /**
      * Apply the typeface to the given viewId, and enable subpixel rendering.
+     *
+     * @param viewId   the view id
+     * @param typeface the typeface
+     * @return the typeface
      */
     public BaseAdapterHelper setTypeface(int viewId, Typeface typeface) {
         TextView view = retrieveView(viewId);
@@ -307,6 +347,10 @@ public class BaseAdapterHelper {
 
     /**
      * Apply the typeface to all the given viewIds, and enable subpixel rendering.
+     *
+     * @param typeface the typeface
+     * @param viewIds  the view ids
+     * @return the typeface
      */
     public BaseAdapterHelper setTypeface(Typeface typeface, int... viewIds) {
         for (int viewId : viewIds) {
@@ -524,6 +568,8 @@ public class BaseAdapterHelper {
 
     /**
      * Retrieve the convertView
+     *
+     * @return the view
      */
     public View getView() {
         return convertView;
@@ -532,6 +578,7 @@ public class BaseAdapterHelper {
     /**
      * Retrieve the overall position of the data in the list.
      *
+     * @return the position
      * @throws IllegalArgumentException If the position hasn't been set at the construction of the this helper.
      */
     public int getPosition() {
@@ -541,6 +588,13 @@ public class BaseAdapterHelper {
         return position;
     }
 
+    /**
+     * Retrieve view t.
+     *
+     * @param <T>    the type parameter
+     * @param viewId the view id
+     * @return the t
+     */
     @SuppressWarnings("unchecked")
     protected <T extends View> T retrieveView(int viewId) {
         View view = views.get(viewId);
@@ -553,6 +607,8 @@ public class BaseAdapterHelper {
 
     /**
      * Retrieves the last converted object on this view.
+     *
+     * @return the associated object
      */
     public Object getAssociatedObject() {
         return associatedObject;
@@ -560,6 +616,8 @@ public class BaseAdapterHelper {
 
     /**
      * Should be called during convert
+     *
+     * @param associatedObject the associated object
      */
     public void setAssociatedObject(Object associatedObject) {
         this.associatedObject = associatedObject;

@@ -30,8 +30,8 @@ import java.util.regex.Pattern;
 /**
  * 文件处理
  *
- * @author 李玉江[QQ:1023694760]
- * @version 2014-4-18
+ * @author 李玉江[QQ :1023694760]
+ * @version 2014 -4-18
  */
 public class FileUtils {
 
@@ -42,8 +42,8 @@ public class FileUtils {
     /**
      * 为目录结尾添加“/”
      *
-     * @param path
-     * @return
+     * @param path the path
+     * @return string
      */
     public static String separator(String path) {
         path = path.replace('\\', '/');
@@ -55,10 +55,10 @@ public class FileUtils {
     /**
      * 列出指定目录下的所有子目录
      *
-     * @param startDirPath
-     * @param excludeDirs
-     * @param sortType
-     * @return
+     * @param startDirPath the start dir path
+     * @param excludeDirs  the exclude dirs
+     * @param sortType     the sort type
+     * @return file [ ]
      */
     public static File[] listDirs(String startDirPath, String[] excludeDirs, SortType sortType) {
         LogUtils.debug(String.format("list dir %s", startDirPath));
@@ -117,9 +117,9 @@ public class FileUtils {
     /**
      * 列出指定目录下的所有子目录
      *
-     * @param startDirPath
-     * @param excludeDirs
-     * @return
+     * @param startDirPath the start dir path
+     * @param excludeDirs  the exclude dirs
+     * @return file [ ]
      */
     public static File[] listDirs(String startDirPath, String[] excludeDirs) {
         return listDirs(startDirPath, excludeDirs, SortType.BY_NAME_ASC);
@@ -127,6 +127,9 @@ public class FileUtils {
 
     /**
      * 列出指定目录下的所有子目录
+     *
+     * @param startDirPath the start dir path
+     * @return the file [ ]
      */
     public static File[] listDirs(String startDirPath) {
         return listDirs(startDirPath, null, SortType.BY_NAME_ASC);
@@ -135,8 +138,9 @@ public class FileUtils {
     /**
      * 列出指定目录下的所有子目录及所有文件
      *
-     * @param startDirPath
-     * @return
+     * @param startDirPath    the start dir path
+     * @param allowExtensions the allow extensions
+     * @return file [ ]
      */
     public static File[] listDirsAndFiles(String startDirPath, String[] allowExtensions) {
         File[] dirs, files, dirsAndFiles;
@@ -158,8 +162,8 @@ public class FileUtils {
     /**
      * 列出指定目录下的所有子目录及所有文件
      *
-     * @param startDirPath
-     * @return
+     * @param startDirPath the start dir path
+     * @return file [ ]
      */
     public static File[] listDirsAndFiles(String startDirPath) {
         return listDirsAndFiles(startDirPath, null);
@@ -167,6 +171,11 @@ public class FileUtils {
 
     /**
      * 列出指定目录下的所有文件
+     *
+     * @param startDirPath  the start dir path
+     * @param filterPattern the filter pattern
+     * @param sortType      the sort type
+     * @return the file [ ]
      */
     public static File[] listFiles(String startDirPath, final Pattern filterPattern, SortType sortType) {
         LogUtils.debug(String.format("list file %s", startDirPath));
@@ -221,6 +230,10 @@ public class FileUtils {
 
     /**
      * 列出指定目录下的所有文件
+     *
+     * @param startDirPath  the start dir path
+     * @param filterPattern the filter pattern
+     * @return the file [ ]
      */
     public static File[] listFiles(String startDirPath, Pattern filterPattern) {
         return listFiles(startDirPath, filterPattern, SortType.BY_NAME_ASC);
@@ -228,6 +241,9 @@ public class FileUtils {
 
     /**
      * 列出指定目录下的所有文件
+     *
+     * @param startDirPath the start dir path
+     * @return the file [ ]
      */
     public static File[] listFiles(String startDirPath) {
         return listFiles(startDirPath, null, SortType.BY_NAME_ASC);
@@ -235,6 +251,10 @@ public class FileUtils {
 
     /**
      * 列出指定目录下的所有文件
+     *
+     * @param startDirPath    the start dir path
+     * @param allowExtensions the allow extensions
+     * @return the file [ ]
      */
     public static File[] listFiles(String startDirPath, final String[] allowExtensions) {
         LogUtils.debug(String.format("list file %s", startDirPath));
@@ -253,6 +273,10 @@ public class FileUtils {
 
     /**
      * 列出指定目录下的所有文件
+     *
+     * @param startDirPath   the start dir path
+     * @param allowExtension the allow extension
+     * @return the file [ ]
      */
     public static File[] listFiles(String startDirPath, String allowExtension) {
         return listFiles(startDirPath, new String[]{allowExtension});
@@ -261,8 +285,8 @@ public class FileUtils {
     /**
      * 判断文件或目录是否存在
      *
-     * @param path
-     * @return
+     * @param path the path
+     * @return boolean
      */
     public static boolean exist(String path) {
         File file = new File(path);
@@ -271,6 +295,10 @@ public class FileUtils {
 
     /**
      * 删除文件或目录
+     *
+     * @param file          the file
+     * @param deleteRootDir the delete root dir
+     * @return the boolean
      */
     public static boolean delete(File file, boolean deleteRootDir) {
         LogUtils.debug(String.format("delete file %s", file.getAbsolutePath()));
@@ -312,6 +340,10 @@ public class FileUtils {
 
     /**
      * 删除文件或目录
+     *
+     * @param path          the path
+     * @param deleteRootDir the delete root dir
+     * @return the boolean
      */
     public static boolean delete(String path, boolean deleteRootDir) {
         File file = new File(path);
@@ -323,6 +355,9 @@ public class FileUtils {
 
     /**
      * 删除文件或目录, 不删除最顶层目录
+     *
+     * @param path the path
+     * @return the boolean
      */
     public static boolean delete(String path) {
         return delete(path, false);
@@ -330,6 +365,9 @@ public class FileUtils {
 
     /**
      * 删除文件或目录, 不删除最顶层目录
+     *
+     * @param file the file
+     * @return the boolean
      */
     public static boolean delete(File file) {
         return delete(file, false);
@@ -337,6 +375,10 @@ public class FileUtils {
 
     /**
      * 复制文件为另一个文件，或复制某目录下的所有文件及目录到另一个目录下
+     *
+     * @param src the src
+     * @param tar the tar
+     * @return the boolean
      */
     public static boolean copy(String src, String tar) {
         File srcFile = new File(src);
@@ -348,6 +390,10 @@ public class FileUtils {
 
     /**
      * 复制文件或目录
+     *
+     * @param src the src
+     * @param tar the tar
+     * @return the boolean
      */
     public static boolean copy(File src, File tar) {
         try {
@@ -383,6 +429,10 @@ public class FileUtils {
 
     /**
      * 移动文件或目录
+     *
+     * @param src the src
+     * @param tar the tar
+     * @return the boolean
      */
     public static boolean move(String src, String tar) {
         return move(new File(src), new File(tar));
@@ -390,15 +440,33 @@ public class FileUtils {
 
     /**
      * 移动文件或目录
+     *
+     * @param src the src
+     * @param tar the tar
+     * @return the boolean
      */
     public static boolean move(File src, File tar) {
         return rename(src, tar);
     }
 
+    /**
+     * Rename boolean.
+     *
+     * @param oldPath the old path
+     * @param newPath the new path
+     * @return the boolean
+     */
     public static boolean rename(String oldPath, String newPath) {
         return rename(new File(oldPath), new File(newPath));
     }
 
+    /**
+     * Rename boolean.
+     *
+     * @param src the src
+     * @param tar the tar
+     * @return the boolean
+     */
     public static boolean rename(File src, File tar) {
         try {
             LogUtils.debug(String.format("rename %s to %s", src.getAbsolutePath(), tar.getAbsolutePath()));
@@ -411,6 +479,10 @@ public class FileUtils {
 
     /**
      * 读取文本文件, 失败将返回空串
+     *
+     * @param filepath the filepath
+     * @param charset  the charset
+     * @return the string
      */
     public static String readText(String filepath, String charset) {
         LogUtils.debug(String.format("read %s use %s", filepath, charset));
@@ -436,6 +508,9 @@ public class FileUtils {
 
     /**
      * 读取文本文件, 失败将返回空串
+     *
+     * @param filepath the filepath
+     * @return the string
      */
     public static String readText(String filepath) {
         return readText(filepath, "utf-8");
@@ -443,6 +518,9 @@ public class FileUtils {
 
     /**
      * 读取文件内容, 失败将返回空串
+     *
+     * @param filepath the filepath
+     * @return the byte [ ]
      */
     public static byte[] readByte(String filepath) {
         LogUtils.debug(String.format("read %s", filepath));
@@ -467,8 +545,10 @@ public class FileUtils {
     /**
      * 保存文本内容
      *
-     * @param filepath
-     * @param content
+     * @param filepath the filepath
+     * @param content  the content
+     * @param charset  the charset
+     * @return the boolean
      */
     public static boolean writeText(String filepath, String content, String charset) {
         try {
@@ -483,6 +563,13 @@ public class FileUtils {
         }
     }
 
+    /**
+     * Write text boolean.
+     *
+     * @param filepath the filepath
+     * @param content  the content
+     * @return the boolean
+     */
     public static boolean writeText(String filepath, String content) {
         return writeText(filepath, content, "utf-8");
     }
@@ -490,8 +577,9 @@ public class FileUtils {
     /**
      * 保存文件内容
      *
-     * @param filepath
-     * @param data
+     * @param filepath the filepath
+     * @param data     the data
+     * @return the boolean
      */
     public static boolean writeByte(String filepath, byte[] data) {
         LogUtils.debug(String.format("write %s", filepath));
@@ -516,8 +604,9 @@ public class FileUtils {
     /**
      * 追加文本内容
      *
-     * @param path
-     * @param content
+     * @param path    the path
+     * @param content the content
+     * @return the boolean
      */
     public static boolean appendText(String path, String content) {
         LogUtils.debug(String.format("append %s", path));
@@ -540,8 +629,8 @@ public class FileUtils {
     /**
      * 获取文件大小
      *
-     * @param path
-     * @return
+     * @param path the path
+     * @return length
      */
     public static long getLength(String path) {
         File file = new File(path);
@@ -554,13 +643,20 @@ public class FileUtils {
     /**
      * 获取文件名（包括扩展名）
      *
-     * @param pathOrUrl
-     * @return
+     * @param pathOrUrl the path or url
+     * @return name
      */
     public static String getName(String pathOrUrl) {
         return getName(pathOrUrl, false);
     }
 
+    /**
+     * Gets name.
+     *
+     * @param pathOrUrl the path or url
+     * @param useHash   the use hash
+     * @return the name
+     */
     public static String getName(String pathOrUrl, boolean useHash) {
         if (useHash) {
             return pathOrUrl.replace("/","_") + "." + getExtension(pathOrUrl);
@@ -576,8 +672,8 @@ public class FileUtils {
     /**
      * 获取文件名（不包括扩展名）
      *
-     * @param pathOrUrl
-     * @return
+     * @param pathOrUrl the path or url
+     * @return name exclude extension
      */
     public static String getNameExcludeExtension(String pathOrUrl) {
         try {
@@ -592,8 +688,8 @@ public class FileUtils {
     /**
      * 获取文件后缀,不包括“.”
      *
-     * @param pathOrUrl
-     * @return
+     * @param pathOrUrl the path or url
+     * @return extension
      */
     public static String getExtension(String pathOrUrl) {
         int dotPos = pathOrUrl.lastIndexOf('.');
@@ -607,8 +703,8 @@ public class FileUtils {
     /**
      * 获取文件的MIME类型
      *
-     * @param pathOrUrl
-     * @return
+     * @param pathOrUrl the path or url
+     * @return mime type
      */
     public static String getMimeType(String pathOrUrl) {
         String ext = getExtension(pathOrUrl);
@@ -626,8 +722,8 @@ public class FileUtils {
     /**
      * 获取格式化后的文件/目录创建或最后修改时间
      *
-     * @param path
-     * @return
+     * @param path the path
+     * @return date time
      */
     public static String getDateTime(String path) {
         return getDateTime(path, "yyyy年MM月dd日HH:mm");
@@ -636,9 +732,9 @@ public class FileUtils {
     /**
      * 获取格式化后的文件/目录创建或最后修改时间
      *
-     * @param path
-     * @param format
-     * @return
+     * @param path   the path
+     * @param format the format
+     * @return date time
      */
     public static String getDateTime(String path, String format) {
         File file = new File(path);
@@ -648,9 +744,9 @@ public class FileUtils {
     /**
      * 获取格式化后的文件/目录创建或最后修改时间
      *
-     * @param file
-     * @param format
-     * @return
+     * @param file   the file
+     * @param format the format
+     * @return date time
      */
     public static String getDateTime(File file, String format) {
         Calendar cal = Calendar.getInstance();
@@ -663,9 +759,9 @@ public class FileUtils {
     /**
      * 比较两个文件的最后修改时间
      *
-     * @param path1
-     * @param path2
-     * @return
+     * @param path1 the path 1
+     * @param path2 the path 2
+     * @return int
      */
     public static int compareLastModified(String path1, String path2) {
         long stamp1 = (new File(path1)).lastModified();
@@ -679,23 +775,62 @@ public class FileUtils {
         }
     }
 
+    /**
+     * Make dirs boolean.
+     *
+     * @param path the path
+     * @return the boolean
+     */
     public static boolean makeDirs(String path) {
         return (new File(path)).mkdirs();
     }
 
+    /**
+     * The enum Sort type.
+     */
     public enum SortType {
+        /**
+         * By name asc sort type.
+         */
         BY_NAME_ASC,
+        /**
+         * By name desc sort type.
+         */
         BY_NAME_DESC,
+        /**
+         * By time asc sort type.
+         */
         BY_TIME_ASC,
+        /**
+         * By time desc sort type.
+         */
         BY_TIME_DESC,
+        /**
+         * By size asc sort type.
+         */
         BY_SIZE_ASC,
+        /**
+         * By size desc sort type.
+         */
         BY_SIZE_DESC,
+        /**
+         * By extension asc sort type.
+         */
         BY_EXTENSION_ASC,
+        /**
+         * By extension desc sort type.
+         */
         BY_EXTENSION_DESC,
     }
 
+    /**
+     * The type Sort by extension.
+     */
     public static class SortByExtension implements Comparator<File> {
 
+        /**
+         * Instantiates a new Sort by extension.
+         */
         public SortByExtension() {
             super();
         }
@@ -720,13 +855,24 @@ public class FileUtils {
 
     }
 
+    /**
+     * The type Sort by name.
+     */
     public static class SortByName implements Comparator<File> {
         private boolean caseSensitive;
 
+        /**
+         * Instantiates a new Sort by name.
+         *
+         * @param caseSensitive the case sensitive
+         */
         public SortByName(boolean caseSensitive) {
             this.caseSensitive = caseSensitive;
         }
 
+        /**
+         * Instantiates a new Sort by name.
+         */
         public SortByName() {
             this.caseSensitive = false;
         }
@@ -757,8 +903,14 @@ public class FileUtils {
 
     }
 
+    /**
+     * The type Sort by size.
+     */
     public static class SortBySize implements Comparator<File> {
 
+        /**
+         * Instantiates a new Sort by size.
+         */
         public SortBySize() {
             super();
         }
@@ -787,8 +939,14 @@ public class FileUtils {
 
     }
 
+    /**
+     * The type Sort by time.
+     */
     public static class SortByTime implements Comparator<File> {
 
+        /**
+         * Instantiates a new Sort by time.
+         */
         public SortByTime() {
             super();
         }

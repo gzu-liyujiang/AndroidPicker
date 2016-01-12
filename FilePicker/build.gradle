@@ -14,16 +14,13 @@ android {
 
     buildTypes {
         release {
-            zipAlignEnabled true
-            shrinkResources true
             minifyEnabled false
-            proguardFile 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-        debug {
-            zipAlignEnabled false
-            shrinkResources false
-            minifyEnabled false
-        }
+    }
+
+    lintOptions {
+        abortOnError false
     }
 
 }

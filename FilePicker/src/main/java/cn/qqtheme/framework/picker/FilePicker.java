@@ -21,9 +21,8 @@ import cn.qqtheme.framework.widget.MarqueeTextView;
 /**
  * 文件目录选择器
  *
- * @author 李玉江[QQ:1032694760]
- * @since 2015/9/29
- * Created By Android Studio
+ * @author 李玉江[QQ :1032694760]
+ * @version 2015/9/29
  */
 public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterView.OnItemClickListener {
     private Mode mode;
@@ -32,10 +31,24 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
     private MarqueeTextView textView;
     private OnFilePickListener onFilePickListener;
 
+    /**
+     * The enum Mode.
+     */
     public enum Mode {
-        Directory, File
+        /**
+         * Directory mode.
+         */
+        Directory, /**
+         * File mode.
+         */
+        File
     }
 
+    /**
+     * Instantiates a new File picker.
+     *
+     * @param activity the activity
+     */
     public FilePicker(Activity activity) {
         super(activity);
         initPath = StorageUtils.getRootPath(activity);
@@ -71,6 +84,11 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
         return rootLayout;
     }
 
+    /**
+     * Sets mode.
+     *
+     * @param mode the mode
+     */
     public void setMode(Mode mode) {
         this.mode = mode;
         if (mode.equals(Mode.Directory)) {
@@ -78,22 +96,47 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
         }
     }
 
+    /**
+     * Sets root path.
+     *
+     * @param initPath the init path
+     */
     public void setRootPath(String initPath) {
         this.initPath = initPath;
     }
 
+    /**
+     * Sets allow extensions.
+     *
+     * @param allowExtensions the allow extensions
+     */
     public void setAllowExtensions(String[] allowExtensions) {
         adapter.setAllowExtensions(allowExtensions);
     }
 
+    /**
+     * Sets show up dir.
+     *
+     * @param showUpDir the show up dir
+     */
     public void setShowUpDir(boolean showUpDir) {
         adapter.setShowUpDir(showUpDir);
     }
 
+    /**
+     * Sets show home dir.
+     *
+     * @param showHomeDir the show home dir
+     */
     public void setShowHomeDir(boolean showHomeDir) {
         adapter.setShowHomeDir(showHomeDir);
     }
 
+    /**
+     * Sets show hide dir.
+     *
+     * @param showHideDir the show hide dir
+     */
     public void setShowHideDir(boolean showHideDir) {
         adapter.setShowHideDir(showHideDir);
     }
@@ -160,12 +203,25 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
         adapter.loadData(currentPath, true);
     }
 
+    /**
+     * Sets on file pick listener.
+     *
+     * @param listener the listener
+     */
     public void setOnFilePickListener(OnFilePickListener listener) {
         this.onFilePickListener = listener;
     }
 
+    /**
+     * The interface On file pick listener.
+     */
     public interface OnFilePickListener {
 
+        /**
+         * On file picked.
+         *
+         * @param currentPath the current path
+         */
         void onFilePicked(String currentPath);
 
     }

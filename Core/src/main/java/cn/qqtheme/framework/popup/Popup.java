@@ -17,8 +17,8 @@ import cn.qqtheme.framework.util.LogUtils;
 /**
  * 弹窗
  *
- * @author 李玉江[QQ:1023694760]
- * @version 2015-10-19
+ * @author 李玉江[QQ :1023694760]
+ * @version 2015 -10-19
  * @see android.widget.PopupWindow
  */
 public class Popup {
@@ -26,10 +26,20 @@ public class Popup {
     private android.app.Dialog dialog;
     private FrameLayout contentLayout;
 
+    /**
+     * Sets animation.
+     *
+     * @param animRes the anim res
+     */
     public static void setAnimation(@StyleRes int animRes) {
         Popup.animRes = animRes;
     }
 
+    /**
+     * Instantiates a new Popup.
+     *
+     * @param context the context
+     */
     public Popup(Context context) {
         init(context);
     }
@@ -51,27 +61,54 @@ public class Popup {
         window.setContentView(contentLayout);
     }
 
+    /**
+     * Is showing boolean.
+     *
+     * @return the boolean
+     */
     public boolean isShowing() {
         return dialog.isShowing();
     }
 
+    /**
+     * Show.
+     */
     public void show() {
         dialog.show();
     }
 
+    /**
+     * Dismiss.
+     */
     public void dismiss() {
         dialog.dismiss();
     }
 
+    /**
+     * Sets content view.
+     *
+     * @param view the view
+     */
     public void setContentView(View view) {
         contentLayout.removeAllViews();
         contentLayout.addView(view);
     }
 
+    /**
+     * Gets content view.
+     *
+     * @return the content view
+     */
     public View getContentView() {
         return contentLayout.getChildAt(0);
     }
 
+    /**
+     * Sets size.
+     *
+     * @param width  the width
+     * @param height the height
+     */
     public void setSize(int width, int height) {
         LogUtils.debug(String.format("will set popup width/height to: %s/%s", width, height));
         ViewGroup.LayoutParams params = contentLayout.getLayoutParams();
@@ -84,6 +121,11 @@ public class Popup {
         contentLayout.setLayoutParams(params);
     }
 
+    /**
+     * Sets on dismiss listener.
+     *
+     * @param onDismissListener the on dismiss listener
+     */
     public void setOnDismissListener(DialogInterface.OnDismissListener onDismissListener) {
         dialog.setOnDismissListener(onDismissListener);
     }

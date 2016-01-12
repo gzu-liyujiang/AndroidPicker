@@ -13,8 +13,8 @@ import cn.qqtheme.framework.AppConfig;
 /**
  * 将信息记录到“LogCat”，方便调试查错
  *
- * @author 李玉江[QQ:1023694760]
- * @version 2013-11-2
+ * @author 李玉江[QQ :1023694760]
+ * @version 2013 -11-2
  */
 public class LogUtils {
     private static final int MAX_STACK_TRACE_SIZE = 131071; //128 KB - 1
@@ -22,10 +22,21 @@ public class LogUtils {
     private static boolean isDebug = AppConfig.DEBUG_ENABLE;
     private static String debugTag = AppConfig.DEBUG_TAG;
 
+    /**
+     * Debug.
+     *
+     * @param message the message
+     */
     public static void debug(String message) {
         debug(debugTag, message);
     }
 
+    /**
+     * Debug.
+     *
+     * @param object  the object
+     * @param message the message
+     */
     public static void debug(Object object, String message) {
         debug(object.getClass().getSimpleName(), message);
     }
@@ -33,7 +44,8 @@ public class LogUtils {
     /**
      * 记录“debug”级别的信息
      *
-     * @param message
+     * @param tag     the tag
+     * @param message the message
      */
     public static void debug(String tag, String message) {
         if (isDebug) {
@@ -45,18 +57,40 @@ public class LogUtils {
         }
     }
 
+    /**
+     * Warn.
+     *
+     * @param e the e
+     */
     public static void warn(Throwable e) {
         warn(toStackTraceString(e));
     }
 
+    /**
+     * Warn.
+     *
+     * @param message the message
+     */
     public static void warn(String message) {
         warn(debugTag, message);
     }
 
+    /**
+     * Warn.
+     *
+     * @param object  the object
+     * @param message the message
+     */
     public static void warn(Object object, String message) {
         warn(object.getClass().getSimpleName(), message);
     }
 
+    /**
+     * Warn.
+     *
+     * @param object the object
+     * @param e      the e
+     */
     public static void warn(Object object, Throwable e) {
         warn(object.getClass().getSimpleName(), toStackTraceString(e));
     }
@@ -64,7 +98,8 @@ public class LogUtils {
     /**
      * 记录“warn”级别的信息
      *
-     * @param message
+     * @param tag     the tag
+     * @param message the message
      */
     public static void warn(String tag, String message) {
         if (isDebug) {
@@ -76,18 +111,40 @@ public class LogUtils {
         }
     }
 
+    /**
+     * Error.
+     *
+     * @param e the e
+     */
     public static void error(Throwable e) {
         error(toStackTraceString(e));
     }
 
+    /**
+     * Error.
+     *
+     * @param message the message
+     */
     public static void error(String message) {
         error(debugTag, message);
     }
 
+    /**
+     * Error.
+     *
+     * @param object  the object
+     * @param message the message
+     */
     public static void error(Object object, String message) {
         error(object.getClass().getSimpleName(), message);
     }
 
+    /**
+     * Error.
+     *
+     * @param object the object
+     * @param e      the e
+     */
     public static void error(Object object, Throwable e) {
         error(object.getClass().getSimpleName(), toStackTraceString(e));
     }
@@ -95,7 +152,8 @@ public class LogUtils {
     /**
      * 记录“error”级别的信息
      *
-     * @param message
+     * @param tag     the tag
+     * @param message the message
      */
     public static void error(String tag, String message) {
         if (isDebug) {
@@ -110,7 +168,7 @@ public class LogUtils {
     /**
      * 在某个方法中调用生成.trace文件。然后拿到电脑上用DDMS工具打开分析
      *
-     * @see #stopMethodTracing()
+     * @see #stopMethodTracing() #stopMethodTracing()
      */
     public static void startMethodTracing() {
         if (isDebug) {
@@ -118,12 +176,21 @@ public class LogUtils {
         }
     }
 
+    /**
+     * Stop method tracing.
+     */
     public static void stopMethodTracing() {
         if (isDebug) {
             Debug.stopMethodTracing();
         }
     }
 
+    /**
+     * To stack trace string string.
+     *
+     * @param throwable the throwable
+     * @return the string
+     */
     public static String toStackTraceString(Throwable throwable) {
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);

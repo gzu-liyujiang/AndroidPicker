@@ -33,14 +33,29 @@ import java.util.Arrays;
 /**
  * 数据类型转换、单位转换
  *
- * @author 李玉江[QQ:1023694760]
- * @version 2014-4-18
+ * @author 李玉江[QQ :1023694760]
+ * @version 2014 -4-18
  */
 public class ConvertUtils {
+    /**
+     * The constant GB.
+     */
     public static final long GB = 1073741824;
+    /**
+     * The constant MB.
+     */
     public static final long MB = 1048576;
+    /**
+     * The constant KB.
+     */
     public static final long KB = 1024;
 
+    /**
+     * To int int.
+     *
+     * @param obj the obj
+     * @return the int
+     */
     public static int toInt(Object obj) {
         try {
             return Integer.parseInt(obj.toString());
@@ -49,6 +64,12 @@ public class ConvertUtils {
         }
     }
 
+    /**
+     * To int int.
+     *
+     * @param bytes the bytes
+     * @return the int
+     */
     public static int toInt(byte[] bytes) {
         int result = 0;
         byte abyte;
@@ -59,10 +80,23 @@ public class ConvertUtils {
         return result;
     }
 
+    /**
+     * To short int.
+     *
+     * @param first  the first
+     * @param second the second
+     * @return the int
+     */
     public static int toShort(byte first, byte second) {
         return (first << 8) + (second & 0xFF);
     }
 
+    /**
+     * To long long.
+     *
+     * @param obj the obj
+     * @return the long
+     */
     public static long toLong(Object obj) {
         try {
             return Long.parseLong(obj.toString());
@@ -71,6 +105,12 @@ public class ConvertUtils {
         }
     }
 
+    /**
+     * To float float.
+     *
+     * @param obj the obj
+     * @return the float
+     */
     public static float toFloat(Object obj) {
         try {
             return Float.parseFloat(obj.toString());
@@ -82,8 +122,8 @@ public class ConvertUtils {
     /**
      * int占4字节
      *
-     * @param i
-     * @return
+     * @param i the
+     * @return byte [ ]
      */
     public static byte[] toByteArray(int i) {
         // byte[] bytes = new byte[4];
@@ -95,6 +135,13 @@ public class ConvertUtils {
         return ByteBuffer.allocate(4).putInt(i).array();
     }
 
+    /**
+     * To byte array byte [ ].
+     *
+     * @param hexData the hex data
+     * @param isHex   the is hex
+     * @return the byte [ ]
+     */
     public static byte[] toByteArray(String hexData, boolean isHex) {
         if (hexData == null || hexData.equals("")) {
             return null;
@@ -120,6 +167,12 @@ public class ConvertUtils {
         return bytes;
     }
 
+    /**
+     * To hex string string.
+     *
+     * @param str the str
+     * @return the string
+     */
     public static String toHexString(String str) {
         if (TextUtils.isEmpty(str))
             return "";
@@ -132,6 +185,12 @@ public class ConvertUtils {
         return buffer.toString();
     }
 
+    /**
+     * To hex string string.
+     *
+     * @param bytes the bytes
+     * @return the string
+     */
     public static String toHexString(byte... bytes) {
         char[] DIGITS = {'0', '1', '2', '3', '4', '5', '6',
                 '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
@@ -145,12 +204,24 @@ public class ConvertUtils {
         return new String(buffer);
     }
 
+    /**
+     * To hex string string.
+     *
+     * @param num the num
+     * @return the string
+     */
     public static String toHexString(int num) {
         String hexString = Integer.toHexString(num);
         LogUtils.debug(String.format("%d to hex string is %s", num, hexString));
         return hexString;
     }
 
+    /**
+     * To binary string string.
+     *
+     * @param bytes the bytes
+     * @return the string
+     */
     public static String toBinaryString(byte... bytes) {
         char[] DIGITS = {'0', '1', '2', '3', '4', '5', '6',
                 '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
@@ -170,6 +241,12 @@ public class ConvertUtils {
         return new String(buffer);
     }
 
+    /**
+     * To binary string string.
+     *
+     * @param num the num
+     * @return the string
+     */
     public static String toBinaryString(int num) {
         String binaryString = Integer.toBinaryString(num);
         LogUtils.debug(String.format("%d to binary string is %s", num, binaryString));
@@ -179,8 +256,8 @@ public class ConvertUtils {
     /**
      * 转换为6位十六进制颜色代码，不含“#”
      *
-     * @param color
-     * @return
+     * @param color the color
+     * @return string
      */
     public static String toColorString(int color) {
         return toColorString(color, false);
@@ -189,9 +266,9 @@ public class ConvertUtils {
     /**
      * 转换为6位十六进制颜色代码，不含“#”
      *
-     * @param color
-     * @param includeAlpha
-     * @return
+     * @param color        the color
+     * @param includeAlpha the include alpha
+     * @return string
      */
     public static String toColorString(int color, boolean includeAlpha) {
         String alpha = Integer.toHexString(Color.alpha(color));
@@ -224,9 +301,9 @@ public class ConvertUtils {
     /**
      * 将指定的日期转换为一定格式的字符串
      *
-     * @param date
-     * @param format
-     * @return
+     * @param date   the date
+     * @param format the format
+     * @return string
      */
     public static String toDateString(Date date, String format) {
         SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.CHINA);
@@ -236,8 +313,8 @@ public class ConvertUtils {
     /**
      * 将当前的日期转换为一定格式的字符串
      *
-     * @param format
-     * @return
+     * @param format the format
+     * @return string
      */
     public static String toDateString(String format) {
         return toDateString(Calendar.getInstance(Locale.CHINA).getTime(), format);
@@ -247,7 +324,7 @@ public class ConvertUtils {
      * 将指定的日期字符串转换为日期时间
      *
      * @param dateStr 如：2014-04-08 23:02
-     * @return
+     * @return date
      */
     public static Date toDate(String dateStr) {
         return DateUtils.parseDate(dateStr);
@@ -257,12 +334,18 @@ public class ConvertUtils {
      * 将指定的日期字符串转换为时间戳
      *
      * @param dateStr 如：2014-04-08 23:02
-     * @return
+     * @return long
      */
     public static long toTimemillis(String dateStr) {
         return toDate(dateStr).getTime();
     }
 
+    /**
+     * To slash string string.
+     *
+     * @param str the str
+     * @return the string
+     */
     public static String toSlashString(String str) {
         String result = "";
         char[] chars = str.toCharArray();
@@ -275,19 +358,46 @@ public class ConvertUtils {
         return result;
     }
 
+    /**
+     * To array t [ ].
+     *
+     * @param <T>  the type parameter
+     * @param list the list
+     * @return the t [ ]
+     */
     public static <T> T[] toArray(List<T> list) {
         //noinspection unchecked
         return (T[]) list.toArray();
     }
 
+    /**
+     * To list list.
+     *
+     * @param <T>   the type parameter
+     * @param array the array
+     * @return the list
+     */
     public static <T> List<T> toList(T[] array) {
         return Arrays.asList(array);
     }
 
+    /**
+     * To string string.
+     *
+     * @param objects the objects
+     * @return the string
+     */
     public static String toString(Object[] objects) {
         return Arrays.deepToString(objects);
     }
 
+    /**
+     * To string string.
+     *
+     * @param objects the objects
+     * @param tag     the tag
+     * @return the string
+     */
     public static String toString(Object[] objects, String tag) {
         StringBuilder sb = new StringBuilder();
         for (Object object : objects) {
@@ -297,6 +407,12 @@ public class ConvertUtils {
         return sb.toString();
     }
 
+    /**
+     * To byte array byte [ ].
+     *
+     * @param is the is
+     * @return the byte [ ]
+     */
     public static byte[] toByteArray(InputStream is) {
         if (is == null) {
             return null;
@@ -317,6 +433,12 @@ public class ConvertUtils {
         return null;
     }
 
+    /**
+     * To byte array byte [ ].
+     *
+     * @param bitmap the bitmap
+     * @return the byte [ ]
+     */
     public static byte[] toByteArray(Bitmap bitmap) {
         if (bitmap == null) {
             return null;
@@ -333,6 +455,14 @@ public class ConvertUtils {
         return bytes;
     }
 
+    /**
+     * To bitmap bitmap.
+     *
+     * @param bytes  the bytes
+     * @param width  the width
+     * @param height the height
+     * @return the bitmap
+     */
     public static Bitmap toBitmap(byte[] bytes, int width, int height) {
         Bitmap bitmap = null;
         if (bytes.length != 0) {
@@ -354,6 +484,12 @@ public class ConvertUtils {
         return bitmap;
     }
 
+    /**
+     * To bitmap bitmap.
+     *
+     * @param bytes the bytes
+     * @return the bitmap
+     */
     public static Bitmap toBitmap(byte[] bytes) {
         return toBitmap(bytes, -1, -1);
     }
@@ -362,8 +498,8 @@ public class ConvertUtils {
      * convert Drawable to Bitmap
      * 参考：http://kylines.iteye.com/blog/1660184
      *
-     * @param drawable
-     * @return
+     * @param drawable the drawable
+     * @return bitmap
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static Bitmap toBitmap(Drawable drawable) {
@@ -393,9 +529,9 @@ public class ConvertUtils {
      * 从第三方文件选择器获取路径。
      * 参见：http://blog.csdn.net/zbjdsbj/article/details/42387551
      *
-     * @param context
-     * @param uri
-     * @return
+     * @param context the context
+     * @param uri     the uri
+     * @return string
      */
     @TargetApi(Build.VERSION_CODES.KITKAT)
     public static String toPath(Context context, Uri uri) {
@@ -477,8 +613,9 @@ public class ConvertUtils {
     /**
      * convert View to Bitmap.
      *
-     * @param view
-     * @link http://www.cnblogs.com/lee0oo0/p/3355468.html
+     * @param view the view
+     * @return the bitmap
+     * @link http ://www.cnblogs.com/lee0oo0/p/3355468.html
      */
     public static Bitmap toBitmap(View view) {
         //以下代码用于把当前view转化为bitmap（截图）
@@ -531,8 +668,8 @@ public class ConvertUtils {
     /**
      * convert Bitmap to Drawable
      *
-     * @param bitmap
-     * @return
+     * @param bitmap the bitmap
+     * @return drawable
      */
     public static Drawable toDrawable(Bitmap bitmap) {
         return bitmap == null ? null : new BitmapDrawable(null, bitmap);
@@ -541,8 +678,8 @@ public class ConvertUtils {
     /**
      * convert Drawable to byte array
      *
-     * @param drawable
-     * @return
+     * @param drawable the drawable
+     * @return byte [ ]
      */
     public static byte[] toByteArray(Drawable drawable) {
         return toByteArray(toBitmap(drawable));
@@ -551,8 +688,8 @@ public class ConvertUtils {
     /**
      * convert byte array to Drawable
      *
-     * @param bytes
-     * @return
+     * @param bytes the bytes
+     * @return drawable
      */
     public static Drawable toDrawable(byte[] bytes) {
         return toDrawable(toBitmap(bytes));
@@ -561,9 +698,9 @@ public class ConvertUtils {
     /**
      * dp转换为px
      *
-     * @param context
-     * @param dpValue
-     * @return
+     * @param context the context
+     * @param dpValue the dp value
+     * @return int
      */
     public static int toPx(Context context, float dpValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
@@ -572,6 +709,12 @@ public class ConvertUtils {
         return pxValue;
     }
 
+    /**
+     * To px int.
+     *
+     * @param dpValue the dp value
+     * @return the int
+     */
     public static int toPx(float dpValue) {
         Resources resources = Resources.getSystem();
         float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, resources.getDisplayMetrics());
@@ -581,9 +724,9 @@ public class ConvertUtils {
     /**
      * px转换为dp
      *
-     * @param context
-     * @param pxValue
-     * @return
+     * @param context the context
+     * @param pxValue the px value
+     * @return int
      */
     public static int toDp(Context context, float pxValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
@@ -595,9 +738,9 @@ public class ConvertUtils {
     /**
      * px转换为sp
      *
-     * @param context
-     * @param pxValue
-     * @return
+     * @param context the context
+     * @param pxValue the px value
+     * @return int
      */
     public static int toSp(Context context, float pxValue) {
         final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
@@ -606,6 +749,12 @@ public class ConvertUtils {
         return spValue;
     }
 
+    /**
+     * To gbk string.
+     *
+     * @param str the str
+     * @return the string
+     */
     public static String toGbk(String str) {
         try {
             return new String(str.getBytes("utf-8"), "gbk");
@@ -615,6 +764,12 @@ public class ConvertUtils {
         }
     }
 
+    /**
+     * To file size string string.
+     *
+     * @param fileSize the file size
+     * @return the string
+     */
     public static String toFileSizeString(long fileSize) {
         DecimalFormat df = new DecimalFormat("0.00");
         String fileSizeString;
@@ -630,6 +785,12 @@ public class ConvertUtils {
         return fileSizeString;
     }
 
+    /**
+     * To string string.
+     *
+     * @param is the is
+     * @return the string
+     */
     public static String toString(InputStream is) {
         StringBuilder sb = new StringBuilder();
         try {
@@ -645,6 +806,13 @@ public class ConvertUtils {
         return sb.toString();
     }
 
+    /**
+     * To round drawable shape drawable.
+     *
+     * @param color  the color
+     * @param radius the radius
+     * @return the shape drawable
+     */
     public static ShapeDrawable toRoundDrawable(int color, int radius) {
         int r = toPx(radius);
         float[] outerR = new float[]{r, r, r, r, r, r, r, r};
@@ -658,6 +826,12 @@ public class ConvertUtils {
      * 对TextView、Button等设置不同状态时其文字颜色。
      * 参见：http://blog.csdn.net/sodino/article/details/6797821
      * Modified by liyujiang at 2015.08.13
+     *
+     * @param normalColor  the normal color
+     * @param pressedColor the pressed color
+     * @param focusedColor the focused color
+     * @param unableColor  the unable color
+     * @return the color state list
      */
     public static ColorStateList toColorStateList(int normalColor, int pressedColor, int focusedColor, int unableColor) {
         int[] colors = new int[]{pressedColor, focusedColor, normalColor, focusedColor, unableColor, normalColor};
@@ -671,10 +845,26 @@ public class ConvertUtils {
         return new ColorStateList(states, colors);
     }
 
+    /**
+     * To color state list color state list.
+     *
+     * @param normalColor  the normal color
+     * @param pressedColor the pressed color
+     * @return the color state list
+     */
     public static ColorStateList toColorStateList(int normalColor, int pressedColor) {
         return toColorStateList(normalColor, pressedColor, pressedColor, normalColor);
     }
 
+    /**
+     * To state list drawable state list drawable.
+     *
+     * @param normal  the normal
+     * @param pressed the pressed
+     * @param focused the focused
+     * @param unable  the unable
+     * @return the state list drawable
+     */
     public static StateListDrawable toStateListDrawable(Drawable normal, Drawable pressed, Drawable focused, Drawable unable) {
         StateListDrawable drawable = new StateListDrawable();
         drawable.addState(new int[]{android.R.attr.state_pressed, android.R.attr.state_enabled}, pressed);
@@ -686,6 +876,15 @@ public class ConvertUtils {
         return drawable;
     }
 
+    /**
+     * To state list drawable state list drawable.
+     *
+     * @param normalColor  the normal color
+     * @param pressedColor the pressed color
+     * @param focusedColor the focused color
+     * @param unableColor  the unable color
+     * @return the state list drawable
+     */
     public static StateListDrawable toStateListDrawable(int normalColor, int pressedColor, int focusedColor, int unableColor) {
         StateListDrawable drawable = new StateListDrawable();
         Drawable normal = new ColorDrawable(normalColor);
@@ -701,10 +900,24 @@ public class ConvertUtils {
         return drawable;
     }
 
+    /**
+     * To state list drawable state list drawable.
+     *
+     * @param normal  the normal
+     * @param pressed the pressed
+     * @return the state list drawable
+     */
     public static StateListDrawable toStateListDrawable(Drawable normal, Drawable pressed) {
         return toStateListDrawable(normal, pressed, pressed, normal);
     }
 
+    /**
+     * To state list drawable state list drawable.
+     *
+     * @param normalColor  the normal color
+     * @param pressedColor the pressed color
+     * @return the state list drawable
+     */
     public static StateListDrawable toStateListDrawable(int normalColor, int pressedColor) {
         return toStateListDrawable(normalColor, pressedColor, pressedColor, normalColor);
     }

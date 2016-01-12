@@ -28,7 +28,7 @@ import java.util.List;
  * Using the provided BaseAdapterHelper, your code is minimalist.
  *
  * @param <T> The type of the items in the list.
- * @link https://github.com/JoanZapata/base-adapter-helper
+ * @link https ://github.com/JoanZapata/base-adapter-helper
  */
 public abstract class QuickAdapter<T> extends BaseQuickAdapter<T, BaseAdapterHelper> {
 

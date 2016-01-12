@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import java.util.Locale;
 
-import cn.qqtheme.framework.picker.color.R;
+import cn.qqtheme.framework.colorpicker.R;
 import cn.qqtheme.framework.popup.ConfirmPopup;
 import cn.qqtheme.framework.util.CompatUtils;
 import cn.qqtheme.framework.util.ConvertUtils;
@@ -25,9 +25,8 @@ import cn.qqtheme.framework.widget.ColorPanelView;
 /**
  * 颜色选择器。
  *
- * @author 李玉江[QQ:1032694760]
- * @since 2015/9/29
- * Created By Android Studio
+ * @author 李玉江[QQ :1032694760]
+ * @version 2015 /9/29
  */
 public class ColorPicker extends ConfirmPopup<LinearLayout> implements TextView.OnEditorActionListener {
     private static final int MULTI_ID = 0x1;
@@ -38,6 +37,11 @@ public class ColorPicker extends ConfirmPopup<LinearLayout> implements TextView.
     private ColorStateList hexValDefaultColor;
     private OnColorPickListener onColorPickListener;
 
+    /**
+     * Instantiates a new Color picker.
+     *
+     * @param activity the activity
+     */
     public ColorPicker(Activity activity) {
         super(activity);
     }
@@ -122,10 +126,20 @@ public class ColorPicker extends ConfirmPopup<LinearLayout> implements TextView.
         hexValView.setBackgroundColor(color);
     }
 
+    /**
+     * Sets init color.
+     *
+     * @param initColor the init color
+     */
     public void setInitColor(int initColor) {
         this.initColor = initColor;
     }
 
+    /**
+     * Sets on color pick listener.
+     *
+     * @param onColorPickListener the on color pick listener
+     */
     public void setOnColorPickListener(OnColorPickListener onColorPickListener) {
         this.onColorPickListener = onColorPickListener;
     }
@@ -153,8 +167,16 @@ public class ColorPicker extends ConfirmPopup<LinearLayout> implements TextView.
         return false;
     }
 
+    /**
+     * The interface On color pick listener.
+     */
     public interface OnColorPickListener {
 
+        /**
+         * On color picked.
+         *
+         * @param pickedColor the picked color
+         */
         void onColorPicked(int pickedColor);
 
     }

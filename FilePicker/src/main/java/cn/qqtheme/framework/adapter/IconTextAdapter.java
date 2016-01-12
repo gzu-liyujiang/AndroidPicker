@@ -16,32 +16,66 @@ import cn.qqtheme.framework.util.ConvertUtils;
 /**
  * 带图标及文字的数据适配
  *
- * @author 李玉江[QQ:1032694760]
- * @version 2014-09-19 15:54
- *          Created By IntelliJ IDEA
+ * @param <T> the type parameter
+ * @author 李玉江[QQ :1032694760]
+ * @version 2014 -09-19 15:54          Created By IntelliJ IDEA
  */
 public class IconTextAdapter<T extends IconText> extends BeanAdapter<T> {
 
+    /**
+     * Instantiates a new Icon text adapter.
+     *
+     * @param context the context
+     */
     public IconTextAdapter(Context context) {
         super(context, android.R.layout.activity_list_item);
     }
 
+    /**
+     * Instantiates a new Icon text adapter.
+     *
+     * @param context the context
+     * @param data    the data
+     */
     public IconTextAdapter(Context context, List<T> data) {
         super(context,  android.R.layout.activity_list_item, data);
     }
 
+    /**
+     * Instantiates a new Icon text adapter.
+     *
+     * @param context   the context
+     * @param layoutRes the layout res
+     */
     public IconTextAdapter(Context context, int layoutRes) {
         super(context, layoutRes);
     }
 
+    /**
+     * Instantiates a new Icon text adapter.
+     *
+     * @param context   the context
+     * @param layoutRes the layout res
+     * @param data      the data
+     */
     public IconTextAdapter(Context context, int layoutRes, List<T> data) {
         super(context, layoutRes, data);
     }
 
+    /**
+     * Gets icon view id.
+     *
+     * @return the icon view id
+     */
     protected int getIconViewId() {
         return android.R.id.icon;
     }
 
+    /**
+     * Gets text view id.
+     *
+     * @return the text view id
+     */
     protected int getTextViewId() {
         return android.R.id.text1;
     }

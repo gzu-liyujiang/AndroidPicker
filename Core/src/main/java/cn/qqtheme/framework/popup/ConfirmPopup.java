@@ -16,12 +16,18 @@ import cn.qqtheme.framework.util.ConvertUtils;
 /**
  * 带确定及取消按钮的
  *
- * @author 李玉江[QQ:1032694760]
- * @since 2015/10/21
- * Created By Android Studio
+ * @param <V> the type parameter
+ * @author 李玉江[QQ :1032694760]
+ * @since 2015 /10/21 Created By Android Studio
  */
 public abstract class ConfirmPopup<V extends View> extends BottomPopup<View> implements View.OnClickListener {
+    /**
+     * The constant TAG_SUBMIT.
+     */
     protected static final String TAG_SUBMIT = "submit";
+    /**
+     * The constant TAG_CANCEL.
+     */
     protected static final String TAG_CANCEL = "cancel";
     private boolean topLineVisible = true;
     private int topLineColor = 0xFFDDDDDD;
@@ -31,38 +37,83 @@ public abstract class ConfirmPopup<V extends View> extends BottomPopup<View> imp
     private int submitTextColor = Color.BLACK;
     private OnConfirmListener onConfirmListener;
 
+    /**
+     * Instantiates a new Confirm popup.
+     *
+     * @param activity the activity
+     */
     public ConfirmPopup(Activity activity) {
         super(activity);
         cancelText = activity.getString(android.R.string.cancel);
         submitText = activity.getString(android.R.string.ok);
     }
 
+    /**
+     * Init content view v.
+     *
+     * @return the v
+     */
     protected abstract V initContentView();
 
+    /**
+     * Sets top line color.
+     *
+     * @param topLineColor the top line color
+     */
     public void setTopLineColor(int topLineColor) {
         this.topLineColor = topLineColor;
     }
 
+    /**
+     * Sets top line visible.
+     *
+     * @param topLineVisible the top line visible
+     */
     public void setTopLineVisible(boolean topLineVisible) {
         this.topLineVisible = topLineVisible;
     }
 
+    /**
+     * Sets cancel visible.
+     *
+     * @param cancelVisible the cancel visible
+     */
     public void setCancelVisible(boolean cancelVisible) {
         this.cancelVisible = cancelVisible;
     }
 
+    /**
+     * Sets cancel text.
+     *
+     * @param cancelText the cancel text
+     */
     public void setCancelText(CharSequence cancelText) {
         this.cancelText = cancelText;
     }
 
+    /**
+     * Sets submit text.
+     *
+     * @param submitText the submit text
+     */
     public void setSubmitText(CharSequence submitText) {
         this.submitText = submitText;
     }
 
+    /**
+     * Sets cancel text color.
+     *
+     * @param cancelTextColor the cancel text color
+     */
     public void setCancelTextColor(@ColorInt int cancelTextColor) {
         this.cancelTextColor = cancelTextColor;
     }
 
+    /**
+     * Sets submit text color.
+     *
+     * @param submitTextColor the submit text color
+     */
     public void setSubmitTextColor(@ColorInt int submitTextColor) {
         this.submitTextColor = submitTextColor;
     }
@@ -133,14 +184,28 @@ public abstract class ConfirmPopup<V extends View> extends BottomPopup<View> imp
         dismiss();
     }
 
+    /**
+     * Sets on confirm listener.
+     *
+     * @param onConfirmListener the on confirm listener
+     */
     protected void setOnConfirmListener(OnConfirmListener onConfirmListener) {
         this.onConfirmListener = onConfirmListener;
     }
 
+    /**
+     * The type On confirm listener.
+     */
     protected static abstract class OnConfirmListener {
 
+        /**
+         * On confirm.
+         */
         public abstract void onConfirm();
 
+        /**
+         * On cancel.
+         */
         public void onCancel() {
 
         }

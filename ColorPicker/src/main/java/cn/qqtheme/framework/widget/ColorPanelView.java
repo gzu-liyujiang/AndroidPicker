@@ -21,10 +21,9 @@ import android.view.View;
 /**
  * 颜色选择面板
  *
- * @author 李玉江[QQ:1023694760]
- * @link https://github.com/jbruchanov/AndroidColorPicker
- * @since 2015/7/20
- * Created by IntelliJ IDEA 14.1
+ * @author 李玉江[QQ :1023694760]
+ * @version 2015/7/20
+ * @link https ://github.com/jbruchanov/AndroidColorPicker
  */
 public class ColorPanelView extends View {
     private static final int[] GRAD_COLORS = new int[]{Color.RED, Color.YELLOW, Color.GREEN, Color.CYAN, Color.BLUE, Color.MAGENTA, Color.RED};
@@ -51,20 +50,47 @@ public class ColorPanelView extends View {
 
     private OnColorChangedListener mOnColorChangedListener;
 
+    /**
+     * The interface On color changed listener.
+     */
     public interface OnColorChangedListener {
+        /**
+         * On color changed.
+         *
+         * @param view  the view
+         * @param color the color
+         */
         void onColorChanged(ColorPanelView view, int color);
     }
 
+    /**
+     * Instantiates a new Color panel view.
+     *
+     * @param context the context
+     */
     public ColorPanelView(Context context) {
         super(context);
         init();
     }
 
+    /**
+     * Instantiates a new Color panel view.
+     *
+     * @param context the context
+     * @param attrs   the attrs
+     */
     public ColorPanelView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
+    /**
+     * Instantiates a new Color panel view.
+     *
+     * @param context      the context
+     * @param attrs        the attrs
+     * @param defStyleAttr the def style attr
+     */
     public ColorPanelView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
@@ -210,7 +236,7 @@ public class ColorPanelView extends View {
     /**
      * Set radius for gradient rectangle
      *
-     * @param radius
+     * @param radius the radius
      */
     public void setRadius(float radius) {
         if (radius != mRadius) {
@@ -240,8 +266,8 @@ public class ColorPanelView extends View {
     /**
      * Update color based on touch events
      *
-     * @param x
-     * @param y
+     * @param x the x
+     * @param y the y
      */
     protected void onUpdateColorSelection(int x, int y) {
         x = (int) Math.max(mGradientRect.left, Math.min(x, mGradientRect.right));
@@ -261,6 +287,11 @@ public class ColorPanelView extends View {
         dispatchColorChanged(mSelectedColor);
     }
 
+    /**
+     * Dispatch color changed.
+     *
+     * @param color the color
+     */
     protected void dispatchColorChanged(int color) {
         if (mBrightnessGradientView != null) {
             mBrightnessGradientView.setColor(color, false);
@@ -273,7 +304,7 @@ public class ColorPanelView extends View {
     /**
      * Switch view into brightness gradient only
      *
-     * @param isBrightnessGradient
+     * @param isBrightnessGradient the is brightness gradient
      */
     public void setIsBrightnessGradient(boolean isBrightnessGradient) {
         mIsBrightnessGradient = isBrightnessGradient;
@@ -282,7 +313,7 @@ public class ColorPanelView extends View {
     /**
      * Add reference for brightness view
      *
-     * @param brightnessGradient
+     * @param brightnessGradient the brightness gradient
      */
     public void setBrightnessGradientView(ColorPanelView brightnessGradient) {
         if (mBrightnessGradientView != brightnessGradient) {
@@ -298,7 +329,7 @@ public class ColorPanelView extends View {
     /**
      * Get current selectec color
      *
-     * @return
+     * @return selected color
      */
     public int getSelectedColor() {
         return mSelectedColor;
@@ -307,12 +338,18 @@ public class ColorPanelView extends View {
     /**
      * Update current color
      *
-     * @param selectedColor
+     * @param selectedColor the selected color
      */
     public void setColor(int selectedColor) {
         setColor(selectedColor, true);
     }
 
+    /**
+     * Sets color.
+     *
+     * @param selectedColor  the selected color
+     * @param updatePointers the update pointers
+     */
     protected void setColor(int selectedColor, boolean updatePointers) {
         Color.colorToHSV(selectedColor, mHSV);
         if (mIsBrightnessGradient) {
@@ -361,6 +398,11 @@ public class ColorPanelView extends View {
         }
     }
 
+    /**
+     * Sets on color changed listener.
+     *
+     * @param onColorChangedListener the on color changed listener
+     */
     public void setOnColorChangedListener(OnColorChangedListener onColorChangedListener) {
         mOnColorChangedListener = onColorChangedListener;
     }
@@ -413,6 +455,11 @@ public class ColorPanelView extends View {
     }
     //endregion HSL math
 
+    /**
+     * Sets pointer drawable.
+     *
+     * @param pointerDrawable the pointer drawable
+     */
     public void setPointerDrawable(Drawable pointerDrawable) {
         if (mPointerDrawable != pointerDrawable) {
             mPointerDrawable = pointerDrawable;
@@ -420,6 +467,11 @@ public class ColorPanelView extends View {
         }
     }
 
+    /**
+     * Sets lock pointer in bounds.
+     *
+     * @param lockPointerInBounds the lock pointer in bounds
+     */
     public void setLockPointerInBounds(boolean lockPointerInBounds) {
         if (lockPointerInBounds != mLockPointerInBounds) {
             mLockPointerInBounds = lockPointerInBounds;
@@ -451,9 +503,20 @@ public class ColorPanelView extends View {
     }
 
     private static class SavedState extends BaseSavedState {
+        /**
+         * The Color.
+         */
         int color;
+        /**
+         * The Is brightness gradient.
+         */
         boolean isBrightnessGradient;
 
+        /**
+         * Instantiates a new Saved state.
+         *
+         * @param superState the super state
+         */
         SavedState(Parcelable superState) {
             super(superState);
         }
@@ -471,7 +534,10 @@ public class ColorPanelView extends View {
             out.writeInt(isBrightnessGradient ? 1 : 0);
         }
 
-        //required field that makes Parcelables from a Parcel
+        /**
+         * The constant CREATOR.
+         */
+//required field that makes Parcelables from a Parcel
         public static final Parcelable.Creator<SavedState> CREATOR =
                 new Parcelable.Creator<SavedState>() {
                     public SavedState createFromParcel(Parcel in) {

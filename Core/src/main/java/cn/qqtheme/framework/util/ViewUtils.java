@@ -8,16 +8,15 @@ import android.widget.*;
 /**
  * 描述
  *
- * @author 李玉江[QQ:1023694760]
- * @version 2015/7/19
- *          Created by IntelliJ IDEA 14.1
+ * @author 李玉江[QQ :1023694760]
+ * @version 2015 /7/19          Created by IntelliJ IDEA 14.1
  */
 public class ViewUtils {
 
     /**
      * ScrollView嵌套ListView，需动态设置高度
      *
-     * @param listView
+     * @param listView the list view
      */
     public static void setListViewHeight(ListView listView) {
         int totalHeight = calculateHeight(listView);
@@ -34,8 +33,8 @@ public class ViewUtils {
     /**
      * 计算view的高
      *
-     * @param view
-     * @return
+     * @param view the view
+     * @return int
      */
     public static int calculateHeight(View view) {
         int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
@@ -93,9 +92,9 @@ public class ViewUtils {
     /**
      * 获取R.layout.**的唯一值
      *
-     * @param context
-     * @param name
-     * @return
+     * @param context the context
+     * @param name    the name
+     * @return int
      */
     public static int layoutRes(Context context, String name) {
         return R(context, "layout", name);
@@ -104,9 +103,9 @@ public class ViewUtils {
     /**
      * 获取R.id.**的唯一值
      *
-     * @param context
-     * @param name
-     * @return
+     * @param context the context
+     * @param name    the name
+     * @return int
      */
     public static int idRes(Context context, String name) {
         return R(context, "id", name);
@@ -115,9 +114,9 @@ public class ViewUtils {
     /**
      * 获取R.drawable.**的唯一值
      *
-     * @param context
-     * @param name
-     * @return
+     * @param context the context
+     * @param name    the name
+     * @return int
      */
     public static int drawableRes(Context context, String name) {
         return R(context, "drawable", name);
@@ -126,9 +125,9 @@ public class ViewUtils {
     /**
      * 获取R.string.**的唯一值
      *
-     * @param context
-     * @param name
-     * @return
+     * @param context the context
+     * @param name    the name
+     * @return int
      */
     public static int stringRes(Context context, String name) {
         return R(context, "string", name);
@@ -137,22 +136,43 @@ public class ViewUtils {
     /**
      * 获取R.color.**的唯一值
      *
-     * @param context
-     * @param name
-     * @return
+     * @param context the context
+     * @param name    the name
+     * @return int
      */
     public static int colorRes(Context context, String name) {
         return R(context, "color", name);
     }
 
+    /**
+     * Style res int.
+     *
+     * @param context the context
+     * @param name    the name
+     * @return the int
+     */
     public static int styleRes(Context context, String name) {
         return R(context, "style", name);
     }
 
+    /**
+     * Dimen res int.
+     *
+     * @param context the context
+     * @param name    the name
+     * @return the int
+     */
     public static int dimenRes(Context context, String name) {
         return R(context, "dimen", name);
     }
 
+    /**
+     * Mipmap res int.
+     *
+     * @param context the context
+     * @param name    the name
+     * @return the int
+     */
     public static int mipmapRes(Context context, String name) {
         return R(context, "mipmap", name);
     }

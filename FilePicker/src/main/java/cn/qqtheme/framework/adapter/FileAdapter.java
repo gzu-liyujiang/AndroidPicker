@@ -7,12 +7,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.qqtheme.framework.bean.FileItem;
-import cn.qqtheme.framework.picker.file.R;
+import cn.qqtheme.framework.filepicker.R;
 import cn.qqtheme.framework.util.FileUtils;
 import cn.qqtheme.framework.util.LogUtils;
 
+/**
+ * The type File adapter.
+ */
 public class FileAdapter extends IconTextAdapter<FileItem<Integer>> {
+    /**
+     * The constant DIR_ROOT.
+     */
     public static final String DIR_ROOT = "..";
+    /**
+     * The constant DIR_PARENT.
+     */
     public static final String DIR_PARENT = ".";
     private String rootPath = null;
     private String currentPath = null;
@@ -26,50 +35,117 @@ public class FileAdapter extends IconTextAdapter<FileItem<Integer>> {
     private int folderIcon = R.drawable.file_picker_folder;
     private int fileIcon = R.drawable.file_picker_file;
 
+    /**
+     * Instantiates a new File adapter.
+     *
+     * @param context the context
+     */
     public FileAdapter(Context context) {
         super(context);
     }
 
+    /**
+     * Instantiates a new File adapter.
+     *
+     * @param context the context
+     * @param data    the data
+     */
     public FileAdapter(Context context, List<FileItem<Integer>> data) {
         super(context, data);
     }
 
+    /**
+     * Instantiates a new File adapter.
+     *
+     * @param context   the context
+     * @param layoutRes the layout res
+     */
     public FileAdapter(Context context, int layoutRes) {
         super(context, layoutRes);
     }
 
+    /**
+     * Instantiates a new File adapter.
+     *
+     * @param context   the context
+     * @param layoutRes the layout res
+     * @param data      the data
+     */
     public FileAdapter(Context context, int layoutRes, List<FileItem<Integer>> data) {
         super(context, layoutRes, data);
     }
 
+    /**
+     * Gets current path.
+     *
+     * @return the current path
+     */
     public String getCurrentPath() {
         return currentPath;
     }
 
+    /**
+     * Sets allow extensions.
+     *
+     * @param allowExtensions the allow extensions
+     */
     public void setAllowExtensions(String[] allowExtensions) {
         this.allowExtensions = allowExtensions;
     }
 
+    /**
+     * Sets only list dir.
+     *
+     * @param onlyListDir the only list dir
+     */
     public void setOnlyListDir(boolean onlyListDir) {
         this.onlyListDir = onlyListDir;
     }
 
+    /**
+     * Sets show home dir.
+     *
+     * @param showHomeDir the show home dir
+     */
     public void setShowHomeDir(boolean showHomeDir) {
         this.showHomeDir = showHomeDir;
     }
 
+    /**
+     * Sets show up dir.
+     *
+     * @param showUpDir the show up dir
+     */
     public void setShowUpDir(boolean showUpDir) {
         this.showUpDir = showUpDir;
     }
 
+    /**
+     * Sets show hide dir.
+     *
+     * @param showHideDir the show hide dir
+     */
     public void setShowHideDir(boolean showHideDir) {
         this.showHideDir = showHideDir;
     }
 
+    /**
+     * Load data array list.
+     *
+     * @param path the path
+     * @return the array list
+     */
     public ArrayList<FileItem<Integer>> loadData(String path) {
         return loadData(path, true);
     }
 
+    /**
+     * Load data array list.
+     *
+     * @param path                 the path
+     * @param notifyDataSetChanged the notify data set changed
+     * @return the array list
+     */
     public ArrayList<FileItem<Integer>> loadData(String path, boolean notifyDataSetChanged) {
         ArrayList<FileItem<Integer>> datas = new ArrayList<FileItem<Integer>>();
         if (path == null) {

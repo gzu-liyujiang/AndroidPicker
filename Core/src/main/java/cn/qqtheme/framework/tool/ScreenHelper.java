@@ -8,19 +8,39 @@ import cn.qqtheme.framework.util.LogUtils;
 /**
  * 获取屏幕宽高
  *
- * @author liyujiang[QQ:1032694760]
- * @version 2015/11/26
- *          Created by Intellij IDEA 14.1
+ * @author liyujiang[QQ :1032694760]
+ * @version 2015 /11/26          Created by Intellij IDEA 14.1
  */
 public class ScreenHelper {
 
+    /**
+     * The type Screen.
+     */
     public static class Screen {
+        /**
+         * The Width pixels.
+         */
         public int widthPixels;
+        /**
+         * The Height pixels.
+         */
         public int heightPixels;
+        /**
+         * The Density dpi.
+         */
         public int densityDpi;
+        /**
+         * The Density.
+         */
         public float density;
     }
 
+    /**
+     * Gets screen pixels.
+     *
+     * @param context the context
+     * @return the screen pixels
+     */
     public static Screen getScreenPixels(Context context) {
         DisplayMetrics dm = new DisplayMetrics();
         WindowManager windowManager = (WindowManager) context

@@ -15,7 +15,6 @@ android {
         release {
             //是否调试模式
             debuggable false
-            jniDebuggable false
             //是否zip优化
             zipAlignEnabled true
             //是否移除无用的资源
@@ -23,38 +22,12 @@ android {
             //是否混淆
             minifyEnabled true
             //混淆配置文件
-            proguardFile 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            //是否调试模式
             debuggable true
-            jniDebuggable true
-            //是否zip优化
-            zipAlignEnabled false
-            //是否移除无用的资源
-            shrinkResources false
-            //是否混淆
             minifyEnabled false
         }
-    }
-
-    lintOptions {
-        //忽略lint错误
-        abortOnError false
-    }
-
-    packagingOptions {
-        exclude 'META-INF/DEPENDENCIES.txt'
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/NOTICE.txt'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/DEPENDENCIES'
-        exclude 'META-INF/notice.txt'
-        exclude 'META-INF/license.txt'
-        exclude 'META-INF/dependencies.txt'
-        exclude 'META-INF/LGPL2.1'
-        exclude 'META-INF/ASL2.0'
     }
 
 }

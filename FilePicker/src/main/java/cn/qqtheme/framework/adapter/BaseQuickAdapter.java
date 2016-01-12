@@ -30,22 +30,40 @@ import java.util.List;
  * Abstraction class of a BaseAdapter in which you only need
  * to provide the convert() implementation.<br/>
  * Using the provided BaseAdapterHelper, your code is minimalist.
+ *
  * @param <T> The type of the items in the list.
+ * @param <H> the type parameter
  */
 public abstract class BaseQuickAdapter<T, H extends BaseAdapterHelper> extends BaseAdapter {
 
+    /**
+     * The constant TAG.
+     */
     protected static final String TAG = BaseQuickAdapter.class.getSimpleName();
 
+    /**
+     * The Context.
+     */
     protected final Context context;
 
+    /**
+     * The Layout res id.
+     */
     protected final int layoutResId;
 
+    /**
+     * The Data.
+     */
     protected final List<T> data;
 
+    /**
+     * The Display indeterminate progress.
+     */
     protected boolean displayIndeterminateProgress = false;
 
     /**
      * Create a QuickAdapter.
+     *
      * @param context     The context.
      * @param layoutResId The layout resource id of each item.
      */
@@ -56,6 +74,7 @@ public abstract class BaseQuickAdapter<T, H extends BaseAdapterHelper> extends B
     /**
      * Same as QuickAdapter#QuickAdapter(Context,int) but with
      * some initialization data.
+     *
      * @param context     The context.
      * @param layoutResId The layout resource id of each item.
      * @param data        A new list is created out of this one to avoid mutable list
@@ -122,51 +141,101 @@ public abstract class BaseQuickAdapter<T, H extends BaseAdapterHelper> extends B
         return position < data.size();
     }
 
+    /**
+     * Add.
+     *
+     * @param elem the elem
+     */
     public void add(T elem) {
         data.add(elem);
         notifyDataSetChanged();
     }
 
+    /**
+     * Add all.
+     *
+     * @param elem the elem
+     */
     public void addAll(List<T> elem) {
         data.addAll(elem);
         notifyDataSetChanged();
     }
 
+    /**
+     * Set.
+     *
+     * @param oldElem the old elem
+     * @param newElem the new elem
+     */
     public void set(T oldElem, T newElem) {
         set(data.indexOf(oldElem), newElem);
     }
 
+    /**
+     * Set.
+     *
+     * @param index the index
+     * @param elem  the elem
+     */
     public void set(int index, T elem) {
         data.set(index, elem);
         notifyDataSetChanged();
     }
 
+    /**
+     * Remove.
+     *
+     * @param elem the elem
+     */
     public void remove(T elem) {
         data.remove(elem);
         notifyDataSetChanged();
     }
 
+    /**
+     * Remove.
+     *
+     * @param index the index
+     */
     public void remove(int index) {
         data.remove(index);
         notifyDataSetChanged();
     }
 
+    /**
+     * Replace all.
+     *
+     * @param elem the elem
+     */
     public void replaceAll(List<T> elem) {
         data.clear();
         data.addAll(elem);
         notifyDataSetChanged();
     }
 
+    /**
+     * Contains boolean.
+     *
+     * @param elem the elem
+     * @return the boolean
+     */
     public boolean contains(T elem) {
         return data.contains(elem);
     }
 
-    /** Clear data list */
+    /**
+     * Clear data list
+     */
     public void clear() {
         data.clear();
         notifyDataSetChanged();
     }
 
+    /**
+     * Show indeterminate progress.
+     *
+     * @param display the display
+     */
     public void showIndeterminateProgress(boolean display) {
         if (display == displayIndeterminateProgress) return;
         displayIndeterminateProgress = display;
@@ -175,6 +244,7 @@ public abstract class BaseQuickAdapter<T, H extends BaseAdapterHelper> extends B
 
     /**
      * Implement this method and use the helper to adapt the view to the given item.
+     *
      * @param helper A fully initialized helper.
      * @param item   The item that needs to be displayed.
      */
@@ -182,13 +252,9 @@ public abstract class BaseQuickAdapter<T, H extends BaseAdapterHelper> extends B
 
     /**
      * You can override this method to use a custom BaseAdapterHelper in order to fit your needs
+     *
      * @param position    The position of the item within the adapter's data set of the item whose view we want.
-     * @param convertView The old view to reuse, if possible. Note: You should check that this view
-     *                    is non-null and of an appropriate type before using. If it is not possible to convert
-     *                    this view to display the correct data, this method can create a new view.
-     *                    Heterogeneous lists can specify their number of view types, so that this View is
-     *                    always of the right type (see {@link #getViewTypeCount()} and
-     *                    {@link #getItemViewType(int)}).
+     * @param convertView The old view to reuse, if possible. Note: You should check that this view                    is non-null and of an appropriate type before using. If it is not possible to convert                    this view to display the correct data, this method can create a new view.                    Heterogeneous lists can specify their number of view types, so that this View is                    always of the right type (see {@link #getViewTypeCount()} and                    {@link #getItemViewType(int)}).
      * @param parent      The parent that this view will eventually be attached to
      * @return An instance of BaseAdapterHelper
      */

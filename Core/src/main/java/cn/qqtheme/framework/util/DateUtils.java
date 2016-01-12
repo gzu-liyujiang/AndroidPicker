@@ -12,52 +12,138 @@ import java.util.List;
 /**
  * 日期时间工具类
  *
- * @author 李玉江[QQ:1023694760]
- * @version 2015/8/5
- *          Created by IntelliJ IDEA 14.1
+ * @author 李玉江[QQ :1023694760]
+ * @version 2015 /8/5          Created by IntelliJ IDEA 14.1
  */
 public class DateUtils extends android.text.format.DateUtils {
 
+    /**
+     * The enum Difference mode.
+     */
     public enum DifferenceMode {
-        Second, Minute, Hour, Day
+        /**
+         * Second difference mode.
+         */
+        Second, /**
+         * Minute difference mode.
+         */
+        Minute, /**
+         * Hour difference mode.
+         */
+        Hour, /**
+         * Day difference mode.
+         */
+        Day
     }
 
+    /**
+     * Calculate different second long.
+     *
+     * @param startDate the start date
+     * @param endDate   the end date
+     * @return the long
+     */
     public static long calculateDifferentSecond(Date startDate, Date endDate) {
         return calculateDifference(startDate, endDate, DifferenceMode.Second);
     }
 
+    /**
+     * Calculate different minute long.
+     *
+     * @param startDate the start date
+     * @param endDate   the end date
+     * @return the long
+     */
     public static long calculateDifferentMinute(Date startDate, Date endDate) {
         return calculateDifference(startDate, endDate, DifferenceMode.Minute);
     }
 
+    /**
+     * Calculate different hour long.
+     *
+     * @param startDate the start date
+     * @param endDate   the end date
+     * @return the long
+     */
     public static long calculateDifferentHour(Date startDate, Date endDate) {
         return calculateDifference(startDate, endDate, DifferenceMode.Hour);
     }
 
+    /**
+     * Calculate different day long.
+     *
+     * @param startDate the start date
+     * @param endDate   the end date
+     * @return the long
+     */
     public static long calculateDifferentDay(Date startDate, Date endDate) {
         return calculateDifference(startDate, endDate, DifferenceMode.Day);
     }
 
+    /**
+     * Calculate different second long.
+     *
+     * @param startTimeMillis the start time millis
+     * @param endTimeMillis   the end time millis
+     * @return the long
+     */
     public static long calculateDifferentSecond(long startTimeMillis, long endTimeMillis) {
         return calculateDifference(startTimeMillis, endTimeMillis, DifferenceMode.Second);
     }
 
+    /**
+     * Calculate different minute long.
+     *
+     * @param startTimeMillis the start time millis
+     * @param endTimeMillis   the end time millis
+     * @return the long
+     */
     public static long calculateDifferentMinute(long startTimeMillis, long endTimeMillis) {
         return calculateDifference(startTimeMillis, endTimeMillis, DifferenceMode.Minute);
     }
 
+    /**
+     * Calculate different hour long.
+     *
+     * @param startTimeMillis the start time millis
+     * @param endTimeMillis   the end time millis
+     * @return the long
+     */
     public static long calculateDifferentHour(long startTimeMillis, long endTimeMillis) {
         return calculateDifference(startTimeMillis, endTimeMillis, DifferenceMode.Hour);
     }
 
+    /**
+     * Calculate different day long.
+     *
+     * @param startTimeMillis the start time millis
+     * @param endTimeMillis   the end time millis
+     * @return the long
+     */
     public static long calculateDifferentDay(long startTimeMillis, long endTimeMillis) {
         return calculateDifference(startTimeMillis, endTimeMillis, DifferenceMode.Day);
     }
 
+    /**
+     * Calculate difference long.
+     *
+     * @param startTimeMillis the start time millis
+     * @param endTimeMillis   the end time millis
+     * @param mode            the mode
+     * @return the long
+     */
     public static long calculateDifference(long startTimeMillis, long endTimeMillis, DifferenceMode mode) {
         return calculateDifference(new Date(startTimeMillis), new Date(endTimeMillis), mode);
     }
 
+    /**
+     * Calculate difference long.
+     *
+     * @param startDate the start date
+     * @param endDate   the end date
+     * @param mode      the mode
+     * @return the long
+     */
     public static long calculateDifference(Date startDate, Date endDate, DifferenceMode mode) {
         long[] different = calculateDifference(startDate, endDate);
         if (mode.equals(DifferenceMode.Minute)) {
@@ -71,10 +157,23 @@ public class DateUtils extends android.text.format.DateUtils {
         }
     }
 
+    /**
+     * Calculate difference long [ ].
+     *
+     * @param startDate the start date
+     * @param endDate   the end date
+     * @return the long [ ]
+     */
     public static long[] calculateDifference(Date startDate, Date endDate) {
         return calculateDifference(endDate.getTime() - startDate.getTime());
     }
 
+    /**
+     * Calculate difference long [ ].
+     *
+     * @param differentMilliSeconds the different milli seconds
+     * @return the long [ ]
+     */
     public static long[] calculateDifference(long differentMilliSeconds) {
         long secondsInMilli = 1000;//1s==1000ms
         long minutesInMilli = secondsInMilli * 60;
@@ -92,10 +191,23 @@ public class DateUtils extends android.text.format.DateUtils {
         return new long[]{elapsedDays, elapsedHours, elapsedMinutes, elapsedSeconds};
     }
 
+    /**
+     * Calculate days in month int.
+     *
+     * @param month the month
+     * @return the int
+     */
     public static int calculateDaysInMonth(int month) {
         return calculateDaysInMonth(0, month);
     }
 
+    /**
+     * Calculate days in month int.
+     *
+     * @param year  the year
+     * @param month the month
+     * @return the int
+     */
     public static int calculateDaysInMonth(int year, int month) {
         // 添加大小月月份并将其转换为list,方便之后的判断
         String[] bigMonths = {"1", "3", "5", "7", "8", "10", "12"};
@@ -122,6 +234,9 @@ public class DateUtils extends android.text.format.DateUtils {
 
     /**
      * 月日时分秒，0-9前补0
+     *
+     * @param number the number
+     * @return the string
      */
     @NonNull
     public static String fillZero(int number) {
@@ -134,8 +249,7 @@ public class DateUtils extends android.text.format.DateUtils {
      *
      * @param date 比较的日期
      * @return boolean 如果在返回true，否则返回false。
-     * @author 沙琪玛 QQ：862990787
-     * Aug 21, 2013 7:15:53 AM
+     * @author 沙琪玛 QQ：862990787 Aug 21, 2013 7:15:53 AM
      */
     public static boolean isSameDay(Date date) {
         if (date == null) {
