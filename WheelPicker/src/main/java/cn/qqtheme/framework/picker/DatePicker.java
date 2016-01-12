@@ -184,8 +184,14 @@ public class DatePicker extends WheelPicker {
             yearView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
                 @Override
                 public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
-                    selectedYearIndex = stringToYearMonthDay(item);
-                    dayView.setItems(days, isUserScroll ? days.get(0) : String.valueOf(selectedDayIndex));
+                    selectedYearIndex = selectedIndex;
+                    //需要根据年份及月份动态计算天数
+                    days.clear();
+                    int maxDays = DateUtils.calculateDaysInMonth(stringToYearMonthDay(item), stringToYearMonthDay(months.get(selectedMonthIndex)));
+                    for (int i = 1; i <= maxDays; i++) {
+                        days.add(DateUtils.fillZero(i));
+                    }
+                    dayView.setItems(days, isUserScroll ? 0 : selectedDayIndex);
                 }
             });
         }
@@ -200,15 +206,15 @@ public class DatePicker extends WheelPicker {
         monthView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
             @Override
             public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
-                selectedMonthIndex = stringToYearMonthDay(item);
+                selectedMonthIndex = selectedIndex;
                 if (!mode.equals(Mode.YEAR_MONTH)) {
                     //需要根据年份及月份动态计算天数
                     days.clear();
-                    int maxDays = DateUtils.calculateDaysInMonth(selectedYearIndex, selectedMonthIndex);
+                    int maxDays = DateUtils.calculateDaysInMonth(stringToYearMonthDay(years.get(selectedYearIndex)), stringToYearMonthDay(item));
                     for (int i = 1; i <= maxDays; i++) {
                         days.add(DateUtils.fillZero(i));
                     }
-                    dayView.setItems(days, isUserScroll ? days.get(0) : String.valueOf(selectedDayIndex));
+                    dayView.setItems(days, isUserScroll ? 0 : selectedDayIndex);
                 }
             }
         });
@@ -224,10 +230,7 @@ public class DatePicker extends WheelPicker {
             dayView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
                 @Override
                 public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
-                    if (TextUtils.isEmpty(item)) {
-                        return;
-                    }
-                    selectedDayIndex = stringToYearMonthDay(item);
+                    selectedDayIndex = selectedIndex;
                 }
             });
         }
@@ -249,9 +252,9 @@ public class DatePicker extends WheelPicker {
             @Override
             public void onConfirm() {
                 if (onDatePickListener != null) {
-                    String day = DateUtils.fillZero(selectedDayIndex);
-                    String month = DateUtils.fillZero(selectedMonthIndex);
-                    String year = String.valueOf(selectedYearIndex);
+                    String year = years.get(selectedYearIndex);
+                    String month = months.get(selectedMonthIndex);
+                    String day = days.get(selectedDayIndex);
                     switch (mode) {
                         case YEAR_MONTH:
                             ((OnYearMonthPickListener) onDatePickListener).onDatePicked(year, month);
