@@ -13,7 +13,7 @@ dependencies {
     compile project(':ColorPicker')
 }
 ```   
-4、自定义窗口进入退出动画：在Application的子类中调用“Popup.setAnimation()”即可，如：   
+4、(可选，默认动画为淡入淡出)自定义窗口进入退出动画：在Application的子类中调用“Popup.setAnimation()”即可，如：
 ```xml
 <resources>
     <style name="Animation.CustomPopup" parent="@android:style/Animation">
