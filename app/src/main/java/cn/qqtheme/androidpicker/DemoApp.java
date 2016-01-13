@@ -2,6 +2,7 @@ package cn.qqtheme.androidpicker;
 
 import android.app.Application;
 
+import cn.qqtheme.androidpicker.R;
 import cn.qqtheme.framework.popup.Popup;
 
 /**

@@ -1,5 +1,1 @@
-include ':app'
-include ':Core'
-include ':WheelPicker'
-include ':FilePicker'
-include ':ColorPicker'
+include ':app', ':library'

@@ -1,19 +1,15 @@
 # Summary
 安卓选择器类库，包括日期选择器、时间选择器、单项选择器、城市选择器、颜色选择器、文件选择器、目录选择器、数字选择器、星座选择器、生肖选择器等。
+[ ![Download](https://api.bintray.com/packages/gzu-liyujiang/maven/AndroidPicker/images/download.svg) ](https://bintray.com/gzu-liyujiang/maven/AndroidPicker/_latestVersion)；   
 
 # Install
-app是测试用例；Core是其他模块的依赖项；WheelPicker是日期、时间、单项等选择器；ColorPicker是颜色选择器；FilePicker是文件、目录选择器。     
-1、通过SVN或GIT工具下载本项目，复制“AndroidPicker”到你的电脑上；<br />
-2、用Android Studio或IntelliJ IDEA打开你的项目，New->Import Module，选择“AndroidPicker”下的某个模块；<br />
-3、修改你的项目的build.gradle，把选择“AndroidPicker”下的某个模块加入依赖项，如：
+app是测试用例；library包括WheelPicker、ColorPicker、FilePicker。     
 ```
 dependencies {
-    compile project(':WheelPicker')
-    compile project(':FilePicker')
-    compile project(':ColorPicker')
+    compile 'cn.qqtheme.framework:AndroidPicker:1.0.0'
 }
 ```   
-4、(可选，默认动画为淡入淡出)自定义窗口进入退出动画：在Application的子类中调用“Popup.setAnimation()”即可，如：
+###自定义窗口进入退出动画(可选，默认动画为淡入淡出)：在Application的子类中调用“Popup.setAnimation()”即可，如：
 ```xml
 <resources>
     <style name="Animation.CustomPopup" parent="@android:style/Animation">
@@ -33,13 +29,6 @@ public class DemoApp extends Application {
 
 }
 ```   
-
-注：   
-旧版的基于android-wheel，在分支“branch_OldAndroidPicker”。   
-不断学习，持续完善，敬请关注。。。   
-gradle为1.3.0，buildTools为23.0.1，sdk为23。   
-滑轮选择器的名称较长时，将以“...”显示超出的部分。      
-支持android2.3+，项目编码为UTF-8。   
 
 # Sample
 日期选择器：   

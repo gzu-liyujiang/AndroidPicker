@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.webkit.WebView;
 
+import cn.qqtheme.androidpicker.R;
+
 /**
  * 描述
  *

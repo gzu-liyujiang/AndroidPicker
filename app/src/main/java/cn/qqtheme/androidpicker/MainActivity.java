@@ -11,6 +11,7 @@ import com.alibaba.fastjson.JSON;
 
 import java.util.ArrayList;
 
+import cn.qqtheme.androidpicker.R;
 import cn.qqtheme.framework.picker.AddressPicker;
 import cn.qqtheme.framework.picker.ChineseZodiacPicker;
 import cn.qqtheme.framework.picker.ColorPicker;
@@ -21,7 +22,6 @@ import cn.qqtheme.framework.picker.NumberPicker;
 import cn.qqtheme.framework.picker.OptionPicker;
 import cn.qqtheme.framework.picker.SexPicker;
 import cn.qqtheme.framework.picker.TimePicker;
-import cn.qqtheme.framework.util.AssetsUtils;
 import cn.qqtheme.framework.util.ConvertUtils;
 import cn.qqtheme.framework.util.StorageUtils;
 
