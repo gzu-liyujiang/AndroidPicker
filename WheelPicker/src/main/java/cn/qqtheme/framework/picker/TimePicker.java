@@ -17,8 +17,7 @@ import cn.qqtheme.framework.widget.WheelView;
  * 时间选择器
  *
  * @author 李玉江[QQ:1032694760]
- * @since 2015/12/14
- * Created By Android Studio
+ * @version 2015/12/14
  */
 public class TimePicker extends WheelPicker {
     private OnTimePickListener onTimePickListener;

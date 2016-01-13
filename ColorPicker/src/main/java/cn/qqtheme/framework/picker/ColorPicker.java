@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import java.util.Locale;
 
-import cn.qqtheme.framework.picker.color.R;
+import cn.qqtheme.framework.colorpicker.R;
 import cn.qqtheme.framework.popup.ConfirmPopup;
 import cn.qqtheme.framework.util.CompatUtils;
 import cn.qqtheme.framework.util.ConvertUtils;

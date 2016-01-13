@@ -5,7 +5,6 @@ package cn.qqtheme.framework.bean;
  *
  * @author 李玉江[QQ:1032694760]
  * @version 2014-05-23 18:02
- * @builder Created By IntelliJ IDEA
  */
 public class FileItem<ICON> extends IconText<ICON> {
     private String path = "/";

@@ -1,10 +1,12 @@
-package cn.qqtheme.framework.util;
+package cn.qqtheme.androidpicker;
 
 import android.content.Context;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+
+import cn.qqtheme.framework.util.LogUtils;
 
 /**
  * 操作安装包中的“assets”目录下的文件

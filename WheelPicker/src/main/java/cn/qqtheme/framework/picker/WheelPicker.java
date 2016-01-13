@@ -10,8 +10,7 @@ import cn.qqtheme.framework.widget.WheelView;
  * 滑轮选择器
  *
  * @author 李玉江[QQ:1032694760]
- * @since 2015/12/22
- * Created By Android Studio
+ * @version 2015/12/22
  */
 public abstract class WheelPicker extends ConfirmPopup<View> {
     protected int textSize = WheelView.TEXT_SIZE;

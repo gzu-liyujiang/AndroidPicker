@@ -13,7 +13,7 @@ dependencies {
     compile project(':ColorPicker')
 }
 ```   
-4、(可选，默认动画为淡入淡出)自定义窗口进入退出动画：在Application的子类中调用“Popup.setAnimation()”即可，如：
+4、自定义窗口进入退出动画(可选，默认动画为淡入淡出)：在Application的子类中调用“Popup.setAnimation()”即可，如：
 ```xml
 <resources>
     <style name="Animation.CustomPopup" parent="@android:style/Animation">
@@ -35,10 +35,8 @@ public class DemoApp extends Application {
 ```   
 
 注：   
-旧版的基于android-wheel，在分支“branch_OldAndroidPicker”。   
 不断学习，持续完善，敬请关注。。。   
 gradle为1.3.0，buildTools为23.0.1，sdk为23。   
-滑轮选择器的名称较长时，将以“...”显示超出的部分。      
 支持android2.3+，项目编码为UTF-8。   
 
 # Sample
@@ -171,7 +169,7 @@ gradle为1.3.0，buildTools为23.0.1，sdk为23。
         picker.setOnColorPickListener(new ColorPicker.OnColorPickListener() {
             @Override
             public void onColorPicked(int pickedColor) {
-                showToast(Common.toColorString(pickedColor));
+                showToast(ConvertUtils.toColorString(pickedColor));
             }
         });
         picker.show();
@@ -181,7 +179,7 @@ gradle为1.3.0，buildTools为23.0.1，sdk为23。
 ```java   
         FilePicker picker = new FilePicker(this);
         picker.setShowHideDir(false);
-        picker.setRootPath(Common.getRootPath(this) + "Download/");
+        picker.setRootPath(StorageUtils.getRootPath(this) + "Download/");
         //picker.setAllowExtensions(new String[]{".apk"});
         picker.setMode(FilePicker.Mode.File);
         picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {

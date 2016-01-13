@@ -15,8 +15,7 @@ import cn.qqtheme.framework.widget.WheelView;
  * 地址数据见示例项目的“city.json”，来源于国家统计局官网（http://www.stats.gov.cn/tjsj/tjbz/xzqhdm）
  *
  * @author 李玉江[QQ:1032694760]
- * @since 2015/12/15
- * Created By Android Studio
+ * @version 2015/12/15
  */
 public class AddressPicker extends WheelPicker {
     private ArrayList<String> provinceList = new ArrayList<String>();

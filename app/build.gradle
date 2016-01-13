@@ -15,7 +15,6 @@ android {
         release {
             //是否调试模式
             debuggable false
-            jniDebuggable false
             //是否zip优化
             zipAlignEnabled true
             //是否移除无用的资源
@@ -26,14 +25,7 @@ android {
             proguardFile 'proguard-rules.pro'
         }
         debug {
-            //是否调试模式
             debuggable true
-            jniDebuggable true
-            //是否zip优化
-            zipAlignEnabled false
-            //是否移除无用的资源
-            shrinkResources false
-            //是否混淆
             minifyEnabled false
         }
     }
@@ -60,7 +52,7 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:' + ANDROID_SUPPORT_VERSION
+    compile 'com.android.support:support-v4:23.1.1'
     compile project(':WheelPicker')
     compile project(':FilePicker')
     compile project(':ColorPicker')

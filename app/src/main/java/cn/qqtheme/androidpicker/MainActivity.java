@@ -21,7 +21,6 @@ import cn.qqtheme.framework.picker.NumberPicker;
 import cn.qqtheme.framework.picker.OptionPicker;
 import cn.qqtheme.framework.picker.SexPicker;
 import cn.qqtheme.framework.picker.TimePicker;
-import cn.qqtheme.framework.util.AssetsUtils;
 import cn.qqtheme.framework.util.ConvertUtils;
 import cn.qqtheme.framework.util.StorageUtils;
 

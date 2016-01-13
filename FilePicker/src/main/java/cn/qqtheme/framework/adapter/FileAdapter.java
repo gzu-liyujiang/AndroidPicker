@@ -7,10 +7,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.qqtheme.framework.bean.FileItem;
-import cn.qqtheme.framework.picker.file.R;
+import cn.qqtheme.framework.filepicker.R;
 import cn.qqtheme.framework.util.FileUtils;
 import cn.qqtheme.framework.util.LogUtils;
 
+/**
+ * 文件数据适配
+ *
+ * @author 李玉江[QQ:1023694760]
+ */
 public class FileAdapter extends IconTextAdapter<FileItem<Integer>> {
     public static final String DIR_ROOT = "..";
     public static final String DIR_PARENT = ".";

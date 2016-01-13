@@ -14,15 +14,8 @@ android {
 
     buildTypes {
         release {
-            zipAlignEnabled true
-            shrinkResources true
             minifyEnabled false
             proguardFile 'proguard-rules.pro'
-        }
-        debug {
-            zipAlignEnabled false
-            shrinkResources false
-            minifyEnabled false
         }
     }
 

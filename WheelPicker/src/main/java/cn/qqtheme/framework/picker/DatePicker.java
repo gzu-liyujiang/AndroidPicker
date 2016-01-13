@@ -18,8 +18,7 @@ import cn.qqtheme.framework.widget.WheelView;
  * 日期选择器
  *
  * @author 李玉江[QQ:1032694760]
- * @since 2015/12/14
- * Created By Android Studio
+ * @version 2015/12/14
  */
 public class DatePicker extends WheelPicker {
     private ArrayList<String> years = new ArrayList<String>();
