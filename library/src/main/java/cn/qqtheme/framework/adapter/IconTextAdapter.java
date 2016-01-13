@@ -18,7 +18,7 @@ import cn.qqtheme.framework.util.ConvertUtils;
  *
  * @param <T> the type parameter
  * @author 李玉江[QQ :1032694760]
- * @version 2014 -09-19 15:54          Created By IntelliJ IDEA
+ * @version 2014 -09-19 15:54
  */
 public class IconTextAdapter<T extends IconText> extends BeanAdapter<T> {
 
