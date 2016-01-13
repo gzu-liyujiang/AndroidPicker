@@ -11,7 +11,6 @@ import com.alibaba.fastjson.JSON;
 
 import java.util.ArrayList;
 
-import cn.qqtheme.androidpicker.R;
 import cn.qqtheme.framework.picker.AddressPicker;
 import cn.qqtheme.framework.picker.ChineseZodiacPicker;
 import cn.qqtheme.framework.picker.ColorPicker;
@@ -42,6 +41,21 @@ public class MainActivity extends Activity {
 
     private void showToast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    public void onAnimationStyle(View view) {
+        NumberPicker picker = new NumberPicker(this);
+        picker.setAnimationStyle(R.style.Animation_CustomPopup);
+        picker.setRange(40, 100);//数字范围
+        picker.setSelectedItem(65);
+        picker.setLabel("Kg");
+        picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
+            @Override
+            public void onOptionPicked(String option) {
+                showToast(option);
+            }
+        });
+        picker.show();
     }
 
     public void onYearMonthDayPicker(View view) {

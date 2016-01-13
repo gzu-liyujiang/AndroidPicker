@@ -2,6 +2,7 @@ package cn.qqtheme.framework.popup;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.support.annotation.StyleRes;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -32,7 +33,7 @@ public abstract class BottomPopup<V extends View> {
      * The Screen.
      */
     protected ScreenHelper.Screen screen;
-    private Popup popup;
+    protected Popup popup;
 
     /**
      * Gets view.
@@ -89,6 +90,15 @@ public abstract class BottomPopup<V extends View> {
      * @param contentView the content view
      */
     protected void setContentViewAfter(View contentView) {
+    }
+
+    /**
+     * Sets animation.
+     *
+     * @param animRes the anim res
+     */
+    public void setAnimationStyle(@StyleRes int animRes) {
+        popup.setAnimationStyle(animRes);
     }
 
     /**

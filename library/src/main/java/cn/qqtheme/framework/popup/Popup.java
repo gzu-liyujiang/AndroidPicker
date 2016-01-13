@@ -22,18 +22,8 @@ import cn.qqtheme.framework.util.LogUtils;
  * @see android.widget.PopupWindow
  */
 public class Popup {
-    private static int animRes = R.style.Animation_Popup;
     private android.app.Dialog dialog;
     private FrameLayout contentLayout;
-
-    /**
-     * Sets animation.
-     *
-     * @param animRes the anim res
-     */
-    public static void setAnimation(@StyleRes int animRes) {
-        Popup.animRes = animRes;
-    }
 
     /**
      * Instantiates a new Popup.
@@ -54,11 +44,21 @@ public class Popup {
         dialog.setCanceledOnTouchOutside(true);
         Window window = dialog.getWindow();
         window.setGravity(Gravity.BOTTOM);
-        window.setWindowAnimations(animRes);
+        window.setWindowAnimations(R.style.Animation_Popup);
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         //android.util.AndroidRuntimeException: requestFeature() must be called before adding content
         window.requestFeature(Window.FEATURE_NO_TITLE);
         window.setContentView(contentLayout);
+    }
+
+    /**
+     * Sets animation.
+     *
+     * @param animRes the anim res
+     */
+    public void setAnimationStyle(@StyleRes int animRes) {
+        Window window = dialog.getWindow();
+        window.setWindowAnimations(animRes);
     }
 
     /**

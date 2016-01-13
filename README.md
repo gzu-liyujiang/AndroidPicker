@@ -1,18 +1,26 @@
 # Summary
 安卓选择器类库，包括日期选择器、时间选择器、单项选择器、城市选择器、颜色选择器、文件选择器、目录选择器、数字选择器、星座选择器、生肖选择器等。   
-[ ![Download](https://api.bintray.com/packages/gzu-liyujiang/maven/AndroidPicker/images/download.svg) ](https://bintray.com/gzu-liyujiang/maven/AndroidPicker/_latestVersion)；   
+[ ![Download](https://api.bintray.com/packages/gzu-liyujiang/maven/AndroidPicker/images/download.svg) ](https://bintray.com/gzu-liyujiang/maven/AndroidPicker/_latestVersion)   
 
 # Install
-app是测试用例；library包括WheelPicker、ColorPicker、FilePicker。如果需要完整的选择器的话，依赖导入建议“AndroidPicker”。     
+“app”是测试用例；“library”包括WheelPicker、ColorPicker、FilePicker。   
+如果需要所有的的选择器的话，建议依赖“AndroidPicker”。     
 ```
 dependencies {
-    compile 'cn.qqtheme.framework:AndroidPicker:1.0.0'
-    //compile 'cn.qqtheme.framework:WheelPicker:1.0.0'
-    //compile 'cn.qqtheme.framework:ColorPicker:1.0.0'
-    //compile 'cn.qqtheme.framework:FilePicker:1.0.0'
+    compile 'cn.qqtheme.framework:AndroidPicker:latest.integration'
+    //compile 'cn.qqtheme.framework:WheelPicker:latest.integration'
+    //compile 'cn.qqtheme.framework:ColorPicker:latest.integration'
+    //compile 'cn.qqtheme.framework:FilePicker:latest.integration'
 }
-```   
-###自定义窗口进入退出动画(可选，默认动画为淡入淡出)：在Application的子类中调用“Popup.setAnimation()”即可，如：
+```
+也可以手动下载本项目，复制“library”命名为“AndroidPicker”，然后：
+```
+dependencies {
+    compile project('AndroidPicker')
+}
+```
+
+### 窗口进入退出动画(可选，默认动画为淡入淡出)
 ```xml
 <resources>
     <style name="Animation.CustomPopup" parent="@android:style/Animation">
@@ -22,15 +30,7 @@ dependencies {
 </resources>
 ```   
 ```java
-public class DemoApp extends Application {
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        Popup.setAnimation(R.style.Animation_CustomPopup);
-    }
-
-}
+    picker.setAnimationStyle(R.style.Animation_CustomPopup);
 ```   
 
 # Sample
@@ -220,6 +220,7 @@ https://github.com/alibaba/fastjson<br />
 ![目录选择器效果图](/screenshots/dir.gif)    
 
 # Contact
-<a target="blank" href="http://wpa.qq.com/msgrd?V=3&uin=1032694760&Site=穿青人&Menu=yes"><img border="0" SRC="http://wpa.qq.com/pa?p=1:1032694760:1" alt="点击这里给我发消息" width="50" /></a>
+<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=1032694760&site=穿青人&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:1032694760:51" alt="点击这里给我发消息" title="点击这里给我发消息"/></a>
+&nbsp;&nbsp;&nbsp;
 <a target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=q8fC0t7BwsrFzIXfwOva2oXIxMY" style="text-decoration:none;"><img src="http://rescdn.qqmail.com/zh_CN/htmledition/images/function/qm_open/ico_mailme_02.png"/></a>
 
