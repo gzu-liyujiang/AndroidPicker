@@ -31,46 +31,16 @@ android {
         }
     }
 
-}
-
-dependencies {
-    compile 'com.android.support:support-v4:23.1.1'
-        }
-        debug {
-            debuggable true
-            minifyEnabled false
-        }
-    }
-
     lintOptions {
         //忽略lint错误
         abortOnError false
     }
 
-    packagingOptions {
-        exclude 'META-INF/DEPENDENCIES.txt'
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/NOTICE.txt'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/DEPENDENCIES'
-        exclude 'META-INF/notice.txt'
-        exclude 'META-INF/license.txt'
-        exclude 'META-INF/dependencies.txt'
-        exclude 'META-INF/LGPL2.1'
-        exclude 'META-INF/ASL2.0'
-    }
-
 }
 
 dependencies {
     compile 'com.android.support:support-v4:23.1.1'
     compile 'com.alibaba:fastjson:1.1.46.android'
-    compile project(':library')
-    //compile 'cn.qqtheme.framework:AndroidPicker:1.0.1-RC'
-}
-    compile 'com.alibaba:fastjson:1.1.46.android'
-    compile project(':WheelPicker')
-    compile project(':FilePicker')
-    compile project(':ColorPicker')
+    //compile project(':library')
+    compile 'cn.qqtheme.framework:AndroidPicker:1.0.1-RC'
 }
