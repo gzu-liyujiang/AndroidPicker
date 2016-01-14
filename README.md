@@ -178,7 +178,7 @@ dependencies {
         picker.show();
 ```
 
-文件选择器：
+文件选择器（需要权限android.permission.READ_EXTERNAL_STORAGE）：
 ```java   
         FilePicker picker = new FilePicker(this);
         picker.setShowHideDir(false);
@@ -194,7 +194,7 @@ dependencies {
         picker.show();
 ```
 
-目录选择器：
+目录选择器（需要权限android.permission.READ_EXTERNAL_STORAGE）：
 ```java   
         FilePicker picker = new FilePicker(this);
         picker.setMode(FilePicker.Mode.Directory);
