@@ -147,7 +147,8 @@ public class WheelView extends ScrollView {
             views.addView(createView(item));
         }
 
-        refreshItemView(0);
+        // 2016/1/15 焦点文字颜色高亮位置，逆推“int position = y / itemHeight + offset”
+        refreshItemView(itemHeight * (selectedIndex - offset));
     }
 
     private TextView createView(String item) {
@@ -169,6 +170,7 @@ public class WheelView extends ScrollView {
         }
         return tv;
     }
+
 
     private void refreshItemView(int y) {
         int position = y / itemHeight + offset;
@@ -485,7 +487,7 @@ public class WheelView extends ScrollView {
     public void setSelectedItem(String item) {
         for (int i = 0; i < items.size(); i++) {
             if (items.get(i).equals(item)) {
-                //调用setItems(List,String)之前已经调用过setOffset(int)
+                //调用_setItems(List)时额外添加了offset个占位符到items里，需要忽略占位符所占的位
                 setSelectedIndex(i - offset);
                 break;
             }

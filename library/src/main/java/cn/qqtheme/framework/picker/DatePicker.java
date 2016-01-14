@@ -239,7 +239,11 @@ public class DatePicker extends WheelPicker {
                     for (int i = 1; i <= maxDays; i++) {
                         days.add(DateUtils.fillZero(i));
                     }
-                    dayView.setItems(days, isUserScroll ? 0 : selectedDayIndex);
+                    if (selectedDayIndex >= maxDays) {
+                        //年或月变动时，保持之前选择的日不动：如果之前选择的日是之前年月的最大日，则日自动为该年月的最大日
+                        selectedDayIndex = days.size() - 1;
+                    }
+                    dayView.setItems(days, selectedDayIndex);
                 }
             });
         }
@@ -256,13 +260,17 @@ public class DatePicker extends WheelPicker {
             public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
                 selectedMonthIndex = selectedIndex;
                 if (!mode.equals(Mode.YEAR_MONTH)) {
-                    //需要根据年份及月份动态计算天数
+                    //年月日或年月模式下，需要根据年份及月份动态计算天数
                     days.clear();
                     int maxDays = DateUtils.calculateDaysInMonth(stringToYearMonthDay(years.get(selectedYearIndex)), stringToYearMonthDay(item));
                     for (int i = 1; i <= maxDays; i++) {
                         days.add(DateUtils.fillZero(i));
                     }
-                    dayView.setItems(days, isUserScroll ? 0 : selectedDayIndex);
+                    if (selectedDayIndex >= maxDays) {
+                        //年或月变动时，保持之前选择的日不动：如果之前选择的日是之前年月的最大日，则日自动为该年月的最大日
+                        selectedDayIndex = days.size() - 1;
+                    }
+                    dayView.setItems(days, selectedDayIndex);
                 }
             }
         });

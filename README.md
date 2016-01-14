@@ -1,5 +1,6 @@
 # Summary
-安卓选择器类库，包括日期选择器、时间选择器、单项选择器、城市选择器、颜色选择器、文件选择器、目录选择器、数字选择器、星座选择器、生肖选择器等。   
+安卓选择器类库，包括日期选择器、时间选择器、单项选择器、城市选择器、颜色选择器、文件选择器、目录选择器、数字选择器、星座选择器、生肖选择器等。
+欢迎大伙儿在[issues](https://github.com/gzu-liyujiang/AndroidPicker/issues)提交你的意见或建议     
 [ ![Download](https://api.bintray.com/packages/gzu-liyujiang/maven/AndroidPicker/images/download.svg) ](http://jcenter.bintray.com/cn/qqtheme/framework/AndroidPicker/)   
 项目分支说明：   
 Branch_OldAndroidPicker-基于android-wheel的旧版选择器，不再维护；   
