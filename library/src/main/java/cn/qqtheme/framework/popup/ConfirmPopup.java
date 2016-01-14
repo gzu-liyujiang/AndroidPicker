@@ -18,19 +18,14 @@ import cn.qqtheme.framework.util.ConvertUtils;
  *
  * @param <V> the type parameter
  * @author 李玉江[QQ :1032694760]
- * @since 2015 /10/21 Created By Android Studio
+ * @version 2015 /10/21
  */
 public abstract class ConfirmPopup<V extends View> extends BottomPopup<View> implements View.OnClickListener {
-    /**
-     * The constant TAG_SUBMIT.
-     */
-    protected static final String TAG_SUBMIT = "submit";
-    /**
-     * The constant TAG_CANCEL.
-     */
-    protected static final String TAG_CANCEL = "cancel";
+    private static final String TAG_SUBMIT = "submit";
+    private static final String TAG_CANCEL = "cancel";
     private boolean topLineVisible = true;
     private int topLineColor = 0xFFDDDDDD;
+    private int topBackgroundColor = Color.WHITE;
     private boolean cancelVisible = true;
     private CharSequence cancelText = "", submitText = "";
     private int cancelTextColor = Color.BLACK;
@@ -60,8 +55,12 @@ public abstract class ConfirmPopup<V extends View> extends BottomPopup<View> imp
      *
      * @param topLineColor the top line color
      */
-    public void setTopLineColor(int topLineColor) {
+    public void setTopLineColor(@ColorInt int topLineColor) {
         this.topLineColor = topLineColor;
+    }
+
+    public void setTopBackgroundColor(@ColorInt int topBackgroundColor) {
+        this.topBackgroundColor = topBackgroundColor;
     }
 
     /**
@@ -129,7 +128,7 @@ public abstract class ConfirmPopup<V extends View> extends BottomPopup<View> imp
         rootLayout.setClipToPadding(false);
         RelativeLayout topButtonLayout = new RelativeLayout(activity);
         topButtonLayout.setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, ConvertUtils.toPx(activity, 40)));
-        topButtonLayout.setBackgroundColor(Color.WHITE);
+        topButtonLayout.setBackgroundColor(topBackgroundColor);
         topButtonLayout.setGravity(Gravity.CENTER_VERTICAL);
         Button cancelButton = new Button(activity);
         cancelButton.setVisibility(cancelVisible ? View.VISIBLE : View.GONE);

@@ -1,9 +1,14 @@
 # Summary
 安卓选择器类库，包括日期选择器、时间选择器、单项选择器、城市选择器、颜色选择器、文件选择器、目录选择器、数字选择器、星座选择器、生肖选择器等。   
-[ ![Download](https://api.bintray.com/packages/gzu-liyujiang/maven/AndroidPicker/images/download.svg) ](https://bintray.com/gzu-liyujiang/maven/AndroidPicker/_latestVersion)   
+[ ![Download](https://api.bintray.com/packages/gzu-liyujiang/maven/AndroidPicker/images/download.svg) ](http://jcenter.bintray.com/cn/qqtheme/framework/AndroidPicker/)   
+项目分支说明：   
+Branch_OldAndroidPicker-基于android-wheel的旧版选择器，不再维护；   
+release_0.9-WheelPicker、ColorPicker、FilePicker是分开的三个模块；   
+master-默认的最新分支，release_0.9之后支持maven库依赖。   
 
 # Install
-“app”是测试用例；“library”包括WheelPicker、ColorPicker、FilePicker。   
+“app”是测试用例；“library”包括WheelPicker、ColorPicker、FilePicker，   
+WheelPicker包括DatePicker、TimePicker、OptionPicker、AddressPicker、NumberPicker等，   
 如果需要所有的的选择器的话，建议依赖“AndroidPicker”。     
 ```
 dependencies {
@@ -129,7 +134,10 @@ dependencies {
 星座选择器：
 ```java   
         ConstellationPicker picker = new ConstellationPicker(this);
+        picker.setTopBackgroundColor(0xFF0000BB);
         picker.setTopLineColor(0xFFEE0000);
+        picker.setCancelTextColor(0xFFEE0000);
+        picker.setSubmitTextColor(0xFFEE0000);
         picker.setTextColor(0xFFFF0000, 0xFF999999);
         picker.setLineColor(0xFFEE0000);
         picker.setSelectedItem("射手");
@@ -199,11 +207,10 @@ dependencies {
 ```
 
 # Thanks
-修改了使用以下项目：<br />
+库项目修改了使用以下项目：<br />
 https://github.com/wangjiegulu/WheelView<br />
 https://github.com/jbruchanov/AndroidColorPicker<br />
-https://github.com/JoanZapata/base-adapter-helper<br />
-直接使用了以下项目：<br />
+示例项目直接使用了以下项目：<br />
 https://github.com/alibaba/fastjson<br />
 
 # Screenshots

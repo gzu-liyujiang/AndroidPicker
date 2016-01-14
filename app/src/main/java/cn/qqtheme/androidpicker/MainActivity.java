@@ -46,6 +46,7 @@ public class MainActivity extends Activity {
     public void onAnimationStyle(View view) {
         NumberPicker picker = new NumberPicker(this);
         picker.setAnimationStyle(R.style.Animation_CustomPopup);
+        picker.setOffset(4);//偏移量
         picker.setRange(40, 100);//数字范围
         picker.setSelectedItem(65);
         picker.setLabel("Kg");
@@ -125,7 +126,10 @@ public class MainActivity extends Activity {
 
     public void onConstellationPicker(View view) {
         ConstellationPicker picker = new ConstellationPicker(this);
+        picker.setTopBackgroundColor(0xFF0000BB);
         picker.setTopLineColor(0xFFEE0000);
+        picker.setCancelTextColor(0xFFEE0000);
+        picker.setSubmitTextColor(0xFFEE0000);
         picker.setTextColor(0xFFFF0000, 0xFF999999);
         picker.setLineColor(0xFFEE0000);
         picker.setSelectedItem("射手");
@@ -168,7 +172,7 @@ public class MainActivity extends Activity {
 
     public void onSexPicker(View view) {
         SexPicker picker = new SexPicker(this);
-        picker.onlyMaleAndFemale();
+        //picker.onlyMaleAndFemale();
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
             public void onOptionPicked(String option) {
