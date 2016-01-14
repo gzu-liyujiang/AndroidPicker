@@ -452,6 +452,9 @@ public class WheelView extends ScrollView {
      * @param offset the offset
      */
     public void setOffset(int offset) {
+        if (offset < 1 || offset > 4) {
+            throw new IllegalArgumentException("Offset must between 1 and 4");
+        }
         this.offset = offset;
     }
 
