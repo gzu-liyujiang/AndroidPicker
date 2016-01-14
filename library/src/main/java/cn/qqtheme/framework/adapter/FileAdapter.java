@@ -1,20 +1,28 @@
 package cn.qqtheme.framework.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
-import cn.qqtheme.framework.bean.FileItem;
+import cn.qqtheme.framework.entity.FileItem;
 import cn.qqtheme.framework.R;
+import cn.qqtheme.framework.util.CompatUtils;
+import cn.qqtheme.framework.util.ConvertUtils;
 import cn.qqtheme.framework.util.FileUtils;
 import cn.qqtheme.framework.util.LogUtils;
 
 /**
  * The type File adapter.
  */
-public class FileAdapter extends IconTextAdapter<FileItem<Integer>> {
+public class FileAdapter extends BaseAdapter {
     /**
      * The constant DIR_ROOT.
      */
@@ -23,6 +31,8 @@ public class FileAdapter extends IconTextAdapter<FileItem<Integer>> {
      * The constant DIR_PARENT.
      */
     public static final String DIR_PARENT = ".";
+    private Context context;
+    private ArrayList<FileItem> data = new ArrayList<FileItem>();
     private String rootPath = null;
     private String currentPath = null;
     private String[] allowExtensions = null;//允许的扩展名
@@ -41,38 +51,7 @@ public class FileAdapter extends IconTextAdapter<FileItem<Integer>> {
      * @param context the context
      */
     public FileAdapter(Context context) {
-        super(context);
-    }
-
-    /**
-     * Instantiates a new File adapter.
-     *
-     * @param context the context
-     * @param data    the data
-     */
-    public FileAdapter(Context context, List<FileItem<Integer>> data) {
-        super(context, data);
-    }
-
-    /**
-     * Instantiates a new File adapter.
-     *
-     * @param context   the context
-     * @param layoutRes the layout res
-     */
-    public FileAdapter(Context context, int layoutRes) {
-        super(context, layoutRes);
-    }
-
-    /**
-     * Instantiates a new File adapter.
-     *
-     * @param context   the context
-     * @param layoutRes the layout res
-     * @param data      the data
-     */
-    public FileAdapter(Context context, int layoutRes, List<FileItem<Integer>> data) {
-        super(context, layoutRes, data);
+        this.context = context;
     }
 
     /**
@@ -133,25 +112,13 @@ public class FileAdapter extends IconTextAdapter<FileItem<Integer>> {
      * Load data array list.
      *
      * @param path the path
-     * @return the array list
      */
-    public ArrayList<FileItem<Integer>> loadData(String path) {
-        return loadData(path, true);
-    }
-
-    /**
-     * Load data array list.
-     *
-     * @param path                 the path
-     * @param notifyDataSetChanged the notify data set changed
-     * @return the array list
-     */
-    public ArrayList<FileItem<Integer>> loadData(String path, boolean notifyDataSetChanged) {
-        ArrayList<FileItem<Integer>> datas = new ArrayList<FileItem<Integer>>();
+    public void loadData(String path) {
         if (path == null) {
             LogUtils.warn("current directory is null");
-            return datas;
+            return;
         }
+        ArrayList<FileItem> datas = new ArrayList<FileItem>();
         if (rootPath == null) {
             rootPath = path;
         }
@@ -159,7 +126,7 @@ public class FileAdapter extends IconTextAdapter<FileItem<Integer>> {
         currentPath = path;
         if (showHomeDir) {
             //添加“返回主目录”
-            FileItem<Integer> fileRoot = new FileItem<Integer>();
+            FileItem fileRoot = new FileItem();
             fileRoot.setDirectory(true);
             fileRoot.setIcon(homeIcon);
             fileRoot.setName(DIR_ROOT);
@@ -169,7 +136,7 @@ public class FileAdapter extends IconTextAdapter<FileItem<Integer>> {
         }
         if (showUpDir && !path.equals("/")) {
             //添加“返回上一级目录”
-            FileItem<Integer> fileParent = new FileItem<Integer>();
+            FileItem fileParent = new FileItem();
             fileParent.setDirectory(true);
             fileParent.setIcon(upIcon);
             fileParent.setName(DIR_PARENT);
@@ -196,7 +163,7 @@ public class FileAdapter extends IconTextAdapter<FileItem<Integer>> {
                 if (!showHideDir && file.getName().startsWith(".")) {
                     continue;
                 }
-                FileItem<Integer> fileItem = new FileItem<Integer>();
+                FileItem fileItem = new FileItem();
                 boolean isDirectory = file.isDirectory();
                 fileItem.setDirectory(isDirectory);
                 if (isDirectory) {
@@ -211,10 +178,48 @@ public class FileAdapter extends IconTextAdapter<FileItem<Integer>> {
                 datas.add(fileItem);
             }
         }
-        if (notifyDataSetChanged) {
-            replaceAll(datas);
+        data.clear();
+        data.addAll(datas);
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public int getCount() {
+        return data.size();
+    }
+
+    @Override
+    public FileItem getItem(int position) {
+        return data.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolder holder;
+        if (convertView == null) {
+            convertView = LayoutInflater.from(context).inflate(android.R.layout.activity_list_item, null);
+            CompatUtils.setBackground(convertView, ConvertUtils.toStateListDrawable(Color.WHITE, Color.LTGRAY));
+            holder = new ViewHolder();
+            holder.imageView = (ImageView) convertView.findViewById(android.R.id.icon);
+            holder.textView = (TextView) convertView.findViewById(android.R.id.text1);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
-        return datas;
+        FileItem item = data.get(position);
+        holder.imageView.setImageResource(item.getIcon());
+        holder.textView.setText(item.getName());
+        return convertView;
+    }
+
+    private class ViewHolder {
+        ImageView imageView;
+        TextView textView;
     }
 
 }

@@ -1,16 +1,35 @@
-package cn.qqtheme.framework.bean;
+package cn.qqtheme.framework.entity;
 
 /**
- * 类描述
+ * 文件项信息
  *
- * @param <ICON> the type parameter
  * @author 李玉江[QQ :1032694760]
  * @version 2014 -05-23 18:02
  */
-public class FileItem<ICON> extends IconText<ICON> {
+public class FileItem {
+    private int icon;
+    private String name;
     private String path = "/";
     private long size = 0;
     private boolean isDirectory = false;
+
+    /**
+     * Sets icon.
+     *
+     * @param icon the icon
+     */
+    public void setIcon(int icon) {
+        this.icon = icon;
+    }
+
+    /**
+     * Gets icon.
+     *
+     * @return the icon
+     */
+    public int getIcon() {
+        return icon;
+    }
 
     /**
      * Gets name.
@@ -18,7 +37,7 @@ public class FileItem<ICON> extends IconText<ICON> {
      * @return the name
      */
     public String getName() {
-        return getText().toString();
+        return name;
     }
 
     /**
@@ -27,7 +46,7 @@ public class FileItem<ICON> extends IconText<ICON> {
      * @param name the name
      */
     public void setName(String name) {
-        setText(name);
+        this.name = name;
     }
 
     /**

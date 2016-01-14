@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import cn.qqtheme.framework.adapter.FileAdapter;
-import cn.qqtheme.framework.bean.FileItem;
+import cn.qqtheme.framework.entity.FileItem;
 import cn.qqtheme.framework.popup.ConfirmPopup;
 import cn.qqtheme.framework.util.ConvertUtils;
 import cn.qqtheme.framework.util.LogUtils;
@@ -200,7 +200,7 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
         } else {
             textView.setText(currentPath);
         }
-        adapter.loadData(currentPath, true);
+        adapter.loadData(currentPath);
     }
 
     /**
