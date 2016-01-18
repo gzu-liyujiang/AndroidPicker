@@ -1,5 +1,11 @@
-/.gradle
-/build
-/local.properties
-/.idea
 /*.iml
+/*/*.iml
+/.idea
+bin/
+gen/
+.gradle/
+build/
+/*/build/
+local.properties
+proguard/
+*.log

@@ -52,11 +52,6 @@ public abstract class BottomPopup<V extends View> {
         this.screen = ScreenHelper.getScreenPixels(activity);
         LogUtils.debug("screen width=" + screen.widthPixels + ", screen height=" + screen.heightPixels);
         popup = new Popup(activity);
-        if (isFixedHeight()) {
-            popup.setSize(screen.widthPixels, screen.heightPixels / 2);
-        } else {
-            popup.setSize(screen.widthPixels, WRAP_CONTENT);
-        }
     }
 
     /**
@@ -66,6 +61,11 @@ public abstract class BottomPopup<V extends View> {
         setContentViewBefore();
         V view = getView();
         popup.setContentView(view);// 设置弹出窗体的布局
+        if (isFixedHeight()) {
+            popup.setSize(screen.widthPixels, screen.heightPixels / 2);
+        } else {
+            popup.setSize(screen.widthPixels, WRAP_CONTENT);
+        }
         setContentViewAfter(view);
     }
 
@@ -89,7 +89,7 @@ public abstract class BottomPopup<V extends View> {
      *
      * @param contentView the content view
      */
-    protected void setContentViewAfter(View contentView) {
+    protected void setContentViewAfter(V contentView) {
     }
 
     /**

@@ -82,6 +82,7 @@ public class WheelView extends ScrollView {
     private int lineColor = LINE_COLOR;
     private boolean lineVisible = true;
     private boolean isUserScroll = false;//是否用户手动滚动
+    private float previousY = 0;//记录按下时的Y坐标
 
     /**
      * Instantiates a new Wheel view.
@@ -166,7 +167,7 @@ public class WheelView extends ScrollView {
             LogUtils.debug(this, "itemHeight: " + itemHeight);
             views.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, itemHeight * displayItemCount));
             LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) this.getLayoutParams();
-            this.setLayoutParams(new LinearLayout.LayoutParams(lp.width, itemHeight * displayItemCount));
+            setLayoutParams(new LinearLayout.LayoutParams(lp.width, itemHeight * displayItemCount));
         }
         return tv;
     }
@@ -191,7 +192,7 @@ public class WheelView extends ScrollView {
             if (null == itemView) {
                 return;
             }
-            // 2015/12/15 颜色常量
+            // 2015/12/15 可设置颜色
             if (position == i) {
                 itemView.setTextColor(textColorFocus);
             } else {
@@ -302,9 +303,26 @@ public class WheelView extends ScrollView {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        if (ev.getAction() == MotionEvent.ACTION_UP) {
-            isUserScroll = true;
-            startScrollerTask();
+        switch (ev.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                previousY = ev.getY();
+                break;
+            case MotionEvent.ACTION_UP:
+                LogUtils.debug(this, String.format("items=%s, offset=%s", items.size(), offset));
+                LogUtils.debug(this, "selectedIndex=" + selectedIndex);
+                float delta = ev.getY() - previousY;
+                LogUtils.debug(this, "delta=" + delta);
+                if (selectedIndex == offset && delta > 0) {
+                    //滑动到第一项时，若继续向下滑动，则自动跳到最后一项
+                    setSelectedIndex(items.size() - offset * 2 - 1);
+                } else if (selectedIndex == items.size() - offset - 1 && delta < 0) {
+                    //滑动到最后一项时，若继续向上滑动，则自动跳到第一项
+                    setSelectedIndex(0);
+                } else {
+                    isUserScroll = true;
+                    startScrollerTask();
+                }
+                break;
         }
         return super.onTouchEvent(ev);
     }
@@ -495,20 +513,36 @@ public class WheelView extends ScrollView {
     }
 
     /**
-     * Gets seleted item.
-     *
-     * @return the seleted item
+     * Use {@link #getSelectedItem()} instead
      */
+    @Deprecated
     public String getSeletedItem() {
+        return getSelectedItem();
+    }
+
+    /**
+     * Gets selected item.
+     *
+     * @return the selected item
+     */
+    public String getSelectedItem() {
         return items.get(selectedIndex);
     }
 
     /**
-     * Gets seleted index.
-     *
-     * @return the seleted index
+     * Use {@link #getSelectedIndex()} instead
      */
+    @Deprecated
     public int getSeletedIndex() {
+        return getSelectedIndex();
+    }
+
+    /**
+     * Gets selected index.
+     *
+     * @return the selected index
+     */
+    public int getSelectedIndex() {
         return selectedIndex - offset;
     }
 
