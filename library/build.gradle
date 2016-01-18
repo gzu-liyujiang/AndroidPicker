@@ -31,4 +31,4 @@ dependencies {
 }
 
 // 这个脚本是用来发布项目到jcenter
-apply from: rootProject.file('bintray.gradle')
+apply from: rootProject.file('publish.gradle')
