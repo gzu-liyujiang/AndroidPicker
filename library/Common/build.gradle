@@ -1,0 +1,15 @@
+apply plugin: 'com.android.library'
+
+ext {
+    isLibrary = true
+    pomPackaging = "aar"
+    pomArtifactId = "Common"
+    pomDescription = "Common of android picker"
+}
+
+dependencies {
+    compile "com.android.support:support-v4:${BUILD_TOOL_VERSION}"
+    compile "com.android.support:support-annotations:${BUILD_TOOL_VERSION}"
+}
+
+

@@ -1,0 +1,12 @@
+apply plugin: 'com.android.library'
+
+ext {
+    isLibrary = true
+    pomPackaging = "aar"
+    pomArtifactId = "FilePicker"
+    pomDescription = "file picker for android"
+}
+
+dependencies {
+    compile project(":library:Common")
+}
