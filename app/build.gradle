@@ -2,20 +2,8 @@ apply plugin: 'com.android.application'
 
 android {
 
-    compileSdkVersion COMPILE_SDK_VERSION as int
-    buildToolsVersion BUILD_TOOL_VERSION
-
-    defaultConfig {
-        minSdkVersion MIN_SDK_VERSION as int
-        targetSdkVersion COMPILE_SDK_VERSION as int
-        versionCode VERSION_CODE as int
-        versionName VERSION_NAME
-    }
-
     buildTypes {
         release {
-            //是否调试模式
-            debuggable false
             //是否zip优化
             zipAlignEnabled true
             //是否移除无用的资源
@@ -25,21 +13,12 @@ android {
             //混淆配置文件
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-        debug {
-            debuggable true
-            minifyEnabled false
-        }
-    }
-
-    lintOptions {
-        //忽略lint错误
-        abortOnError false
     }
 
 }
 
 dependencies {
     compile 'com.alibaba:fastjson:1.1.46.android'
-    compile project(':library')
-    //compile 'cn.qqtheme.framework:AndroidPicker:1.0.2'
+    //compile project(':library')
+    compile 'cn.qqtheme.framework:AndroidPicker:latest.integration'
 }

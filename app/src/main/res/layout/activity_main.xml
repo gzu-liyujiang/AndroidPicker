@@ -101,12 +101,6 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="onGithub"
-            android:text="开源代码主页" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:onClick="onContact"
             android:text="建议收集" />
 

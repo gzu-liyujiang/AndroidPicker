@@ -245,11 +245,6 @@ public class MainActivity extends Activity {
         picker.show();
     }
 
-    public void onGithub(View view) {
-        Intent intent = new Intent(this, GithubActivity.class);
-        startActivity(intent);
-    }
-
     public void onContact(View view) {
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(Uri.parse("mailto:liyujiang_tk@yeah.net"));
