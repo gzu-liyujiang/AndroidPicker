@@ -1,19 +1,220 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+//参考：https://raw.github.com/dm77/barcodescanner/master/build.gradle
 
 buildscript {
     repositories {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.3.0'
+        classpath "com.android.tools.build:gradle:${GRADLE_BUILD_VERSION}"
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:${GRADLE_BINTRAY_VERSION}"
     }
 }
 
 allprojects {
+    group = PROJ_GROUP
+    version = PROJ_VERSION
+
     repositories {
-        jcenter()
+        jcenter() //bintray的maven库
+        mavenCentral() //sonatype的maven库
+        mavenLocal() //本地maven库
         flatDir {
-            dirs 'libs' //this way we can find the .aar file in libs folder
+            dirs 'libs' //本地.aar文件
+        }
+    }
+
+    ext {
+        isLibrary = false
+        pomGroup = PROJ_GROUP
+        pomArtifactId = "library"
+        pomVersion = PROJ_VERSION
+        pomPackaging = "aar"
+        pomDescription = 'This is library description'
+    }
+
+}
+
+subprojects {
+    afterEvaluate { Project project ->
+        ext.pluginContainer = project.getPlugins()
+        def hasAppPlugin = ext.pluginContainer.hasPlugin("com.android.application")
+        def hasLibPlugin = ext.pluginContainer.hasPlugin("com.android.library")
+        if (hasAppPlugin || hasLibPlugin) {
+            android {
+                compileSdkVersion COMPILE_SDK_VERSION as int
+                buildToolsVersion BUILD_TOOL_VERSION
+
+                defaultConfig {
+                    minSdkVersion MIN_SDK_VERSION as int
+                    targetSdkVersion COMPILE_SDK_VERSION as int
+                    versionCode VERSION_CODE as int
+                    versionName VERSION_NAME
+                }
+
+                buildTypes {
+                    release {
+                        debuggable false
+                        minifyEnabled false
+                        proguardFile getDefaultProguardFile('proguard-android.txt')
+                    }
+                    debug {
+                        debuggable true
+                        minifyEnabled false
+                    }
+                }
+
+                lintOptions {
+                    abortOnError false
+                }
+
+                packagingOptions {
+                    exclude 'META-INF/DEPENDENCIES.txt'
+                    exclude 'META-INF/LICENSE.txt'
+                    exclude 'META-INF/NOTICE.txt'
+                    exclude 'META-INF/NOTICE'
+                    exclude 'META-INF/LICENSE'
+                    exclude 'META-INF/DEPENDENCIES'
+                    exclude 'META-INF/notice.txt'
+                    exclude 'META-INF/license.txt'
+                    exclude 'META-INF/dependencies.txt'
+                    exclude 'META-INF/LGPL2.1'
+                    exclude 'META-INF/ASL2.0'
+                }
+
+            }
+
+            dependencies {
+                compile "com.android.support:support-v4:${BUILD_TOOL_VERSION}"
+                compile "com.android.support:support-annotations:${BUILD_TOOL_VERSION}"
+            }
+        }
+
+        if (project.isLibrary) {
+            configure(project) {
+                // 这个脚本是用来发布库项目到jcenter
+                apply plugin: 'com.jfrog.bintray'
+                apply plugin: 'maven-publish'
+
+                version = project.pomVersion   //版本号
+                group = PROJ_GROUP    // 包名
+                project.archivesBaseName = project.pomArtifactId
+
+                task sourcesJar(type: Jar) {
+                    from android.sourceSets.main.java.srcDirs
+                    classifier = 'sources'
+                }
+
+                task javadoc(type: Javadoc) {
+                    source = android.sourceSets.main.java.srcDirs
+                    classpath += configurations.compile
+                    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+                    exclude '**/BuildConfig.java'
+                    exclude '**/R.java'
+                    failOnError = false
+                }
+
+                task javadocJar(type: Jar, dependsOn: javadoc) {
+                    classifier = 'javadoc'
+                    from javadoc.destinationDir
+                }
+
+                javadoc {
+                    options {
+                        encoding "UTF-8"
+                        charSet 'UTF-8'
+                        author true
+                        version true
+                        links "http://docs.oracle.com/javase/7/docs/api"
+                        title project.pomArtifactId
+                    }
+                }
+
+                publishing {
+                    publications {
+                        mavenJava(MavenPublication) {
+                            artifactId project.pomArtifactId
+                            artifact javadocJar
+                            artifact sourcesJar
+
+                            pom.withXml {
+                                Node root = asNode()
+                                root.appendNode('name', project.pomArtifactId)
+                                root.appendNode('description', project.pomDescription)
+                                root.appendNode('url', PROJ_WEBSITE_URL)
+
+                                def issues = root.appendNode('issueManagement')
+                                issues.appendNode('system', 'github')
+                                issues.appendNode('url', PROJ_ISSUE_URL)
+
+                                def scm = root.appendNode('scm')
+                                scm.appendNode('url', PROJ_GIT_URL)
+                                scm.appendNode('connection', "scm:git:${PROJ_GIT_URL}")
+                                scm.appendNode('developerConnection', "scm:git:${PROJ_GIT_URL}")
+
+                                def license = root.appendNode('licenses').appendNode('license')
+                                license.appendNode('name', "The Apache Software License, Version 2.0")
+                                license.appendNode('url', "http://www.apache.org/licenses/LICENSE-2.0.txt")
+                                license.appendNode('distribution', "repo")
+
+                                def developer = root.appendNode('developers').appendNode('developer')
+                                developer.appendNode('id', DEVELOPER_ID)
+                                developer.appendNode('name', DEVELOPER_NAME)
+                                developer.appendNode('email', DEVELOPER_EMAIL)
+
+                                def dependenciesNode = root.appendNode('dependencies')
+                                configurations.compile.allDependencies.each {
+                                    if (it.group && it.name && it.version) {
+                                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                                        dependencyNode.appendNode('groupId', it.group)
+                                        dependencyNode.appendNode('artifactId', it.name)
+                                        dependencyNode.appendNode('version', it.version)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                afterEvaluate {
+                    publishing.publications.mavenJava.artifact(bundleRelease)
+                }
+
+                bintray {
+                    Properties properties = new Properties()
+                    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+                    user = properties.getProperty("bintray.user")
+                    key = properties.getProperty("bintray.apikey")
+
+                    publications = ['mavenJava']
+                    publish = true    //是否发布
+
+                    pkg {
+                        repo = "maven"    //上传的中央仓库名称
+                        name = project.pomArtifactId    //发布到中央仓库上的项目名字
+                        desc = project.pomDescription
+                        websiteUrl = PROJ_WEBSITE_URL   //项目主页
+                        issueTrackerUrl = PROJ_ISSUE_URL    //项目讨论页
+                        vcsUrl = PROJ_GIT_URL    //项目GIT仓库
+                        licenses = ["Apache-2.0"]
+                        publicDownloadNumbers = true
+                        version {
+                            name = project.pomVersion
+                            desc = project.pomDescription
+                            gpg {
+                                sign = true    //是否GPG签名，可使用Gpg4win创建密钥文件
+                                passphrase = properties.getProperty("bintray.gpg.password")    //GPG签名所用密钥
+                            }
+                            mavenCentralSync {
+                                sync = false    //是否同步到Maven Central
+                                user = properties.getProperty("sonatype.user")    //sonatype用户名
+                                password = properties.getProperty("sonatype.password")    //sonatype密码
+                                close = '1'
+                            }
+                        }
+                    }
+                }
+
+            }
         }
     }
 }

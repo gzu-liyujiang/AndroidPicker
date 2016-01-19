@@ -11,6 +11,12 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="onAnimationStyle"
+            android:text="窗口动画" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:onClick="onYearMonthDayPicker"
             android:text="年月日选择" />
 
@@ -91,12 +97,6 @@
             android:layout_height="wrap_content"
             android:onClick="onDirPicker"
             android:text="目录选择" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="onGithub"
-            android:text="开源代码主页" />
 
         <Button
             android:layout_width="match_parent"

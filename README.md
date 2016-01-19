@@ -1,19 +1,35 @@
 # Summary
+[![API](https://img.shields.io/badge/API-8%2B-green.svg)](https://github.com/gzu-liyujiang/AndroidPicker)
+[![Download](https://api.bintray.com/packages/gzu-liyujiang/maven/AndroidPicker/images/download.svg)](https://bintray.com/gzu-liyujiang/maven/AndroidPicker/_latestVersion)
+[Jcenter版本列表](http://jcenter.bintray.com/cn/qqtheme/framework/AndroidPicker/) [版本迭代日志](/CHANGE.md)      
 安卓选择器类库，包括日期选择器、时间选择器、单项选择器、城市选择器、颜色选择器、文件选择器、目录选择器、数字选择器、星座选择器、生肖选择器等。
+欢迎大伙儿在[issues](https://github.com/gzu-liyujiang/AndroidPicker/issues)提交你的意见或建议     
+   
+项目分支说明：   
+[Branch_OldAndroidPicker](https://github.com/gzu-liyujiang/AndroidPicker/tree/Branch_OldAndroidPicker)-基于android-wheel的旧版选择器，不再维护；   
+[Branch_MultiPart](https://github.com/gzu-liyujiang/AndroidPicker/tree/Branch_MultiPart.9)-WheelPicker、ColorPicker及FilePicker是分开的三个模块；   
+[master](https://github.com/gzu-liyujiang/AndroidPicker/tree/master)-默认的最新分支，WheelPicker、ColorPicker及FilePicker合并为一个模块。   
 
 # Install
-app是测试用例；Core是其他模块的依赖项；WheelPicker是日期、时间、单项等选择器；ColorPicker是颜色选择器；FilePicker是文件、目录选择器。     
-1、通过SVN或GIT工具下载本项目，复制“AndroidPicker”到你的电脑上；<br />
-2、用Android Studio或IntelliJ IDEA打开你的项目，New->Import Module，选择“AndroidPicker”下的某个模块；<br />
-3、修改你的项目的build.gradle，把选择“AndroidPicker”下的某个模块加入依赖项，如：
+“app”是测试用例；“library”包括WheelPicker、ColorPicker、FilePicker，   
+WheelPicker包括DatePicker、TimePicker、OptionPicker、AddressPicker、NumberPicker等，   
+如果需要所有的的选择器的话，建议依赖“AndroidPicker”。     
 ```
 dependencies {
-    compile project(':WheelPicker')
-    compile project(':FilePicker')
-    compile project(':ColorPicker')
+    compile 'cn.qqtheme.framework:AndroidPicker:latest.integration'
+    //compile 'cn.qqtheme.framework:WheelPicker:latest.integration'
+    //compile 'cn.qqtheme.framework:ColorPicker:latest.integration'
+    //compile 'cn.qqtheme.framework:FilePicker:latest.integration'
 }
-```   
-4、自定义窗口进入退出动画(可选，默认动画为淡入淡出)：在Application的子类中调用“Popup.setAnimation()”即可，如：
+```
+也可以手动下载本项目，复制“library”命名为“AndroidPicker”，然后：
+```
+dependencies {
+    compile project('AndroidPicker')
+}
+```
+
+### 窗口进入退出动画(可选，默认动画为淡入淡出)
 ```xml
 <resources>
     <style name="Animation.CustomPopup" parent="@android:style/Animation">
@@ -23,21 +39,8 @@ dependencies {
 </resources>
 ```   
 ```java
-public class DemoApp extends Application {
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        Popup.setAnimation(R.style.Animation_CustomPopup);
-    }
-
-}
+    picker.setAnimationStyle(R.style.Animation_CustomPopup);
 ```   
-
-注：   
-不断学习，持续完善，敬请关注。。。   
-gradle为1.3.0，buildTools为23.0.1，sdk为23。   
-支持android2.3+，项目编码为UTF-8。   
 
 # Sample
 日期选择器：   
@@ -135,8 +138,11 @@ gradle为1.3.0，buildTools为23.0.1，sdk为23。
 星座选择器：
 ```java   
         ConstellationPicker picker = new ConstellationPicker(this);
-        picker.setTopLineColor(0xFFEE0000);
-        picker.setTextColor(0xFFFF0000, 0xFF999999);
+        picker.setTopBackgroundColor(0xFFEEEEEE);
+        picker.setTopLineVisible(false);
+        picker.setCancelTextColor(0xFF33B5E5);
+        picker.setSubmitTextColor(0xFF33B5E5);
+        picker.setTextColor(0xFFFF0000, 0xFFCCCCCC);
         picker.setLineColor(0xFFEE0000);
         picker.setSelectedItem("射手");
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
@@ -175,7 +181,7 @@ gradle为1.3.0，buildTools为23.0.1，sdk为23。
         picker.show();
 ```
 
-文件选择器：
+文件选择器（需要权限android.permission.READ_EXTERNAL_STORAGE）：
 ```java   
         FilePicker picker = new FilePicker(this);
         picker.setShowHideDir(false);
@@ -191,7 +197,7 @@ gradle为1.3.0，buildTools为23.0.1，sdk为23。
         picker.show();
 ```
 
-目录选择器：
+目录选择器（需要权限android.permission.READ_EXTERNAL_STORAGE）：
 ```java   
         FilePicker picker = new FilePicker(this);
         picker.setMode(FilePicker.Mode.Directory);
@@ -205,11 +211,10 @@ gradle为1.3.0，buildTools为23.0.1，sdk为23。
 ```
 
 # Thanks
-修改了使用以下项目：<br />
+库项目修改了使用以下项目：<br />
 https://github.com/wangjiegulu/WheelView<br />
 https://github.com/jbruchanov/AndroidColorPicker<br />
-https://github.com/JoanZapata/base-adapter-helper<br />
-直接使用了以下项目：<br />
+示例项目直接使用了以下项目：<br />
 https://github.com/alibaba/fastjson<br />
 
 # Screenshots
@@ -226,4 +231,7 @@ https://github.com/alibaba/fastjson<br />
 ![目录选择器效果图](/screenshots/dir.gif)    
 
 # Contact
-李玉江, QQ:1032694760, Email:liyujiang_tk@yeah.net
+<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=1032694760&site=穿青人&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:1032694760:51" alt="点击这里给我发消息" title="点击这里给我发消息"/></a>
+&nbsp;&nbsp;&nbsp;
+<a target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=q8fC0t7BwsrFzIXfwOva2oXIxMY" style="text-decoration:none;"><img src="http://rescdn.qqmail.com/zh_CN/htmledition/images/function/qm_open/ico_mailme_02.png"/></a>
+
