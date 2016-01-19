@@ -28,7 +28,6 @@ allprojects {
         pomGroup = PROJ_GROUP
         pomArtifactId = "library"
         pomVersion = PROJ_VERSION
-        pomPackaging = "aar"
         pomDescription = 'This is library description'
     }
 
@@ -133,6 +132,7 @@ subprojects {
                     publications {
                         mavenJava(MavenPublication) {
                             artifactId project.pomArtifactId
+                            artifact "${buildDir}/outputs/aar/${project.name}-release.aar"
                             artifact javadocJar
                             artifact sourcesJar
 
@@ -202,12 +202,14 @@ subprojects {
                             desc = project.pomDescription
                             gpg {
                                 sign = true    //是否GPG签名，可使用Gpg4win创建密钥文件
-                                passphrase = properties.getProperty("bintray.gpg.password")    //GPG签名所用密钥
+                                passphrase = properties.getProperty("bintray.gpg.password")
+                                //GPG签名所用密钥
                             }
                             mavenCentralSync {
                                 sync = false    //是否同步到Maven Central
                                 user = properties.getProperty("sonatype.user")    //sonatype用户名
-                                password = properties.getProperty("sonatype.password")    //sonatype密码
+                                password = properties.getProperty("sonatype.password")
+                                //sonatype密码
                                 close = '1'
                             }
                         }

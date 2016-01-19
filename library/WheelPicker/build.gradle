@@ -2,7 +2,6 @@ apply plugin: 'com.android.library'
 
 ext {
     isLibrary = true
-    pomPackaging = "aar"
     pomArtifactId = "WheelPicker"
     pomDescription = "wheel picker for android, include date picker, time picker, option picker, address picker, etc."
 }
