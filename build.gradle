@@ -17,7 +17,6 @@ allprojects {
     repositories {
         jcenter() //bintray的maven库
         mavenCentral() //sonatype的maven库
-        mavenLocal() //本地maven库
         flatDir {
             dirs 'libs' //本地.aar文件
         }
