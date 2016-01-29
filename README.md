@@ -29,19 +29,19 @@ Dev|[Branch_MultiPart](https://github.com/gzu-liyujiang/AndroidPicker/tree/Branc
 # Install
 “app”是测试用例；“library”包括WheelPicker、ColorPicker、FilePicker，   
 WheelPicker包括DatePicker、TimePicker、OptionPicker、AddressPicker、NumberPicker等，   
-如果需要所有的的选择器的话，建议依赖“AndroidPicker”。     
 ```groovy
 dependencies {
-    compile 'cn.qqtheme.framework:AndroidPicker:latest.integration'
-    //compile 'cn.qqtheme.framework:WheelPicker:latest.integration'
-    //compile 'cn.qqtheme.framework:ColorPicker:latest.integration'
-    //compile 'cn.qqtheme.framework:FilePicker:latest.integration'
+    compile 'cn.qqtheme.framework:WheelPicker:latest.integration'
+    compile 'cn.qqtheme.framework:FilePicker:latest.integration'
+    compile 'cn.qqtheme.framework:ColorPicker:latest.integration'
 }
 ```
-也可以手动下载本项目，复制“library”命名为“AndroidPicker”，然后：
+也可以手动下载本项目，复制“library”下面的模块，然后：
 ```groovy
 dependencies {
-    compile project('AndroidPicker')
+    compile project(':library:WheelPicker')
+    compile project(':library:FilePicker')
+    compile project(':library:ColorPicker')
 }
 ```
 *注：本项目使用gradle来构建，Eclipse用户建议换为Android Studio或Intellij IDEA。*   
