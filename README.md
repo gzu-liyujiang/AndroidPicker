@@ -10,21 +10,21 @@ Deprecated|[~~Branch_OldAndroidPicker~~](https://github.com/gzu-liyujiang/Androi
 Dev|[Branch_MultiPart](https://github.com/gzu-liyujiang/AndroidPicker/tree/Branch_MultiPart)|WheelPicker、ColorPicker及FilePicker是分为三个模块来开发；
 **New**|[master](https://github.com/gzu-liyujiang/AndroidPicker/tree/master)|最新分支，WheelPicker、ColorPicker及FilePicker合并为一个模块。
 
-# Change Log
-### [1.1.0] - 2016.01.29
+# Change Log   
+### v1.1.0 - 2016.01.29
 * 添加注解约束，如“setOffset()”只能是1至4；
 * 所有枚举类改为常量来表示，据说这样可以节约内存；
 * 支持自定义选择器的顶部及底部的视图；
-* 支持使用第三方动画库来实现窗口动画；
-### [1.0.3] - 2016.01.19
-* 日期时间、地址、单项、数字等选择器支持伪循环滚动。
-### [1.0.2] - 2016.01.15
-* 年或月变动时，保持之前选择的日不动：如果之前选择的日是之前年月的最大日，则日自动为该年月的最大日。
-### [1.0.1] - 2016.01.14
+* 支持使用第三方动画库来实现窗口动画；   
+### v1.0.3 - 2016.01.19
+* 日期时间、地址、单项、数字等选择器支持伪循环滚动。   
+### v1.0.2 - 2016.01.15
+* 年或月变动时，保持之前选择的日不动：如果之前选择的日是之前年月的最大日，则日自动为该年月的最大日。   
+### v1.0.1 - 2016.01.14
 * 精简文件选择器的数据适配器；
-* 添加选择器顶部确定、取消按钮所在容器的背景色设置。
-### [1.0.0] - 2016.01.13
-* 发布到jcenter，支持远程maven依赖。
+* 添加选择器顶部确定、取消按钮所在容器的背景色设置。   
+### v1.0.0 - 2016.01.13
+* 发布到jcenter，支持远程maven依赖。   
 
 # Install
 “app”是测试用例；“library”包括WheelPicker、ColorPicker、FilePicker，   
@@ -32,10 +32,10 @@ WheelPicker包括DatePicker、TimePicker、OptionPicker、AddressPicker、Number
 如果需要所有的的选择器的话，建议依赖“AndroidPicker”。     
 ```groovy
 dependencies {
-    compile 'cn.qqtheme.framework:AndroidPicker:latest.integration@aar'
-    //compile 'cn.qqtheme.framework:WheelPicker:latest.integration@aar'
-    //compile 'cn.qqtheme.framework:ColorPicker:latest.integration@aar'
-    //compile 'cn.qqtheme.framework:FilePicker:latest.integration@aar'
+    compile 'cn.qqtheme.framework:AndroidPicker:latest.integration'
+    //compile 'cn.qqtheme.framework:WheelPicker:latest.integration'
+    //compile 'cn.qqtheme.framework:ColorPicker:latest.integration'
+    //compile 'cn.qqtheme.framework:FilePicker:latest.integration'
 }
 ```
 也可以手动下载本项目，复制“library”命名为“AndroidPicker”，然后：
@@ -262,11 +262,9 @@ public class CustomHeaderAndFooterPicker extends OptionPicker {
 ```
 
 # Thanks
-库项目修改了使用以下项目：<br />
-https://github.com/wangjiegulu/WheelView<br />
-https://github.com/jbruchanov/AndroidColorPicker<br />
-示例项目直接使用了以下项目：<br />
-https://github.com/alibaba/fastjson<br />
+库项目修改了使用以下项目：   
+https://github.com/wangjiegulu/WheelView   
+https://github.com/jbruchanov/AndroidColorPicker   
 
 # Screenshots
 ![自定义选择器效果图](/screenshots/custom.gif)    
@@ -284,6 +282,5 @@ https://github.com/alibaba/fastjson<br />
 
 # Contact
 <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=1032694760&site=穿青人&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:1032694760:51" alt="点击这里给我发消息" title="点击这里给我发消息"/></a>
-&nbsp;&nbsp;&nbsp;
 <a target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=q8fC0t7BwsrFzIXfwOva2oXIxMY" style="text-decoration:none;"><img src="http://rescdn.qqmail.com/zh_CN/htmledition/images/function/qm_open/ico_mailme_02.png"/></a>
 
