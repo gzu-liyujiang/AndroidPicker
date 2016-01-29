@@ -1,12 +1,16 @@
 package cn.qqtheme.framework.picker;
 
 import android.app.Activity;
+import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -21,30 +25,34 @@ import cn.qqtheme.framework.widget.WheelView;
  * @version 2015 /12/14
  */
 public class DatePicker extends WheelPicker {
+    /**
+     * 年月日
+     */
+    public static final int YEAR_MONTH_DAY = 0;
+    /**
+     * 年月
+     */
+    public static final int YEAR_MONTH = 1;
+    /**
+     * 月日
+     */
+    public static final int MONTH_DAY = 2;
     private ArrayList<String> years = new ArrayList<String>();
     private ArrayList<String> months = new ArrayList<String>();
     private ArrayList<String> days = new ArrayList<String>();
     private OnDatePickListener onDatePickListener;
     private String yearLabel = "年", monthLabel = "月", dayLabel = "日";
     private int selectedYearIndex = 0, selectedMonthIndex = 0, selectedDayIndex = 0;
-    private Mode mode = Mode.YEAR_MONTH_DAY;
+    private int mode = YEAR_MONTH_DAY;
 
     /**
-     * The enum Mode.
+     * 安卓开发应避免使用枚举类（enum），因为相比于静态常量enum会花费两倍以上的内存。
+     *
+     * @link http ://developer.android.com/training/articles/memory.html#Overhead
      */
-    public enum Mode {
-        /**
-         * 年月日
-         */
-        YEAR_MONTH_DAY,
-        /**
-         * 年月
-         */
-        YEAR_MONTH,
-        /**
-         * 月日
-         */
-        MONTH_DAY
+    @IntDef(flag = false, value = {YEAR_MONTH_DAY, YEAR_MONTH, MONTH_DAY})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface Mode {
     }
 
     /**
@@ -53,7 +61,7 @@ public class DatePicker extends WheelPicker {
      * @param activity the activity
      */
     public DatePicker(Activity activity) {
-        this(activity, Mode.YEAR_MONTH_DAY);
+        this(activity, YEAR_MONTH_DAY);
     }
 
     /**
@@ -61,8 +69,11 @@ public class DatePicker extends WheelPicker {
      *
      * @param activity the activity
      * @param mode     the mode
+     * @see #YEAR_MONTH_DAY #YEAR_MONTH_DAY#YEAR_MONTH_DAY
+     * @see #YEAR_MONTH #YEAR_MONTH#YEAR_MONTH
+     * @see #MONTH_DAY #MONTH_DAY#MONTH_DAY
      */
-    public DatePicker(Activity activity, Mode mode) {
+    public DatePicker(Activity activity, @Mode int mode) {
         super(activity);
         this.mode = mode;
         for (int i = 2000; i <= 2050; i++) {
@@ -94,8 +105,6 @@ public class DatePicker extends WheelPicker {
      *
      * @param startYear the start year
      * @param endYear   the end year
-     * @see Mode#YEAR_MONTH_DAY Mode#YEAR_MONTH_DAY
-     * @see Mode#YEAR_MONTH Mode#YEAR_MONTH
      */
     public void setRange(int startYear, int endYear) {
         years.clear();
@@ -142,7 +151,7 @@ public class DatePicker extends WheelPicker {
      * @param monthOrDay  the month or day
      */
     public void setSelectedItem(int yearOrMonth, int monthOrDay) {
-        if (mode.equals(Mode.MONTH_DAY)) {
+        if (mode == MONTH_DAY) {
             selectedMonthIndex = findItemIndex(months, yearOrMonth);
             selectedDayIndex = findItemIndex(days, monthOrDay);
         } else {
@@ -161,7 +170,8 @@ public class DatePicker extends WheelPicker {
     }
 
     @Override
-    protected View initContentView() {
+    @NonNull
+    protected View makeCenterView() {
         LinearLayout layout = new LinearLayout(activity);
         layout.setOrientation(LinearLayout.HORIZONTAL);
         layout.setGravity(Gravity.CENTER);
@@ -213,14 +223,14 @@ public class DatePicker extends WheelPicker {
             dayTextView.setText(dayLabel);
         }
         layout.addView(dayTextView);
-        if (mode.equals(Mode.YEAR_MONTH)) {
+        if (mode == YEAR_MONTH) {
             dayView.setVisibility(View.GONE);
             dayTextView.setVisibility(View.GONE);
-        } else if (mode.equals(Mode.MONTH_DAY)) {
+        } else if (mode == MONTH_DAY) {
             yearView.setVisibility(View.GONE);
             yearTextView.setVisibility(View.GONE);
         }
-        if (!mode.equals(Mode.MONTH_DAY)) {
+        if (mode != MONTH_DAY) {
             if (!TextUtils.isEmpty(yearLabel)) {
                 yearTextView.setText(yearLabel);
             }
@@ -259,7 +269,7 @@ public class DatePicker extends WheelPicker {
             @Override
             public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
                 selectedMonthIndex = selectedIndex;
-                if (!mode.equals(Mode.YEAR_MONTH)) {
+                if (mode != YEAR_MONTH) {
                     //年月日或年月模式下，需要根据年份及月份动态计算天数
                     days.clear();
                     int maxDays = DateUtils.calculateDaysInMonth(stringToYearMonthDay(years.get(selectedYearIndex)), stringToYearMonthDay(item));
@@ -274,7 +284,7 @@ public class DatePicker extends WheelPicker {
                 }
             }
         });
-        if (!mode.equals(Mode.YEAR_MONTH)) {
+        if (mode != YEAR_MONTH) {
             if (!TextUtils.isEmpty(dayLabel)) {
                 dayTextView.setText(dayLabel);
             }
@@ -302,29 +312,50 @@ public class DatePicker extends WheelPicker {
     }
 
     @Override
-    protected void setContentViewAfter(View contentView) {
-        super.setContentViewAfter(contentView);
-        super.setOnConfirmListener(new OnConfirmListener() {
-            @Override
-            public void onConfirm() {
-                if (onDatePickListener != null) {
-                    String year = years.get(selectedYearIndex);
-                    String month = months.get(selectedMonthIndex);
-                    String day = days.get(selectedDayIndex);
-                    switch (mode) {
-                        case YEAR_MONTH:
-                            ((OnYearMonthPickListener) onDatePickListener).onDatePicked(year, month);
-                            break;
-                        case MONTH_DAY:
-                            ((OnMonthDayPickListener) onDatePickListener).onDatePicked(month, day);
-                            break;
-                        default:
-                            ((OnYearMonthDayPickListener) onDatePickListener).onDatePicked(year, month, day);
-                            break;
-                    }
-                }
+    protected void onSubmit() {
+        if (onDatePickListener != null) {
+            String year = getSelectedYear();
+            String month = getSelectedMonth();
+            String day = getSelectedDay();
+            switch (mode) {
+                case YEAR_MONTH:
+                    ((OnYearMonthPickListener) onDatePickListener).onDatePicked(year, month);
+                    break;
+                case MONTH_DAY:
+                    ((OnMonthDayPickListener) onDatePickListener).onDatePicked(month, day);
+                    break;
+                default:
+                    ((OnYearMonthDayPickListener) onDatePickListener).onDatePicked(year, month, day);
+                    break;
             }
-        });
+        }
+    }
+
+    /**
+     * Gets selected year.
+     *
+     * @return the selected year
+     */
+    public String getSelectedYear() {
+        return years.get(selectedYearIndex);
+    }
+
+    /**
+     * Gets selected month.
+     *
+     * @return the selected month
+     */
+    public String getSelectedMonth() {
+        return months.get(selectedMonthIndex);
+    }
+
+    /**
+     * Gets selected day.
+     *
+     * @return the selected day
+     */
+    public String getSelectedDay() {
+        return days.get(selectedDayIndex);
     }
 
     /**

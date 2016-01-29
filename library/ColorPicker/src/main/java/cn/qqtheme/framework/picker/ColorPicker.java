@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 import android.text.InputType;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -44,10 +46,12 @@ public class ColorPicker extends ConfirmPopup<LinearLayout> implements TextView.
      */
     public ColorPicker(Activity activity) {
         super(activity);
+        setHalfScreen(true);
     }
 
     @Override
-    protected LinearLayout initContentView() {
+    @NonNull
+    protected LinearLayout makeCenterView() {
         LinearLayout rootLayout = new LinearLayout(activity);
         rootLayout.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
         rootLayout.setOrientation(LinearLayout.VERTICAL);
@@ -101,22 +105,26 @@ public class ColorPicker extends ConfirmPopup<LinearLayout> implements TextView.
     }
 
     @Override
-    protected boolean isFixedHeight() {
-        return true;
-    }
-
-    @Override
     protected void setContentViewAfter(View contentView) {
         multiColorView.setColor(initColor);//将触发onColorChanged，故必须先待其他控件初始化完成后才能调用
         multiColorView.setBrightnessGradientView(blackColorView);
+    }
+
+    @Override
+    protected void onSubmit() {
         if (onColorPickListener != null) {
-            super.setOnConfirmListener(new OnConfirmListener() {
-                @Override
-                public void onConfirm() {
-                    onColorPickListener.onColorPicked(Color.parseColor("#" + hexValView.getText()));
-                }
-            });
+            onColorPickListener.onColorPicked(getCurrentColor());
         }
+    }
+
+    /**
+     * Gets current color.
+     *
+     * @return the current color
+     */
+    @ColorInt
+    public int getCurrentColor() {
+        return Color.parseColor("#" + hexValView.getText());
     }
 
     private void updateCurrentColor(int color) {
@@ -177,7 +185,7 @@ public class ColorPicker extends ConfirmPopup<LinearLayout> implements TextView.
          *
          * @param pickedColor the picked color
          */
-        void onColorPicked(int pickedColor);
+        void onColorPicked(@ColorInt int pickedColor);
 
     }
 

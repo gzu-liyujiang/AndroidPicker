@@ -1,35 +1,53 @@
 # Summary
-[![API](https://img.shields.io/badge/API-8%2B-green.svg)](https://github.com/gzu-liyujiang/AndroidPicker)
-[![Download](https://api.bintray.com/packages/gzu-liyujiang/maven/AndroidPicker/images/download.svg)](https://bintray.com/gzu-liyujiang/maven/AndroidPicker/_latestVersion)
-[Jcenter版本列表](http://jcenter.bintray.com/cn/qqtheme/framework/AndroidPicker/) [版本迭代日志](/CHANGE.md)      
-安卓选择器类库，包括日期选择器、时间选择器、单项选择器、城市选择器、颜色选择器、文件选择器、目录选择器、数字选择器、星座选择器、生肖选择器等。
-欢迎大伙儿在[issues](https://github.com/gzu-liyujiang/AndroidPicker/issues)提交你的意见或建议     
-   
-项目分支说明：   
-[Branch_OldAndroidPicker](https://github.com/gzu-liyujiang/AndroidPicker/tree/Branch_OldAndroidPicker)-基于android-wheel的旧版选择器，不再维护；   
-[Branch_MultiPart](https://github.com/gzu-liyujiang/AndroidPicker/tree/Branch_MultiPart)-WheelPicker、ColorPicker及FilePicker是分开的三个模块；   
-[master](https://github.com/gzu-liyujiang/AndroidPicker/tree/master)-默认的最新分支，WheelPicker、ColorPicker及FilePicker合并为一个模块。   
+[![API](https://img.shields.io/badge/API-9%2B-green.svg)](https://github.com/gzu-liyujiang/AndroidPicker)
+[![Download](https://api.bintray.com/packages/gzu-liyujiang/maven/AndroidPicker/images/download.svg)](http://jcenter.bintray.com/cn/qqtheme/framework/AndroidPicker)   
+安卓选择器类库，包括日期选择器、时间选择器、单项选择器、城市选择器、颜色选择器、文件选择器、目录选择器、数字选择器、星座选择器、生肖选择器等，可自定义顶部及底部界面，可自定义窗口动画。   
+欢迎大伙儿在[Issues](https://github.com/gzu-liyujiang/AndroidPicker/issues)提交你的意见或建议。欢迎Fork & Pull requests贡献您的代码。     
+
+状态|链接|备注
+-----|------|----
+Deprecated|[~~Branch_OldAndroidPicker~~](https://github.com/gzu-liyujiang/AndroidPicker/tree/Branch_OldAndroidPicker)|基于android-wheel的旧版选择器，不再维护；
+Dev|[Branch_MultiPart](https://github.com/gzu-liyujiang/AndroidPicker/tree/Branch_MultiPart)|WheelPicker、ColorPicker及FilePicker是分为三个模块来开发；
+**New**|[master](https://github.com/gzu-liyujiang/AndroidPicker/tree/master)|最新分支，WheelPicker、ColorPicker及FilePicker合并为一个模块。
+
+# Change Log
+### [1.1.0] - 2016.01.29
+* 添加注解约束，如“setOffset()”只能是1至4；
+* 所有枚举类改为常量来表示，据说这样可以节约内存；
+* 支持自定义选择器的顶部及底部的视图；
+* 支持使用第三方动画库来实现窗口动画；
+### [1.0.3] - 2016.01.19
+* 日期时间、地址、单项、数字等选择器支持伪循环滚动。
+### [1.0.2] - 2016.01.15
+* 年或月变动时，保持之前选择的日不动：如果之前选择的日是之前年月的最大日，则日自动为该年月的最大日。
+### [1.0.1] - 2016.01.14
+* 精简文件选择器的数据适配器；
+* 添加选择器顶部确定、取消按钮所在容器的背景色设置。
+### [1.0.0] - 2016.01.13
+* 发布到jcenter，支持远程maven依赖。
 
 # Install
 “app”是测试用例；“library”包括WheelPicker、ColorPicker、FilePicker，   
 WheelPicker包括DatePicker、TimePicker、OptionPicker、AddressPicker、NumberPicker等，   
 如果需要所有的的选择器的话，建议依赖“AndroidPicker”。     
-```
+```groovy
 dependencies {
-    compile 'cn.qqtheme.framework:AndroidPicker:latest.integration'
-    //compile 'cn.qqtheme.framework:WheelPicker:latest.integration'
-    //compile 'cn.qqtheme.framework:ColorPicker:latest.integration'
-    //compile 'cn.qqtheme.framework:FilePicker:latest.integration'
+    compile 'cn.qqtheme.framework:AndroidPicker:latest.integration@aar'
+    //compile 'cn.qqtheme.framework:WheelPicker:latest.integration@aar'
+    //compile 'cn.qqtheme.framework:ColorPicker:latest.integration@aar'
+    //compile 'cn.qqtheme.framework:FilePicker:latest.integration@aar'
 }
 ```
 也可以手动下载本项目，复制“library”命名为“AndroidPicker”，然后：
-```
+```groovy
 dependencies {
     compile project('AndroidPicker')
 }
 ```
+*注：本项目使用gradle来构建，Eclipse用户建议换为Android Studio或Intellij IDEA。*   
 
-### 窗口进入退出动画(可选，默认动画为淡入淡出)
+# Custom
+### 自定义窗口进入退出动画(可选，默认动画为淡入淡出)
 ```xml
 <resources>
     <style name="Animation.CustomPopup" parent="@android:style/Animation">
@@ -41,11 +59,44 @@ dependencies {
 ```java
     picker.setAnimationStyle(R.style.Animation_CustomPopup);
 ```   
+或者使用[ViewAnimator](https://github.com/gzu-liyujiang/ViewAnimator)这个动画库来实现：   
+```groovy
+dependencies {
+    compile 'com.github.florent37:viewanimator:1.0.2'
+}
+```
+```java
+        ViewAnimator.animate(picker.getRootView())
+                .slideBottomIn()
+                .interpolator(new AccelerateInterpolator())
+                .start();
+```
+
+### 自定义顶部及底部界面
+添加自己的类，继承自现有的选择器，覆盖makeHeaderView、makeFooterView，在确定选择时调用onSubmit，
+取消选择时调用onCancel。详见示例：CustomHeaderAndFooterPicker.java。   
+```java
+public class CustomHeaderAndFooterPicker extends OptionPicker {
+  
+    @Nullable
+    @Override
+    protected View makeHeaderView() {
+        return null;//顶部视图
+    }
+
+    @Nullable
+    @Override
+    protected View makeFooterView() {
+        return null;//底部视图
+    }
+
+}
+```
 
 # Sample
 日期选择器：   
 ```java   
-        DatePicker picker = new DatePicker(this);
+        DatePicker picker = new DatePicker(this, DatePicker.YEAR_MONTH_DAY);
         picker.setRange(1990, 2015);//年份范围
         picker.setOnDatePickListener(new DatePicker.OnYearMonthDayPickListener() {
             @Override
@@ -59,7 +110,7 @@ dependencies {
 时间选择器：   
 ```java   
         //默认选中当前时间
-        TimePicker picker = new TimePicker(this);
+        TimePicker picker = new TimePicker(this, TimePicker.HOUR_OF_DAY);
         picker.setTopLineVisible(false);
         picker.setOnTimePickListener(new TimePicker.OnTimePickListener() {
             @Override
@@ -183,11 +234,11 @@ dependencies {
 
 文件选择器（需要权限android.permission.READ_EXTERNAL_STORAGE）：
 ```java   
-        FilePicker picker = new FilePicker(this);
+        //noinspection MissingPermission
+        FilePicker picker = new FilePicker(this, FilePicker.FILE);
         picker.setShowHideDir(false);
         picker.setRootPath(StorageUtils.getRootPath(this) + "Download/");
         //picker.setAllowExtensions(new String[]{".apk"});
-        picker.setMode(FilePicker.Mode.File);
         picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {
             @Override
             public void onFilePicked(String currentPath) {
@@ -199,8 +250,8 @@ dependencies {
 
 目录选择器（需要权限android.permission.READ_EXTERNAL_STORAGE）：
 ```java   
-        FilePicker picker = new FilePicker(this);
-        picker.setMode(FilePicker.Mode.Directory);
+        //noinspection MissingPermission
+        FilePicker picker = new FilePicker(this, FilePicker.DIRECTORY);
         picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {
             @Override
             public void onFilePicked(String currentPath) {
@@ -218,6 +269,7 @@ https://github.com/jbruchanov/AndroidColorPicker<br />
 https://github.com/alibaba/fastjson<br />
 
 # Screenshots
+![自定义选择器效果图](/screenshots/custom.gif)    
 ![日期选择器效果图](/screenshots/date.gif)    
 ![时间选择器效果图](/screenshots/time.gif)    
 ![单项选择器效果图](/screenshots/option.gif)     

@@ -1,6 +1,7 @@
 package cn.qqtheme.framework.picker;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -80,7 +81,8 @@ public class OptionPicker extends WheelPicker {
     }
 
     @Override
-    protected View initContentView() {
+    @NonNull
+    protected View makeCenterView() {
         if (options.size() == 0) {
             throw new IllegalArgumentException("please initial options at first, can't be empty");
         }
@@ -118,16 +120,19 @@ public class OptionPicker extends WheelPicker {
     }
 
     @Override
-    protected void setContentViewAfter(View contentView) {
-        super.setContentViewAfter(contentView);
-        super.setOnConfirmListener(new OnConfirmListener() {
-            @Override
-            public void onConfirm() {
-                if (onOptionPickListener != null) {
-                    onOptionPickListener.onOptionPicked(selectedOption);
-                }
-            }
-        });
+    public void onSubmit() {
+        if (onOptionPickListener != null) {
+            onOptionPickListener.onOptionPicked(selectedOption);
+        }
+    }
+
+    /**
+     * Gets selected option.
+     *
+     * @return the selected option
+     */
+    public String getSelectedOption() {
+        return selectedOption;
     }
 
     /**

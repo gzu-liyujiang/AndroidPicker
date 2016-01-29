@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.annotation.CallSuper;
 import android.support.annotation.StyleRes;
 import android.view.Gravity;
 import android.view.View;
@@ -40,15 +41,24 @@ public class Popup {
         contentLayout.setFocusable(true);
         contentLayout.setFocusableInTouchMode(true);
         dialog = new android.app.Dialog(context);
-        dialog.setCancelable(true);
-        dialog.setCanceledOnTouchOutside(true);
+        dialog.setCanceledOnTouchOutside(true);//触摸屏幕取消窗体
+        dialog.setCancelable(true);//按返回键取消窗体
         Window window = dialog.getWindow();
-        window.setGravity(Gravity.BOTTOM);
+        window.setGravity(Gravity.BOTTOM);//位于屏幕底部
         window.setWindowAnimations(R.style.Animation_Popup);
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         //android.util.AndroidRuntimeException: requestFeature() must be called before adding content
         window.requestFeature(Window.FEATURE_NO_TITLE);
         window.setContentView(contentLayout);
+    }
+
+    /**
+     * Gets context.
+     *
+     * @return the context
+     */
+    public Context getContext() {
+        return contentLayout.getContext();
     }
 
     /**
@@ -73,6 +83,7 @@ public class Popup {
     /**
      * Show.
      */
+    @CallSuper
     public void show() {
         dialog.show();
     }
@@ -80,6 +91,7 @@ public class Popup {
     /**
      * Dismiss.
      */
+    @CallSuper
     public void dismiss() {
         dialog.dismiss();
     }
@@ -128,6 +140,33 @@ public class Popup {
      */
     public void setOnDismissListener(DialogInterface.OnDismissListener onDismissListener) {
         dialog.setOnDismissListener(onDismissListener);
+    }
+
+    /**
+     * Sets on key listener.
+     *
+     * @param onKeyListener the on key listener
+     */
+    public void setOnKeyListener(DialogInterface.OnKeyListener onKeyListener) {
+        dialog.setOnKeyListener(onKeyListener);
+    }
+
+    /**
+     * Gets window.
+     *
+     * @return the window
+     */
+    public Window getWindow() {
+        return dialog.getWindow();
+    }
+
+    /**
+     * Gets root view.
+     *
+     * @return the root view
+     */
+    public ViewGroup getRootView() {
+        return contentLayout;
     }
 
 }

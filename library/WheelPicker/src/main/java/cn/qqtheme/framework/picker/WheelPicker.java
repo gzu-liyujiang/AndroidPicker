@@ -1,6 +1,8 @@
 package cn.qqtheme.framework.picker;
 
 import android.app.Activity;
+import android.support.annotation.ColorInt;
+import android.support.annotation.IntRange;
 import android.view.View;
 
 import cn.qqtheme.framework.popup.ConfirmPopup;
@@ -62,7 +64,7 @@ public abstract class WheelPicker extends ConfirmPopup<View> {
      * @param textColorFocus  the text color focus
      * @param textColorNormal the text color normal
      */
-    public void setTextColor(int textColorFocus, int textColorNormal) {
+    public void setTextColor(@ColorInt int textColorFocus, @ColorInt int textColorNormal) {
         this.textColorFocus = textColorFocus;
         this.textColorNormal = textColorNormal;
     }
@@ -72,7 +74,7 @@ public abstract class WheelPicker extends ConfirmPopup<View> {
      *
      * @param textColor the text color
      */
-    public void setTextColor(int textColor) {
+    public void setTextColor(@ColorInt int textColor) {
         this.textColorFocus = textColor;
     }
 
@@ -90,7 +92,7 @@ public abstract class WheelPicker extends ConfirmPopup<View> {
      *
      * @param lineColor the line color
      */
-    public void setLineColor(int lineColor) {
+    public void setLineColor(@ColorInt int lineColor) {
         this.lineColor = lineColor;
     }
 
@@ -99,7 +101,7 @@ public abstract class WheelPicker extends ConfirmPopup<View> {
      *
      * @param offset the offset
      */
-    public void setOffset(int offset) {
+    public void setOffset(@IntRange(from = 1, to = 4) int offset) {
         this.offset = offset;
     }
 
