@@ -235,7 +235,6 @@ public class MainActivity extends Activity {
         //noinspection MissingPermission
         FilePicker picker = new FilePicker(this, FilePicker.FILE);
         picker.setShowHideDir(false);
-        picker.setRootPath(StorageUtils.getRootPath(this) + "Download/");
         //picker.setAllowExtensions(new String[]{".apk"});
         picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {
             @Override
@@ -249,6 +248,7 @@ public class MainActivity extends Activity {
     public void onDirPicker(View view) {
         //noinspection MissingPermission
         FilePicker picker = new FilePicker(this, FilePicker.DIRECTORY);
+        picker.setRootPath(StorageUtils.getRootPath(this) + "Download/");
         picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {
             @Override
             public void onFilePicked(String currentPath) {

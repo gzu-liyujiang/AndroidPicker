@@ -147,20 +147,20 @@ public class FileAdapter extends BaseAdapter {
         File[] files;
         if (allowExtensions == null) {
             if (onlyListDir) {
-                files = FileUtils.listDirs(path);
+                files = FileUtils.listDirs(currentPath);
             } else {
-                files = FileUtils.listDirsAndFiles(path);
+                files = FileUtils.listDirsAndFiles(currentPath);
             }
         } else {
             if (onlyListDir) {
-                files = FileUtils.listDirs(path, allowExtensions);
+                files = FileUtils.listDirs(currentPath, allowExtensions);
             } else {
-                files = FileUtils.listDirsAndFiles(path, allowExtensions);
+                files = FileUtils.listDirsAndFiles(currentPath, allowExtensions);
             }
         }
         if (files != null) {
             for (File file : files) {
-                if (!showHideDir && file.getName().startsWith("")) {
+                if (!showHideDir && file.getName().startsWith(".")) {
                     continue;
                 }
                 FileItem fileItem = new FileItem();
