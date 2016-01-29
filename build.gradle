@@ -132,7 +132,7 @@ subprojects {
                     publications {
                         mavenJava(MavenPublication) {
                             artifactId project.pomArtifactId
-                            artifact "${buildDir}/outputs/aar/${project.name}-release.aar"
+                            artifact "${buildDir}/outputs/aar/${project.pomArtifactId}-release.aar"
                             artifact javadocJar
                             artifact sourcesJar
 
