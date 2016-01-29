@@ -1,30 +1,15 @@
 package cn.qqtheme.framework.util;
 
+import android.Manifest;
+import android.support.annotation.IntDef;
+import android.support.annotation.RequiresPermission;
 import android.webkit.MimeTypeMap;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Locale;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
@@ -33,23 +18,87 @@ import java.util.regex.Pattern;
  * @author 李玉江[QQ :1023694760]
  * @version 2014 -4-18
  */
-public class FileUtils {
+public final class FileUtils {
+    /**
+     * The constant BY_NAME_ASC.
+     */
+    public static final int BY_NAME_ASC = 0;
+    /**
+     * The constant BY_NAME_DESC.
+     */
+    public static final int BY_NAME_DESC = 1;
+    /**
+     * The constant BY_TIME_ASC.
+     */
+    public static final int BY_TIME_ASC = 2;
+    /**
+     * The constant BY_TIME_DESC.
+     */
+    public static final int BY_TIME_DESC = 3;
+    /**
+     * The constant BY_SIZE_ASC.
+     */
+    public static final int BY_SIZE_ASC = 4;
+    /**
+     * The constant BY_SIZE_DESC.
+     */
+    public static final int BY_SIZE_DESC = 5;
+    /**
+     * The constant BY_EXTENSION_ASC.
+     */
+    public static final int BY_EXTENSION_ASC = 6;
+    /**
+     * The constant BY_EXTENSION_DESC.
+     */
+    public static final int BY_EXTENSION_DESC = 7;
 
-    private FileUtils() {
-        super();
+    /**
+     * The interface Sort type.
+     */
+    @IntDef(flag = false, value = {
+            BY_NAME_ASC,
+            BY_NAME_DESC,
+            BY_TIME_ASC,
+            BY_TIME_DESC,
+            BY_SIZE_ASC,
+            BY_SIZE_DESC,
+            BY_EXTENSION_ASC,
+            BY_EXTENSION_DESC
+    })
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface SortType {
     }
 
     /**
      * 为目录结尾添加“/”
      *
      * @param path the path
-     * @return string string
+     * @return string
      */
     public static String separator(String path) {
-        path = path.replace('\\', '/');
-        if (!path.endsWith("/"))
-            path = path + "/";
+        String separator = File.separator;
+        path = path.replace("\\", separator);
+        if (!path.endsWith(separator)) {
+            path += separator;
+        }
         return path;
+    }
+
+    /**
+     * Close silently.
+     *
+     * @param c the c
+     */
+    public static void closeSilently(Closeable c) {
+        if (c == null) {
+            return;
+        }
+        try {
+            c.close();
+        } catch (Throwable t) {
+            // do nothing
+            LogUtils.warn(t);
+        }
     }
 
     /**
@@ -60,7 +109,7 @@ public class FileUtils {
      * @param sortType     the sort type
      * @return file [ ]
      */
-    public static File[] listDirs(String startDirPath, String[] excludeDirs, SortType sortType) {
+    public static File[] listDirs(String startDirPath, String[] excludeDirs, @SortType int sortType) {
         LogUtils.debug(String.format("list dir %s", startDirPath));
         ArrayList<File> dirList = new ArrayList<File>();
         File startDir = new File(startDirPath);
@@ -81,33 +130,34 @@ public class FileUtils {
         if (dirs == null) {
             return new File[0];
         }
+        int len = dirs.length;
         if (excludeDirs == null) {
             excludeDirs = new String[0];
         }
         for (File dir : dirs) {
             File file = dir.getAbsoluteFile();
-            if (!Arrays.deepToString(excludeDirs).contains(file.getName())) {
+            if (!ConvertUtils.toString(excludeDirs).contains(file.getName())) {
                 dirList.add(file);
             }
         }
-        if (sortType.equals(SortType.BY_NAME_ASC)) {
+        if (sortType == BY_NAME_ASC) {
             Collections.sort(dirList, new SortByName());
-        } else if (sortType.equals(SortType.BY_NAME_DESC)) {
+        } else if (sortType == BY_NAME_DESC) {
             Collections.sort(dirList, new SortByName());
             Collections.reverse(dirList);
-        } else if (sortType.equals(SortType.BY_TIME_ASC)) {
+        } else if (sortType == BY_TIME_ASC) {
             Collections.sort(dirList, new SortByTime());
-        } else if (sortType.equals(SortType.BY_TIME_DESC)) {
+        } else if (sortType == BY_TIME_DESC) {
             Collections.sort(dirList, new SortByTime());
             Collections.reverse(dirList);
-        } else if (sortType.equals(SortType.BY_SIZE_ASC)) {
+        } else if (sortType == BY_SIZE_ASC) {
             Collections.sort(dirList, new SortBySize());
-        } else if (sortType.equals(SortType.BY_SIZE_DESC)) {
+        } else if (sortType == BY_SIZE_DESC) {
             Collections.sort(dirList, new SortBySize());
             Collections.reverse(dirList);
-        } else if (sortType.equals(SortType.BY_EXTENSION_ASC)) {
+        } else if (sortType == BY_EXTENSION_ASC) {
             Collections.sort(dirList, new SortByExtension());
-        } else if (sortType.equals(SortType.BY_EXTENSION_DESC)) {
+        } else if (sortType == BY_EXTENSION_DESC) {
             Collections.sort(dirList, new SortByExtension());
             Collections.reverse(dirList);
         }
@@ -122,7 +172,7 @@ public class FileUtils {
      * @return file [ ]
      */
     public static File[] listDirs(String startDirPath, String[] excludeDirs) {
-        return listDirs(startDirPath, excludeDirs, SortType.BY_NAME_ASC);
+        return listDirs(startDirPath, excludeDirs, BY_NAME_ASC);
     }
 
     /**
@@ -132,7 +182,7 @@ public class FileUtils {
      * @return the file [ ]
      */
     public static File[] listDirs(String startDirPath) {
-        return listDirs(startDirPath, null, SortType.BY_NAME_ASC);
+        return listDirs(startDirPath, null, BY_NAME_ASC);
     }
 
     /**
@@ -177,7 +227,7 @@ public class FileUtils {
      * @param sortType      the sort type
      * @return the file [ ]
      */
-    public static File[] listFiles(String startDirPath, final Pattern filterPattern, SortType sortType) {
+    public static File[] listFiles(String startDirPath, final Pattern filterPattern, @SortType int sortType) {
         LogUtils.debug(String.format("list file %s", startDirPath));
         ArrayList<File> fileList = new ArrayList<File>();
         File f = new File(startDirPath);
@@ -204,24 +254,24 @@ public class FileUtils {
         for (File file : files) {
             fileList.add(file.getAbsoluteFile());
         }
-        if (sortType.equals(SortType.BY_NAME_ASC)) {
+        if (sortType == BY_NAME_ASC) {
             Collections.sort(fileList, new SortByName());
-        } else if (sortType.equals(SortType.BY_NAME_DESC)) {
+        } else if (sortType == BY_NAME_DESC) {
             Collections.sort(fileList, new SortByName());
             Collections.reverse(fileList);
-        } else if (sortType.equals(SortType.BY_TIME_ASC)) {
+        } else if (sortType == BY_TIME_ASC) {
             Collections.sort(fileList, new SortByTime());
-        } else if (sortType.equals(SortType.BY_TIME_DESC)) {
+        } else if (sortType == BY_TIME_DESC) {
             Collections.sort(fileList, new SortByTime());
             Collections.reverse(fileList);
-        } else if (sortType.equals(SortType.BY_SIZE_ASC)) {
+        } else if (sortType == BY_SIZE_ASC) {
             Collections.sort(fileList, new SortBySize());
-        } else if (sortType.equals(SortType.BY_SIZE_DESC)) {
+        } else if (sortType == BY_SIZE_DESC) {
             Collections.sort(fileList, new SortBySize());
             Collections.reverse(fileList);
-        } else if (sortType.equals(SortType.BY_EXTENSION_ASC)) {
+        } else if (sortType == BY_EXTENSION_ASC) {
             Collections.sort(fileList, new SortByExtension());
-        } else if (sortType.equals(SortType.BY_EXTENSION_DESC)) {
+        } else if (sortType == BY_EXTENSION_DESC) {
             Collections.sort(fileList, new SortByExtension());
             Collections.reverse(fileList);
         }
@@ -236,7 +286,8 @@ public class FileUtils {
      * @return the file [ ]
      */
     public static File[] listFiles(String startDirPath, Pattern filterPattern) {
-        return listFiles(startDirPath, filterPattern, SortType.BY_NAME_ASC);
+        return listFiles(startDirPath, filterPattern, BY_NAME_ASC)
+                ;
     }
 
     /**
@@ -246,7 +297,7 @@ public class FileUtils {
      * @return the file [ ]
      */
     public static File[] listFiles(String startDirPath) {
-        return listFiles(startDirPath, null, SortType.BY_NAME_ASC);
+        return listFiles(startDirPath, null, BY_NAME_ASC);
     }
 
     /**
@@ -265,7 +316,7 @@ public class FileUtils {
             public boolean accept(File dir, String name) {
                 //返回当前目录所有以某些扩展名结尾的文件
                 String extension = FileUtils.getExtension(name);
-                return Arrays.deepToString(allowExtensions).contains(extension);
+                return ConvertUtils.toString(allowExtensions).contains(extension);
             }
 
         });
@@ -286,7 +337,7 @@ public class FileUtils {
      * 判断文件或目录是否存在
      *
      * @param path the path
-     * @return boolean boolean
+     * @return boolean
      */
     public static boolean exist(String path) {
         File file = new File(path);
@@ -300,6 +351,7 @@ public class FileUtils {
      * @param deleteRootDir the delete root dir
      * @return the boolean
      */
+    @RequiresPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     public static boolean delete(File file, boolean deleteRootDir) {
         LogUtils.debug(String.format("delete file %s", file.getAbsolutePath()));
         boolean result = false;
@@ -316,6 +368,7 @@ public class FileUtils {
                 result = deleteRootDir && deleteResolveEBUSY(file);
             } else {
                 for (File f : files) {
+                    //noinspection MissingPermission
                     delete(f, deleteRootDir);
                     result = deleteResolveEBUSY(f);
                 }
@@ -334,6 +387,7 @@ public class FileUtils {
     private static boolean deleteResolveEBUSY(File file) {
         // Before you delete a Directory or File: rename it!
         final File to = new File(file.getAbsolutePath() + System.currentTimeMillis());
+        //noinspection ResultOfMethodCallIgnored
         file.renameTo(to);
         return to.delete();
     }
@@ -345,9 +399,11 @@ public class FileUtils {
      * @param deleteRootDir the delete root dir
      * @return the boolean
      */
+    @RequiresPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     public static boolean delete(String path, boolean deleteRootDir) {
         File file = new File(path);
         if (file.exists()) {
+            //noinspection MissingPermission
             return delete(file, deleteRootDir);
         }
         return false;
@@ -359,7 +415,9 @@ public class FileUtils {
      * @param path the path
      * @return the boolean
      */
+    @RequiresPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     public static boolean delete(String path) {
+        //noinspection MissingPermission
         return delete(path, false);
     }
 
@@ -369,7 +427,9 @@ public class FileUtils {
      * @param file the file
      * @return the boolean
      */
+    @RequiresPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     public static boolean delete(File file) {
+        //noinspection MissingPermission
         return delete(file, false);
     }
 
@@ -380,12 +440,11 @@ public class FileUtils {
      * @param tar the tar
      * @return the boolean
      */
+    @RequiresPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     public static boolean copy(String src, String tar) {
         File srcFile = new File(src);
-        if (!srcFile.exists()) {
-            return false;
-        }
-        return copy(srcFile, new File(tar));
+        //noinspection MissingPermission
+        return srcFile.exists() && copy(srcFile, new File(tar));
     }
 
     /**
@@ -395,6 +454,7 @@ public class FileUtils {
      * @param tar the tar
      * @return the boolean
      */
+    @RequiresPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     public static boolean copy(File src, File tar) {
         try {
             LogUtils.debug(String.format("copy %s to %s", src.getAbsolutePath(), tar.getAbsolutePath()));
@@ -416,8 +476,8 @@ public class FileUtils {
                 //noinspection ResultOfMethodCallIgnored
                 tar.mkdirs();
                 for (File file : files) {
-                    copy(file.getAbsoluteFile(), new File(tar.getAbsoluteFile()
-                            + File.separator + file.getName()));
+                    //noinspection MissingPermission
+                    copy(file.getAbsoluteFile(), new File(tar.getAbsoluteFile(), file.getName()));
                 }
             }
             return true;
@@ -434,7 +494,9 @@ public class FileUtils {
      * @param tar the tar
      * @return the boolean
      */
+    @RequiresPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     public static boolean move(String src, String tar) {
+        //noinspection MissingPermission
         return move(new File(src), new File(tar));
     }
 
@@ -445,7 +507,9 @@ public class FileUtils {
      * @param tar the tar
      * @return the boolean
      */
+    @RequiresPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     public static boolean move(File src, File tar) {
+        //noinspection MissingPermission
         return rename(src, tar);
     }
 
@@ -456,7 +520,9 @@ public class FileUtils {
      * @param newPath the new path
      * @return the boolean
      */
+    @RequiresPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     public static boolean rename(String oldPath, String newPath) {
+        //noinspection MissingPermission
         return rename(new File(oldPath), new File(newPath));
     }
 
@@ -467,6 +533,7 @@ public class FileUtils {
      * @param tar the tar
      * @return the boolean
      */
+    @RequiresPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     public static boolean rename(File src, File tar) {
         try {
             LogUtils.debug(String.format("rename %s to %s", src.getAbsolutePath(), tar.getAbsolutePath()));
@@ -487,23 +554,14 @@ public class FileUtils {
     public static String readText(String filepath, String charset) {
         LogUtils.debug(String.format("read %s use %s", filepath, charset));
         try {
-            StringBuilder sb = new StringBuilder();
-            FileInputStream fis = new FileInputStream(filepath);
-            BufferedReader br = new BufferedReader(new InputStreamReader(fis, charset));
-            while (br.ready()) {
-                String line = br.readLine();
-                if (line != null) {
-                    // 读出来文件末尾多了“null”?
-                    sb.append(line).append("\n");
-                }
+            byte[] data = readByte(filepath);
+            if (data != null) {
+                return new String(data, charset);
             }
-            br.close();
-            fis.close();
-            return sb.toString();
         } catch (Exception e) {
             LogUtils.error(e);
-            return "";
         }
+        return "";
     }
 
     /**
@@ -524,8 +582,9 @@ public class FileUtils {
      */
     public static byte[] readByte(String filepath) {
         LogUtils.debug(String.format("read %s", filepath));
+        FileInputStream fis = null;
         try {
-            FileInputStream fis = new FileInputStream(filepath);
+            fis = new FileInputStream(filepath);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             byte[] buffer = new byte[1024];
             int len;
@@ -534,11 +593,12 @@ public class FileUtils {
             }
             byte[] data = baos.toByteArray();
             baos.close();
-            fis.close();
             return data;
         } catch (Exception e) {
             LogUtils.error(e);
             return null;
+        } finally {
+            closeSilently(fis);
         }
     }
 
@@ -550,12 +610,11 @@ public class FileUtils {
      * @param charset  the charset
      * @return the boolean
      */
+    @RequiresPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     public static boolean writeText(String filepath, String content, String charset) {
         try {
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-                    new FileOutputStream(filepath), charset));
-            writer.write(content);
-            writer.close();
+            //noinspection MissingPermission
+            writeByte(filepath, content.getBytes(charset));
             return true;
         } catch (Exception e) {
             LogUtils.error(e);
@@ -570,7 +629,9 @@ public class FileUtils {
      * @param content  the content
      * @return the boolean
      */
+    @RequiresPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     public static boolean writeText(String filepath, String content) {
+        //noinspection MissingPermission
         return writeText(filepath, content, "utf-8");
     }
 
@@ -581,9 +642,11 @@ public class FileUtils {
      * @param data     the data
      * @return the boolean
      */
+    @RequiresPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     public static boolean writeByte(String filepath, byte[] data) {
         LogUtils.debug(String.format("write %s", filepath));
         File file = new File(filepath);
+        FileOutputStream fos = null;
         try {
             if (!file.exists()) {
                 //noinspection ResultOfMethodCallIgnored
@@ -591,13 +654,14 @@ public class FileUtils {
                 //noinspection ResultOfMethodCallIgnored
                 file.createNewFile();
             }
-            FileOutputStream fos = new FileOutputStream(filepath);
+            fos = new FileOutputStream(filepath);
             fos.write(data);
-            fos.close();
             return true;
         } catch (Exception e) {
             LogUtils.error(e);
             return false;
+        } finally {
+            closeSilently(fos);
         }
     }
 
@@ -608,21 +672,24 @@ public class FileUtils {
      * @param content the content
      * @return the boolean
      */
+    @RequiresPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     public static boolean appendText(String path, String content) {
         LogUtils.debug(String.format("append %s", path));
         File file = new File(path);
+        FileWriter writer = null;
         try {
             if (!file.exists()) {
                 //noinspection ResultOfMethodCallIgnored
                 file.createNewFile();
             }
-            FileWriter writer = new FileWriter(file, true);
+            writer = new FileWriter(file, true);
             writer.write(content);
-            writer.close();
             return true;
         } catch (IOException e) {
             LogUtils.error(e);
             return false;
+        } finally {
+            closeSilently(writer);
         }
     }
 
@@ -630,7 +697,7 @@ public class FileUtils {
      * 获取文件大小
      *
      * @param path the path
-     * @return length length
+     * @return length
      */
     public static long getLength(String path) {
         File file = new File(path);
@@ -641,55 +708,21 @@ public class FileUtils {
     }
 
     /**
-     * 获取文件名（包括扩展名）
+     * 获取格式化后的文件大小
      *
-     * @param pathOrUrl the path or url
-     * @return name name
+     * @param path the path
+     * @return size
      */
-    public static String getName(String pathOrUrl) {
-        return getName(pathOrUrl, false);
-    }
-
-    /**
-     * Gets name.
-     *
-     * @param pathOrUrl the path or url
-     * @param useHash   the use hash
-     * @return the name
-     */
-    public static String getName(String pathOrUrl, boolean useHash) {
-        if (useHash) {
-            return pathOrUrl.replace("/","_") + "." + getExtension(pathOrUrl);
-        }
-        int pos = pathOrUrl.lastIndexOf('/');
-        if (0 <= pos) {
-            return pathOrUrl.substring(pos + 1);
-        } else {
-            return String.valueOf(System.currentTimeMillis()) + "." + getExtension(pathOrUrl);
-        }
-    }
-
-    /**
-     * 获取文件名（不包括扩展名）
-     *
-     * @param pathOrUrl the path or url
-     * @return name exclude extension
-     */
-    public static String getNameExcludeExtension(String pathOrUrl) {
-        try {
-            String name = getName(pathOrUrl);
-            return name.substring(0, name.lastIndexOf('.'));
-        } catch (Exception e) {
-            LogUtils.warn(e.toString());
-            return "";
-        }
+    public static String getSize(String path) {
+        long fileSize = getLength(path);
+        return ConvertUtils.toFileSizeString(fileSize);
     }
 
     /**
      * 获取文件后缀,不包括“.”
      *
      * @param pathOrUrl the path or url
-     * @return extension extension
+     * @return extension
      */
     public static String getExtension(String pathOrUrl) {
         int dotPos = pathOrUrl.lastIndexOf('.');
@@ -761,7 +794,7 @@ public class FileUtils {
      *
      * @param path1 the path 1
      * @param path2 the path 2
-     * @return int int
+     * @return int
      */
     public static int compareLastModified(String path1, String path2) {
         long stamp1 = (new File(path1)).lastModified();
@@ -781,46 +814,21 @@ public class FileUtils {
      * @param path the path
      * @return the boolean
      */
+    @RequiresPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     public static boolean makeDirs(String path) {
-        return (new File(path)).mkdirs();
+        //noinspection MissingPermission
+        return makeDirs(new File(path));
     }
 
     /**
-     * The enum Sort type.
+     * Make dirs boolean.
+     *
+     * @param file the file
+     * @return the boolean
      */
-    public enum SortType {
-        /**
-         * By name asc sort type.
-         */
-        BY_NAME_ASC,
-        /**
-         * By name desc sort type.
-         */
-        BY_NAME_DESC,
-        /**
-         * By time asc sort type.
-         */
-        BY_TIME_ASC,
-        /**
-         * By time desc sort type.
-         */
-        BY_TIME_DESC,
-        /**
-         * By size asc sort type.
-         */
-        BY_SIZE_ASC,
-        /**
-         * By size desc sort type.
-         */
-        BY_SIZE_DESC,
-        /**
-         * By extension asc sort type.
-         */
-        BY_EXTENSION_ASC,
-        /**
-         * By extension desc sort type.
-         */
-        BY_EXTENSION_DESC,
+    @RequiresPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    public static boolean makeDirs(File file) {
+        return file.mkdirs();
     }
 
     /**

@@ -1,6 +1,7 @@
 package cn.qqtheme.framework.picker;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -123,16 +124,16 @@ public class AddressPicker extends WheelPicker {
     }
 
     @Override
-    protected View initContentView() {
+    @NonNull
+    protected View makeCenterView() {
         if (provinceList.size() == 0) {
             throw new IllegalArgumentException("please initial options at first, can't be empty");
         }
         LinearLayout layout = new LinearLayout(activity);
         layout.setOrientation(LinearLayout.HORIZONTAL);
         layout.setGravity(Gravity.CENTER);
-        int screenWidth = screen.widthPixels;
         final WheelView provinceView = new WheelView(activity);
-        provinceView.setLayoutParams(new LinearLayout.LayoutParams(screenWidth / 3, WRAP_CONTENT));
+        provinceView.setLayoutParams(new LinearLayout.LayoutParams(screenWidthPixels / 3, WRAP_CONTENT));
         provinceView.setTextSize(textSize);
         provinceView.setTextColor(textColorNormal, textColorFocus);
         provinceView.setLineVisible(lineVisible);
@@ -143,7 +144,7 @@ public class AddressPicker extends WheelPicker {
             provinceView.setVisibility(View.GONE);
         }
         final WheelView cityView = new WheelView(activity);
-        cityView.setLayoutParams(new LinearLayout.LayoutParams(screenWidth / 3, WRAP_CONTENT));
+        cityView.setLayoutParams(new LinearLayout.LayoutParams(screenWidthPixels / 3, WRAP_CONTENT));
         cityView.setTextSize(textSize);
         cityView.setTextColor(textColorNormal, textColorFocus);
         cityView.setLineVisible(lineVisible);
@@ -151,7 +152,7 @@ public class AddressPicker extends WheelPicker {
         cityView.setOffset(offset);
         layout.addView(cityView);
         final WheelView countyView = new WheelView(activity);
-        countyView.setLayoutParams(new LinearLayout.LayoutParams(screenWidth / 3, WRAP_CONTENT));
+        countyView.setLayoutParams(new LinearLayout.LayoutParams(screenWidthPixels / 3, WRAP_CONTENT));
         countyView.setTextSize(textSize);
         countyView.setTextColor(textColorNormal, textColorFocus);
         countyView.setLineVisible(lineVisible);
@@ -193,16 +194,26 @@ public class AddressPicker extends WheelPicker {
     }
 
     @Override
-    protected void setContentViewAfter(View contentView) {
-        super.setContentViewAfter(contentView);
-        super.setOnConfirmListener(new OnConfirmListener() {
-            @Override
-            public void onConfirm() {
-                if (onAddressPickListener != null) {
-                    onAddressPickListener.onAddressPicked(selectedProvince, selectedCity, selectedCounty);
-                }
-            }
-        });
+    public void onSubmit() {
+        if (onAddressPickListener != null) {
+            onAddressPickListener.onAddressPicked(selectedProvince, selectedCity, selectedCounty);
+        }
+    }
+
+    /**
+     * The interface On address pick listener.
+     */
+    public interface OnAddressPickListener {
+
+        /**
+         * On address picked.
+         *
+         * @param province the province
+         * @param city     the city
+         * @param county   the county
+         */
+        void onAddressPicked(String province, String city, String county);
+
     }
 
     /**
@@ -320,22 +331,6 @@ public class AddressPicker extends WheelPicker {
      * The type County.
      */
     public static class County extends Area {
-    }
-
-    /**
-     * The interface On address pick listener.
-     */
-    public interface OnAddressPickListener {
-
-        /**
-         * On address picked.
-         *
-         * @param province the province
-         * @param city     the city
-         * @param county   the county
-         */
-        void onAddressPicked(String province, String city, String county);
-
     }
 
 }

@@ -7,7 +7,6 @@ import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
-import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.view.View;
 import android.widget.TextView;
@@ -16,9 +15,9 @@ import android.widget.TextView;
  * 兼容旧版&新版
  *
  * @author 李玉江[QQ :1032694760]
- * @since 2015 /10/19 Created By Android Studio
+ * @since 2015/10/19
  */
-public class CompatUtils {
+public final class CompatUtils {
 
     /**
      * Sets background.
@@ -70,36 +69,20 @@ public class CompatUtils {
     }
 
     /**
-     * Gets string.
-     *
-     * @param context   the context
-     * @param stringRes the string res
-     * @return the string
-     */
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public static String getString(Context context, @StringRes int stringRes) {
-        if (Build.VERSION.SDK_INT < 21) {
-            //noinspection deprecation
-            return context.getResources().getString(stringRes);
-        } else {
-            return context.getString(stringRes);
-        }
-    }
-
-    /**
      * Gets color.
      *
      * @param context  the context
      * @param colorRes the color res
      * @return the color
      */
+    @TargetApi(Build.VERSION_CODES.M)
     @ColorInt
     public static int getColor(Context context, @ColorRes int colorRes) {
-        if (Build.VERSION.SDK_INT < 21) {
+        if (Build.VERSION.SDK_INT < 23) {
             //noinspection deprecation
             return context.getResources().getColor(colorRes);
         } else {
-            return context.getResources().getColor(colorRes, null);
+            return context.getColor(colorRes);
         }
     }
 

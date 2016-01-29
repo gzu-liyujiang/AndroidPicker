@@ -13,7 +13,7 @@ import java.io.IOException;
  * @author 李玉江[QQ :1023694760]
  * @version 2013 -11-2
  */
-public class StorageUtils {
+public final class StorageUtils {
 
     /**
      * 判断外置存储是否可用

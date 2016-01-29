@@ -1,12 +1,16 @@
 package cn.qqtheme.framework.picker;
 
 import android.app.Activity;
+import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -20,23 +24,27 @@ import cn.qqtheme.framework.widget.WheelView;
  * @version 2015 /12/14
  */
 public class TimePicker extends WheelPicker {
+    /**
+     * 24小时
+     */
+    public static final int HOUR_OF_DAY = 0;
+    /**
+     * 12小时
+     */
+    public static final int HOUR = 1;
     private OnTimePickListener onTimePickListener;
-    private Mode mode;
+    private int mode;
     private String hourLabel = "时", minuteLabel = "分";
     private String selectedHour = "", selectedMinute = "";
 
     /**
-     * The enum Mode.
+     * 安卓开发应避免使用枚举类（enum），因为相比于静态常量enum会花费两倍以上的内存。
+     *
+     * @link http ://developer.android.com/training/articles/memory.html#Overhead
      */
-    public enum Mode {
-        /**
-         * 24小时
-         */
-        HOUR_OF_DAY,
-        /**
-         * 12小时
-         */
-        HOUR
+    @IntDef(flag = false, value = {HOUR_OF_DAY, HOUR})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface Mode {
     }
 
     /**
@@ -45,7 +53,7 @@ public class TimePicker extends WheelPicker {
      * @param activity the activity
      */
     public TimePicker(Activity activity) {
-        this(activity, Mode.HOUR_OF_DAY);
+        this(activity, HOUR_OF_DAY);
     }
 
     /**
@@ -53,8 +61,10 @@ public class TimePicker extends WheelPicker {
      *
      * @param activity the activity
      * @param mode     the mode
+     * @see #HOUR_OF_DAY #HOUR_OF_DAY#HOUR_OF_DAY
+     * @see #HOUR #HOUR#HOUR
      */
-    public TimePicker(Activity activity, Mode mode) {
+    public TimePicker(Activity activity, @Mode int mode) {
         super(activity);
         this.mode = mode;
         selectedHour = DateUtils.fillZero(Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
@@ -93,7 +103,8 @@ public class TimePicker extends WheelPicker {
     }
 
     @Override
-    protected View initContentView() {
+    @NonNull
+    protected View makeCenterView() {
         LinearLayout layout = new LinearLayout(activity);
         layout.setOrientation(LinearLayout.HORIZONTAL);
         layout.setGravity(Gravity.CENTER);
@@ -129,7 +140,7 @@ public class TimePicker extends WheelPicker {
         }
         layout.addView(minuteTextView);
         ArrayList<String> hours = new ArrayList<String>();
-        if (mode.equals(Mode.HOUR)) {
+        if (mode == HOUR) {
             for (int i = 1; i <= 12; i++) {
                 hours.add(DateUtils.fillZero(i));
             }
@@ -160,16 +171,28 @@ public class TimePicker extends WheelPicker {
     }
 
     @Override
-    protected void setContentViewAfter(View contentView) {
-        super.setContentViewAfter(contentView);
-        super.setOnConfirmListener(new OnConfirmListener() {
-            @Override
-            public void onConfirm() {
-                if (onTimePickListener != null) {
-                    onTimePickListener.onTimePicked(selectedHour, selectedMinute);
-                }
-            }
-        });
+    public void onSubmit() {
+        if (onTimePickListener != null) {
+            onTimePickListener.onTimePicked(selectedHour, selectedMinute);
+        }
+    }
+
+    /**
+     * Gets selected hour.
+     *
+     * @return the selected hour
+     */
+    public String getSelectedHour() {
+        return selectedHour;
+    }
+
+    /**
+     * Gets selected minute.
+     *
+     * @return the selected minute
+     */
+    public String getSelectedMinute() {
+        return selectedMinute;
     }
 
     /**

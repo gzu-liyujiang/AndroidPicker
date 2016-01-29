@@ -82,8 +82,8 @@ subprojects {
             }
 
             dependencies {
-                compile "com.android.support:support-v4:${BUILD_TOOL_VERSION}"
-                compile "com.android.support:support-annotations:${BUILD_TOOL_VERSION}"
+                compile "com.android.support:support-v4:${ANDROID_SUPPORT_VERSION}"
+                compile "com.android.support:support-annotations:${ANDROID_SUPPORT_VERSION}"
             }
         }
 
@@ -131,7 +131,7 @@ subprojects {
                     publications {
                         mavenJava(MavenPublication) {
                             artifactId project.pomArtifactId
-                            artifact "${buildDir}/outputs/aar/${project.name}-release.aar"
+                            artifact "${buildDir}/outputs/aar/${project.pomArtifactId}-release.aar"
                             artifact javadocJar
                             artifact sourcesJar
 

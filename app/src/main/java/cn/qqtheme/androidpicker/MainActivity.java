@@ -1,6 +1,7 @@
 package cn.qqtheme.androidpicker;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.github.florent37.viewanimator.ViewAnimator;
 
 import java.util.ArrayList;
 
@@ -59,6 +61,17 @@ public class MainActivity extends Activity {
         picker.show();
     }
 
+    public void onAnimator(View view) {
+        CustomHeaderAndFooterPicker picker = new CustomHeaderAndFooterPicker(this);
+        picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
+            @Override
+            public void onOptionPicked(String option) {
+                showToast(option);
+            }
+        });
+        picker.show();
+    }
+
     public void onYearMonthDayPicker(View view) {
         DatePicker picker = new DatePicker(this);
         picker.setRange(2000, 2016);
@@ -73,7 +86,7 @@ public class MainActivity extends Activity {
     }
 
     public void onYearMonthPicker(View view) {
-        DatePicker picker = new DatePicker(this, DatePicker.Mode.YEAR_MONTH);
+        DatePicker picker = new DatePicker(this, DatePicker.YEAR_MONTH);
         picker.setRange(1990, 2015);
         picker.setOnDatePickListener(new DatePicker.OnYearMonthPickListener() {
             @Override
@@ -85,7 +98,7 @@ public class MainActivity extends Activity {
     }
 
     public void onMonthDayPicker(View view) {
-        DatePicker picker = new DatePicker(this, DatePicker.Mode.MONTH_DAY);
+        DatePicker picker = new DatePicker(this, DatePicker.MONTH_DAY);
         picker.setOnDatePickListener(new DatePicker.OnMonthDayPickListener() {
             @Override
             public void onDatePicked(String month, String day) {
@@ -97,7 +110,7 @@ public class MainActivity extends Activity {
 
     public void onTimePicker(View view) {
         //默认选中当前时间
-        TimePicker picker = new TimePicker(this);
+        TimePicker picker = new TimePicker(this, TimePicker.HOUR_OF_DAY);
         picker.setTopLineVisible(false);
         picker.setOnTimePickListener(new TimePicker.OnTimePickListener() {
             @Override
@@ -219,11 +232,10 @@ public class MainActivity extends Activity {
     }
 
     public void onFilePicker(View view) {
-        FilePicker picker = new FilePicker(this);
+        //noinspection MissingPermission
+        FilePicker picker = new FilePicker(this, FilePicker.FILE);
         picker.setShowHideDir(false);
-        picker.setRootPath(StorageUtils.getRootPath(this) + "Download/");
         //picker.setAllowExtensions(new String[]{".apk"});
-        picker.setMode(FilePicker.Mode.File);
         picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {
             @Override
             public void onFilePicked(String currentPath) {
@@ -234,8 +246,9 @@ public class MainActivity extends Activity {
     }
 
     public void onDirPicker(View view) {
-        FilePicker picker = new FilePicker(this);
-        picker.setMode(FilePicker.Mode.Directory);
+        //noinspection MissingPermission
+        FilePicker picker = new FilePicker(this, FilePicker.DIRECTORY);
+        picker.setRootPath(StorageUtils.getRootPath(this) + "Download/");
         picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {
             @Override
             public void onFilePicked(String currentPath) {

@@ -30,7 +30,7 @@ public class FileAdapter extends BaseAdapter {
     /**
      * The constant DIR_PARENT.
      */
-    public static final String DIR_PARENT = ".";
+    public static final String DIR_PARENT = "";
     private Context context;
     private ArrayList<FileItem> data = new ArrayList<FileItem>();
     private String rootPath = null;

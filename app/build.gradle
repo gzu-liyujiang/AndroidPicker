@@ -19,6 +19,7 @@ android {
 
 dependencies {
     compile 'com.alibaba:fastjson:1.1.46.android'
-    //compile project(':library')
-    compile 'cn.qqtheme.framework:AndroidPicker:latest.integration'
+    compile 'com.github.florent37:viewanimator:1.0.2'
+    compile project(':library')
+    //compile 'cn.qqtheme.framework:AndroidPicker:latest.integration'
 }
