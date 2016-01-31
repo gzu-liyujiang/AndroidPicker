@@ -6,9 +6,9 @@
 
 状态|链接|备注
 -----|------|----
-Deprecated|[~~Branch_OldAndroidPicker~~](https://github.com/gzu-liyujiang/AndroidPicker/tree/Branch_OldAndroidPicker)|基于android-wheel的旧版选择器，不再维护；
-Dev|[Branch_MultiPart](https://github.com/gzu-liyujiang/AndroidPicker/tree/Branch_MultiPart)|WheelPicker、ColorPicker及FilePicker是分为三个模块来开发；
-**New**|[master](https://github.com/gzu-liyujiang/AndroidPicker/tree/master)|最新分支，WheelPicker、ColorPicker及FilePicker合并为一个模块。
+~~Deprecated~~|[~~Branch_OldAndroidPicker~~](https://github.com/gzu-liyujiang/AndroidPicker/tree/Branch_OldAndroidPicker)|~~基于android-wheel的旧版选择器，不再维护~~；
+*Develop*|[dev](https://github.com/gzu-liyujiang/AndroidPicker/tree/dev)|WheelPicker、ColorPicker及FilePicker合并为一个模块来开发；
+**Release**|[master](https://github.com/gzu-liyujiang/AndroidPicker/tree/master)|主分支，WheelPicker、ColorPicker及FilePicker分为三个模块。
 
 # Change Log   
 - v1.1.0 - 2016.01.29
@@ -29,19 +29,19 @@ Dev|[Branch_MultiPart](https://github.com/gzu-liyujiang/AndroidPicker/tree/Branc
 # Install
 “app”是测试用例；“library”包括WheelPicker、ColorPicker、FilePicker，   
 WheelPicker包括DatePicker、TimePicker、OptionPicker、AddressPicker、NumberPicker等，   
+如果需要所有的的选择器的话，建议依赖“AndroidPicker”。     
 ```groovy
 dependencies {
-    compile 'cn.qqtheme.framework:WheelPicker:latest.integration'
-    compile 'cn.qqtheme.framework:FilePicker:latest.integration'
-    compile 'cn.qqtheme.framework:ColorPicker:latest.integration'
+    compile 'cn.qqtheme.framework:AndroidPicker:latest.integration'
+    //compile 'cn.qqtheme.framework:WheelPicker:latest.integration'
+    //compile 'cn.qqtheme.framework:ColorPicker:latest.integration'
+    //compile 'cn.qqtheme.framework:FilePicker:latest.integration'
 }
 ```
-也可以手动下载本项目，复制“library”下面的模块，然后：
+也可以手动下载本项目，复制“library”命名为“AndroidPicker”，然后：
 ```groovy
 dependencies {
-    compile project(':library:WheelPicker')
-    compile project(':library:FilePicker')
-    compile project(':library:ColorPicker')
+    compile project('AndroidPicker')
 }
 ```
 *注：本项目使用gradle来构建，Eclipse用户建议换为Android Studio或Intellij IDEA。*   
