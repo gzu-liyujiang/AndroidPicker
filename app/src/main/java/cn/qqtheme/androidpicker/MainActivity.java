@@ -210,7 +210,7 @@ public class MainActivity extends Activity {
             picker.setOnAddressPickListener(new AddressPicker.OnAddressPickListener() {
                 @Override
                 public void onAddressPicked(String province, String city, String county) {
-                    showToast(province + city + county);
+                    showToast(city + county);
                 }
             });
             picker.show();

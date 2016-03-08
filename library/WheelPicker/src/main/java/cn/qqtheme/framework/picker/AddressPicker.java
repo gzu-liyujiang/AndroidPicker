@@ -26,10 +26,8 @@ public class AddressPicker extends WheelPicker {
     private String selectedProvince = "", selectedCity = "", selectedCounty = "";
     private int selectedProvinceIndex = 0, selectedCityIndex = 0, selectedCountyIndex = 0;
     private boolean hideProvince = false;
+    private boolean hideCounty = false;
 
-
-
-    private boolean hideCounty=false;
     /**
      * Instantiates a new Address picker.
      *
@@ -122,7 +120,7 @@ public class AddressPicker extends WheelPicker {
      * 设置为true的话，hideProvince将强制为false
      * 数据源依然使用“city.json” 仅在逻辑上隐藏县级选择框。
      *
-     * @param hidecounty the hide county
+     * @param hideCounty the hide county
      */
     public void setHideCounty(boolean hideCounty) {
         this.hideCounty = hideCounty;
@@ -140,9 +138,8 @@ public class AddressPicker extends WheelPicker {
     @Override
     @NonNull
     protected View makeCenterView() {
-        if (hideCounty)
-        {
-            hideProvince=false;
+        if (hideCounty) {
+            hideProvince = false;
         }
         if (provinceList.size() == 0) {
             throw new IllegalArgumentException("please initial options at first, can't be empty");
@@ -177,8 +174,7 @@ public class AddressPicker extends WheelPicker {
         countyView.setLineColor(lineColor);
         countyView.setOffset(offset);
         layout.addView(countyView);
-        if (hideCounty)
-        {
+        if (hideCounty) {
             countyView.setVisibility(View.GONE);
         }
         provinceView.setItems(provinceList, selectedProvinceIndex);
@@ -218,11 +214,9 @@ public class AddressPicker extends WheelPicker {
     @Override
     public void onSubmit() {
         if (onAddressPickListener != null) {
-
             if (hideCounty) {
                 onAddressPickListener.onAddressPicked(selectedProvince, selectedCity, null);
-            }
-            else {
+            } else {
                 onAddressPickListener.onAddressPicked(selectedProvince, selectedCity, selectedCounty);
             }
         }

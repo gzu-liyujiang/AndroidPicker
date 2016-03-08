@@ -78,7 +78,11 @@ public class AddressInitTask extends AsyncTask<String, Void, ArrayList<AddressPi
             picker.setOnAddressPickListener(new AddressPicker.OnAddressPickListener() {
                 @Override
                 public void onAddressPicked(String province, String city, String county) {
-                    Toast.makeText(activity, province + city + county, Toast.LENGTH_LONG).show();
+                    if (county==null){
+                        Toast.makeText(activity, province + city, Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(activity, province + city + county, Toast.LENGTH_LONG).show();
+                    }
                 }
             });
             picker.show();
