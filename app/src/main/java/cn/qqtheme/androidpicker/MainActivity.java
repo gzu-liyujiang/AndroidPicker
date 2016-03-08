@@ -219,6 +219,11 @@ public class MainActivity extends Activity {
         }
     }
 
+
+    public void onAddress3Picker(View view) {
+        new AddressInitTask(this,true).execute("四川", "成都");
+    }
+
     public void onColorPicker(View view) {
         ColorPicker picker = new ColorPicker(this);
         picker.setInitColor(0xDD00DD);

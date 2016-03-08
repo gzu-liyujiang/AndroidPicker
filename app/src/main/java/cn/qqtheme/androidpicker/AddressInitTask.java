@@ -21,12 +21,23 @@ public class AddressInitTask extends AsyncTask<String, Void, ArrayList<AddressPi
     private Activity activity;
     private ProgressDialog dialog;
     private String selectedProvince = "", selectedCity = "", selectedCounty = "";
+    private boolean hideCounty=false;
+
+    /**
+     * 初始化为不显示区县的模式
+     * @param activity
+     * @param hideCounty   is hide County
+     */
+    public AddressInitTask(Activity activity,boolean hideCounty) {
+        this.activity = activity;
+        this.hideCounty=hideCounty;
+        dialog = ProgressDialog.show(activity, null, "正在初始化数据...", true, true);
+    }
 
     public AddressInitTask(Activity activity) {
         this.activity = activity;
         dialog = ProgressDialog.show(activity, null, "正在初始化数据...", true, true);
     }
-
     @Override
     protected ArrayList<AddressPicker.Province> doInBackground(String... params) {
         if (params != null) {
@@ -62,6 +73,7 @@ public class AddressInitTask extends AsyncTask<String, Void, ArrayList<AddressPi
         dialog.dismiss();
         if (result.size() > 0) {
             AddressPicker picker = new AddressPicker(activity, result);
+            picker.setHideCounty(hideCounty);
             picker.setSelectedItem(selectedProvince, selectedCity, selectedCounty);
             picker.setOnAddressPickListener(new AddressPicker.OnAddressPickListener() {
                 @Override
