@@ -27,6 +27,9 @@ public class AddressPicker extends WheelPicker {
     private int selectedProvinceIndex = 0, selectedCityIndex = 0, selectedCountyIndex = 0;
     private boolean hideProvince = false;
 
+
+
+    private boolean hideCounty=false;
     /**
      * Instantiates a new Address picker.
      *
@@ -115,6 +118,17 @@ public class AddressPicker extends WheelPicker {
     }
 
     /**
+     * 隐藏县级行政区，只显示省级和市级。
+     * 设置为true的话，hideProvince将强制为false
+     * 数据源依然使用“city.json” 仅在逻辑上隐藏县级选择框。
+     *
+     * @param hidecounty the hide county
+     */
+    public void setHideCounty(boolean hideCounty) {
+        this.hideCounty = hideCounty;
+    }
+
+    /**
      * Sets on address pick listener.
      *
      * @param listener the listener
@@ -126,6 +140,10 @@ public class AddressPicker extends WheelPicker {
     @Override
     @NonNull
     protected View makeCenterView() {
+        if (hideCounty)
+        {
+            hideProvince=false;
+        }
         if (provinceList.size() == 0) {
             throw new IllegalArgumentException("please initial options at first, can't be empty");
         }
@@ -159,6 +177,10 @@ public class AddressPicker extends WheelPicker {
         countyView.setLineColor(lineColor);
         countyView.setOffset(offset);
         layout.addView(countyView);
+        if (hideCounty)
+        {
+            countyView.setVisibility(View.GONE);
+        }
         provinceView.setItems(provinceList, selectedProvinceIndex);
         provinceView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
             @Override
@@ -196,7 +218,13 @@ public class AddressPicker extends WheelPicker {
     @Override
     public void onSubmit() {
         if (onAddressPickListener != null) {
-            onAddressPickListener.onAddressPicked(selectedProvince, selectedCity, selectedCounty);
+
+            if (hideCounty) {
+                onAddressPickListener.onAddressPicked(selectedProvince, selectedCity, null);
+            }
+            else {
+                onAddressPickListener.onAddressPicked(selectedProvince, selectedCity, selectedCounty);
+            }
         }
     }
 
@@ -210,7 +238,7 @@ public class AddressPicker extends WheelPicker {
          *
          * @param province the province
          * @param city     the city
-         * @param county   the county
+         * @param county   the county ，if {@hideCounty} is true，this is null
          */
         void onAddressPicked(String province, String city, String county);
 
