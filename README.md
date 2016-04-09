@@ -4,12 +4,6 @@
 安卓选择器类库，包括日期选择器、时间选择器、单项选择器、城市选择器、颜色选择器、文件选择器、目录选择器、数字选择器、星座选择器、生肖选择器等，可自定义顶部及底部界面，可自定义窗口动画。   
 欢迎大伙儿在[Issues](https://github.com/gzu-liyujiang/AndroidPicker/issues)提交你的意见或建议。欢迎Fork & Pull requests贡献您的代码。     
 
-状态|链接|备注
------|------|----
-~~Deprecated~~|[~~Branch_OldAndroidPicker~~](https://github.com/gzu-liyujiang/AndroidPicker/tree/Branch_OldAndroidPicker)|~~基于android-wheel的旧版选择器，不再维护~~；
-*Develop*|[dev](https://github.com/gzu-liyujiang/AndroidPicker/tree/dev)|WheelPicker、ColorPicker及FilePicker合并为一个模块来开发；
-**Release**|[master](https://github.com/gzu-liyujiang/AndroidPicker/tree/master)|主分支，WheelPicker、ColorPicker及FilePicker分为三个模块。
-
 # Change Log   
 - v1.1.0 - 2016.01.29
 + 添加注解约束，如“setOffset()”只能是1至4；
@@ -29,19 +23,10 @@
 # Install
 “app”是测试用例；“library”包括WheelPicker、ColorPicker、FilePicker，   
 WheelPicker包括DatePicker、TimePicker、OptionPicker、AddressPicker、NumberPicker等，   
-如果需要所有的的选择器的话，建议依赖“AndroidPicker”。     
+建议手动下载本项目，导入“library”下的相关module，然后依赖，如：
 ```groovy
 dependencies {
-    compile 'cn.qqtheme.framework:AndroidPicker:latest.integration'
-    //compile 'cn.qqtheme.framework:WheelPicker:latest.integration'
-    //compile 'cn.qqtheme.framework:ColorPicker:latest.integration'
-    //compile 'cn.qqtheme.framework:FilePicker:latest.integration'
-}
-```
-也可以手动下载本项目，复制“library”命名为“AndroidPicker”，然后：
-```groovy
-dependencies {
-    compile project('AndroidPicker')
+    compile project(':library:WheelPicker')
 }
 ```
 *注：本项目使用gradle来构建，Eclipse用户建议换为Android Studio或Intellij IDEA。*   
@@ -62,7 +47,7 @@ dependencies {
 或者使用[ViewAnimator](https://github.com/gzu-liyujiang/ViewAnimator)这个动画库来实现：   
 ```groovy
 dependencies {
-    compile 'com.github.florent37:viewanimator:1.0.2'
+    compile 'com.github.florent37:viewanimator:1.0.3'
 }
 ```
 ```java
