@@ -175,7 +175,7 @@ public class DatePicker extends WheelPicker {
         LinearLayout layout = new LinearLayout(activity);
         layout.setOrientation(LinearLayout.HORIZONTAL);
         layout.setGravity(Gravity.CENTER);
-        WheelView yearView = new WheelView(activity);
+        WheelView yearView = new WheelView(activity.getBaseContext());
         yearView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
         yearView.setTextSize(textSize);
         yearView.setTextColor(textColorNormal, textColorFocus);
@@ -191,7 +191,7 @@ public class DatePicker extends WheelPicker {
             yearTextView.setText(yearLabel);
         }
         layout.addView(yearTextView);
-        WheelView monthView = new WheelView(activity);
+        WheelView monthView = new WheelView(activity.getBaseContext());
         monthView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
         monthView.setTextSize(textSize);
         monthView.setTextColor(textColorNormal, textColorFocus);
@@ -207,7 +207,7 @@ public class DatePicker extends WheelPicker {
             monthTextView.setText(monthLabel);
         }
         layout.addView(monthTextView);
-        final WheelView dayView = new WheelView(activity);
+        final WheelView dayView = new WheelView(activity.getBaseContext());
         dayView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
         dayView.setTextSize(textSize);
         dayView.setTextColor(textColorNormal, textColorFocus);
