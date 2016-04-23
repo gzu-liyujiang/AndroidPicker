@@ -1,10 +1,12 @@
 # Summary
 [![API](https://img.shields.io/badge/API-9%2B-green.svg)](https://github.com/gzu-liyujiang/AndroidPicker)
-[![Download](https://api.bintray.com/packages/gzu-liyujiang/maven/AndroidPicker/images/download.svg)](http://jcenter.bintray.com/cn/qqtheme/framework/AndroidPicker)   
+[![Download](https://api.bintray.com/packages/gzu-liyujiang/maven/WheelPicker/images/download.svg)](http://jcenter.bintray.com/cn/qqtheme/framework/)   
 安卓选择器类库，包括日期选择器、时间选择器、单项选择器、城市选择器、颜色选择器、文件选择器、目录选择器、数字选择器、星座选择器、生肖选择器等，可自定义顶部及底部界面，可自定义窗口动画。   
 欢迎大伙儿在[Issues](https://github.com/gzu-liyujiang/AndroidPicker/issues)提交你的意见或建议。欢迎Fork & Pull requests贡献您的代码。     
 
-# Change Log   
+# Change Log
+- v1.1.1 - 2016.4.23
++ 合并@Wastrel及@lutas2000贡献的代码，地址选择器支持只选择省和市、不能混淆某些类；
 - v1.1.0 - 2016.01.29
 + 添加注解约束，如“setOffset()”只能是1至4；
 + 所有枚举类改为常量来表示，据说这样可以节约内存；
@@ -23,13 +25,27 @@
 # Install
 “app”是测试用例；“library”包括WheelPicker、ColorPicker、FilePicker，   
 WheelPicker包括DatePicker、TimePicker、OptionPicker、AddressPicker、NumberPicker等，   
-建议手动下载本项目，导入“library”下的相关module，然后依赖，如：
+可下载本项目手动进行源代码集成，导入“library”下的相关module，然后依赖，如：
 ```groovy
 dependencies {
-    compile project(':library:WheelPicker')
+    compile project(':WheelPicker')
+    compile project(':FilePicker')
 }
 ```
-*注：本项目使用gradle来构建，Eclipse用户建议换为Android Studio或Intellij IDEA。*   
+也可以直接远程懒加载jcenter里的，如：
+```groovy
+dependencies {
+    compile project('cn.qqtheme.framework:WheelPicker:1.1.1')
+    compile project('cn.qqtheme.framework:FilePicker:1.1.0')
+}
+```
+*注：*
+本项目使用gradle来构建，迁移到Eclipse比较麻烦，建议换为Android Studio或Intellij IDEA。
+由于地址选择器使用了FastJson来解析，混淆时候需要加入以下类似的规则，不混淆Province、City等实体类。
+```
+-keep class cn.qqtheme.framework.entity.** { ;}
+-keep class cn.qqtheme.framework.picker.AddressPickerr$ { *;}
+```
 
 # Custom
 ### 自定义窗口进入退出动画(可选，默认动画为淡入淡出)
