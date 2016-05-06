@@ -202,11 +202,11 @@ public class FileAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(android.R.layout.activity_list_item, null);
+            convertView = LayoutInflater.from(context).inflate(R.layout.file_item, null);
             CompatUtils.setBackground(convertView, ConvertUtils.toStateListDrawable(Color.WHITE, Color.LTGRAY));
             holder = new ViewHolder();
-            holder.imageView = (ImageView) convertView.findViewById(android.R.id.icon);
-            holder.textView = (TextView) convertView.findViewById(android.R.id.text1);
+            holder.imageView = (ImageView) convertView.findViewById(R.id.file_icon);
+            holder.textView = (TextView) convertView.findViewById(R.id.file_name);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
