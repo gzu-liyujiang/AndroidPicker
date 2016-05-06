@@ -8,23 +8,17 @@ import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
-import cn.qqtheme.framework.util.LogUtils;
 import cn.qqtheme.framework.widget.WheelView;
 
 /**
  * 地址选择器（包括省级、地级、县级）。
  * 地址数据见示例项目的“city.json”，来源于国家统计局官网（http://www.stats.gov.cn/tjsj/tjbz/xzqhdm）
  *
- * @author 李玉江[QQ :1032694760]
- * @version 2015 /12/15
+ * @author 李玉江[QQ:1032694760]
+ * @since 2015/12/15
  */
-public class AddressPicker extends WheelPicker {
-    private ArrayList<String> provinceList = new ArrayList<String>();
-    private ArrayList<ArrayList<String>> cityList = new ArrayList<ArrayList<String>>();
-    private ArrayList<ArrayList<ArrayList<String>>> countyList = new ArrayList<ArrayList<ArrayList<String>>>();
+public class AddressPicker extends LinkagePicker {
     private OnAddressPickListener onAddressPickListener;
-    private String selectedProvince = "", selectedCity = "", selectedCounty = "";
-    private int selectedProvinceIndex = 0, selectedCityIndex = 0, selectedCountyIndex = 0;
     private boolean hideProvince = false;
     private boolean hideCounty = false;
 
@@ -40,7 +34,7 @@ public class AddressPicker extends WheelPicker {
         //添加省
         for (int x = 0; x < provinceSize; x++) {
             Province pro = data.get(x);
-            provinceList.add(pro.getAreaName());
+            firstList.add(pro.getAreaName());
             ArrayList<City> cities = pro.getCities();
             ArrayList<String> xCities = new ArrayList<String>();
             ArrayList<ArrayList<String>> xCounties = new ArrayList<ArrayList<String>>();
@@ -62,8 +56,8 @@ public class AddressPicker extends WheelPicker {
                 }
                 xCounties.add(yCounties);
             }
-            cityList.add(xCities);
-            countyList.add(xCounties);
+            secondList.add(xCities);
+            thirdList.add(xCounties);
         }
     }
 
@@ -75,33 +69,7 @@ public class AddressPicker extends WheelPicker {
      * @param county   the county
      */
     public void setSelectedItem(String province, String city, String county) {
-        for (int i = 0; i < provinceList.size(); i++) {
-            String pro = provinceList.get(i);
-            if (pro.contains(province)) {
-                selectedProvinceIndex = i;
-                LogUtils.debug("init select province: " + pro);
-                break;
-            }
-        }
-        ArrayList<String> cities = cityList.get(selectedProvinceIndex);
-        for (int j = 0; j < cities.size(); j++) {
-            String cit = cities.get(j);
-            if (cit.contains(city)) {
-                selectedCityIndex = j;
-                LogUtils.debug("init select city: " + cit);
-                break;
-            }
-        }
-        ArrayList<String> counties = countyList.get(selectedProvinceIndex).get(selectedCityIndex);
-        for (int k = 0; k < counties.size(); k++) {
-            String cou = counties.get(k);
-            if (cou.contains(county)) {
-                selectedCountyIndex = k;
-                LogUtils.debug("init select county: " + cou);
-                break;
-            }
-        }
-        LogUtils.debug(String.format("init select index: %s-%s-%s", selectedProvinceIndex, selectedCityIndex, selectedCountyIndex));
+        super.setSelectedItem(province, city, county);
     }
 
     /**
@@ -135,20 +103,27 @@ public class AddressPicker extends WheelPicker {
         this.onAddressPickListener = listener;
     }
 
+    @Deprecated
+    @Override
+    public void setOnLinkageListener(OnLinkageListener onLinkageListener) {
+        throw new UnsupportedOperationException("Please use setOnAddressPickListener instead.");
+    }
+
     @Override
     @NonNull
     protected View makeCenterView() {
         if (hideCounty) {
             hideProvince = false;
         }
-        if (provinceList.size() == 0) {
-            throw new IllegalArgumentException("please initial options at first, can't be empty");
+        if (firstList.size() == 0) {
+            throw new IllegalArgumentException("please initial data at first, can't be empty");
         }
         LinearLayout layout = new LinearLayout(activity);
         layout.setOrientation(LinearLayout.HORIZONTAL);
         layout.setGravity(Gravity.CENTER);
         final WheelView provinceView = new WheelView(activity);
-        provinceView.setLayoutParams(new LinearLayout.LayoutParams(screenWidthPixels / 3, WRAP_CONTENT));
+        final int width = screenWidthPixels / 3;
+        provinceView.setLayoutParams(new LinearLayout.LayoutParams(width, WRAP_CONTENT));
         provinceView.setTextSize(textSize);
         provinceView.setTextColor(textColorNormal, textColorFocus);
         provinceView.setLineVisible(lineVisible);
@@ -159,7 +134,7 @@ public class AddressPicker extends WheelPicker {
             provinceView.setVisibility(View.GONE);
         }
         final WheelView cityView = new WheelView(activity);
-        cityView.setLayoutParams(new LinearLayout.LayoutParams(screenWidthPixels / 3, WRAP_CONTENT));
+        cityView.setLayoutParams(new LinearLayout.LayoutParams(width, WRAP_CONTENT));
         cityView.setTextSize(textSize);
         cityView.setTextColor(textColorNormal, textColorFocus);
         cityView.setLineVisible(lineVisible);
@@ -167,7 +142,7 @@ public class AddressPicker extends WheelPicker {
         cityView.setOffset(offset);
         layout.addView(cityView);
         final WheelView countyView = new WheelView(activity);
-        countyView.setLayoutParams(new LinearLayout.LayoutParams(screenWidthPixels / 3, WRAP_CONTENT));
+        countyView.setLayoutParams(new LinearLayout.LayoutParams(width, WRAP_CONTENT));
         countyView.setTextSize(textSize);
         countyView.setTextColor(textColorNormal, textColorFocus);
         countyView.setLineVisible(lineVisible);
@@ -177,35 +152,35 @@ public class AddressPicker extends WheelPicker {
         if (hideCounty) {
             countyView.setVisibility(View.GONE);
         }
-        provinceView.setItems(provinceList, selectedProvinceIndex);
+        provinceView.setItems(firstList, selectedFirstIndex);
         provinceView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
             @Override
             public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
-                selectedProvince = item;
-                selectedProvinceIndex = selectedIndex;
-                selectedCountyIndex = 0;
+                selectedFirstText = item;
+                selectedFirstIndex = selectedIndex;
+                selectedThirdIndex = 0;
                 //根据省份获取地市
-                cityView.setItems(cityList.get(selectedProvinceIndex), isUserScroll ? 0 : selectedCityIndex);
+                cityView.setItems(secondList.get(selectedFirstIndex), isUserScroll ? 0 : selectedSecondIndex);
                 //根据地市获取区县
-                countyView.setItems(countyList.get(selectedProvinceIndex).get(0), isUserScroll ? 0 : selectedCountyIndex);
+                countyView.setItems(thirdList.get(selectedFirstIndex).get(0), isUserScroll ? 0 : selectedThirdIndex);
             }
         });
-        cityView.setItems(cityList.get(selectedProvinceIndex), selectedCityIndex);
+        cityView.setItems(secondList.get(selectedFirstIndex), selectedSecondIndex);
         cityView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
             @Override
             public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
-                selectedCity = item;
-                selectedCityIndex = selectedIndex;
+                selectedSecondText = item;
+                selectedSecondIndex = selectedIndex;
                 //根据地市获取区县
-                countyView.setItems(countyList.get(selectedProvinceIndex).get(selectedCityIndex), isUserScroll ? 0 : selectedCountyIndex);
+                countyView.setItems(thirdList.get(selectedFirstIndex).get(selectedSecondIndex), isUserScroll ? 0 : selectedThirdIndex);
             }
         });
-        countyView.setItems(countyList.get(selectedProvinceIndex).get(selectedCityIndex), selectedCountyIndex);
+        countyView.setItems(thirdList.get(selectedFirstIndex).get(selectedSecondIndex), selectedThirdIndex);
         countyView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
             @Override
             public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
-                selectedCounty = item;
-                selectedCountyIndex = selectedIndex;
+                selectedThirdText = item;
+                selectedThirdIndex = selectedIndex;
             }
         });
         return layout;
@@ -215,9 +190,9 @@ public class AddressPicker extends WheelPicker {
     public void onSubmit() {
         if (onAddressPickListener != null) {
             if (hideCounty) {
-                onAddressPickListener.onAddressPicked(selectedProvince, selectedCity, null);
+                onAddressPickListener.onAddressPicked(selectedFirstText, selectedSecondText, null);
             } else {
-                onAddressPickListener.onAddressPicked(selectedProvince, selectedCity, selectedCounty);
+                onAddressPickListener.onAddressPicked(selectedFirstText, selectedSecondText, selectedThirdText);
             }
         }
     }

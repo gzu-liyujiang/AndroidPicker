@@ -19,11 +19,13 @@ import cn.qqtheme.framework.picker.ColorPicker;
 import cn.qqtheme.framework.picker.ConstellationPicker;
 import cn.qqtheme.framework.picker.DatePicker;
 import cn.qqtheme.framework.picker.FilePicker;
+import cn.qqtheme.framework.picker.LinkagePicker;
 import cn.qqtheme.framework.picker.NumberPicker;
 import cn.qqtheme.framework.picker.OptionPicker;
 import cn.qqtheme.framework.picker.SexPicker;
 import cn.qqtheme.framework.picker.TimePicker;
 import cn.qqtheme.framework.util.ConvertUtils;
+import cn.qqtheme.framework.util.DateUtils;
 import cn.qqtheme.framework.util.StorageUtils;
 
 public class MainActivity extends Activity {
@@ -137,6 +139,40 @@ public class MainActivity extends Activity {
         picker.show();
     }
 
+    public void onLinkagePicker(View view) {
+        ArrayList<String> firstList = new ArrayList<String>();
+        firstList.add("今天");
+        firstList.add("明天");
+        ArrayList<ArrayList<String>> secondList = new ArrayList<ArrayList<String>>();
+        ArrayList<String> secondListItem = new ArrayList<String>();
+        for (int i = 0; i < 24; i++) {
+            secondListItem.add(DateUtils.fillZero(i) + "点");
+        }
+        secondList.add(secondListItem);//对应今天
+        secondList.add(secondListItem);//对应明天
+        ArrayList<ArrayList<ArrayList<String>>> thirdList = new ArrayList<ArrayList<ArrayList<String>>>();
+        ArrayList<ArrayList<String>> thirdListItem1 = new ArrayList<ArrayList<String>>();
+        ArrayList<String> thirdListItem2 = new ArrayList<String>();
+        for (int i = 0; i < 60; i++) {
+            thirdListItem2.add(DateUtils.fillZero(i) + "分");
+        }
+        for (int i = 0; i < 24; i++) {
+            thirdListItem1.add(thirdListItem2);//对应0-23点
+        }
+        thirdList.add(thirdListItem1);//对应今天
+        thirdList.add(thirdListItem1);//对应明天
+        LinkagePicker picker = new LinkagePicker(this, firstList, secondList);
+        picker.setSelectedItem("明天", "9点");
+        picker.setOnLinkageListener(new LinkagePicker.OnLinkageListener() {
+
+            @Override
+            public void onPicked(String first, String second, String third) {
+                showToast(first + "-" + second + "-" + third);
+            }
+        });
+        picker.show();
+    }
+
     public void onConstellationPicker(View view) {
         ConstellationPicker picker = new ConstellationPicker(this);
         picker.setTopBackgroundColor(0xFFEEEEEE);
@@ -221,7 +257,7 @@ public class MainActivity extends Activity {
 
 
     public void onAddress3Picker(View view) {
-        new AddressInitTask(this,true).execute("四川", "成都");
+        new AddressInitTask(this, true).execute("四川", "成都");
     }
 
     public void onColorPicker(View view) {

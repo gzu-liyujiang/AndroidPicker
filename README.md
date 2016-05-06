@@ -5,7 +5,9 @@
 欢迎大伙儿在[Issues](https://github.com/gzu-liyujiang/AndroidPicker/issues)提交你的意见或建议。欢迎Fork & Pull requests贡献您的代码。     
 
 # Change Log
-- v1.1.1 - 2016.4.23
+- v1.1.2 - 2016.05.06
++ 添加二三级联动选择器；
+- v1.1.1 - 2016.04.23
 + 合并@Wastrel及@lutas2000贡献的代码，地址选择器支持只选择省和市、不能混淆某些类；
 - v1.1.0 - 2016.01.29
 + 添加注解约束，如“setOffset()”只能是1至4；
@@ -32,19 +34,19 @@ dependencies {
     compile project(':FilePicker')
 }
 ```
-也可以直接远程懒加载jcenter里的，如：
+也可以直接远程加载jcenter里的，如：
 ```groovy
 dependencies {
-    compile project('cn.qqtheme.framework:WheelPicker:1.1.1')
-    compile project('cn.qqtheme.framework:FilePicker:1.1.0')
+    compile 'cn.qqtheme.framework:WheelPicker:1.1.1'
+    compile 'cn.qqtheme.framework:FilePicker:1.1.0'
 }
 ```
 *注：*
 本项目使用gradle来构建，迁移到Eclipse比较麻烦，建议换为Android Studio或Intellij IDEA。
 由于地址选择器使用了FastJson来解析，混淆时候需要加入以下类似的规则，不混淆Province、City等实体类。
 ```
--keep class cn.qqtheme.framework.entity.** { ;}
--keep class cn.qqtheme.framework.picker.AddressPickerr$ { *;}
+-keep class cn.qqtheme.framework.entity.** { *;}
+-keep class cn.qqtheme.framework.picker.AddressPicker$* { *;}
 ```
 
 # Custom
@@ -94,7 +96,7 @@ public class CustomHeaderAndFooterPicker extends OptionPicker {
 }
 ```
 
-# Sample
+# Sample （更多用法详见示例项目）
 日期选择器：   
 ```java   
         DatePicker picker = new DatePicker(this, DatePicker.YEAR_MONTH_DAY);
@@ -155,6 +157,8 @@ public class CustomHeaderAndFooterPicker extends OptionPicker {
         picker.show();
 ```
 
+二三级联动选择器（参见地址选择器）
+
 地址选择器（含省级、地级、县级）：
 ```java   
         ArrayList<AddressPicker.Province> data = new ArrayList<AddressPicker.Province>();
@@ -162,6 +166,8 @@ public class CustomHeaderAndFooterPicker extends OptionPicker {
         data.addAll(JSON.parseArray(json, AddressPicker.Province.class));
         AddressPicker picker = new AddressPicker(this, result);
         picker.setSelectedItem("贵州", "贵阳", "花溪");
+        //picker.setHideProvince(true);//加上此句举将只显示地级及县级
+        //picker.setHideCounty(true);//加上此句举将只显示省级及地级
         picker.setOnAddressPickListener(new AddressPicker.OnAddressPickListener() {
             @Override
             public void onAddressPicked(String province, String city, String county) {
@@ -169,22 +175,6 @@ public class CustomHeaderAndFooterPicker extends OptionPicker {
             }
         });
         picker.show();
-```
-
-地址选择器（含地级、县级）：
-```java   
-            ArrayList<AddressPicker.Province> data = new ArrayList<AddressPicker.Province>();
-            String json = AssetsUtils.readText(this, "city2.json");
-            data.addAll(JSON.parseArray(json, AddressPicker.Province.class));
-            AddressPicker picker = new AddressPicker(this, data);
-            picker.setHideProvince(true);
-            picker.setOnAddressPickListener(new AddressPicker.OnAddressPickListener() {
-                @Override
-                public void onAddressPicked(String province, String city, String county) {
-                    showToast(province + city + county);
-                }
-            });
-            picker.show();
 ```
 
 星座选择器：
@@ -197,20 +187,6 @@ public class CustomHeaderAndFooterPicker extends OptionPicker {
         picker.setTextColor(0xFFFF0000, 0xFFCCCCCC);
         picker.setLineColor(0xFFEE0000);
         picker.setSelectedItem("射手");
-        picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
-            @Override
-            public void onOptionPicked(String option) {
-                showToast(option);
-            }
-        });
-        picker.show();
-```
-
-生肖选择器：
-```java   
-        ChineseZodiacPicker picker = new ChineseZodiacPicker(this);
-        picker.setLineVisible(false);
-        picker.setSelectedItem("羊");
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
             public void onOptionPicked(String option) {
