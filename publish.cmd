@@ -1,5 +1,5 @@
 @rem C:\Users\Administrator\.m2\repository
-@rem gradlew publishToMavenLocal --info
+gradlew publishToMavenLocal --info
 
 @rem http://jcenter.bintray.com
-gradlew bintrayUpload --info
+@rem gradlew bintrayUpload --info
