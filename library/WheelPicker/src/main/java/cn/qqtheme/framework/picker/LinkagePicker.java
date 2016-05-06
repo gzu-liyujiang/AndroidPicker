@@ -32,11 +32,17 @@ public class LinkagePicker extends WheelPicker {
         super(activity);
     }
 
+    /**
+     * 二级联动选择器构造函数
+     */
     public LinkagePicker(Activity activity, ArrayList<String> firstList,
                          ArrayList<ArrayList<String>> secondList) {
         this(activity, firstList, secondList, null);
     }
 
+    /**
+     * 三级联动选择器构造函数
+     */
     public LinkagePicker(Activity activity, ArrayList<String> firstList,
                          ArrayList<ArrayList<String>> secondList,
                          ArrayList<ArrayList<ArrayList<String>>> thirdList) {

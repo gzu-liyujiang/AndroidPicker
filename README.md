@@ -7,6 +7,7 @@
 # Change Log
 - v1.1.2 - 2016.05.06
 + 添加二三级联动选择器；
++ 文件选择器布局调整；
 - v1.1.1 - 2016.04.23
 + 合并@Wastrel及@lutas2000贡献的代码，地址选择器支持只选择省和市、不能混淆某些类；
 - v1.1.0 - 2016.01.29
@@ -37,8 +38,8 @@ dependencies {
 也可以直接远程加载jcenter里的，如：
 ```groovy
 dependencies {
-    compile 'cn.qqtheme.framework:WheelPicker:1.1.1'
-    compile 'cn.qqtheme.framework:FilePicker:1.1.0'
+    compile 'cn.qqtheme.framework:WheelPicker:1.1.2'
+    compile 'cn.qqtheme.framework:FilePicker:1.1.2'
 }
 ```
 *注：*
