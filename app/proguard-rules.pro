@@ -1,2 +1,2 @@
--keep class cn.qqtheme.framework.entity.** { ;}
--keep class cn.qqtheme.framework.picker.AddressPickerr$ { *;}
+-keep class cn.qqtheme.framework.entity.** { *;}
+-keep class cn.qqtheme.framework.picker.AddressPickerr$* { *;}
