@@ -292,7 +292,7 @@ public class MainActivity extends Activity {
         picker.show();
     }
 
-    /*public void onFilePicker(View view) {
+    public void onFilePicker(View view) {
         //noinspection MissingPermission
         FilePicker picker = new FilePicker(this, FilePicker.FILE);
         picker.setShowHideDir(false);
@@ -317,7 +317,7 @@ public class MainActivity extends Activity {
             }
         });
         picker.show();
-    }*/
+    }
 
     public void onContact(View view) {
         Intent intent = new Intent(Intent.ACTION_SENDTO);
