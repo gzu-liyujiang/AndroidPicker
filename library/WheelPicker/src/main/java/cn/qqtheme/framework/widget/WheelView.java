@@ -40,7 +40,7 @@ public class WheelView extends ScrollView {
     /**
      * The constant TEXT_SIZE.
      */
-    public static final int TEXT_SIZE = 20;
+    public static final int TEXT_SIZE = 16;
     /**
      * The constant TEXT_COLOR_FOCUS.
      */
