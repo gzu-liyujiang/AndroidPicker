@@ -29,6 +29,12 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="onYearMonthDayTimePicker"
+            android:text="年月日时间选择" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:onClick="onYearMonthPicker"
             android:text="年月选择" />
 
