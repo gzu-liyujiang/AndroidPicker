@@ -40,6 +40,17 @@ public class OptionPicker extends WheelPicker {
     }
 
     /**
+     * Instantiates a new Option picker.
+     *
+     * @param activity the activity
+     * @param options  the options
+     */
+    public OptionPicker(Activity activity, ArrayList<String> options) {
+        super(activity);
+        this.options.addAll(options);
+    }
+
+    /**
      * Sets label.
      *
      * @param label the label
