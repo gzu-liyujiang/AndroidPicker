@@ -62,6 +62,23 @@ public class DateTimePicker extends WheelPicker {
     public @interface Mode {
     }
 
+    public DateTimePicker(Activity activity, @Mode int mode) {
+        super(activity);
+        textSize = 16;//年月日时分，比较宽，设置字体小一点才能显示完整
+        this.mode = mode;
+        for (int i = 2000; i <= 2050; i++) {
+            years.add(String.valueOf(i));
+        }
+        for (int i = 1; i <= 12; i++) {
+            months.add(DateUtils.fillZero(i));
+        }
+        for (int i = 1; i <= 31; i++) {
+            days.add(DateUtils.fillZero(i));
+        }
+        selectedHour = DateUtils.fillZero(Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
+        selectedMinute = DateUtils.fillZero(Calendar.getInstance().get(Calendar.MINUTE));
+    }
+
     @NonNull
     @Override
     protected View makeCenterView() {
@@ -318,23 +335,6 @@ public class DateTimePicker extends WheelPicker {
         return Integer.parseInt(text);
     }
 
-    public DateTimePicker(Activity activity, @Mode int mode) {
-        super(activity);
-        this.mode = mode;
-        for (int i = 2000; i <= 2050; i++) {
-            years.add(String.valueOf(i));
-        }
-        for (int i = 1; i <= 12; i++) {
-            months.add(DateUtils.fillZero(i));
-        }
-        for (int i = 1; i <= 31; i++) {
-            days.add(DateUtils.fillZero(i));
-        }
-        selectedHour = DateUtils.fillZero(Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
-        selectedMinute = DateUtils.fillZero(Calendar.getInstance().get(Calendar.MINUTE));
-    }
-
-
     /**
      * Sets label.
      *
@@ -382,7 +382,6 @@ public class DateTimePicker extends WheelPicker {
     }
 
     /**
-     *
      * @param year
      * @param month
      * @param day
@@ -467,8 +466,8 @@ public class DateTimePicker extends WheelPicker {
 
     }
 
-
     public void setOnDateTimePickListener(OnDateTimePickListener listener) {
         this.onDateTimePickListener = listener;
     }
+
 }

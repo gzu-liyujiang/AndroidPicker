@@ -1,7 +1,6 @@
 package cn.qqtheme.androidpicker;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,22 +8,18 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
-import com.github.florent37.viewanimator.ViewAnimator;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
 import cn.qqtheme.framework.picker.AddressPicker;
-import cn.qqtheme.framework.picker.ChineseZodiacPicker;
 import cn.qqtheme.framework.picker.ColorPicker;
-import cn.qqtheme.framework.picker.ConstellationPicker;
 import cn.qqtheme.framework.picker.DatePicker;
 import cn.qqtheme.framework.picker.DateTimePicker;
 import cn.qqtheme.framework.picker.FilePicker;
 import cn.qqtheme.framework.picker.LinkagePicker;
 import cn.qqtheme.framework.picker.NumberPicker;
 import cn.qqtheme.framework.picker.OptionPicker;
-import cn.qqtheme.framework.picker.SexPicker;
 import cn.qqtheme.framework.picker.TimePicker;
 import cn.qqtheme.framework.util.ConvertUtils;
 import cn.qqtheme.framework.util.DateUtils;
@@ -194,27 +189,17 @@ public class MainActivity extends Activity {
     }
 
     public void onConstellationPicker(View view) {
-        ConstellationPicker picker = new ConstellationPicker(this);
+        OptionPicker picker = new OptionPicker(this, new String[]{
+                "水瓶", "双鱼", "白羊", "金牛", "双子", "巨蟹", "狮子", "处女", "天秤", "天蝎", "射手", "摩羯",
+        });
         picker.setTopBackgroundColor(0xFFEEEEEE);
-        picker.setTopLineVisible(false);
+        picker.setLineVisible(true);
+        picker.setTopLineColor(0xFFEE0000);
         picker.setCancelTextColor(0xFF33B5E5);
         picker.setSubmitTextColor(0xFF33B5E5);
-        picker.setTextColor(0xFFFF0000, 0xFFCCCCCC);
+        picker.setTextColor(0xFFFF0000, 0xFF999999);
         picker.setLineColor(0xFFEE0000);
         picker.setSelectedItem("射手");
-        picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
-            @Override
-            public void onOptionPicked(String option) {
-                showToast(option);
-            }
-        });
-        picker.show();
-    }
-
-    public void onChineseZodiacPicker(View view) {
-        ChineseZodiacPicker picker = new ChineseZodiacPicker(this);
-        picker.setLineVisible(false);
-        picker.setSelectedItem("羊");
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
             public void onOptionPicked(String option) {
@@ -230,18 +215,6 @@ public class MainActivity extends Activity {
         picker.setRange(145, 200);//数字范围
         picker.setSelectedItem(172);
         picker.setLabel("厘米");
-        picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
-            @Override
-            public void onOptionPicked(String option) {
-                showToast(option);
-            }
-        });
-        picker.show();
-    }
-
-    public void onSexPicker(View view) {
-        SexPicker picker = new SexPicker(this);
-        //picker.onlyMaleAndFemale();
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
             public void onOptionPicked(String option) {

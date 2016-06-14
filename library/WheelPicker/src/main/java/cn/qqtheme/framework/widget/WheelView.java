@@ -24,7 +24,7 @@ import java.util.List;
 import cn.qqtheme.framework.util.LogUtils;
 
 /**
- * 基于原版作了一下修改：
+ * 基于原版(https://github.com/wangjiegulu/WheelView)作了一下修改：
  * 去掉回弹阴影
  * 修正以便支持联动效果
  * 可设置颜色
@@ -32,15 +32,14 @@ import cn.qqtheme.framework.util.LogUtils;
  * 分隔线是否可见
  * 初始设置选中选项
  *
- * @author 李玉江[QQ :1023694760]
- * @version 2015 -12-17
- * @link https ://github.com/wangjiegulu/WheelView
+ * @author 李玉江[QQ:1023694760]
+ * @since 2015/12/17
  */
 public class WheelView extends ScrollView {
     /**
      * The constant TEXT_SIZE.
      */
-    public static final int TEXT_SIZE = 16;
+    public static final int TEXT_SIZE = 20;
     /**
      * The constant TEXT_COLOR_FOCUS.
      */

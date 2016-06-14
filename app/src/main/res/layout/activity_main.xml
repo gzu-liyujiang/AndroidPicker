@@ -71,20 +71,8 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="onChineseZodiacPicker"
-            android:text="生肖选择" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:onClick="onNumberPicker"
             android:text="数字选择（如身高、体重、年龄）" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="onSexPicker"
-            android:text="性别选择" />
 
         <Button
             android:layout_width="match_parent"

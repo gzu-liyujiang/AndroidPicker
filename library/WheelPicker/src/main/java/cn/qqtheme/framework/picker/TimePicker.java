@@ -21,7 +21,7 @@ import cn.qqtheme.framework.widget.WheelView;
  * 时间选择器
  *
  * @author 李玉江[QQ :1032694760]
- * @version 2015 /12/14
+ * @since 2015/12/14
  */
 public class TimePicker extends WheelPicker {
     /**
@@ -39,8 +39,7 @@ public class TimePicker extends WheelPicker {
 
     /**
      * 安卓开发应避免使用枚举类（enum），因为相比于静态常量enum会花费两倍以上的内存。
-     *
-     * @link http ://developer.android.com/training/articles/memory.html#Overhead
+     * http://developer.android.com/training/articles/memory.html#Overhead
      */
     @IntDef(flag = false, value = {HOUR_OF_DAY, HOUR})
     @Retention(RetentionPolicy.SOURCE)
@@ -61,8 +60,8 @@ public class TimePicker extends WheelPicker {
      *
      * @param activity the activity
      * @param mode     the mode
-     * @see #HOUR_OF_DAY #HOUR_OF_DAY#HOUR_OF_DAY
-     * @see #HOUR #HOUR#HOUR
+     * @see #HOUR_OF_DAY
+     * @see #HOUR
      */
     public TimePicker(Activity activity, @Mode int mode) {
         super(activity);

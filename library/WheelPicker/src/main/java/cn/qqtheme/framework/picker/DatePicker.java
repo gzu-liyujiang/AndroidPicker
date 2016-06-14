@@ -22,7 +22,7 @@ import cn.qqtheme.framework.widget.WheelView;
  * 日期选择器
  *
  * @author 李玉江[QQ :1032694760]
- * @version 2015 /12/14
+ * @since 2015/12/14
  */
 public class DatePicker extends WheelPicker {
     /**
@@ -47,8 +47,7 @@ public class DatePicker extends WheelPicker {
 
     /**
      * 安卓开发应避免使用枚举类（enum），因为相比于静态常量enum会花费两倍以上的内存。
-     *
-     * @link http ://developer.android.com/training/articles/memory.html#Overhead
+     * http://developer.android.com/training/articles/memory.html#Overhead
      */
     @IntDef(flag = false, value = {YEAR_MONTH_DAY, YEAR_MONTH, MONTH_DAY})
     @Retention(RetentionPolicy.SOURCE)
@@ -69,9 +68,9 @@ public class DatePicker extends WheelPicker {
      *
      * @param activity the activity
      * @param mode     the mode
-     * @see #YEAR_MONTH_DAY #YEAR_MONTH_DAY#YEAR_MONTH_DAY
-     * @see #YEAR_MONTH #YEAR_MONTH#YEAR_MONTH
-     * @see #MONTH_DAY #MONTH_DAY#MONTH_DAY
+     * @see #YEAR_MONTH_DAY
+     * @see #YEAR_MONTH
+     * @see #MONTH_DAY
      */
     public DatePicker(Activity activity, @Mode int mode) {
         super(activity);

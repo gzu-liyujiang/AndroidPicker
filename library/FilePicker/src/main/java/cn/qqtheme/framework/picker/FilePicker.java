@@ -1,6 +1,5 @@
 package cn.qqtheme.framework.picker;
 
-import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.graphics.Color;
@@ -9,7 +8,6 @@ import android.os.Build;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresPermission;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,7 +62,6 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
      * @see #DIRECTORY #DIRECTORY#DIRECTORY
      */
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    @RequiresPermission(anyOf = {Manifest.permission.READ_EXTERNAL_STORAGE})
     public FilePicker(Activity activity, @Mode int mode) {
         super(activity);
         setHalfScreen(true);
