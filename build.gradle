@@ -5,8 +5,8 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:${GRADLE_BUILD_VERSION}"
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:${GRADLE_BINTRAY_VERSION}"
+        classpath 'com.android.tools.build:gradle:2.1.2'
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.5"
     }
 }
 
@@ -83,8 +83,8 @@ subprojects {
             }
 
             dependencies {
-                compile "com.android.support:support-v4:${ANDROID_SUPPORT_VERSION}"
-                compile "com.android.support:support-annotations:${ANDROID_SUPPORT_VERSION}"
+                compile "com.android.support:support-v4:+"
+                compile "com.android.support:support-annotations:+"
             }
         }
 
