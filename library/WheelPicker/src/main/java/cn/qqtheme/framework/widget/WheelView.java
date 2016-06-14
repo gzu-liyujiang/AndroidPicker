@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.ColorInt;
+import android.support.annotation.IntRange;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -470,7 +471,7 @@ public class WheelView extends ScrollView {
      *
      * @param offset the offset
      */
-    public void setOffset(int offset) {
+    public void setOffset(@IntRange(from = 1, to = 4) int offset) {
         if (offset < 1 || offset > 4) {
             throw new IllegalArgumentException("Offset must between 1 and 4");
         }
@@ -482,7 +483,7 @@ public class WheelView extends ScrollView {
      *
      * @param index
      */
-    private void setSelectedIndex(final int index) {
+    private void setSelectedIndex(@IntRange(from = 0) final int index) {
         isUserScroll = false;
         this.post(new Runnable() {
             @Override

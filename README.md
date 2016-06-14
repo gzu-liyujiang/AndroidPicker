@@ -5,6 +5,8 @@
 欢迎大伙儿在[Issues](https://github.com/gzu-liyujiang/AndroidPicker/issues)提交你的意见或建议。欢迎Fork & Pull requests贡献您的代码。     
 
 # Change Log
+- v1.1.3 - 2016.06.14
++ 合并@dongzhaoqi及@msdx贡献的代码，添加日期时间选择器；
 - v1.1.2 - 2016.05.06
 + 添加二三级联动选择器；
 + 文件选择器布局调整；
@@ -14,20 +16,20 @@
 + 添加注解约束，如“setOffset()”只能是1至4；
 + 所有枚举类改为常量来表示，据说这样可以节约内存；
 + 支持自定义选择器的顶部及底部的视图；
-+ 支持使用第三方动画库来实现窗口动画；   
++ 支持使用第三方动画库来实现窗口动画；
 - v1.0.3 - 2016.01.19
-+ 日期时间、地址、单项、数字等选择器支持伪循环滚动。   
++ 日期时间、地址、单项、数字等选择器支持伪循环滚动。
 - v1.0.2 - 2016.01.15
-+ 年或月变动时，保持之前选择的日不动：如果之前选择的日是之前年月的最大日，则日自动为该年月的最大日。   
++ 年或月变动时，保持之前选择的日不动：如果之前选择的日是之前年月的最大日，则日自动为该年月的最大日。
 - v1.0.1 - 2016.01.14
 + 精简文件选择器的数据适配器；
-+ 添加选择器顶部确定、取消按钮所在容器的背景色设置。   
++ 添加选择器顶部确定、取消按钮所在容器的背景色设置。
 - v1.0.0 - 2016.01.13
-+ 发布到jcenter，支持远程maven依赖。   
++ 发布到jcenter，支持远程maven依赖。
 
 # Install
-“app”是测试用例；“library”包括WheelPicker、ColorPicker、FilePicker，   
-WheelPicker包括DatePicker、TimePicker、OptionPicker、AddressPicker、NumberPicker等，   
+“app”是测试用例；“library”包括WheelPicker、ColorPicker、FilePicker，
+WheelPicker包括DateTimePicker、OptionPicker、LinkagePicker、AddressPicker、NumberPicker等，
 可下载本项目手动进行源代码集成，导入“library”下的相关module，然后依赖，如：
 ```groovy
 dependencies {
@@ -38,8 +40,8 @@ dependencies {
 也可以直接远程加载jcenter里的，如：
 ```groovy
 dependencies {
-    compile 'cn.qqtheme.framework:WheelPicker:1.1.2'
-    compile 'cn.qqtheme.framework:FilePicker:1.1.2'
+    compile 'cn.qqtheme.framework:WheelPicker:1.1.3'
+    compile 'cn.qqtheme.framework:FilePicker:1.1.3'
 }
 ```
 *注：*
@@ -59,11 +61,11 @@ dependencies {
         <item name="android:windowExitAnimation">@anim/popup_out</item>
     </style>
 </resources>
-```   
+```
 ```java
     picker.setAnimationStyle(R.style.Animation_CustomPopup);
-```   
-或者使用[ViewAnimator](https://github.com/gzu-liyujiang/ViewAnimator)这个动画库来实现：   
+```
+或者使用[ViewAnimator](https://github.com/gzu-liyujiang/ViewAnimator)这个动画库来实现：
 ```groovy
 dependencies {
     compile 'com.github.florent37:viewanimator:1.0.3'
@@ -78,10 +80,10 @@ dependencies {
 
 ### 自定义顶部及底部界面
 添加自己的类，继承自现有的选择器，覆盖makeHeaderView、makeFooterView，在确定选择时调用onSubmit，
-取消选择时调用onCancel。详见示例：CustomHeaderAndFooterPicker.java。   
+取消选择时调用onCancel。详见示例：CustomHeaderAndFooterPicker.java。
 ```java
 public class CustomHeaderAndFooterPicker extends OptionPicker {
-  
+
     @Nullable
     @Override
     protected View makeHeaderView() {
@@ -98,8 +100,8 @@ public class CustomHeaderAndFooterPicker extends OptionPicker {
 ```
 
 # Sample （更多用法详见示例项目）
-日期选择器：   
-```java   
+日期选择器：
+```java
         DatePicker picker = new DatePicker(this, DatePicker.YEAR_MONTH_DAY);
         picker.setRange(1990, 2015);//年份范围
         picker.setOnDatePickListener(new DatePicker.OnYearMonthDayPickListener() {
@@ -111,8 +113,8 @@ public class CustomHeaderAndFooterPicker extends OptionPicker {
         picker.show();
 ```
 
-时间选择器：   
-```java   
+时间选择器：
+```java
         //默认选中当前时间
         TimePicker picker = new TimePicker(this, TimePicker.HOUR_OF_DAY);
         picker.setTopLineVisible(false);
@@ -125,8 +127,8 @@ public class CustomHeaderAndFooterPicker extends OptionPicker {
         picker.show();
 ```
 
-单项选择器（可用于性别、学历、职业、星座等选择）：   
-```java   
+单项选择器（可用于性别、学历、职业、星座等选择）：
+```java
         OptionPicker picker = new OptionPicker(this, new String[]{
                 "第一项", "第二项", "这是一个很长很长很长很长很长很长很长很长很长的很长很长的很长很长的项"
         });
@@ -143,7 +145,7 @@ public class CustomHeaderAndFooterPicker extends OptionPicker {
 ```
 
 数字选择器(可用于身高、体重、年龄等选择)：
-```java   
+```java
         NumberPicker picker = new NumberPicker(this);
         picker.setOffset(2);//偏移量
         picker.setRange(145, 200);//数字范围
@@ -161,7 +163,7 @@ public class CustomHeaderAndFooterPicker extends OptionPicker {
 二三级联动选择器（参见地址选择器）
 
 地址选择器（含省级、地级、县级）：
-```java   
+```java
         ArrayList<AddressPicker.Province> data = new ArrayList<AddressPicker.Province>();
         String json = AssetsUtils.readText(this, "city.json");
         data.addAll(JSON.parseArray(json, AddressPicker.Province.class));
@@ -179,13 +181,15 @@ public class CustomHeaderAndFooterPicker extends OptionPicker {
 ```
 
 星座选择器：
-```java   
-        ConstellationPicker picker = new ConstellationPicker(this);
+```java
+        OptionPicker picker = new OptionPicker(this, new String[]{
+                "水瓶", "双鱼", "白羊", "金牛", "双子", "巨蟹", "狮子", "处女", "天秤", "天蝎", "射手", "摩羯",
+        });
         picker.setTopBackgroundColor(0xFFEEEEEE);
-        picker.setTopLineVisible(false);
+        picker.setTopLineColor(0xFFEE0000);
         picker.setCancelTextColor(0xFF33B5E5);
         picker.setSubmitTextColor(0xFF33B5E5);
-        picker.setTextColor(0xFFFF0000, 0xFFCCCCCC);
+        picker.setTextColor(0xFFFF0000, 0xFF999999);
         picker.setLineColor(0xFFEE0000);
         picker.setSelectedItem("射手");
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
@@ -198,7 +202,7 @@ public class CustomHeaderAndFooterPicker extends OptionPicker {
 ```
 
 颜色选择器：
-```java   
+```java
         ColorPicker picker = new ColorPicker(this);
         picker.setInitColor(0xFFDD00DD);
         picker.setOnColorPickListener(new ColorPicker.OnColorPickListener() {
@@ -211,8 +215,7 @@ public class CustomHeaderAndFooterPicker extends OptionPicker {
 ```
 
 文件选择器（需要权限android.permission.READ_EXTERNAL_STORAGE）：
-```java   
-        //noinspection MissingPermission
+```java
         FilePicker picker = new FilePicker(this, FilePicker.FILE);
         picker.setShowHideDir(false);
         picker.setRootPath(StorageUtils.getRootPath(this) + "Download/");
@@ -227,8 +230,7 @@ public class CustomHeaderAndFooterPicker extends OptionPicker {
 ```
 
 目录选择器（需要权限android.permission.READ_EXTERNAL_STORAGE）：
-```java   
-        //noinspection MissingPermission
+```java
         FilePicker picker = new FilePicker(this, FilePicker.DIRECTORY);
         picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {
             @Override
@@ -240,21 +242,20 @@ public class CustomHeaderAndFooterPicker extends OptionPicker {
 ```
 
 # Thanks
-库项目修改了使用以下项目：   
-https://github.com/wangjiegulu/WheelView   
-https://github.com/jbruchanov/AndroidColorPicker   
+库项目修改了使用以下项目：
+https://github.com/wangjiegulu/WheelView
+https://github.com/jbruchanov/AndroidColorPicker
 
 # Screenshots
-![自定义选择器效果图](/screenshots/custom.gif)    
-![日期选择器效果图](/screenshots/date.gif)    
-![时间选择器效果图](/screenshots/time.gif)    
-![单项选择器效果图](/screenshots/option.gif)     
-![地址选择器效果图](/screenshots/address.gif)    
-![地址选择器效果图](/screenshots/address.png)    
-![数字选择器效果图](/screenshots/number.gif)    
-![星座选择器效果图](/screenshots/constellation.gif)    
-![生肖选择器效果图](/screenshots/chinesezodiac.gif)    
-![颜色选择器效果图](/screenshots/color.gif)    
+![自定义选择器效果图](/screenshots/custom.gif)
+![日期选择器效果图](/screenshots/date.gif)
+![时间选择器效果图](/screenshots/time.gif)
+![单项选择器效果图](/screenshots/option.gif)
+![地址选择器效果图](/screenshots/address.gif)
+![地址选择器效果图](/screenshots/address.png)
+![数字选择器效果图](/screenshots/number.gif)
+![星座选择器效果图](/screenshots/constellation.gif)
+![颜色选择器效果图](/screenshots/color.gif)
 ![文件选择器效果图](/screenshots/file.gif)    
 ![目录选择器效果图](/screenshots/dir.gif)    
 

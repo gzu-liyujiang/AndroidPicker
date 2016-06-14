@@ -7,8 +7,6 @@ ext {
 }
 
 dependencies {
-    compile "com.android.support:support-v4:${BUILD_TOOL_VERSION}"
-    compile "com.android.support:support-annotations:${BUILD_TOOL_VERSION}"
 }
 
 
