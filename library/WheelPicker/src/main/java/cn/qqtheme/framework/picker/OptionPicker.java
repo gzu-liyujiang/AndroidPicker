@@ -65,11 +65,8 @@ public class OptionPicker extends WheelPicker {
      * @param index the index
      */
     public void setSelectedIndex(int index) {
-        for (int i = 0; i < options.size(); i++) {
-            if (index == i) {
-                selectedOption = options.get(index);
-                break;
-            }
+        if (index >=0 && index < options.size()) {
+            selectedOption = options.get(index);
         }
     }
 
