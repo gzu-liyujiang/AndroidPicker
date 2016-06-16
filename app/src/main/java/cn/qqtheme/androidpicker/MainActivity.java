@@ -54,7 +54,7 @@ public class MainActivity extends Activity {
         picker.setLabel("Kg");
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
-            public void onOptionPicked(String option) {
+            public void onOptionPicked(int position, String option) {
                 showToast(option);
             }
         });
@@ -65,7 +65,7 @@ public class MainActivity extends Activity {
         CustomHeaderAndFooterPicker picker = new CustomHeaderAndFooterPicker(this);
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
-            public void onOptionPicked(String option) {
+            public void onOptionPicked(int position, String option) {
                 showToast(option);
             }
         });
@@ -147,7 +147,7 @@ public class MainActivity extends Activity {
         picker.setTextSize(11);
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
-            public void onOptionPicked(String option) {
+            public void onOptionPicked(int position, String option) {
                 showToast(option);
             }
         });
@@ -202,7 +202,7 @@ public class MainActivity extends Activity {
         picker.setSelectedItem("射手");
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
-            public void onOptionPicked(String option) {
+            public void onOptionPicked(int position, String option) {
                 showToast(option);
             }
         });
@@ -217,7 +217,7 @@ public class MainActivity extends Activity {
         picker.setLabel("厘米");
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
-            public void onOptionPicked(String option) {
+            public void onOptionPicked(int position, String option) {
                 showToast(option);
             }
         });

@@ -25,7 +25,7 @@ public class OptionPicker extends WheelPicker {
      */
     protected ArrayList<String> options = new ArrayList<String>();
     private OnOptionPickListener onOptionPickListener;
-    private String selectedOption = "";
+    private int selectedOption = -1;
     private String label = "";
 
     /**
@@ -66,7 +66,7 @@ public class OptionPicker extends WheelPicker {
      */
     public void setSelectedIndex(int index) {
         if (index >=0 && index < options.size()) {
-            selectedOption = options.get(index);
+            selectedOption = index;
         }
     }
 
@@ -76,7 +76,7 @@ public class OptionPicker extends WheelPicker {
      * @param option the option
      */
     public void setSelectedItem(String option) {
-        selectedOption = option;
+        selectedOption = options.indexOf(option);
     }
 
     /**
@@ -113,7 +113,7 @@ public class OptionPicker extends WheelPicker {
         if (!TextUtils.isEmpty(label)) {
             labelView.setText(label);
         }
-        if (TextUtils.isEmpty(selectedOption)) {
+        if (selectedOption < 0) {
             optionView.setItems(options);
         } else {
             optionView.setItems(options, selectedOption);
@@ -121,7 +121,7 @@ public class OptionPicker extends WheelPicker {
         optionView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
             @Override
             public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
-                selectedOption = item;
+                selectedOption = selectedIndex;
             }
         });
         return layout;
@@ -130,7 +130,7 @@ public class OptionPicker extends WheelPicker {
     @Override
     public void onSubmit() {
         if (onOptionPickListener != null) {
-            onOptionPickListener.onOptionPicked(selectedOption);
+            onOptionPickListener.onOptionPicked(selectedOption, options.get(selectedOption));
         }
     }
 
@@ -140,6 +140,14 @@ public class OptionPicker extends WheelPicker {
      * @return the selected option
      */
     public String getSelectedOption() {
+        return options.get(selectedOption);
+    }
+
+    /**
+     * Get the selected position.
+     * @return the selected position
+     */
+    public int getSelectedPosition() {
         return selectedOption;
     }
 
@@ -151,9 +159,10 @@ public class OptionPicker extends WheelPicker {
         /**
          * On option picked.
          *
-         * @param option the option
+         * @param position the position you selected
+         * @param option   the option
          */
-        void onOptionPicked(String option);
+        void onOptionPicked(int position, String option);
 
     }
 
