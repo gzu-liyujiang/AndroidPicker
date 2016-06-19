@@ -20,10 +20,10 @@ android {
 dependencies {
     compile 'com.alibaba:fastjson:1.1.46.android'
     compile 'com.github.florent37:viewanimator:1.0.3'
-//    compile project(':library:WheelPicker')
-//    compile project(':library:FilePicker')
-//    compile project(':library:ColorPicker')
-    compile 'cn.qqtheme.framework:WheelPicker:1.1.3'
-    compile 'cn.qqtheme.framework:FilePicker:1.1.3'
-    compile 'cn.qqtheme.framework:ColorPicker:1.1.3'
+    compile project(':library:WheelPicker')
+    compile project(':library:FilePicker')
+    compile project(':library:ColorPicker')
+//    compile 'cn.qqtheme.framework:WheelPicker:1.1.3'
+//    compile 'cn.qqtheme.framework:FilePicker:1.1.3'
+//    compile 'cn.qqtheme.framework:ColorPicker:1.1.3'
 }
