@@ -35,6 +35,7 @@ WheelPicker包括DateTimePicker、OptionPicker、LinkagePicker、AddressPicker�
 dependencies {
     compile project(':WheelPicker')
     compile project(':FilePicker')
+    compile project(':ColorPicker')
 }
 ```
 也可以直接远程加载jcenter里的，如：
@@ -42,6 +43,7 @@ dependencies {
 dependencies {
     compile 'cn.qqtheme.framework:WheelPicker:1.1.3'
     compile 'cn.qqtheme.framework:FilePicker:1.1.3'
+    compile 'cn.qqtheme.framework:ColorPicker:1.1.3'
 }
 ```
 *注：*
