@@ -12,7 +12,7 @@ import cn.qqtheme.framework.AppConfig;
 
 /**
  * 将信息记录到“LogCat”，显示调用方法及所在的文件、行号，方便调试查错。
- * 在Debug状态下开启，在Release状态下关闭以提高程序性能
+ * 在Debug状态下开启，在Release状态下关闭以提高程序性能。
  *
  * @author 李玉江[QQ:1023694760]
  * @since 2013/11/2
@@ -30,7 +30,7 @@ public final class LogUtils {
      * @param message the message
      */
     public static void debug(String message) {
-        debug(debugTag, message);
+        debug("", message);
     }
 
     /**
@@ -76,7 +76,7 @@ public final class LogUtils {
      * @param message the message
      */
     public static void warn(String message) {
-        warn(debugTag, message);
+        warn("", message);
     }
 
     /**
@@ -132,7 +132,7 @@ public final class LogUtils {
      * @param message the message
      */
     public static void error(String message) {
-        error(debugTag, message);
+        error("", message);
     }
 
     /**
@@ -176,7 +176,7 @@ public final class LogUtils {
     /**
      * 在某个方法中调用生成.trace文件。然后拿到电脑上用DDMS工具打开分析
      *
-     * @see #stopMethodTracing() #stopMethodTracing()
+     * @see #stopMethodTracing()
      */
     public static void startMethodTracing() {
         if (isDebug) {
@@ -218,6 +218,7 @@ public final class LogUtils {
     }
 
     /**
+     * 可显示调用方法所在的文件行号，在AndroidStudio的logcat处可点击定位。
      * 此方法参考：https://github.com/orhanobut/logger
      */
     private static String getTraceElement() {
