@@ -41,9 +41,9 @@ dependencies {
 也可以直接远程加载jcenter里的，如：
 ```groovy
 dependencies {
-    compile 'cn.qqtheme.framework:WheelPicker:1.1.3'
-    compile 'cn.qqtheme.framework:FilePicker:1.1.3'
-    compile 'cn.qqtheme.framework:ColorPicker:1.1.3'
+    compile 'cn.qqtheme.framework:WheelPicker:latest.release'
+    compile 'cn.qqtheme.framework:FilePicker:latest.release'
+    compile 'cn.qqtheme.framework:ColorPicker:latest.release'
 }
 ```
 *注：*

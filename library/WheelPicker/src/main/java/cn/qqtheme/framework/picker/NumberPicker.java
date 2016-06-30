@@ -5,8 +5,8 @@ import android.app.Activity;
 /**
  * 数字选择器
  *
- * @author 李玉江[QQ :1032694760]
- * @version 2015 /10/24
+ * @author 李玉江[QQ:1032694760]
+ * @since 2015/10/24
  */
 public class NumberPicker extends OptionPicker {
 

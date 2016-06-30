@@ -18,16 +18,10 @@ import cn.qqtheme.framework.util.LogUtils;
  *
  * @param <V> the type parameter
  * @author 李玉江[QQ :1023694760]
- * @version 2015/7/19
+ * @since 2015/7/19
  */
 public abstract class BottomPopup<V extends View> implements DialogInterface.OnKeyListener {
-    /**
-     * The constant MATCH_PARENT.
-     */
     public static final int MATCH_PARENT = ViewGroup.LayoutParams.MATCH_PARENT;
-    /**
-     * The constant WRAP_CONTENT.
-     */
     public static final int WRAP_CONTENT = ViewGroup.LayoutParams.WRAP_CONTENT;
     protected Activity activity;
     protected int screenWidthPixels;
@@ -36,6 +30,7 @@ public abstract class BottomPopup<V extends View> implements DialogInterface.OnK
     private int width = 0, height = 0;
     private boolean isFillScreen = false;
     private boolean isHalfScreen = false;
+    private boolean isPrepared = false;
 
     /**
      * Instantiates a new Bottom popup.
@@ -62,6 +57,9 @@ public abstract class BottomPopup<V extends View> implements DialogInterface.OnK
      * 弹出窗显示之前调用
      */
     private void onShowPrepare() {
+        if (isPrepared) {
+            return;
+        }
         setContentViewBefore();
         V view = makeContentView();
         popup.setContentView(view);// 设置弹出窗体的布局
@@ -79,6 +77,7 @@ public abstract class BottomPopup<V extends View> implements DialogInterface.OnK
             }
         }
         popup.setSize(width, height);
+        isPrepared = true;
     }
 
     /**

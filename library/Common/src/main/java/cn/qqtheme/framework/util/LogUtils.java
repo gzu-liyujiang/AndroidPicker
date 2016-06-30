@@ -1,26 +1,28 @@
 package cn.qqtheme.framework.util;
 
-import android.os.Debug;
-import android.os.Environment;
-import android.util.Log;
-
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import android.os.Debug;
+import android.os.Environment;
+import android.util.Log;
+
 import cn.qqtheme.framework.AppConfig;
 
 /**
- * 如果用于android平台，将信息记录到“LogCat”。如果用于java平台，将信息记录到“Console”
+ * 将信息记录到“LogCat”，显示调用方法及所在的文件、行号，方便调试查错。
+ * 在Debug状态下开启，在Release状态下关闭以提高程序性能
  *
- * @author 李玉江[QQ :1023694760]
- * @version 2013 -11-2
+ * @author 李玉江[QQ:1023694760]
+ * @since 2013/11/2
  */
-public class LogUtils {
+public final class LogUtils {
+    private static final int MIN_STACK_OFFSET = 3;// starts at this class after two native calls
     private static final int MAX_STACK_TRACE_SIZE = 131071; //128 KB - 1
-    // 是否开启日志输出,在Debug状态下开启，在Release状态下关闭以提高程序性能，避免日志被人抓取
-    private static boolean isDebug = AppConfig.DEBUG_ENABLE;
-    private static String debugTag = AppConfig.DEBUG_TAG;
+    private static final int METHOD_COUNT = 2; // show method count in trace
+    private static boolean isDebug = AppConfig.DEBUG_ENABLE;// 是否调试模式
+    private static String debugTag = AppConfig.DEBUG_TAG;// LogCat的标记
 
     /**
      * Debug.
@@ -49,10 +51,12 @@ public class LogUtils {
      */
     public static void debug(String tag, String message) {
         if (isDebug) {
+            tag = debugTag + "-" + tag;
+            String msg = message + getTraceElement();
             try {
-                Log.d(debugTag + "-" + tag, message);
+                Log.d(tag, msg);
             } catch (Exception e) {
-                System.out.println(tag + ">>>" + message);
+                System.out.println(tag + ">>>" + msg);
             }
         }
     }
@@ -103,10 +107,12 @@ public class LogUtils {
      */
     public static void warn(String tag, String message) {
         if (isDebug) {
+            tag = debugTag + "-" + tag;
+            String msg = message + getTraceElement();
             try {
-                Log.w(debugTag + tag, message);
+                Log.w(tag, msg);
             } catch (Exception e) {
-                System.out.println(debugTag + ">>>" + message);
+                System.out.println(tag + ">>>" + msg);
             }
         }
     }
@@ -157,10 +163,12 @@ public class LogUtils {
      */
     public static void error(String tag, String message) {
         if (isDebug) {
+            tag = debugTag + "-" + tag;
+            String msg = message + getTraceElement();
             try {
-                Log.e(debugTag + tag, message);
+                Log.e(tag, msg);
             } catch (Exception e) {
-                System.out.println(debugTag + ">>>" + message);
+                System.err.println(tag + ">>>" + msg);
             }
         }
     }
@@ -168,7 +176,7 @@ public class LogUtils {
     /**
      * 在某个方法中调用生成.trace文件。然后拿到电脑上用DDMS工具打开分析
      *
-     * @see #stopMethodTracing() #stopMethodTracing()#stopMethodTracing()
+     * @see #stopMethodTracing() #stopMethodTracing()
      */
     public static void startMethodTracing() {
         if (isDebug) {
@@ -187,6 +195,8 @@ public class LogUtils {
 
     /**
      * To stack trace string string.
+     * <p/>
+     * 此方法参见：https://github.com/Ereza/CustomActivityOnCrash
      *
      * @param throwable the throwable
      * @return the string
@@ -205,6 +215,68 @@ public class LogUtils {
             stackTraceString = stackTraceString.substring(0, MAX_STACK_TRACE_SIZE - disclaimer.length()) + disclaimer;
         }
         return stackTraceString;
+    }
+
+    /**
+     * 此方法参考：https://github.com/orhanobut/logger
+     */
+    private static String getTraceElement() {
+        try {
+            int methodCount = METHOD_COUNT;
+            StackTraceElement[] trace = Thread.currentThread().getStackTrace();
+            int stackOffset = _getStackOffset(trace);
+
+            //corresponding method count with the current stack may exceeds the stack trace. Trims the count
+            if (methodCount + stackOffset > trace.length) {
+                methodCount = trace.length - stackOffset - 1;
+            }
+
+            String level = "    ";
+            StringBuilder builder = new StringBuilder();
+            for (int i = methodCount; i > 0; i--) {
+                int stackIndex = i + stackOffset;
+                if (stackIndex >= trace.length) {
+                    continue;
+                }
+                builder.append("\n")
+                        .append(level)
+                        .append(_getSimpleClassName(trace[stackIndex].getClassName()))
+                        .append(".")
+                        .append(trace[stackIndex].getMethodName())
+                        .append(" ")
+                        .append("(")
+                        .append(trace[stackIndex].getFileName())
+                        .append(":")
+                        .append(trace[stackIndex].getLineNumber())
+                        .append(")");
+                level += "    ";
+            }
+            return builder.toString();
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+    /**
+     * Determines the starting index of the stack trace, after method calls made by this class.
+     *
+     * @param trace the stack trace
+     * @return the stack offset
+     */
+    private static int _getStackOffset(StackTraceElement[] trace) {
+        for (int i = MIN_STACK_OFFSET; i < trace.length; i++) {
+            StackTraceElement e = trace[i];
+            String name = e.getClassName();
+            if (!name.equals(LogUtils.class.getName())) {
+                return --i;
+            }
+        }
+        return -1;
+    }
+
+    private static String _getSimpleClassName(String name) {
+        int lastIndex = name.lastIndexOf(".");
+        return name.substring(lastIndex + 1);
     }
 
 }

@@ -19,8 +19,8 @@ import cn.qqtheme.framework.util.LogUtils;
  * 弹窗
  *
  * @author 李玉江[QQ :1023694760]
- * @version 2015 -10-19
  * @see android.widget.PopupWindow
+ * @since 2015-10-19
  */
 public class Popup {
     private android.app.Dialog dialog;
