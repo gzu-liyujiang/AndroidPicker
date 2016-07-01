@@ -122,7 +122,7 @@ public class Popup {
      * @param height the height
      */
     public void setSize(int width, int height) {
-        LogUtils.debug(String.format("will set popup width/height to: %s/%s", width, height));
+        LogUtils.verbose(String.format("will set popup width/height to: %s/%s", width, height));
         ViewGroup.LayoutParams params = contentLayout.getLayoutParams();
         if (params == null) {
             params = new ViewGroup.LayoutParams(width, height);

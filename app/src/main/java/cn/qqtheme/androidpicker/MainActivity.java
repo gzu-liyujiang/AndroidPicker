@@ -192,6 +192,7 @@ public class MainActivity extends Activity {
         OptionPicker picker = new OptionPicker(this, new String[]{
                 "水瓶", "双鱼", "白羊", "金牛", "双子", "巨蟹", "狮子", "处女", "天秤", "天蝎", "射手", "摩羯",
         });
+        picker.setLabel("座");
         picker.setTopBackgroundColor(0xFFEEEEEE);
         picker.setLineVisible(true);
         picker.setTopLineColor(0xFFEE0000);

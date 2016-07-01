@@ -8,12 +8,13 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * 日期时间工具类
  *
- * @author 李玉江[QQ :1023694760]
- * @version 2015 /8/5          Created by IntelliJ IDEA 14.1
+ * @author 李玉江[QQ:1023694760]
+ * @since 2015/8/5
  */
 public class DateUtils extends android.text.format.DateUtils {
 
@@ -21,18 +22,9 @@ public class DateUtils extends android.text.format.DateUtils {
      * The enum Difference mode.
      */
     public enum DifferenceMode {
-        /**
-         * Second difference mode.
-         */
-        Second, /**
-         * Minute difference mode.
-         */
-        Minute, /**
-         * Hour difference mode.
-         */
-        Hour, /**
-         * Day difference mode.
-         */
+        Second,
+        Minute,
+        Hour,
         Day
     }
 
@@ -186,7 +178,7 @@ public class DateUtils extends android.text.format.DateUtils {
         long elapsedMinutes = differentMilliSeconds / minutesInMilli;
         differentMilliSeconds = differentMilliSeconds % minutesInMilli;
         long elapsedSeconds = differentMilliSeconds / secondsInMilli;
-        LogUtils.debug(String.format("different: %d ms, %d days, %d hours, %d minutes, %d seconds",
+        LogUtils.debug(String.format(Locale.CHINA, "different: %d ms, %d days, %d hours, %d minutes, %d seconds",
                 differentMilliSeconds, elapsedDays, elapsedHours, elapsedMinutes, elapsedSeconds));
         return new long[]{elapsedDays, elapsedHours, elapsedMinutes, elapsedSeconds};
     }

@@ -45,7 +45,7 @@ subprojects {
 
                 defaultConfig {
                     minSdkVersion MIN_SDK_VERSION as int
-                    targetSdkVersion COMPILE_SDK_VERSION as int
+                    targetSdkVersion TARGET_SDK_VERSION as int
                     versionCode VERSION_CODE as int
                     versionName VERSION_NAME
                 }
@@ -83,8 +83,8 @@ subprojects {
             }
 
             dependencies {
-                compile "com.android.support:support-v4:+"
-                compile "com.android.support:support-annotations:+"
+                compile "com.android.support:support-v4:latest.release"
+                compile "com.android.support:support-annotations:latest.release"
             }
         }
 

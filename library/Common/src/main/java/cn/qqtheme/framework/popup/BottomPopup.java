@@ -64,7 +64,7 @@ public abstract class BottomPopup<V extends View> implements DialogInterface.OnK
         V view = makeContentView();
         popup.setContentView(view);// 设置弹出窗体的布局
         setContentViewAfter(view);
-        LogUtils.debug("do something before popup show");
+        LogUtils.verbose("do something before popup show");
         if (width == 0 && height == 0) {
             //未明确指定宽高，优先考虑全屏再考虑半屏然后再考虑包裹内容
             width = screenWidthPixels;
@@ -128,7 +128,7 @@ public abstract class BottomPopup<V extends View> implements DialogInterface.OnK
      */
     public void setOnDismissListener(DialogInterface.OnDismissListener onDismissListener) {
         popup.setOnDismissListener(onDismissListener);
-        LogUtils.debug("popup setOnDismissListener");
+        LogUtils.verbose("popup setOnDismissListener");
     }
 
     /**
@@ -179,7 +179,7 @@ public abstract class BottomPopup<V extends View> implements DialogInterface.OnK
     public void show() {
         onShowPrepare();
         popup.show();
-        LogUtils.debug("popup show");
+        LogUtils.verbose("popup show");
     }
 
     /**
@@ -187,7 +187,7 @@ public abstract class BottomPopup<V extends View> implements DialogInterface.OnK
      */
     public void dismiss() {
         popup.dismiss();
-        LogUtils.debug("popup dismiss");
+        LogUtils.verbose("popup dismiss");
     }
 
     /**

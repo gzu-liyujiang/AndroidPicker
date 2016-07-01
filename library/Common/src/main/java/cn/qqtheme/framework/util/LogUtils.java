@@ -1,12 +1,13 @@
 package cn.qqtheme.framework.util;
 
+import android.os.Debug;
+import android.os.Environment;
+import android.text.TextUtils;
+import android.util.Log;
+
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-
-import android.os.Debug;
-import android.os.Environment;
-import android.util.Log;
 
 import cn.qqtheme.framework.AppConfig;
 
@@ -23,6 +24,43 @@ public final class LogUtils {
     private static final int METHOD_COUNT = 2; // show method count in trace
     private static boolean isDebug = AppConfig.DEBUG_ENABLE;// 是否调试模式
     private static String debugTag = AppConfig.DEBUG_TAG;// LogCat的标记
+
+    /**
+     * Verbose.
+     *
+     * @param message the message
+     */
+    public static void verbose(String message) {
+        verbose("", message);
+    }
+
+    /**
+     * Verbose.
+     *
+     * @param object  the object
+     * @param message the message
+     */
+    public static void verbose(Object object, String message) {
+        verbose(object.getClass().getSimpleName(), message);
+    }
+
+    /**
+     * 记录“verbose”级别的信息
+     *
+     * @param tag     the tag
+     * @param message the message
+     */
+    public static void verbose(String tag, String message) {
+        if (isDebug) {
+            tag = debugTag + (TextUtils.isEmpty(tag) ? "" : "-" + tag);
+            String msg = message + getTraceElement();
+            try {
+                Log.v(tag, msg);
+            } catch (Exception e) {
+                System.out.println(tag + ">>>" + msg);
+            }
+        }
+    }
 
     /**
      * Debug.
@@ -51,7 +89,7 @@ public final class LogUtils {
      */
     public static void debug(String tag, String message) {
         if (isDebug) {
-            tag = debugTag + "-" + tag;
+            tag = debugTag + (TextUtils.isEmpty(tag) ? "" : "-" + tag);
             String msg = message + getTraceElement();
             try {
                 Log.d(tag, msg);
@@ -107,7 +145,7 @@ public final class LogUtils {
      */
     public static void warn(String tag, String message) {
         if (isDebug) {
-            tag = debugTag + "-" + tag;
+            tag = debugTag + (TextUtils.isEmpty(tag) ? "" : "-" + tag);
             String msg = message + getTraceElement();
             try {
                 Log.w(tag, msg);
@@ -163,7 +201,7 @@ public final class LogUtils {
      */
     public static void error(String tag, String message) {
         if (isDebug) {
-            tag = debugTag + "-" + tag;
+            tag = debugTag + (TextUtils.isEmpty(tag) ? "" : "-" + tag);
             String msg = message + getTraceElement();
             try {
                 Log.e(tag, msg);

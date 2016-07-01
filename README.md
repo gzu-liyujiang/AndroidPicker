@@ -48,26 +48,15 @@ dependencies {
 ```
 *注：*
 本项目使用gradle来构建，迁移到Eclipse比较麻烦，建议换为Android Studio或Intellij IDEA。
-由于地址选择器使用了FastJson来解析，混淆时候需要加入以下类似的规则，不混淆Province、City等实体类。
+由于地址选择器使用了[fastjson](https://github.com/alibaba/fastjson)来解析，混淆时候需要加入以下类似的规则，不混淆Province、City等实体类。
 ```
 -keep class cn.qqtheme.framework.entity.** { *;}
 -keep class cn.qqtheme.framework.picker.AddressPicker$* { *;}
 ```
 
 # Custom
-### 自定义窗口进入退出动画(可选，默认动画为淡入淡出)
-```xml
-<resources>
-    <style name="Animation.CustomPopup" parent="@android:style/Animation">
-        <item name="android:windowEnterAnimation">@anim/popup_in</item>
-        <item name="android:windowExitAnimation">@anim/popup_out</item>
-    </style>
-</resources>
-```
-```java
-    picker.setAnimationStyle(R.style.Animation_CustomPopup);
-```
-或者使用[ViewAnimator](https://github.com/gzu-liyujiang/ViewAnimator)这个动画库来实现：
+### 自定义窗口进入退出动画(可选)
+推荐使用[ViewAnimator](https://github.com/gzu-liyujiang/ViewAnimator)这个动画库来实现：
 ```groovy
 dependencies {
     compile 'com.github.florent37:viewanimator:1.0.3'
@@ -78,6 +67,18 @@ dependencies {
                 .slideBottomIn()
                 .interpolator(new AccelerateInterpolator())
                 .start();
+```
+或者使用XML定义动画：
+```xml
+<resources>
+    <style name="Animation.CustomPopup" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/popup_in</item>
+        <item name="android:windowExitAnimation">@anim/popup_out</item>
+    </style>
+</resources>
+```
+```java
+    picker.setAnimationStyle(R.style.Animation_CustomPopup);
 ```
 
 ### 自定义顶部及底部界面
@@ -187,6 +188,7 @@ public class CustomHeaderAndFooterPicker extends OptionPicker {
         OptionPicker picker = new OptionPicker(this, new String[]{
                 "水瓶", "双鱼", "白羊", "金牛", "双子", "巨蟹", "狮子", "处女", "天秤", "天蝎", "射手", "摩羯",
         });
+        picker.setLabel("座");
         picker.setTopBackgroundColor(0xFFEEEEEE);
         picker.setTopLineColor(0xFFEE0000);
         picker.setCancelTextColor(0xFF33B5E5);
