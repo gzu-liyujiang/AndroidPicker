@@ -2,35 +2,13 @@
 [![API](https://img.shields.io/badge/API-9%2B-green.svg)](https://github.com/gzu-liyujiang/AndroidPicker)
 [![Download](https://api.bintray.com/packages/gzu-liyujiang/maven/WheelPicker/images/download.svg)](http://jcenter.bintray.com/cn/qqtheme/framework/)   
 安卓选择器类库，包括日期选择器、时间选择器、单项选择器、城市选择器、颜色选择器、文件选择器、目录选择器、数字选择器、星座选择器、生肖选择器等，可自定义顶部及底部界面，可自定义窗口动画。   
-欢迎大伙儿在[Issues](https://github.com/gzu-liyujiang/AndroidPicker/issues)提交你的意见或建议。欢迎Fork & Pull requests贡献您的代码。     
-
-# Change Log
-- v1.1.3 - 2016.06.14
-+ 合并@dongzhaoqi及@msdx贡献的代码，添加日期时间选择器；
-- v1.1.2 - 2016.05.06
-+ 添加二三级联动选择器；
-+ 文件选择器布局调整；
-- v1.1.1 - 2016.04.23
-+ 合并@Wastrel及@lutas2000贡献的代码，地址选择器支持只选择省和市、不能混淆某些类；
-- v1.1.0 - 2016.01.29
-+ 添加注解约束，如“setOffset()”只能是1至4；
-+ 所有枚举类改为常量来表示，据说这样可以节约内存；
-+ 支持自定义选择器的顶部及底部的视图；
-+ 支持使用第三方动画库来实现窗口动画；
-- v1.0.3 - 2016.01.19
-+ 日期时间、地址、单项、数字等选择器支持伪循环滚动。
-- v1.0.2 - 2016.01.15
-+ 年或月变动时，保持之前选择的日不动：如果之前选择的日是之前年月的最大日，则日自动为该年月的最大日。
-- v1.0.1 - 2016.01.14
-+ 精简文件选择器的数据适配器；
-+ 添加选择器顶部确定、取消按钮所在容器的背景色设置。
-- v1.0.0 - 2016.01.13
-+ 发布到jcenter，支持远程maven依赖。
+欢迎大伙儿在[Issues](https://github.com/gzu-liyujiang/AndroidPicker/issues)提交你的意见或建议。    
+欢迎Fork & Pull requests贡献您的代码。[![查看更新日志](https://github.com/gzu-liyujiang/AndroidPicker/blob/master/ChangeLog.md)。     
 
 # Install
 “app”是测试用例；“library”包括WheelPicker、ColorPicker、FilePicker，
 WheelPicker包括DateTimePicker、OptionPicker、LinkagePicker、AddressPicker、NumberPicker等，
-可下载本项目手动进行源代码集成，导入“library”下的相关module，然后依赖，如：
+可下载本项目手动进行源代码集成，导入“library”下的相关module，然后依赖（记得将AndroidPicker项目根目录下的build.gradle及gradle.properties复制覆盖您项目项目根目录下的build.gradle及gradle.properties，否则可能会报错找不到BuildToolsVersion），如：
 ```groovy
 dependencies {
     compile project(':WheelPicker')
