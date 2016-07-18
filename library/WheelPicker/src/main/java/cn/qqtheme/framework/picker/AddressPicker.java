@@ -7,6 +7,9 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import cn.qqtheme.framework.widget.WheelView;
 
@@ -21,6 +24,24 @@ public class AddressPicker extends LinkagePicker {
     private OnAddressPickListener onAddressPickListener;
     private boolean hideProvince = false;
     private boolean hideCounty = false;
+    /**
+     * 获取城市编码
+     */
+    private boolean hasCityCode = false;
+    /**
+     * 城市编码
+     */
+    private String cityCode;
+    /**
+     * 城市编码数据
+     */
+    private Map<Integer, List<City>> cityMap = new HashMap<>();
+
+    public AddressPicker(Activity activity, ArrayList<Province> data, boolean obtainCityCode) {
+        super(activity);
+        this.hasCityCode = obtainCityCode;
+        parseData(data);
+    }
 
     /**
      * Instantiates a new Address picker.
@@ -30,6 +51,10 @@ public class AddressPicker extends LinkagePicker {
      */
     public AddressPicker(Activity activity, ArrayList<Province> data) {
         super(activity);
+        parseData(data);
+    }
+
+    private void parseData(ArrayList<Province> data) {
         int provinceSize = data.size();
         //添加省
         for (int x = 0; x < provinceSize; x++) {
@@ -37,6 +62,9 @@ public class AddressPicker extends LinkagePicker {
             firstList.add(pro.getAreaName());
             ArrayList<City> cities = pro.getCities();
             ArrayList<String> xCities = new ArrayList<String>();
+            if (hasCityCode) {
+                cityMap.put(x, cities);
+            }
             ArrayList<ArrayList<String>> xCounties = new ArrayList<ArrayList<String>>();
             int citySize = cities.size();
             //添加地市
@@ -171,6 +199,9 @@ public class AddressPicker extends LinkagePicker {
             public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
                 selectedSecondText = item;
                 selectedSecondIndex = selectedIndex;
+                if (hasCityCode) {
+                    cityCode = cityMap.get(selectedFirstIndex).get(selectedSecondIndex).areaId;
+                }
                 //根据地市获取区县
                 countyView.setItems(thirdList.get(selectedFirstIndex).get(selectedSecondIndex), isUserScroll ? 0 : selectedThirdIndex);
             }
@@ -190,10 +221,29 @@ public class AddressPicker extends LinkagePicker {
     public void onSubmit() {
         if (onAddressPickListener != null) {
             if (hideCounty) {
-                onAddressPickListener.onAddressPicked(selectedFirstText, selectedSecondText, null);
+                if (hasCityCode) {
+                    clearCityData();
+                    onAddressPickListener.onAddressPicked(selectedFirstText, selectedSecondText, null, cityCode);
+                } else {
+                    onAddressPickListener.onAddressPicked(selectedFirstText, selectedSecondText, null);
+                }
             } else {
-                onAddressPickListener.onAddressPicked(selectedFirstText, selectedSecondText, selectedThirdText);
+                if (hasCityCode) {
+                    clearCityData();
+                    onAddressPickListener.onAddressPicked(selectedFirstText, selectedSecondText, selectedThirdText, cityCode);
+                } else {
+                    onAddressPickListener.onAddressPicked(selectedFirstText, selectedSecondText, selectedThirdText);
+                }
             }
+        }
+    }
+
+    /**
+     * 清理数据
+     */
+    private void clearCityData() {
+        if (cityMap != null) {
+            cityMap.clear();
         }
     }
 
@@ -210,6 +260,8 @@ public class AddressPicker extends LinkagePicker {
          * @param county   the county ，if {@hideCounty} is true，this is null
          */
         void onAddressPicked(String province, String city, String county);
+
+        void onAddressPicked(String province, String city, String county, String cityCode);
 
     }
 
@@ -329,5 +381,4 @@ public class AddressPicker extends LinkagePicker {
      */
     public static class County extends Area {
     }
-
 }

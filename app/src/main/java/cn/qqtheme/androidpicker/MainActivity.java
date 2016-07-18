@@ -234,13 +234,18 @@ public class MainActivity extends Activity {
             ArrayList<AddressPicker.Province> data = new ArrayList<AddressPicker.Province>();
             String json = AssetsUtils.readText(this, "city2.json");
             data.addAll(JSON.parseArray(json, AddressPicker.Province.class));
-            AddressPicker picker = new AddressPicker(this, data);
+            AddressPicker picker = new AddressPicker(this, data, true);
             picker.setHideProvince(true);
             picker.setSelectedItem("贵州", "贵阳", "花溪");
             picker.setOnAddressPickListener(new AddressPicker.OnAddressPickListener() {
                 @Override
                 public void onAddressPicked(String province, String city, String county) {
                     showToast(city + county);
+                }
+
+                @Override
+                public void onAddressPicked(String province, String city, String county, String cityCode) {
+                    showToast(city + county+ " , citycode:" + cityCode);
                 }
             });
             picker.show();

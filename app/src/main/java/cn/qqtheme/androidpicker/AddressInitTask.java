@@ -72,7 +72,7 @@ public class AddressInitTask extends AsyncTask<String, Void, ArrayList<AddressPi
     protected void onPostExecute(ArrayList<AddressPicker.Province> result) {
         dialog.dismiss();
         if (result.size() > 0) {
-            AddressPicker picker = new AddressPicker(activity, result);
+            AddressPicker picker = new AddressPicker(activity, result, true);
             picker.setHideCounty(hideCounty);
             picker.setSelectedItem(selectedProvince, selectedCity, selectedCounty);
             picker.setOnAddressPickListener(new AddressPicker.OnAddressPickListener() {
@@ -82,6 +82,15 @@ public class AddressInitTask extends AsyncTask<String, Void, ArrayList<AddressPi
                         Toast.makeText(activity, province + city, Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(activity, province + city + county, Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                @Override
+                public void onAddressPicked(String province, String city, String county, String cityCode) {
+                    if (county==null){
+                        Toast.makeText(activity, province + city + " , citycode:" + cityCode, Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(activity, province + city + county+ " , citycode:" + cityCode, Toast.LENGTH_LONG).show();
                     }
                 }
             });
