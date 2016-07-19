@@ -1,4 +1,4 @@
-include ':app', ':library'
+include ':app'
 include ':library:Common'
 include ':library:WheelPicker'
 include ':library:FilePicker'

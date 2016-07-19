@@ -23,7 +23,7 @@ dependencies {
     compile project(':library:WheelPicker')
     compile project(':library:FilePicker')
     compile project(':library:ColorPicker')
-//    compile 'cn.qqtheme.framework:WheelPicker:1.1.3'
-//    compile 'cn.qqtheme.framework:FilePicker:1.1.3'
-//    compile 'cn.qqtheme.framework:ColorPicker:1.1.3'
+//    compile 'cn.qqtheme.framework:WheelPicker:latest.release'
+//    compile 'cn.qqtheme.framework:FilePicker:latest.release'
+//    compile 'cn.qqtheme.framework:ColorPicker:latest.release'
 }
