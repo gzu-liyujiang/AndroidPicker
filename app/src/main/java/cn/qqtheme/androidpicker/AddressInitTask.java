@@ -86,11 +86,12 @@ public class AddressInitTask extends AsyncTask<String, Void, ArrayList<AddressPi
                 }
 
                 @Override
-                public void onAddressPicked(String province, String city, String county, String cityCode) {
-                    if (county==null){
-                        Toast.makeText(activity, province + city + " , citycode:" + cityCode, Toast.LENGTH_LONG).show();
+                public void onAddressCodePicked(String provinceCode, String cityCode, String countyCode) {
+                    if (countyCode==null){
+                        Toast.makeText(activity, "provinceCode : " + provinceCode + ", citycode: " + cityCode, Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(activity, province + city + county+ " , citycode:" + cityCode, Toast.LENGTH_LONG).show();
+                        Toast.makeText(activity, "provinceCode : " + provinceCode +
+                                ", citycode: " + cityCode + ", countyCode: " +countyCode, Toast.LENGTH_LONG).show();
                     }
                 }
             });

@@ -37,6 +37,9 @@ public class AddressPicker extends LinkagePicker {
      */
     private Map<Integer, List<City>> cityMap = new HashMap<>();
 
+
+    private List<Province> provinceList = new ArrayList<>(1);
+
     public AddressPicker(Activity activity, ArrayList<Province> data, boolean obtainCityCode) {
         super(activity);
         this.hasCityCode = obtainCityCode;
@@ -56,6 +59,8 @@ public class AddressPicker extends LinkagePicker {
 
     private void parseData(ArrayList<Province> data) {
         int provinceSize = data.size();
+        provinceList.clear();
+        provinceList.addAll(data);
         //添加省
         for (int x = 0; x < provinceSize; x++) {
             Province pro = data.get(x);
@@ -138,7 +143,6 @@ public class AddressPicker extends LinkagePicker {
     }
 
     @Override
-    @NonNull
     protected View makeCenterView() {
         if (hideCounty) {
             hideProvince = false;
@@ -200,7 +204,10 @@ public class AddressPicker extends LinkagePicker {
                 selectedSecondText = item;
                 selectedSecondIndex = selectedIndex;
                 if (hasCityCode) {
-                    cityCode = cityMap.get(selectedFirstIndex).get(selectedSecondIndex).areaId;
+                    if (hideCounty) {
+                        cityCode = cityMap.get(selectedFirstIndex).get(selectedSecondIndex).areaId;
+                    }
+
                 }
                 //根据地市获取区县
                 countyView.setItems(thirdList.get(selectedFirstIndex).get(selectedSecondIndex), isUserScroll ? 0 : selectedThirdIndex);
@@ -223,14 +230,24 @@ public class AddressPicker extends LinkagePicker {
             if (hideCounty) {
                 if (hasCityCode) {
                     clearCityData();
-                    onAddressPickListener.onAddressPicked(selectedFirstText, selectedSecondText, null, cityCode);
+                    onAddressPickListener.
+                            onAddressCodePicked(
+                                    provinceList.get(selectedFirstIndex).areaId,
+                                    provinceList.get(selectedFirstIndex).cities.get(selectedSecondIndex).areaId,
+                                    null //隐藏了县区,所以不显示
+                            );
                 } else {
                     onAddressPickListener.onAddressPicked(selectedFirstText, selectedSecondText, null);
                 }
             } else {
                 if (hasCityCode) {
                     clearCityData();
-                    onAddressPickListener.onAddressPicked(selectedFirstText, selectedSecondText, selectedThirdText, cityCode);
+                    onAddressPickListener.
+                            onAddressCodePicked(
+                                    provinceList.get(selectedFirstIndex).areaId,
+                                    provinceList.get(selectedFirstIndex).cities.get(selectedSecondIndex).areaId,
+                                    provinceList.get(selectedFirstIndex).getCities().get(selectedSecondIndex).getCounties().get(selectedThirdIndex).areaId
+                            );
                 } else {
                     onAddressPickListener.onAddressPicked(selectedFirstText, selectedSecondText, selectedThirdText);
                 }
@@ -261,7 +278,14 @@ public class AddressPicker extends LinkagePicker {
          */
         void onAddressPicked(String province, String city, String county);
 
-        void onAddressPicked(String province, String city, String county, String cityCode);
+        /**
+         * On address picked
+         *
+         * @param provinceCode the province code
+         * @param cityCode     the city code
+         * @param countyCode   the county code
+         */
+        void onAddressCodePicked(String provinceCode, String cityCode, String countyCode);
 
     }
 

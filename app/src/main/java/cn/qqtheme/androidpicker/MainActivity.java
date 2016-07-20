@@ -244,9 +244,11 @@ public class MainActivity extends Activity {
                 }
 
                 @Override
-                public void onAddressPicked(String province, String city, String county, String cityCode) {
-                    showToast(city + county+ " , citycode:" + cityCode);
+                public void onAddressCodePicked(String provinceCode, String cityCode, String countyCode) {
+                    showToast("provinceCode : " + provinceCode +
+                            ", citycode: " + cityCode + ", countyCode: " +countyCode);
                 }
+
             });
             picker.show();
         } catch (Exception e) {
