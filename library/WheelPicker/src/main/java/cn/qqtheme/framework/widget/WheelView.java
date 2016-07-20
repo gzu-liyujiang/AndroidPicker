@@ -37,25 +37,10 @@ import cn.qqtheme.framework.util.LogUtils;
  * @since 2015/12/17
  */
 public class WheelView extends ScrollView {
-    /**
-     * The constant TEXT_SIZE.
-     */
     public static final int TEXT_SIZE = 20;
-    /**
-     * The constant TEXT_COLOR_FOCUS.
-     */
     public static final int TEXT_COLOR_FOCUS = 0XFF0288CE;
-    /**
-     * The constant TEXT_COLOR_NORMAL.
-     */
     public static final int TEXT_COLOR_NORMAL = 0XFFBBBBBB;
-    /**
-     * The constant LINE_COLOR.
-     */
     public static final int LINE_COLOR = 0XFF83CDE6;
-    /**
-     * The constant OFF_SET.
-     */
     public static final int OFF_SET = 1;
     private static final int DELAY = 50;
 
@@ -84,34 +69,16 @@ public class WheelView extends ScrollView {
     private boolean isUserScroll = false;//是否用户手动滚动
     private float previousY = 0;//记录按下时的Y坐标
 
-    /**
-     * Instantiates a new Wheel view.
-     *
-     * @param context the context
-     */
     public WheelView(Context context) {
         super(context);
         init(context);
     }
 
-    /**
-     * Instantiates a new Wheel view.
-     *
-     * @param context the context
-     * @param attrs   the attrs
-     */
     public WheelView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
-    /**
-     * Instantiates a new Wheel view.
-     *
-     * @param context  the context
-     * @param attrs    the attrs
-     * @param defStyle the def style
-     */
     public WheelView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(context);
@@ -216,7 +183,8 @@ public class WheelView extends ScrollView {
     private void onSelectedCallBack() {
         if (null != onWheelViewListener) {
             // 2015/12/25 真实的index应该忽略偏移量
-            onWheelViewListener.onSelected(isUserScroll, selectedIndex - offset, items.get(selectedIndex));
+            int realIndex = selectedIndex - offset;
+            onWheelViewListener.onSelected(isUserScroll, realIndex, items.get(realIndex));
         }
     }
 
