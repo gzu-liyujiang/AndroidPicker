@@ -60,7 +60,7 @@ dependencies {
 ```
 
 ### 自定义顶部及底部界面
-添加自己的类，继承自现有的选择器，覆盖makeHeaderView、makeFooterView，在确定选择时调用onSubmit，
+添加自己的类，继承自现有的选择器，覆盖makeHeaderView、makeFooterView、onSubmit、onCancel，在确定选择时调用onSubmit，
 取消选择时调用onCancel。详见示例：CustomHeaderAndFooterPicker.java。
 ```java
 public class CustomHeaderAndFooterPicker extends OptionPicker {
@@ -75,6 +75,16 @@ public class CustomHeaderAndFooterPicker extends OptionPicker {
     @Override
     protected View makeFooterView() {
         return null;//底部视图
+    }
+
+    @Override
+    public void onSubmit() {
+        super.onSubmit();//点击确定
+    }
+
+    @Override
+    protected void onCancel() {
+        super.onCancel();//点击取消
     }
 
 }
@@ -238,8 +248,8 @@ https://github.com/jbruchanov/AndroidColorPicker
 ![数字选择器效果图](/screenshots/number.gif)
 ![星座选择器效果图](/screenshots/constellation.gif)
 ![颜色选择器效果图](/screenshots/color.gif)
-![文件选择器效果图](/screenshots/file.gif)    
-![目录选择器效果图](/screenshots/dir.gif)    
+![文件选择器效果图](/screenshots/file.gif)
+![目录选择器效果图](/screenshots/dir.gif)
 
 # Contact
 <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=1032694760&site=穿青人&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:1032694760:51" alt="点击这里给我发消息" title="点击这里给我发消息"/></a>

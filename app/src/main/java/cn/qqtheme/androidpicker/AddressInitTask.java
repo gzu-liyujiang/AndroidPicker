@@ -21,16 +21,17 @@ public class AddressInitTask extends AsyncTask<String, Void, ArrayList<AddressPi
     private Activity activity;
     private ProgressDialog dialog;
     private String selectedProvince = "", selectedCity = "", selectedCounty = "";
-    private boolean hideCounty=false;
+    private boolean hideCounty = false;
 
     /**
      * 初始化为不显示区县的模式
+     *
      * @param activity
-     * @param hideCounty   is hide County
+     * @param hideCounty is hide County
      */
-    public AddressInitTask(Activity activity,boolean hideCounty) {
+    public AddressInitTask(Activity activity, boolean hideCounty) {
         this.activity = activity;
-        this.hideCounty=hideCounty;
+        this.hideCounty = hideCounty;
         dialog = ProgressDialog.show(activity, null, "正在初始化数据...", true, true);
     }
 
@@ -38,6 +39,7 @@ public class AddressInitTask extends AsyncTask<String, Void, ArrayList<AddressPi
         this.activity = activity;
         dialog = ProgressDialog.show(activity, null, "正在初始化数据...", true, true);
     }
+
     @Override
     protected ArrayList<AddressPicker.Province> doInBackground(String... params) {
         if (params != null) {
@@ -72,26 +74,16 @@ public class AddressInitTask extends AsyncTask<String, Void, ArrayList<AddressPi
     protected void onPostExecute(ArrayList<AddressPicker.Province> result) {
         dialog.dismiss();
         if (result.size() > 0) {
-            AddressPicker picker = new AddressPicker(activity, result, true);
+            AddressPicker picker = new AddressPicker(activity, result);
             picker.setHideCounty(hideCounty);
             picker.setSelectedItem(selectedProvince, selectedCity, selectedCounty);
             picker.setOnAddressPickListener(new AddressPicker.OnAddressPickListener() {
                 @Override
-                public void onAddressPicked(String province, String city, String county) {
-                    if (county==null){
-                        Toast.makeText(activity, province + city, Toast.LENGTH_LONG).show();
+                public void onAddressPicked(AddressPicker.Province province, AddressPicker.City city, AddressPicker.County county) {
+                    if (county == null) {
+                        Toast.makeText(activity, "province : " + province + ", city: " + city, Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(activity, province + city + county, Toast.LENGTH_LONG).show();
-                    }
-                }
-
-                @Override
-                public void onAddressCodePicked(String provinceCode, String cityCode, String countyCode) {
-                    if (countyCode==null){
-                        Toast.makeText(activity, "provinceCode : " + provinceCode + ", citycode: " + cityCode, Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(activity, "provinceCode : " + provinceCode +
-                                ", citycode: " + cityCode + ", countyCode: " +countyCode, Toast.LENGTH_LONG).show();
+                        Toast.makeText(activity, "province : " + province + ", city: " + city + ", county: " + county, Toast.LENGTH_LONG).show();
                     }
                 }
             });

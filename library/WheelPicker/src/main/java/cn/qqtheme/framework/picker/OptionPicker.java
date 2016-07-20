@@ -16,13 +16,10 @@ import cn.qqtheme.framework.widget.WheelView;
 /**
  * 单项选择器
  *
- * @author 李玉江[QQ :1032694760]
- * @version 2015 /9/29
+ * @author 李玉江[QQ:1032694760]
+ * @since 2015/9/29
  */
 public class OptionPicker extends WheelPicker {
-    /**
-     * The Options.
-     */
     protected ArrayList<String> options = new ArrayList<String>();
     private OnOptionPickListener onOptionPickListener;
     private int selectedOption = -1;
@@ -39,51 +36,34 @@ public class OptionPicker extends WheelPicker {
         this.options.addAll(Arrays.asList(options));
     }
 
-    /**
-     * Instantiates a new Option picker.
-     *
-     * @param activity the activity
-     * @param options  the options
-     */
     public OptionPicker(Activity activity, ArrayList<String> options) {
         super(activity);
         this.options.addAll(options);
     }
 
     /**
-     * Sets label.
-     *
-     * @param label the label
+     * 设置显示的单位，如身高为cm、体重为kg
      */
     public void setLabel(String label) {
         this.label = label;
     }
 
     /**
-     * Sets selected index.
-     *
-     * @param index the index
+     * 设置默认选中的项的索引
      */
     public void setSelectedIndex(int index) {
-        if (index >=0 && index < options.size()) {
+        if (index >= 0 && index < options.size()) {
             selectedOption = index;
         }
     }
 
     /**
-     * Sets selected item.
-     *
-     * @param option the option
+     * 设置默认选中的项
      */
     public void setSelectedItem(String option) {
         selectedOption = options.indexOf(option);
     }
 
-    /**
-     * Sets on option pick listener.
-     *
-     * @param listener the listener
-     */
     public void setOnOptionPickListener(OnOptionPickListener listener) {
         this.onOptionPickListener = listener;
     }
@@ -145,6 +125,7 @@ public class OptionPicker extends WheelPicker {
 
     /**
      * Get the selected position.
+     *
      * @return the selected position
      */
     public int getSelectedPosition() {

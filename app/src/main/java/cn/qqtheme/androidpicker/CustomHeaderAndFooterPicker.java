@@ -89,4 +89,14 @@ public class CustomHeaderAndFooterPicker extends OptionPicker {
         return view;
     }
 
+    @Override
+    public void onSubmit() {
+        super.onSubmit();
+    }
+
+    @Override
+    protected void onCancel() {
+        super.onCancel();
+    }
+
 }

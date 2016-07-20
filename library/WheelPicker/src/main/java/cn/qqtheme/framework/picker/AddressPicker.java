@@ -22,36 +22,19 @@ import cn.qqtheme.framework.widget.WheelView;
  */
 public class AddressPicker extends LinkagePicker {
     private OnAddressPickListener onAddressPickListener;
+    /**
+     * 只显示地市及区县
+     */
     private boolean hideProvince = false;
+    /**
+     * 只显示省份及地市
+     */
     private boolean hideCounty = false;
     /**
-     * 获取城市编码
+     * 省市县数据
      */
-    private boolean hasCityCode = false;
-    /**
-     * 城市编码
-     */
-    private String cityCode;
-    /**
-     * 城市编码数据
-     */
-    private Map<Integer, List<City>> cityMap = new HashMap<>();
+    private List<Province> provinceList = new ArrayList<Province>();
 
-
-    private List<Province> provinceList = new ArrayList<>(1);
-
-    public AddressPicker(Activity activity, ArrayList<Province> data, boolean obtainCityCode) {
-        super(activity);
-        this.hasCityCode = obtainCityCode;
-        parseData(data);
-    }
-
-    /**
-     * Instantiates a new Address picker.
-     *
-     * @param activity the activity
-     * @param data     the data
-     */
     public AddressPicker(Activity activity, ArrayList<Province> data) {
         super(activity);
         parseData(data);
@@ -67,9 +50,6 @@ public class AddressPicker extends LinkagePicker {
             firstList.add(pro.getAreaName());
             ArrayList<City> cities = pro.getCities();
             ArrayList<String> xCities = new ArrayList<String>();
-            if (hasCityCode) {
-                cityMap.put(x, cities);
-            }
             ArrayList<ArrayList<String>> xCounties = new ArrayList<ArrayList<String>>();
             int citySize = cities.size();
             //添加地市
@@ -119,7 +99,7 @@ public class AddressPicker extends LinkagePicker {
     /**
      * 隐藏县级行政区，只显示省级和市级。
      * 设置为true的话，hideProvince将强制为false
-     * 数据源依然使用“city.json” 仅在逻辑上隐藏县级选择框。
+     * 数据源依然使用“city.json” 仅在逻辑上隐藏县级选择框，实际项目中应该去掉县级数据。
      *
      * @param hideCounty the hide county
      */
@@ -142,6 +122,7 @@ public class AddressPicker extends LinkagePicker {
         throw new UnsupportedOperationException("Please use setOnAddressPickListener instead.");
     }
 
+    @NonNull
     @Override
     protected View makeCenterView() {
         if (hideCounty) {
@@ -203,14 +184,9 @@ public class AddressPicker extends LinkagePicker {
             public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
                 selectedSecondText = item;
                 selectedSecondIndex = selectedIndex;
-                if (hasCityCode) {
-                    if (hideCounty) {
-                        cityCode = cityMap.get(selectedFirstIndex).get(selectedSecondIndex).areaId;
-                    }
-
-                }
                 //根据地市获取区县
-                countyView.setItems(thirdList.get(selectedFirstIndex).get(selectedSecondIndex), isUserScroll ? 0 : selectedThirdIndex);
+                countyView.setItems(thirdList.get(selectedFirstIndex).get(selectedSecondIndex),
+                        isUserScroll ? 0 : selectedThirdIndex);
             }
         });
         countyView.setItems(thirdList.get(selectedFirstIndex).get(selectedSecondIndex), selectedThirdIndex);
@@ -227,113 +203,51 @@ public class AddressPicker extends LinkagePicker {
     @Override
     public void onSubmit() {
         if (onAddressPickListener != null) {
-            if (hideCounty) {
-                if (hasCityCode) {
-                    clearCityData();
-                    onAddressPickListener.
-                            onAddressCodePicked(
-                                    provinceList.get(selectedFirstIndex).areaId,
-                                    provinceList.get(selectedFirstIndex).cities.get(selectedSecondIndex).areaId,
-                                    null //隐藏了县区,所以不显示
-                            );
-                } else {
-                    onAddressPickListener.onAddressPicked(selectedFirstText, selectedSecondText, null);
-                }
-            } else {
-                if (hasCityCode) {
-                    clearCityData();
-                    onAddressPickListener.
-                            onAddressCodePicked(
-                                    provinceList.get(selectedFirstIndex).areaId,
-                                    provinceList.get(selectedFirstIndex).cities.get(selectedSecondIndex).areaId,
-                                    provinceList.get(selectedFirstIndex).getCities().get(selectedSecondIndex).getCounties().get(selectedThirdIndex).areaId
-                            );
-                } else {
-                    onAddressPickListener.onAddressPicked(selectedFirstText, selectedSecondText, selectedThirdText);
-                }
+            Province province = provinceList.get(selectedFirstIndex);
+            City city = provinceList.get(selectedFirstIndex).getCities().get(selectedSecondIndex);
+            County county = null;
+            if (!hideCounty) {
+                county = provinceList.get(selectedFirstIndex).getCities().get(selectedSecondIndex).getCounties().get(selectedThirdIndex);
             }
+            onAddressPickListener.onAddressPicked(province, city, county);
         }
     }
 
     /**
-     * 清理数据
-     */
-    private void clearCityData() {
-        if (cityMap != null) {
-            cityMap.clear();
-        }
-    }
-
-    /**
-     * The interface On address pick listener.
+     * 地址选择回调
      */
     public interface OnAddressPickListener {
 
         /**
-         * On address picked.
+         * 选择地址
          *
          * @param province the province
          * @param city     the city
          * @param county   the county ，if {@hideCounty} is true，this is null
          */
-        void onAddressPicked(String province, String city, String county);
-
-        /**
-         * On address picked
-         *
-         * @param provinceCode the province code
-         * @param cityCode     the city code
-         * @param countyCode   the county code
-         */
-        void onAddressCodePicked(String provinceCode, String cityCode, String countyCode);
+        void onAddressPicked(Province province, City city, County county);
 
     }
 
     /**
-     * The type Area.
+     * 省市县抽象，本类及其子类不可混淆
      */
     public abstract static class Area {
-        /**
-         * The Area id.
-         */
-        String areaId;
-        /**
-         * The Area name.
-         */
-        String areaName;
+        private String areaId;
+        private String areaName;
 
-        /**
-         * Gets area id.
-         *
-         * @return the area id
-         */
         public String getAreaId() {
             return areaId;
         }
 
-        /**
-         * Sets area id.
-         *
-         * @param areaId the area id
-         */
         public void setAreaId(String areaId) {
             this.areaId = areaId;
         }
 
-        /**
-         * Gets area name.
-         *
-         * @return the area name
-         */
         public String getAreaName() {
             return areaName;
         }
 
-        /**
-         * Sets area name.
-         *
-         * @param areaName the area name
-         */
         public void setAreaName(String areaName) {
             this.areaName = areaName;
         }
@@ -346,28 +260,15 @@ public class AddressPicker extends LinkagePicker {
     }
 
     /**
-     * The type Province.
+     * 省份
      */
     public static class Province extends Area {
-        /**
-         * The Cities.
-         */
-        ArrayList<City> cities = new ArrayList<City>();
+        private ArrayList<City> cities = new ArrayList<City>();
 
-        /**
-         * Gets cities.
-         *
-         * @return the cities
-         */
         public ArrayList<City> getCities() {
             return cities;
         }
 
-        /**
-         * Sets cities.
-         *
-         * @param cities the cities
-         */
         public void setCities(ArrayList<City> cities) {
             this.cities = cities;
         }
@@ -375,25 +276,15 @@ public class AddressPicker extends LinkagePicker {
     }
 
     /**
-     * The type City.
+     * 地市
      */
     public static class City extends Area {
         private ArrayList<County> counties = new ArrayList<County>();
 
-        /**
-         * Gets counties.
-         *
-         * @return the counties
-         */
         public ArrayList<County> getCounties() {
             return counties;
         }
 
-        /**
-         * Sets counties.
-         *
-         * @param counties the counties
-         */
         public void setCounties(ArrayList<County> counties) {
             this.counties = counties;
         }
@@ -401,8 +292,9 @@ public class AddressPicker extends LinkagePicker {
     }
 
     /**
-     * The type County.
+     * 区县
      */
     public static class County extends Area {
     }
+
 }

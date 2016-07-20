@@ -28,6 +28,6 @@ package cn.qqtheme.framework;
  * @since 2014-09-05 11:49
  */
 public class AppConfig {
-    public static boolean DEBUG_ENABLE = BuildConfig.DEBUG;// 是否调试模式
+    public static boolean DEBUG_ENABLE = false;// 是否调试模式
     public static String DEBUG_TAG = "liyujiang";// LogCat的标记
 }

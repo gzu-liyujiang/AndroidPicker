@@ -10,31 +10,19 @@ import android.app.Activity;
  */
 public class NumberPicker extends OptionPicker {
 
-    /**
-     * Instantiates a new Number picker.
-     *
-     * @param activity the activity
-     */
     public NumberPicker(Activity activity) {
         super(activity, new String[]{});
     }
 
     /**
-     * Sets range.
-     *
-     * @param startNumber the start number
-     * @param endNumber   the end number
+     * 设置数字范围，递增量为1
      */
     public void setRange(int startNumber, int endNumber) {
         setRange(startNumber, endNumber, 1);
     }
 
     /**
-     * Sets range.
-     *
-     * @param startNumber the start number
-     * @param endNumber   the end number
-     * @param step        the step
+     * 设置数字范围及递增量
      */
     public void setRange(int startNumber, int endNumber, int step) {
         for (int i = startNumber; i <= endNumber; i = i + step) {
@@ -43,9 +31,7 @@ public class NumberPicker extends OptionPicker {
     }
 
     /**
-     * Sets selected item.
-     *
-     * @param number the number
+     * 设置默认选中的数字
      */
     public void setSelectedItem(int number) {
         setSelectedItem(String.valueOf(number));

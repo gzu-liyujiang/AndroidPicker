@@ -20,10 +20,10 @@ import cn.qqtheme.framework.util.DateUtils;
 import cn.qqtheme.framework.widget.WheelView;
 
 /**
+ * 日期时间选择器，可同时选中日期及时间
  * Created by Dong on 2016/5/13.
  */
 public class DateTimePicker extends WheelPicker {
-
     /**
      * 年月日
      */
@@ -282,47 +282,33 @@ public class DateTimePicker extends WheelPicker {
 
     @Override
     protected void onSubmit() {
-        if (onDateTimePickListener != null) {
-            String year = getSelectedYear();
-            String month = getSelectedMonth();
-            String day = getSelectedDay();
-            switch (mode) {
-                case YEAR_MONTH:
-                    ((OnYearMonthPickListener) onDateTimePickListener).onDateTimePicked(year, month, selectedHour, selectedMinute);
-                    break;
-                case MONTH_DAY:
-                    ((OnMonthDayPickListener) onDateTimePickListener).onDateTimePicked(month, day, selectedHour, selectedMinute);
-                    break;
-                default:
-                    ((OnYearMonthDayTimePickListener) onDateTimePickListener).onDateTimePicked(year, month, day, selectedHour, selectedMinute);
-                    break;
-            }
+        if (onDateTimePickListener == null) {
+            return;
+        }
+        String year = getSelectedYear();
+        String month = getSelectedMonth();
+        String day = getSelectedDay();
+        switch (mode) {
+            case YEAR_MONTH:
+                ((OnYearMonthPickListener) onDateTimePickListener).onDateTimePicked(year, month, selectedHour, selectedMinute);
+                break;
+            case MONTH_DAY:
+                ((OnMonthDayPickListener) onDateTimePickListener).onDateTimePicked(month, day, selectedHour, selectedMinute);
+                break;
+            default:
+                ((OnYearMonthDayTimePickListener) onDateTimePickListener).onDateTimePicked(year, month, day, selectedHour, selectedMinute);
+                break;
         }
     }
 
-    /**
-     * Gets selected year.
-     *
-     * @return the selected year
-     */
     public String getSelectedYear() {
         return years.get(selectedYearIndex);
     }
 
-    /**
-     * Gets selected month.
-     *
-     * @return the selected month
-     */
     public String getSelectedMonth() {
         return months.get(selectedMonthIndex);
     }
 
-    /**
-     * Gets selected day.
-     *
-     * @return the selected day
-     */
     public String getSelectedDay() {
         return days.get(selectedDayIndex);
     }
@@ -336,11 +322,7 @@ public class DateTimePicker extends WheelPicker {
     }
 
     /**
-     * Sets label.
-     *
-     * @param yearLabel  the year label
-     * @param monthLabel the month label
-     * @param dayLabel   the day label
+     * 设置年月日时分的显示单位
      */
     public void setLabel(String yearLabel, String monthLabel, String dayLabel, String hourLabel, String minuteLabel) {
         this.yearLabel = yearLabel;
@@ -351,10 +333,7 @@ public class DateTimePicker extends WheelPicker {
     }
 
     /**
-     * Sets range.
-     *
-     * @param startYear the start year
-     * @param endYear   the end year
+     * 设置年份范围
      */
     public void setRange(int startYear, int endYear) {
         years.clear();
@@ -382,11 +361,7 @@ public class DateTimePicker extends WheelPicker {
     }
 
     /**
-     * @param year
-     * @param month
-     * @param day
-     * @param hour
-     * @param minute
+     * 设置默认选中的年月日时分
      */
     public void setSelectedItem(int year, int month, int day, int hour, int minute) {
         selectedYearIndex = findItemIndex(years, year);
@@ -397,12 +372,9 @@ public class DateTimePicker extends WheelPicker {
     }
 
     /**
-     * Sets selected item.
-     *
-     * @param yearOrMonth the year or month
-     * @param monthOrDay  the month or day
+     * 设置默认选中的年月时分或者月日时分
      */
-    public void setSelectedItem(int yearOrMonth, int monthOrDay) {
+    public void setSelectedItem(int yearOrMonth, int monthOrDay, int hour, int minute) {
         if (mode == MONTH_DAY) {
             selectedMonthIndex = findItemIndex(months, yearOrMonth);
             selectedDayIndex = findItemIndex(days, monthOrDay);
@@ -410,58 +382,28 @@ public class DateTimePicker extends WheelPicker {
             selectedYearIndex = findItemIndex(years, yearOrMonth);
             selectedMonthIndex = findItemIndex(months, monthOrDay);
         }
+        selectedHour = String.valueOf(hour);
+        selectedMinute = String.valueOf(minute);
     }
 
-
-    /**
-     * The interface On DateTime pick listener.
-     */
     protected interface OnDateTimePickListener {
 
     }
 
-    /**
-     * The interface On year month day pick listener.
-     */
     public interface OnYearMonthDayTimePickListener extends OnDateTimePickListener {
 
-        /**
-         * On date picked.
-         *
-         * @param year  the year
-         * @param month the month
-         * @param day   the day
-         */
         void onDateTimePicked(String year, String month, String day, String hour, String minute);
 
     }
 
-    /**
-     * The interface On year month pick listener.
-     */
     public interface OnYearMonthPickListener extends OnDateTimePickListener {
 
-        /**
-         * On date picked.
-         *
-         * @param year  the year
-         * @param month the month
-         */
         void onDateTimePicked(String year, String month, String hour, String minute);
 
     }
 
-    /**
-     * The interface On month day pick listener.
-     */
     public interface OnMonthDayPickListener extends OnDateTimePickListener {
 
-        /**
-         * On date picked.
-         *
-         * @param month the month
-         * @param day   the day
-         */
         void onDateTimePicked(String month, String day, String hour, String minute);
 
     }

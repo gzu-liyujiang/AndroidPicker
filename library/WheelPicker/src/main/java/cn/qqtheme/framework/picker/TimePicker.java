@@ -20,7 +20,7 @@ import cn.qqtheme.framework.widget.WheelView;
 /**
  * 时间选择器
  *
- * @author 李玉江[QQ :1032694760]
+ * @author 李玉江[QQ:1032694760]
  * @since 2015/12/14
  */
 public class TimePicker extends WheelPicker {
@@ -46,20 +46,11 @@ public class TimePicker extends WheelPicker {
     public @interface Mode {
     }
 
-    /**
-     * Instantiates a new Time picker.
-     *
-     * @param activity the activity
-     */
     public TimePicker(Activity activity) {
         this(activity, HOUR_OF_DAY);
     }
 
     /**
-     * Instantiates a new Time picker.
-     *
-     * @param activity the activity
-     * @param mode     the mode
      * @see #HOUR_OF_DAY
      * @see #HOUR
      */
@@ -71,10 +62,7 @@ public class TimePicker extends WheelPicker {
     }
 
     /**
-     * Sets label.
-     *
-     * @param hourLabel   the hour label
-     * @param minuteLabel the minute label
+     * 设置时间显示的单位
      */
     public void setLabel(String hourLabel, String minuteLabel) {
         this.hourLabel = hourLabel;
@@ -82,21 +70,13 @@ public class TimePicker extends WheelPicker {
     }
 
     /**
-     * Sets selected item.
-     *
-     * @param hour   the hour
-     * @param minute the minute
+     * 设置默认选中的时间
      */
     public void setSelectedItem(int hour, int minute) {
         selectedHour = String.valueOf(hour);
         selectedMinute = String.valueOf(minute);
     }
 
-    /**
-     * Sets on time pick listener.
-     *
-     * @param listener the listener
-     */
     public void setOnTimePickListener(OnTimePickListener listener) {
         this.onTimePickListener = listener;
     }

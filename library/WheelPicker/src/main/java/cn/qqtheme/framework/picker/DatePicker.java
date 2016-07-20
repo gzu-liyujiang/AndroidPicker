@@ -64,10 +64,6 @@ public class DatePicker extends WheelPicker {
     }
 
     /**
-     * Instantiates a new Date picker.
-     *
-     * @param activity the activity
-     * @param mode     the mode
      * @see #YEAR_MONTH_DAY
      * @see #YEAR_MONTH
      * @see #MONTH_DAY
@@ -87,11 +83,7 @@ public class DatePicker extends WheelPicker {
     }
 
     /**
-     * Sets label.
-     *
-     * @param yearLabel  the year label
-     * @param monthLabel the month label
-     * @param dayLabel   the day label
+     * 设置年月日的单位
      */
     public void setLabel(String yearLabel, String monthLabel, String dayLabel) {
         this.yearLabel = yearLabel;
@@ -100,10 +92,7 @@ public class DatePicker extends WheelPicker {
     }
 
     /**
-     * Sets range.
-     *
-     * @param startYear the start year
-     * @param endYear   the end year
+     * 设置年份范围
      */
     public void setRange(int startYear, int endYear) {
         years.clear();
@@ -131,11 +120,7 @@ public class DatePicker extends WheelPicker {
     }
 
     /**
-     * Sets selected item.
-     *
-     * @param year  the year
-     * @param month the month
-     * @param day   the day
+     * 设置默认选中的年月日
      */
     public void setSelectedItem(int year, int month, int day) {
         selectedYearIndex = findItemIndex(years, year);
@@ -144,10 +129,7 @@ public class DatePicker extends WheelPicker {
     }
 
     /**
-     * Sets selected item.
-     *
-     * @param yearOrMonth the year or month
-     * @param monthOrDay  the month or day
+     * 设置默认选中的年月或者月日
      */
     public void setSelectedItem(int yearOrMonth, int monthOrDay) {
         if (mode == MONTH_DAY) {
@@ -159,11 +141,6 @@ public class DatePicker extends WheelPicker {
         }
     }
 
-    /**
-     * Sets on date pick listener.
-     *
-     * @param listener the listener
-     */
     public void setOnDatePickListener(OnDatePickListener listener) {
         this.onDatePickListener = listener;
     }
@@ -312,100 +289,55 @@ public class DatePicker extends WheelPicker {
 
     @Override
     protected void onSubmit() {
-        if (onDatePickListener != null) {
-            String year = getSelectedYear();
-            String month = getSelectedMonth();
-            String day = getSelectedDay();
-            switch (mode) {
-                case YEAR_MONTH:
-                    ((OnYearMonthPickListener) onDatePickListener).onDatePicked(year, month);
-                    break;
-                case MONTH_DAY:
-                    ((OnMonthDayPickListener) onDatePickListener).onDatePicked(month, day);
-                    break;
-                default:
-                    ((OnYearMonthDayPickListener) onDatePickListener).onDatePicked(year, month, day);
-                    break;
-            }
+        if (onDatePickListener == null) {
+            return;
+        }
+        String year = getSelectedYear();
+        String month = getSelectedMonth();
+        String day = getSelectedDay();
+        switch (mode) {
+            case YEAR_MONTH:
+                ((OnYearMonthPickListener) onDatePickListener).onDatePicked(year, month);
+                break;
+            case MONTH_DAY:
+                ((OnMonthDayPickListener) onDatePickListener).onDatePicked(month, day);
+                break;
+            default:
+                ((OnYearMonthDayPickListener) onDatePickListener).onDatePicked(year, month, day);
+                break;
         }
     }
 
-    /**
-     * Gets selected year.
-     *
-     * @return the selected year
-     */
     public String getSelectedYear() {
         return years.get(selectedYearIndex);
     }
 
-    /**
-     * Gets selected month.
-     *
-     * @return the selected month
-     */
     public String getSelectedMonth() {
         return months.get(selectedMonthIndex);
     }
 
-    /**
-     * Gets selected day.
-     *
-     * @return the selected day
-     */
     public String getSelectedDay() {
         return days.get(selectedDayIndex);
     }
 
-    /**
-     * The interface On date pick listener.
-     */
     protected interface OnDatePickListener {
 
     }
 
-    /**
-     * The interface On year month day pick listener.
-     */
     public interface OnYearMonthDayPickListener extends OnDatePickListener {
 
-        /**
-         * On date picked.
-         *
-         * @param year  the year
-         * @param month the month
-         * @param day   the day
-         */
         void onDatePicked(String year, String month, String day);
 
     }
 
-    /**
-     * The interface On year month pick listener.
-     */
     public interface OnYearMonthPickListener extends OnDatePickListener {
 
-        /**
-         * On date picked.
-         *
-         * @param year  the year
-         * @param month the month
-         */
         void onDatePicked(String year, String month);
 
     }
 
-    /**
-     * The interface On month day pick listener.
-     */
     public interface OnMonthDayPickListener extends OnDatePickListener {
 
-        /**
-         * On date picked.
-         *
-         * @param month the month
-         * @param day   the day
-         */
         void onDatePicked(String month, String day);
 
     }

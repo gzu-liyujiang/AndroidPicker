@@ -65,7 +65,7 @@ public class LinkagePicker extends WheelPicker {
             String ft = firstList.get(i);
             if (ft.contains(firstText)) {
                 selectedFirstIndex = i;
-                LogUtils.debug("init select first text: " + ft);
+                LogUtils.debug("init select first text: " + ft + ", index:" + selectedFirstIndex);
                 break;
             }
         }
@@ -74,7 +74,7 @@ public class LinkagePicker extends WheelPicker {
             String st = secondTexts.get(j);
             if (st.contains(secondText)) {
                 selectedSecondIndex = j;
-                LogUtils.debug("init select second text: " + st);
+                LogUtils.debug("init select second text: " + st + ", index:" + selectedSecondIndex);
                 break;
             }
         }
@@ -86,11 +86,10 @@ public class LinkagePicker extends WheelPicker {
             String tt = thirdTexts.get(k);
             if (tt.contains(thirdText)) {
                 selectedThirdIndex = k;
-                LogUtils.debug("init select third text: " + tt);
+                LogUtils.debug("init select third text: " + tt + ", index:" + selectedThirdIndex);
                 break;
             }
         }
-        LogUtils.debug(String.format("init select index: %s-%s-%s", selectedFirstIndex, selectedSecondIndex, selectedThirdIndex));
     }
 
     public void setOnLinkageListener(OnLinkageListener onLinkageListener) {

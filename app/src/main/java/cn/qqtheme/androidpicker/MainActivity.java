@@ -28,6 +28,7 @@ import cn.qqtheme.framework.util.StorageUtils;
 public class MainActivity extends Activity {
 
     private Calendar calendar = Calendar.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,7 +90,7 @@ public class MainActivity extends Activity {
     public void onYearMonthDayTimePicker(View view) {
         DateTimePicker picker = new DateTimePicker(this, DateTimePicker.HOUR_OF_DAY);
         picker.setRange(2000, 2030);
-        picker.setSelectedItem(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH)+1, calendar.get(Calendar.DAY_OF_MONTH),
+        picker.setSelectedItem(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH),
                 calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE));
         picker.setOnDateTimePickListener(new DateTimePicker.OnYearMonthDayTimePickListener() {
             @Override
@@ -99,7 +100,6 @@ public class MainActivity extends Activity {
         });
         picker.show();
     }
-
 
 
     public void onYearMonthPicker(View view) {
@@ -234,21 +234,18 @@ public class MainActivity extends Activity {
             ArrayList<AddressPicker.Province> data = new ArrayList<AddressPicker.Province>();
             String json = AssetsUtils.readText(this, "city2.json");
             data.addAll(JSON.parseArray(json, AddressPicker.Province.class));
-            AddressPicker picker = new AddressPicker(this, data, true);
+            AddressPicker picker = new AddressPicker(this, data);
             picker.setHideProvince(true);
             picker.setSelectedItem("贵州", "贵阳", "花溪");
             picker.setOnAddressPickListener(new AddressPicker.OnAddressPickListener() {
                 @Override
-                public void onAddressPicked(String province, String city, String county) {
-                    showToast(city + county);
+                public void onAddressPicked(AddressPicker.Province province, AddressPicker.City city, AddressPicker.County county) {
+                    if (county == null) {
+                        showToast("province : " + province + ", city: " + city);
+                    } else {
+                        showToast("province : " + province + ", city: " + city + ", county: " + county);
+                    }
                 }
-
-                @Override
-                public void onAddressCodePicked(String provinceCode, String cityCode, String countyCode) {
-                    showToast("provinceCode : " + provinceCode +
-                            ", citycode: " + cityCode + ", countyCode: " +countyCode);
-                }
-
             });
             picker.show();
         } catch (Exception e) {
