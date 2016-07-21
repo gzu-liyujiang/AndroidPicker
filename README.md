@@ -8,7 +8,20 @@
 # Install
 “app”是测试用例；“library”包括WheelPicker、ColorPicker、FilePicker，
 WheelPicker包括DateTimePicker、OptionPicker、LinkagePicker、AddressPicker、NumberPicker等，
-可下载本项目手动进行源代码集成，导入“library”下的相关module，然后依赖（记得将AndroidPicker项目根目录下的build.gradle及gradle.properties复制覆盖您项目项目根目录下的build.gradle及gradle.properties，否则可能会报错找不到BuildToolsVersion），如：
+可下载本项目手动进行源代码集成，导入“library”下的相关module，然后依赖（记得将module下的build.gradle修改为以下内容，否则可能会报错找不到BuildToolsVersion）：
+```groovy
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion 23.0.1
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 22
+    }
+}
+```
 ```groovy
 dependencies {
     compile project(':WheelPicker')
@@ -234,22 +247,22 @@ public class CustomHeaderAndFooterPicker extends OptionPicker {
 ```
 
 # Thanks
-库项目修改了使用以下项目：
-https://github.com/wangjiegulu/WheelView
-https://github.com/jbruchanov/AndroidColorPicker
+库项目修改了使用以下项目：      
+https://github.com/wangjiegulu/WheelView      
+https://github.com/jbruchanov/AndroidColorPicker      
 
 # Screenshots
-![自定义选择器效果图](/screenshots/custom.gif)
-![日期选择器效果图](/screenshots/date.gif)
-![时间选择器效果图](/screenshots/time.gif)
-![单项选择器效果图](/screenshots/option.gif)
-![地址选择器效果图](/screenshots/address.gif)
-![地址选择器效果图](/screenshots/address.png)
-![数字选择器效果图](/screenshots/number.gif)
-![星座选择器效果图](/screenshots/constellation.gif)
-![颜色选择器效果图](/screenshots/color.gif)
-![文件选择器效果图](/screenshots/file.gif)
-![目录选择器效果图](/screenshots/dir.gif)
+![自定义选择器效果图](/screenshots/custom.gif)   
+![日期选择器效果图](/screenshots/date.gif)         
+![时间选择器效果图](/screenshots/time.gif)   
+![单项选择器效果图](/screenshots/option.gif)         
+![地址选择器效果图](/screenshots/address.gif)   
+![地址选择器效果图](/screenshots/address.png)       
+![数字选择器效果图](/screenshots/number.gif)   
+![星座选择器效果图](/screenshots/constellation.gif)     
+![颜色选择器效果图](/screenshots/color.gif)   
+![文件选择器效果图](/screenshots/file.gif)    
+![目录选择器效果图](/screenshots/dir.gif)   
 
 # Contact
 <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=1032694760&site=穿青人&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:1032694760:51" alt="点击这里给我发消息" title="点击这里给我发消息"/></a>
