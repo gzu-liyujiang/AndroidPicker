@@ -8,7 +8,7 @@
 # Install
 “app”是测试用例；“library”包括WheelPicker、ColorPicker、FilePicker，
 WheelPicker包括DateTimePicker、OptionPicker、LinkagePicker、AddressPicker、NumberPicker等，
-可下载本项目手动进行源代码集成，导入“library”下的相关module，然后依赖（记得将module下的build.gradle修改为以下内容，否则可能会报错找不到BuildToolsVersion）：
+可下载本项目手动进行源代码集成，导入“library”下的相关module（记得将module下的build.gradle修改为以下内容，否则可能会报错找不到BuildToolsVersion）：
 ```groovy
 apply plugin: 'com.android.library'
 
@@ -21,7 +21,12 @@ android {
         targetSdkVersion 22
     }
 }
+
+dependencies {
+    compile project(':Common')
+}
 ```
+然后依赖：
 ```groovy
 dependencies {
     compile project(':WheelPicker')
