@@ -513,11 +513,11 @@ public class WheelView extends ScrollView {
      */
     public interface OnWheelViewListener {
         /**
-         * On selected.
+         * 滑动选择回调
          *
-         * @param isUserScroll  the is user scroll
-         * @param selectedIndex the selected index
-         * @param item          the item
+         * @param isUserScroll  是否用户手动滚动，用于联动效果判断是否自动重置选中项
+         * @param selectedIndex 当前选择项的索引
+         * @param item          当前选择项的值
          */
         void onSelected(boolean isUserScroll, int selectedIndex, String item);
     }
