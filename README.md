@@ -23,10 +23,10 @@ android {
 }
 
 dependencies {
-    compile project(':Common')
+    compile project(':Common') //Common模块不需要加此句
 }
 ```
-然后依赖：
+然后依赖（WheelPicker、FilePicker及ColorPicker是独立的，需要用哪个就compile哪个）：
 ```groovy
 dependencies {
     compile project(':WheelPicker')
@@ -34,7 +34,7 @@ dependencies {
     compile project(':ColorPicker')
 }
 ```
-也可以直接远程加载jcenter里的，如：
+也可以直接远程加载jcenter里的（latest.release为最新版，也可以参照更新日志制定具体的版本号）：
 ```groovy
 dependencies {
     compile 'cn.qqtheme.framework:WheelPicker:latest.release'
