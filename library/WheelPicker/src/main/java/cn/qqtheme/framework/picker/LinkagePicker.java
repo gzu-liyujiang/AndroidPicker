@@ -140,7 +140,7 @@ public class LinkagePicker extends WheelPicker {
                 selectedFirstText = item;
                 selectedFirstIndex = selectedIndex;
                 selectedThirdIndex = 0;
-                //根据第一级数据获取第二级数据
+                //根据第一级数据获取第二级数据。若不是用户手动滚动，说明联动需要指定默认项
                 secondView.setItems(secondList.get(selectedFirstIndex), isUserScroll ? 0 : selectedSecondIndex);
                 if (thirdList.size() == 0) {
                     return;//仅仅二级联动

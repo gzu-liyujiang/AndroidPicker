@@ -172,7 +172,7 @@ public class AddressPicker extends LinkagePicker {
                 selectedFirstText = item;
                 selectedFirstIndex = selectedIndex;
                 selectedThirdIndex = 0;
-                //根据省份获取地市
+                //根据省份获取地市。若不是用户手动滚动，说明联动需要指定默认项
                 cityView.setItems(secondList.get(selectedFirstIndex), isUserScroll ? 0 : selectedSecondIndex);
                 //根据地市获取区县
                 countyView.setItems(thirdList.get(selectedFirstIndex).get(0), isUserScroll ? 0 : selectedThirdIndex);

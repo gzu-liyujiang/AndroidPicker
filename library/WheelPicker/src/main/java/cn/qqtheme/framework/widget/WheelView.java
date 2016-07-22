@@ -19,7 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import cn.qqtheme.framework.util.LogUtils;
@@ -46,12 +46,12 @@ public class WheelView extends ScrollView {
 
     private Context context;
     private LinearLayout views;
-    private List<String> items = new ArrayList<String>();
+    private LinkedList<String> items = new LinkedList<String>();
     private int offset = OFF_SET; // 偏移量（需要在最前面和最后面补全）
 
     private int displayItemCount; // 每页显示的数量
 
-    private int selectedIndex = OFF_SET;
+    private int selectedIndex = OFF_SET;//索引值含补全的占位符的索引
     private int initialY;
 
     private Runnable scrollerTask = new ScrollerTask();
@@ -184,7 +184,8 @@ public class WheelView extends ScrollView {
         if (null != onWheelViewListener) {
             // 2015/12/25 真实的index应该忽略偏移量
             int realIndex = selectedIndex - offset;
-            onWheelViewListener.onSelected(isUserScroll, realIndex, items.get(realIndex));
+            LogUtils.verbose("isUserScroll=" + isUserScroll + ",selectedIndex=" + selectedIndex + ",realIndex=" + realIndex);
+            onWheelViewListener.onSelected(isUserScroll, realIndex, items.get(this.selectedIndex));
         }
     }
 
@@ -271,6 +272,7 @@ public class WheelView extends ScrollView {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
+        isUserScroll = true;//触发触摸事件，说明是用户在滚动
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 previousY = ev.getY();
@@ -287,7 +289,6 @@ public class WheelView extends ScrollView {
                     //滑动到最后一项时，若继续向上滑动，则自动跳到第一项
                     setSelectedIndex(0);
                 } else {
-                    isUserScroll = true;
                     startScrollerTask();
                 }
                 break;
@@ -301,8 +302,8 @@ public class WheelView extends ScrollView {
 
         // 前面和后面补全
         for (int i = 0; i < offset; i++) {
-            items.add(0, "");
-            items.add("");
+            items.addFirst("");
+            items.addLast("");
         }
 
         initData();
@@ -481,28 +482,12 @@ public class WheelView extends ScrollView {
     }
 
     /**
-     * Use {@link #getSelectedItem()} instead
-     */
-    @Deprecated
-    public String getSeletedItem() {
-        return getSelectedItem();
-    }
-
-    /**
      * Gets selected item.
      *
      * @return the selected item
      */
     public String getSelectedItem() {
         return items.get(selectedIndex);
-    }
-
-    /**
-     * Use {@link #getSelectedIndex()} instead
-     */
-    @Deprecated
-    public int getSeletedIndex() {
-        return getSelectedIndex();
     }
 
     /**
