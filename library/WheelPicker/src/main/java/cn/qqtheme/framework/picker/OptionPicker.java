@@ -22,7 +22,7 @@ import cn.qqtheme.framework.widget.WheelView;
 public class OptionPicker extends WheelPicker {
     protected ArrayList<String> options = new ArrayList<String>();
     private OnOptionPickListener onOptionPickListener;
-    private int selectedOption = -1;
+    private int selectedOption = 0;
     private String label = "";
 
     /**
@@ -61,7 +61,7 @@ public class OptionPicker extends WheelPicker {
      * 设置默认选中的项
      */
     public void setSelectedItem(String option) {
-        selectedOption = options.indexOf(option);
+        setSelectedIndex(options.indexOf(option));
     }
 
     public void setOnOptionPickListener(OnOptionPickListener listener) {
@@ -93,11 +93,7 @@ public class OptionPicker extends WheelPicker {
         if (!TextUtils.isEmpty(label)) {
             labelView.setText(label);
         }
-        if (selectedOption < 0) {
-            optionView.setItems(options);
-        } else {
-            optionView.setItems(options, selectedOption);
-        }
+        optionView.setItems(options, selectedOption);
         optionView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
             @Override
             public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
