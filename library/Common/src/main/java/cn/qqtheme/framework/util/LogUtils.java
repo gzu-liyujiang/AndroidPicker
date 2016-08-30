@@ -1,13 +1,12 @@
 package cn.qqtheme.framework.util;
 
-import android.os.Debug;
-import android.os.Environment;
-import android.text.TextUtils;
-import android.util.Log;
-
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+
+import android.os.Debug;
+import android.os.Environment;
+import android.util.Log;
 
 import cn.qqtheme.framework.AppConfig;
 
@@ -52,7 +51,7 @@ public final class LogUtils {
      */
     public static void verbose(String tag, String message) {
         if (isDebug) {
-            tag = debugTag + (TextUtils.isEmpty(tag) ? "" : "-" + tag);
+            tag = debugTag + ((tag == null || tag.trim().length() == 0) ? "" : "-") + tag;
             String msg = message + getTraceElement();
             try {
                 Log.v(tag, msg);
@@ -89,7 +88,7 @@ public final class LogUtils {
      */
     public static void debug(String tag, String message) {
         if (isDebug) {
-            tag = debugTag + (TextUtils.isEmpty(tag) ? "" : "-" + tag);
+            tag = debugTag + ((tag == null || tag.trim().length() == 0) ? "" : "-") + tag;
             String msg = message + getTraceElement();
             try {
                 Log.d(tag, msg);
@@ -145,7 +144,7 @@ public final class LogUtils {
      */
     public static void warn(String tag, String message) {
         if (isDebug) {
-            tag = debugTag + (TextUtils.isEmpty(tag) ? "" : "-" + tag);
+            tag = debugTag + ((tag == null || tag.trim().length() == 0) ? "" : "-") + tag;
             String msg = message + getTraceElement();
             try {
                 Log.w(tag, msg);
@@ -201,7 +200,7 @@ public final class LogUtils {
      */
     public static void error(String tag, String message) {
         if (isDebug) {
-            tag = debugTag + (TextUtils.isEmpty(tag) ? "" : "-" + tag);
+            tag = debugTag + ((tag == null || tag.trim().length() == 0) ? "" : "-") + tag;
             String msg = message + getTraceElement();
             try {
                 Log.e(tag, msg);

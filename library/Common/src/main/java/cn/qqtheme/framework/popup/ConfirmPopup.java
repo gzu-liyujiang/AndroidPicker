@@ -23,7 +23,7 @@ import cn.qqtheme.framework.util.ConvertUtils;
  * @author 李玉江[QQ:1032694760]
  * @since 2015/10/21
  */
-public abstract class ConfirmPopup<V extends View> extends BottomPopup<View> {
+public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
     protected boolean topLineVisible = true;
     protected int topLineColor = 0xFFDDDDDD;
     protected int topBackgroundColor = Color.WHITE;

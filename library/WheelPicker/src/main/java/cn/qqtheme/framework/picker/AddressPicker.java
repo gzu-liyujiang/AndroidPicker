@@ -7,15 +7,13 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import cn.qqtheme.framework.widget.WheelView;
 
 /**
  * 地址选择器（包括省级、地级、县级）。
- * 地址数据见示例项目的“city.json”，来源于国家统计局官网（http://www.stats.gov.cn/tjsj/tjbz/xzqhdm）
+ * 地址数据见示例项目的“assets/city.json”，来源于国家统计局官网（http://www.stats.gov.cn/tjsj/tjbz/xzqhdm）
  *
  * @author 李玉江[QQ:1032694760]
  * @since 2015/12/15
@@ -88,7 +86,7 @@ public class AddressPicker extends LinkagePicker {
     /**
      * 隐藏省级行政区，只显示地市级和区县级。
      * 设置为true的话，地址数据中只需要某个省份的即可
-     * 参见示例中的“city2.json”
+     * 参见示例中的“assets/city2.json”
      *
      * @param hideProvince the hide province
      */
@@ -99,7 +97,7 @@ public class AddressPicker extends LinkagePicker {
     /**
      * 隐藏县级行政区，只显示省级和市级。
      * 设置为true的话，hideProvince将强制为false
-     * 数据源依然使用“city.json” 仅在逻辑上隐藏县级选择框，实际项目中应该去掉县级数据。
+     * 数据源依然使用“assets/city.json” 仅在逻辑上隐藏县级选择框，实际项目中应该去掉县级数据。
      *
      * @param hideCounty the hide county
      */
@@ -175,7 +173,12 @@ public class AddressPicker extends LinkagePicker {
                 //根据省份获取地市。若不是用户手动滚动，说明联动需要指定默认项
                 cityView.setItems(secondList.get(selectedFirstIndex), isUserScroll ? 0 : selectedSecondIndex);
                 //根据地市获取区县
-                countyView.setItems(thirdList.get(selectedFirstIndex).get(0), isUserScroll ? 0 : selectedThirdIndex);
+                ArrayList<ArrayList<String>> tmp = thirdList.get(selectedFirstIndex);
+                if (tmp.size() > 0) {
+                    countyView.setItems(tmp.get(0), isUserScroll ? 0 : selectedThirdIndex);
+                } else {
+                    countyView.setItems(new ArrayList<String>());
+                }
             }
         });
         cityView.setItems(secondList.get(selectedFirstIndex), selectedSecondIndex);
@@ -185,8 +188,12 @@ public class AddressPicker extends LinkagePicker {
                 selectedSecondText = item;
                 selectedSecondIndex = selectedIndex;
                 //根据地市获取区县
-                countyView.setItems(thirdList.get(selectedFirstIndex).get(selectedSecondIndex),
-                        isUserScroll ? 0 : selectedThirdIndex);
+                ArrayList<String> tmp = thirdList.get(selectedFirstIndex).get(selectedSecondIndex);
+                if (tmp.size() > 0) {
+                    countyView.setItems(tmp, isUserScroll ? 0 : selectedThirdIndex);
+                } else {
+                    countyView.setItems(new ArrayList<String>());
+                }
             }
         });
         countyView.setItems(thirdList.get(selectedFirstIndex).get(selectedSecondIndex), selectedThirdIndex);
