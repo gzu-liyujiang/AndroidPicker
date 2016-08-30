@@ -12,8 +12,10 @@ import android.widget.TextView;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Locale;
 
 import cn.qqtheme.framework.util.DateUtils;
 import cn.qqtheme.framework.widget.WheelView;
@@ -42,6 +44,8 @@ public class DatePicker extends WheelPicker {
     private ArrayList<String> days = new ArrayList<String>();
     private OnDatePickListener onDatePickListener;
     private String yearLabel = "年", monthLabel = "月", dayLabel = "日";
+    private int startYear = 2010, startMonth = 1, startDay = 1;
+    private int endYear = 2020, endMonth = 12, endDay = 31;
     private int selectedYearIndex = 0, selectedMonthIndex = 0, selectedDayIndex = 0;
     private int mode = YEAR_MONTH_DAY;
 
@@ -71,15 +75,6 @@ public class DatePicker extends WheelPicker {
     public DatePicker(Activity activity, @Mode int mode) {
         super(activity);
         this.mode = mode;
-        for (int i = 2000; i <= 2050; i++) {
-            years.add(String.valueOf(i));
-        }
-        for (int i = 1; i <= 12; i++) {
-            months.add(DateUtils.fillZero(i));
-        }
-        for (int i = 1; i <= 31; i++) {
-            days.add(DateUtils.fillZero(i));
-        }
     }
 
     /**
@@ -93,11 +88,67 @@ public class DatePicker extends WheelPicker {
 
     /**
      * 设置年份范围
+     *
+     * @deprecated use setRangeStart and setRangeEnd instead
      */
+    @Deprecated
     public void setRange(int startYear, int endYear) {
         years.clear();
         for (int i = startYear; i <= endYear; i++) {
             years.add(String.valueOf(i));
+        }
+    }
+
+    /**
+     * 设置范围：开始的年月日
+     */
+    public void setRangeStart(int startYear, int startMonth, int startDay) {
+        this.startYear = startYear;
+        this.startMonth = startMonth;
+        this.startDay = startDay;
+    }
+
+    /**
+     * 设置范围：结束的年月日
+     */
+    public void setRangeEnd(int endYear, int endMonth, int endDay) {
+        if (startYear > endYear) {
+            throw new IllegalArgumentException();
+        }
+        this.endYear = endYear;
+        this.endMonth = endMonth;
+        this.endDay = endDay;
+    }
+
+    /**
+     * 设置范围：开始的年月日
+     */
+    public void setRangeStart(int startYearOrMonth, int startMonthOrDay) {
+        if (mode == YEAR_MONTH_DAY) {
+            throw new IllegalArgumentException();
+        }
+        if (mode == YEAR_MONTH) {
+            this.startYear = startYearOrMonth;
+            this.startMonth = startMonthOrDay;
+        } else {
+            this.startMonth = startYearOrMonth;
+            this.startDay = startMonthOrDay;
+        }
+    }
+
+    /**
+     * 设置范围：结束的年月日
+     */
+    public void setRangeEnd(int endYearOrMonth, int endMonthOrDay) {
+        if (mode == YEAR_MONTH_DAY) {
+            throw new IllegalArgumentException();
+        }
+        if (mode == YEAR_MONTH) {
+            this.endYear = endYearOrMonth;
+            this.endMonth = endMonthOrDay;
+        } else {
+            this.endMonth = endYearOrMonth;
+            this.endDay = endMonthOrDay;
         }
     }
 
@@ -123,6 +174,9 @@ public class DatePicker extends WheelPicker {
      * 设置默认选中的年月日
      */
     public void setSelectedItem(int year, int month, int day) {
+        changeYearData();
+        changeMonthData(year);
+        changeDayData(year, month);
         selectedYearIndex = findItemIndex(years, year);
         selectedMonthIndex = findItemIndex(months, month);
         selectedDayIndex = findItemIndex(days, day);
@@ -132,10 +186,15 @@ public class DatePicker extends WheelPicker {
      * 设置默认选中的年月或者月日
      */
     public void setSelectedItem(int yearOrMonth, int monthOrDay) {
+        int year = Calendar.getInstance(Locale.CHINA).get(Calendar.YEAR);
+        changeYearData();
         if (mode == MONTH_DAY) {
+            changeMonthData(year);
+            changeDayData(year, yearOrMonth);
             selectedMonthIndex = findItemIndex(months, yearOrMonth);
             selectedDayIndex = findItemIndex(days, monthOrDay);
         } else {
+            changeMonthData(year);
             selectedYearIndex = findItemIndex(years, yearOrMonth);
             selectedMonthIndex = findItemIndex(months, monthOrDay);
         }
@@ -148,6 +207,11 @@ public class DatePicker extends WheelPicker {
     @Override
     @NonNull
     protected View makeCenterView() {
+        if (months.size() == 0) {
+            int year = Calendar.getInstance(Locale.CHINA).get(Calendar.YEAR);
+            changeYearData();
+            changeDayData(year, changeMonthData(year));
+        }
         LinearLayout layout = new LinearLayout(activity);
         layout.setOrientation(LinearLayout.HORIZONTAL);
         layout.setGravity(Gravity.CENTER);
@@ -167,7 +231,7 @@ public class DatePicker extends WheelPicker {
             yearTextView.setText(yearLabel);
         }
         layout.addView(yearTextView);
-        WheelView monthView = new WheelView(activity.getBaseContext());
+        final WheelView monthView = new WheelView(activity.getBaseContext());
         monthView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
         monthView.setTextSize(textSize);
         monthView.setTextColor(textColorNormal, textColorFocus);
@@ -200,9 +264,11 @@ public class DatePicker extends WheelPicker {
         }
         layout.addView(dayTextView);
         if (mode == YEAR_MONTH) {
+            //年月模式，隐藏日子
             dayView.setVisibility(View.GONE);
             dayTextView.setVisibility(View.GONE);
         } else if (mode == MONTH_DAY) {
+            //月日模式，隐藏年份
             yearView.setVisibility(View.GONE);
             yearTextView.setVisibility(View.GONE);
         }
@@ -210,6 +276,7 @@ public class DatePicker extends WheelPicker {
             if (!TextUtils.isEmpty(yearLabel)) {
                 yearTextView.setText(yearLabel);
             }
+            changeYearData();
             if (selectedYearIndex == 0) {
                 yearView.setItems(years);
             } else {
@@ -220,14 +287,12 @@ public class DatePicker extends WheelPicker {
                 public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
                     selectedYearIndex = selectedIndex;
                     //需要根据年份及月份动态计算天数
-                    days.clear();
-                    int maxDays = DateUtils.calculateDaysInMonth(stringToYearMonthDay(item), stringToYearMonthDay(months.get(selectedMonthIndex)));
-                    for (int i = 1; i <= maxDays; i++) {
-                        days.add(DateUtils.fillZero(i));
-                    }
-                    if (selectedDayIndex >= maxDays) {
-                        //年或月变动时，保持之前选择的日不动：如果之前选择的日是之前年月的最大日，则日自动为该年月的最大日
-                        selectedDayIndex = days.size() - 1;
+                    int year = DateUtils.trimZero(item);
+                    changeDayData(year, changeMonthData(year));
+                    if (selectedMonthIndex == 0) {
+                        monthView.setItems(months);
+                    } else {
+                        monthView.setItems(months, selectedMonthIndex);
                     }
                     dayView.setItems(days, selectedDayIndex);
                 }
@@ -246,16 +311,7 @@ public class DatePicker extends WheelPicker {
             public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
                 selectedMonthIndex = selectedIndex;
                 if (mode != YEAR_MONTH) {
-                    //年月日或年月模式下，需要根据年份及月份动态计算天数
-                    days.clear();
-                    int maxDays = DateUtils.calculateDaysInMonth(stringToYearMonthDay(years.get(selectedYearIndex)), stringToYearMonthDay(item));
-                    for (int i = 1; i <= maxDays; i++) {
-                        days.add(DateUtils.fillZero(i));
-                    }
-                    if (selectedDayIndex >= maxDays) {
-                        //年或月变动时，保持之前选择的日不动：如果之前选择的日是之前年月的最大日，则日自动为该年月的最大日
-                        selectedDayIndex = days.size() - 1;
-                    }
+                    changeDayData(DateUtils.trimZero(years.get(selectedYearIndex)), DateUtils.trimZero(item));
                     dayView.setItems(days, selectedDayIndex);
                 }
             }
@@ -279,12 +335,55 @@ public class DatePicker extends WheelPicker {
         return layout;
     }
 
-    private int stringToYearMonthDay(String text) {
-        if (text.startsWith("0")) {
-            //截取掉前缀0以便转换为整数
-            text = text.substring(1);
+    private void changeYearData() {
+        years.clear();
+        for (int i = startYear; i <= endYear; i++) {
+            years.add(String.valueOf(i));
         }
-        return Integer.parseInt(text);
+    }
+
+    private int changeMonthData(int year) {
+        months.clear();
+        if (year == startYear) {
+            for (int i = startMonth; i <= 12; i++) {
+                months.add(DateUtils.fillZero(i));
+            }
+            selectedMonthIndex = 0;
+        } else if (year == endYear) {
+            for (int i = 1; i <= endMonth; i++) {
+                months.add(DateUtils.fillZero(i));
+            }
+            selectedMonthIndex = 0;
+        } else {
+            for (int i = 1; i <= 12; i++) {
+                months.add(DateUtils.fillZero(i));
+            }
+        }
+        return DateUtils.trimZero(months.get(selectedMonthIndex));
+    }
+
+    private void changeDayData(int year, int month) {
+        days.clear();
+        int maxDays = DateUtils.calculateDaysInMonth(year, month);
+        if (year == startYear && month == startMonth) {
+            for (int i = startDay; i <= maxDays; i++) {
+                days.add(DateUtils.fillZero(i));
+            }
+            selectedDayIndex = 0;
+        } else if (year == endYear && month == endMonth) {
+            for (int i = 1; i <= endDay; i++) {
+                days.add(DateUtils.fillZero(i));
+            }
+            selectedDayIndex = 0;
+        } else {
+            for (int i = 1; i <= maxDays; i++) {
+                days.add(DateUtils.fillZero(i));
+            }
+            if (selectedDayIndex >= maxDays) {
+                //年或月变动时，保持之前选择的日不动：如果之前选择的日是之前年月的最大日，则日自动为该年月的最大日
+                selectedDayIndex = days.size() - 1;
+            }
+        }
     }
 
     @Override

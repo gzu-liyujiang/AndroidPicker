@@ -236,6 +236,18 @@ public class DateUtils extends android.text.format.DateUtils {
     }
 
     /**
+     * 截取掉前缀0以便转换为整数
+     *
+     * @see #fillZero(int)
+     */
+    public static int trimZero(@NonNull String text) {
+        if (text.startsWith("0")) {
+            text = text.substring(1);
+        }
+        return Integer.parseInt(text);
+    }
+
+    /**
      * 功能：判断日期是否和当前date对象在同一天。
      * 参见：http://www.cnblogs.com/myzhijie/p/3330970.html
      *
