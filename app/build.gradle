@@ -6,8 +6,8 @@ android {
         release {
             //是否zip优化
             zipAlignEnabled true
-            //是否移除无用的资源
-            shrinkResources true
+            //是否移除无用的资源，造成：specified for property 'resourceFile' does not exist.
+            //shrinkResources true
             //是否混淆
             minifyEnabled true
             //混淆配置文件
@@ -18,7 +18,7 @@ android {
 }
 
 dependencies {
-    compile 'com.alibaba:fastjson:1.1.46.android'
+    compile 'com.alibaba:fastjson:1.1.54.android'
     compile 'com.github.florent37:viewanimator:1.0.3'
     compile project(':library:WheelPicker')
     compile project(':library:FilePicker')

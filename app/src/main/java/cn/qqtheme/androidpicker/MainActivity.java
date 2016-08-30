@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
 
@@ -64,6 +65,7 @@ public class MainActivity extends Activity {
 
     public void onAnimator(View view) {
         CustomHeaderAndFooterPicker picker = new CustomHeaderAndFooterPicker(this);
+        picker.setGravity(Gravity.CENTER);
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
             public void onOptionPicked(int position, String option) {
@@ -75,7 +77,8 @@ public class MainActivity extends Activity {
 
     public void onYearMonthDayPicker(View view) {
         DatePicker picker = new DatePicker(this);
-        picker.setRange(2000, 2030);
+        picker.setRangeStart(2016, 8, 29);
+        picker.setRangeEnd(2022, 1, 1);
         picker.setSelectedItem(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
         picker.setOnDatePickListener(new DatePicker.OnYearMonthDayPickListener() {
             @Override
@@ -104,7 +107,8 @@ public class MainActivity extends Activity {
 
     public void onYearMonthPicker(View view) {
         DatePicker picker = new DatePicker(this, DatePicker.YEAR_MONTH);
-        picker.setRange(1990, 2015);
+        picker.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
+        picker.setSelectedItem(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1);
         picker.setOnDatePickListener(new DatePicker.OnYearMonthPickListener() {
             @Override
             public void onDatePicked(String year, String month) {
@@ -116,6 +120,8 @@ public class MainActivity extends Activity {
 
     public void onMonthDayPicker(View view) {
         DatePicker picker = new DatePicker(this, DatePicker.MONTH_DAY);
+        picker.setGravity(Gravity.CENTER);
+        picker.setSelectedItem(calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
         picker.setOnDatePickListener(new DatePicker.OnMonthDayPickListener() {
             @Override
             public void onDatePicked(String month, String day) {

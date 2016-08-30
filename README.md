@@ -8,13 +8,13 @@
 # Install
 “app”是测试用例；“library”包括WheelPicker、ColorPicker、FilePicker，
 WheelPicker包括DateTimePicker、OptionPicker、LinkagePicker、AddressPicker、NumberPicker等，
-可下载本项目手动进行源代码集成，导入“library”下的相关module（记得将module下的build.gradle修改为以下内容，否则可能会报错找不到BuildToolsVersion）：
+可下载本项目手动进行源代码集成，导入“library”下的相关module（记得将module下的build.gradle修改类似于下面的内容，否则可能会报错找不到BuildToolsVersion）：
 ```groovy
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion 23.0.1
+    compileSdkVersion 22
+    buildToolsVersion 22.0.1
 
     defaultConfig {
         minSdkVersion 14
@@ -112,7 +112,8 @@ public class CustomHeaderAndFooterPicker extends OptionPicker {
 日期选择器：
 ```java
         DatePicker picker = new DatePicker(this, DatePicker.YEAR_MONTH_DAY);
-        picker.setRange(1990, 2015);//年份范围
+        picker.setRangeStart(2016, 8, 29);//开始范围
+        picker.setRangeEnd(2022, 1, 1);//结束范围
         picker.setOnDatePickListener(new DatePicker.OnYearMonthDayPickListener() {
             @Override
             public void onDatePicked(String year, String month, String day) {
@@ -126,6 +127,7 @@ public class CustomHeaderAndFooterPicker extends OptionPicker {
 ```java
         //默认选中当前时间
         TimePicker picker = new TimePicker(this, TimePicker.HOUR_OF_DAY);
+        picker.setGravity(Gravity.CENTER);
         picker.setTopLineVisible(false);
         picker.setOnTimePickListener(new TimePicker.OnTimePickListener() {
             @Override
@@ -252,7 +254,7 @@ public class CustomHeaderAndFooterPicker extends OptionPicker {
 ```
 
 # Thanks
-库项目修改了使用以下项目：      
+库项目修改使用了以下项目：      
 https://github.com/wangjiegulu/WheelView      
 https://github.com/jbruchanov/AndroidColorPicker      
 
