@@ -26,37 +26,54 @@ import cn.qqtheme.framework.widget.WheelView;
 public class TimePicker extends WheelPicker {
     /**
      * 24小时
+     *
+     * @deprecated use {@link #HOUR_24} instead
      */
+    @Deprecated
     public static final int HOUR_OF_DAY = 0;
+    public static final int HOUR_24 = 0;
     /**
      * 12小时
+     *
+     * @deprecated use {@link #HOUR_12} instead
      */
+    @Deprecated
     public static final int HOUR = 1;
+    public static final int HOUR_12 = 1;
     private OnTimePickListener onTimePickListener;
     private int mode;
     private String hourLabel = "时", minuteLabel = "分";
     private String selectedHour = "", selectedMinute = "";
+    private int startHour, startMinute = 0;
+    private int endHour, endMinute = 59;
 
     /**
      * 安卓开发应避免使用枚举类（enum），因为相比于静态常量enum会花费两倍以上的内存。
      * http://developer.android.com/training/articles/memory.html#Overhead
      */
-    @IntDef(flag = false, value = {HOUR_OF_DAY, HOUR})
+    @IntDef(flag = false, value = {HOUR_OF_DAY, HOUR, HOUR_24, HOUR_12})
     @Retention(RetentionPolicy.SOURCE)
     public @interface Mode {
     }
 
     public TimePicker(Activity activity) {
-        this(activity, HOUR_OF_DAY);
+        this(activity, HOUR_24);
     }
 
     /**
-     * @see #HOUR_OF_DAY
-     * @see #HOUR
+     * @see #HOUR_24
+     * @see #HOUR_12
      */
     public TimePicker(Activity activity, @Mode int mode) {
         super(activity);
         this.mode = mode;
+        if (mode == HOUR_12) {
+            startHour = 1;
+            endHour = 12;
+        } else {
+            startHour = 0;
+            endHour = 23;
+        }
         selectedHour = DateUtils.fillZero(Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
         selectedMinute = DateUtils.fillZero(Calendar.getInstance().get(Calendar.MINUTE));
     }
@@ -70,11 +87,53 @@ public class TimePicker extends WheelPicker {
     }
 
     /**
+     * 设置范围：开始的时分
+     */
+    public void setRangeStart(int startHour, int startMinute) {
+        boolean illegal = false;
+        if (startHour < 0 || startMinute < 0 || startMinute > 59) {
+            illegal = true;
+        }
+        if (mode == HOUR_12 && (startHour == 0 || startHour > 12)) {
+            illegal = true;
+        }
+        if (mode == HOUR_24 && startHour >= 24) {
+            illegal = true;
+        }
+        if (illegal) {
+            throw new IllegalArgumentException();
+        }
+        this.startHour = startHour;
+        this.startMinute = startMinute;
+    }
+
+    /**
+     * 设置范围：结束的时分
+     */
+    public void setRangeEnd(int endHour, int endMinute) {
+        boolean illegal = false;
+        if (endHour < 0 || endMinute < 0 || endMinute > 59) {
+            illegal = true;
+        }
+        if (mode == HOUR_12 && (endHour == 0 || endHour > 12)) {
+            illegal = true;
+        }
+        if (mode == HOUR_24 && endHour >= 24) {
+            illegal = true;
+        }
+        if (illegal) {
+            throw new IllegalArgumentException();
+        }
+        this.endHour = endHour;
+        this.endMinute = endMinute;
+    }
+
+    /**
      * 设置默认选中的时间
      */
     public void setSelectedItem(int hour, int minute) {
-        selectedHour = String.valueOf(hour);
-        selectedMinute = String.valueOf(minute);
+        selectedHour = DateUtils.fillZero(hour);
+        selectedMinute = DateUtils.fillZero(minute);
     }
 
     public void setOnTimePickListener(OnTimePickListener listener) {
@@ -102,7 +161,7 @@ public class TimePicker extends WheelPicker {
             hourTextView.setText(hourLabel);
         }
         layout.addView(hourTextView);
-        WheelView minuteView = new WheelView(activity);
+        final WheelView minuteView = new WheelView(activity);
         minuteView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
         minuteView.setTextSize(textSize);
         minuteView.setTextColor(textColorNormal, textColorFocus);
@@ -119,25 +178,16 @@ public class TimePicker extends WheelPicker {
         }
         layout.addView(minuteTextView);
         ArrayList<String> hours = new ArrayList<String>();
-        if (mode == HOUR) {
-            for (int i = 1; i <= 12; i++) {
-                hours.add(DateUtils.fillZero(i));
-            }
-        } else {
-            for (int i = 0; i < 24; i++) {
-                hours.add(DateUtils.fillZero(i));
-            }
+        for (int i = startHour; i <= endHour; i++) {
+            hours.add(DateUtils.fillZero(i));
         }
         hourView.setItems(hours, selectedHour);
-        ArrayList<String> minutes = new ArrayList<String>();
-        for (int i = 0; i < 60; i++) {
-            minutes.add(DateUtils.fillZero(i));
-        }
-        minuteView.setItems(minutes, selectedMinute);
+        minuteView.setItems(changeMinuteData(selectedHour), selectedMinute);
         hourView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
             @Override
             public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
                 selectedHour = item;
+                minuteView.setItems(changeMinuteData(item));
             }
         });
         minuteView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
@@ -147,6 +197,27 @@ public class TimePicker extends WheelPicker {
             }
         });
         return layout;
+    }
+
+    private ArrayList<String> changeMinuteData(String hour) {
+        ArrayList<String> minutes = new ArrayList<String>();
+        int hourInt = DateUtils.trimZero(hour);
+        if (hourInt == startHour) {
+            for (int i = startMinute; i <= 59; i++) {
+                minutes.add(DateUtils.fillZero(i));
+            }
+            selectedMinute = "00";
+        } else if (hourInt == endHour) {
+            for (int i = 0; i <= endMinute; i++) {
+                minutes.add(DateUtils.fillZero(i));
+            }
+            selectedMinute = "00";
+        } else {
+            for (int i = 0; i <= 59; i++) {
+                minutes.add(DateUtils.fillZero(i));
+            }
+        }
+        return minutes;
     }
 
     @Override
