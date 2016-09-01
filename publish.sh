@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # /home/liyujiang/.m2/repository
-gradlew publishToMavenLocal --info
+./gradlew publishToMavenLocal --stacktrace
 
 # http://jcenter.bintray.com
-# gradlew bintrayUpload --info
+# ./gradlew bintrayUpload --stacktrace

@@ -201,7 +201,7 @@ subprojects {
                             name = project.pomVersion
                             desc = project.pomDescription
                             gpg {
-                                sign = true    //是否GPG签名，可使用Gpg4win创建密钥文件
+                                sign = false    //是否GPG签名，可使用Gpg4win创建密钥文件
                                 passphrase = properties.getProperty("bintray.gpg.password")
                                 //GPG签名所用密钥
                             }
