@@ -93,10 +93,9 @@ public class DatePicker extends WheelPicker {
      */
     @Deprecated
     public void setRange(int startYear, int endYear) {
-        years.clear();
-        for (int i = startYear; i <= endYear; i++) {
-            years.add(String.valueOf(i));
-        }
+        this.startYear = startYear;
+        this.endYear = endYear;
+        changeYearData();
     }
 
     /**
@@ -112,9 +111,6 @@ public class DatePicker extends WheelPicker {
      * 设置范围：结束的年月日
      */
     public void setRangeEnd(int endYear, int endMonth, int endDay) {
-        if (startYear > endYear) {
-            throw new IllegalArgumentException();
-        }
         this.endYear = endYear;
         this.endMonth = endMonth;
         this.endDay = endDay;
@@ -208,6 +204,7 @@ public class DatePicker extends WheelPicker {
     @NonNull
     protected View makeCenterView() {
         if (months.size() == 0) {
+            // 如果未设置默认项，则需要在此初始化数据
             int year = Calendar.getInstance(Locale.CHINA).get(Calendar.YEAR);
             changeYearData();
             changeDayData(year, changeMonthData(year));
@@ -337,8 +334,16 @@ public class DatePicker extends WheelPicker {
 
     private void changeYearData() {
         years.clear();
-        for (int i = startYear; i <= endYear; i++) {
-            years.add(String.valueOf(i));
+        if (startYear < endYear) {
+            //年份正序
+            for (int i = startYear; i <= endYear; i++) {
+                years.add(String.valueOf(i));
+            }
+        } else {
+            //年份逆序
+            for (int i = startYear; i >= endYear; i--) {
+                years.add(String.valueOf(i));
+            }
         }
     }
 
