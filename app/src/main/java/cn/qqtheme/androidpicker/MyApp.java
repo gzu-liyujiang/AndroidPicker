@@ -16,7 +16,7 @@ public class MyApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        AppConfig.DEBUG_ENABLE = BuildConfig.DEBUG;
+        AppConfig.DEBUG_ENABLE = true;//BuildConfig.DEBUG;
     }
 
 }

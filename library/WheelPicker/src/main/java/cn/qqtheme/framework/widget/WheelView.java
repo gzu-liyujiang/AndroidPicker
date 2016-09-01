@@ -32,6 +32,7 @@ import cn.qqtheme.framework.util.LogUtils;
  * 设置文字大小
  * 分隔线是否可见
  * 初始设置选中选项
+ * 伪循环滚动
  *
  * @author 李玉江[QQ:1023694760]
  * @since 2015/12/17
@@ -168,15 +169,6 @@ public class WheelView extends ScrollView {
         }
     }
 
-    private int[] obtainSelectedAreaBorder() {
-        if (null == selectedAreaBorder) {
-            selectedAreaBorder = new int[2];
-            selectedAreaBorder[0] = itemHeight * offset;
-            selectedAreaBorder[1] = itemHeight * (offset + 1);
-        }
-        return selectedAreaBorder;
-    }
-
     /**
      * 选中回调
      */
@@ -209,46 +201,7 @@ public class WheelView extends ScrollView {
     @SuppressWarnings("deprecation")
     @Override
     public void setBackgroundDrawable(Drawable background) {
-        if (viewWidth == 0) {
-            viewWidth = ((Activity) context).getWindowManager().getDefaultDisplay().getWidth();
-            LogUtils.debug(this, "viewWidth: " + viewWidth);
-        }
-
-        // 2015/12/22 可设置分隔线是否可见
-        if (!lineVisible) {
-            return;
-        }
-
-        if (null == paint) {
-            paint = new Paint();
-            paint.setColor(lineColor);
-            paint.setStrokeWidth(dip2px(1f));
-        }
-
-        background = new Drawable() {
-            @Override
-            public void draw(Canvas canvas) {
-                int[] areaBorder = obtainSelectedAreaBorder();
-                canvas.drawLine(viewWidth / 6, areaBorder[0], viewWidth * 5 / 6, areaBorder[0], paint);
-                canvas.drawLine(viewWidth / 6, areaBorder[1], viewWidth * 5 / 6, areaBorder[1], paint);
-            }
-
-            @Override
-            public void setAlpha(int alpha) {
-
-            }
-
-            @Override
-            public void setColorFilter(ColorFilter cf) {
-
-            }
-
-            @Override
-            public int getOpacity() {
-                return 0;
-            }
-        };
-        super.setBackgroundDrawable(background);
+        super.setBackgroundDrawable(new LineDrawable());
     }
 
     @Override
@@ -565,6 +518,53 @@ public class WheelView extends ScrollView {
             }
         }
 
+    }
+
+    private class LineDrawable extends Drawable {
+
+        public LineDrawable() {
+            if (viewWidth == 0) {
+                viewWidth = ((Activity) context).getWindowManager().getDefaultDisplay().getWidth();
+                LogUtils.debug(this, "viewWidth: " + viewWidth);
+            }
+
+            // 2015/12/22 可设置分隔线是否可见
+            if (!lineVisible) {
+                return;
+            }
+
+            if (null == paint) {
+                paint = new Paint();
+                paint.setColor(lineColor);
+                paint.setStrokeWidth(dip2px(1f));
+            }
+        }
+
+        @Override
+        public void draw(Canvas canvas) {
+            if (null == selectedAreaBorder) {
+                selectedAreaBorder = new int[2];
+                selectedAreaBorder[0] = itemHeight * offset;
+                selectedAreaBorder[1] = itemHeight * (offset + 1);
+            }
+            canvas.drawLine(viewWidth / 6, selectedAreaBorder[0], viewWidth * 5 / 6, selectedAreaBorder[0], paint);
+            canvas.drawLine(viewWidth / 6, selectedAreaBorder[1], viewWidth * 5 / 6, selectedAreaBorder[1], paint);
+        }
+
+        @Override
+        public void setAlpha(int alpha) {
+
+        }
+
+        @Override
+        public void setColorFilter(ColorFilter cf) {
+
+        }
+
+        @Override
+        public int getOpacity() {
+            return 0;
+        }
     }
 
 }

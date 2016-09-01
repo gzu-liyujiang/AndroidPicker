@@ -108,6 +108,8 @@ public class MainActivity extends Activity {
     public void onYearMonthPicker(View view) {
         DatePicker picker = new DatePicker(this, DatePicker.YEAR_MONTH);
         picker.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
+        picker.setRangeStart(2050, 5, 20);
+        picker.setRangeEnd(2020, 11, 11);
         picker.setSelectedItem(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1);
         picker.setOnDatePickListener(new DatePicker.OnYearMonthPickListener() {
             @Override
@@ -120,7 +122,7 @@ public class MainActivity extends Activity {
 
     public void onMonthDayPicker(View view) {
         DatePicker picker = new DatePicker(this, DatePicker.MONTH_DAY);
-        picker.setGravity(Gravity.CENTER);
+        picker.setGravity(Gravity.CENTER);//弹框居中
         picker.setSelectedItem(calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
         picker.setOnDatePickListener(new DatePicker.OnMonthDayPickListener() {
             @Override
@@ -132,8 +134,9 @@ public class MainActivity extends Activity {
     }
 
     public void onTimePicker(View view) {
-        //默认选中当前时间
-        TimePicker picker = new TimePicker(this, TimePicker.HOUR_OF_DAY);
+        TimePicker picker = new TimePicker(this, TimePicker.HOUR_12);
+        picker.setRangeStart(9, 0);//09:00
+        picker.setRangeEnd(12, 30);//12:30
         picker.setTopLineVisible(false);
         picker.setOnTimePickListener(new TimePicker.OnTimePickListener() {
             @Override
@@ -238,7 +241,7 @@ public class MainActivity extends Activity {
     public void onAddress2Picker(View view) {
         try {
             ArrayList<AddressPicker.Province> data = new ArrayList<AddressPicker.Province>();
-            String json = AssetsUtils.readText(this, "city2.json");
+            String json = ConvertUtils.toString(getAssets().open("city2.json"));
             data.addAll(JSON.parseArray(json, AddressPicker.Province.class));
             AddressPicker picker = new AddressPicker(this, data);
             picker.setHideProvince(true);

@@ -10,6 +10,7 @@ import com.alibaba.fastjson.JSON;
 import java.util.ArrayList;
 
 import cn.qqtheme.framework.picker.AddressPicker;
+import cn.qqtheme.framework.util.ConvertUtils;
 
 /**
  * 获取地址数据并显示地址选择器
@@ -62,7 +63,7 @@ public class AddressInitTask extends AsyncTask<String, Void, ArrayList<AddressPi
         }
         ArrayList<AddressPicker.Province> data = new ArrayList<AddressPicker.Province>();
         try {
-            String json = AssetsUtils.readText(activity, "city.json");
+            String json = ConvertUtils.toString(activity.getAssets().open("city.json"));
             data.addAll(JSON.parseArray(json, AddressPicker.Province.class));
         } catch (Exception e) {
             e.printStackTrace();
