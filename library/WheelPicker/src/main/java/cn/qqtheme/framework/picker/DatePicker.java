@@ -286,11 +286,7 @@ public class DatePicker extends WheelPicker {
                     //需要根据年份及月份动态计算天数
                     int year = DateUtils.trimZero(item);
                     changeDayData(year, changeMonthData(year));
-                    if (selectedMonthIndex == 0) {
-                        monthView.setItems(months);
-                    } else {
-                        monthView.setItems(months, selectedMonthIndex);
-                    }
+                    monthView.setItems(months, selectedMonthIndex);
                     dayView.setItems(days, selectedDayIndex);
                 }
             });
@@ -317,11 +313,7 @@ public class DatePicker extends WheelPicker {
             if (!TextUtils.isEmpty(dayLabel)) {
                 dayTextView.setText(dayLabel);
             }
-            if (selectedDayIndex == 0) {
-                dayView.setItems(days);
-            } else {
-                dayView.setItems(days, selectedDayIndex);
-            }
+            dayView.setItems(days, selectedDayIndex);
             dayView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
                 @Override
                 public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
@@ -348,38 +340,39 @@ public class DatePicker extends WheelPicker {
     }
 
     private int changeMonthData(int year) {
+        String preSelectMonth = months.size() > selectedMonthIndex ? months.get(selectedMonthIndex) : null;
         months.clear();
         if (year == startYear) {
             for (int i = startMonth; i <= 12; i++) {
                 months.add(DateUtils.fillZero(i));
             }
-            selectedMonthIndex = 0;
         } else if (year == endYear) {
             for (int i = 1; i <= endMonth; i++) {
                 months.add(DateUtils.fillZero(i));
             }
-            selectedMonthIndex = 0;
         } else {
             for (int i = 1; i <= 12; i++) {
                 months.add(DateUtils.fillZero(i));
             }
         }
+        selectedMonthIndex = (preSelectMonth == null || !months.contains(preSelectMonth)) ? 0 : months.indexOf(preSelectMonth);
         return DateUtils.trimZero(months.get(selectedMonthIndex));
     }
 
     private void changeDayData(int year, int month) {
+        String preSelectDay = days.size() > selectedDayIndex ? days.get(selectedDayIndex) : null;
         days.clear();
         int maxDays = DateUtils.calculateDaysInMonth(year, month);
         if (year == startYear && month == startMonth) {
             for (int i = startDay; i <= maxDays; i++) {
                 days.add(DateUtils.fillZero(i));
             }
-            selectedDayIndex = 0;
+            selectedDayIndex = (preSelectDay == null || !days.contains(preSelectDay)) ? 0 : days.indexOf(preSelectDay);
         } else if (year == endYear && month == endMonth) {
             for (int i = 1; i <= endDay; i++) {
                 days.add(DateUtils.fillZero(i));
             }
-            selectedDayIndex = 0;
+            selectedDayIndex = (preSelectDay == null || !days.contains(preSelectDay)) ? 0 : days.indexOf(preSelectDay);
         } else {
             for (int i = 1; i <= maxDays; i++) {
                 days.add(DateUtils.fillZero(i));
