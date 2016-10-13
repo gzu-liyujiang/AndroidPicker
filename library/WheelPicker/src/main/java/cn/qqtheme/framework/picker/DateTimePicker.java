@@ -21,6 +21,7 @@ import cn.qqtheme.framework.widget.WheelView;
 
 /**
  * 日期时间选择器，可同时选中日期及时间
+ * 请参考{@link DatePicker}和{@link TimePicker}的实现
  * Created by Dong on 2016/5/13.
  */
 public class DateTimePicker extends WheelPicker {
@@ -192,7 +193,7 @@ public class DateTimePicker extends WheelPicker {
                     selectedYearIndex = selectedIndex;
                     //需要根据年份及月份动态计算天数
                     days.clear();
-                    int maxDays = DateUtils.calculateDaysInMonth(stringToYearMonthDay(item), stringToYearMonthDay(months.get(selectedMonthIndex)));
+                    int maxDays = DateUtils.calculateDaysInMonth(DateUtils.trimZero(item), DateUtils.trimZero(months.get(selectedMonthIndex)));
                     for (int i = 1; i <= maxDays; i++) {
                         days.add(DateUtils.fillZero(i));
                     }
@@ -219,7 +220,7 @@ public class DateTimePicker extends WheelPicker {
                 if (mode != YEAR_MONTH) {
                     //年月日或年月模式下，需要根据年份及月份动态计算天数
                     days.clear();
-                    int maxDays = DateUtils.calculateDaysInMonth(stringToYearMonthDay(years.get(selectedYearIndex)), stringToYearMonthDay(item));
+                    int maxDays = DateUtils.calculateDaysInMonth(DateUtils.trimZero(years.get(selectedYearIndex)), DateUtils.trimZero(item));
                     for (int i = 1; i <= maxDays; i++) {
                         days.add(DateUtils.fillZero(i));
                     }
@@ -313,14 +314,6 @@ public class DateTimePicker extends WheelPicker {
         return days.get(selectedDayIndex);
     }
 
-    private int stringToYearMonthDay(String text) {
-        if (text.startsWith("0")) {
-            //截取掉前缀0以便转换为整数
-            text = text.substring(1);
-        }
-        return Integer.parseInt(text);
-    }
-
     /**
      * 设置年月日时分的显示单位
      */
@@ -367,8 +360,8 @@ public class DateTimePicker extends WheelPicker {
         selectedYearIndex = findItemIndex(years, year);
         selectedMonthIndex = findItemIndex(months, month);
         selectedDayIndex = findItemIndex(days, day);
-        selectedHour = String.valueOf(hour);
-        selectedMinute = String.valueOf(minute);
+        selectedHour = DateUtils.fillZero(hour);
+        selectedMinute = DateUtils.fillZero(minute);
     }
 
     /**
@@ -382,8 +375,8 @@ public class DateTimePicker extends WheelPicker {
             selectedYearIndex = findItemIndex(years, yearOrMonth);
             selectedMonthIndex = findItemIndex(months, monthOrDay);
         }
-        selectedHour = String.valueOf(hour);
-        selectedMinute = String.valueOf(minute);
+        selectedHour = DateUtils.fillZero(hour);
+        selectedMinute = DateUtils.fillZero(minute);
     }
 
     protected interface OnDateTimePickListener {
