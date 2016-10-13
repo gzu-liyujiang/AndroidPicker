@@ -53,16 +53,11 @@ public class DatePicker extends WheelPicker {
      * 安卓开发应避免使用枚举类（enum），因为相比于静态常量enum会花费两倍以上的内存。
      * http://developer.android.com/training/articles/memory.html#Overhead
      */
-    @IntDef(flag = false, value = {YEAR_MONTH_DAY, YEAR_MONTH, MONTH_DAY})
+    @IntDef(value = {YEAR_MONTH_DAY, YEAR_MONTH, MONTH_DAY})
     @Retention(RetentionPolicy.SOURCE)
     public @interface Mode {
     }
 
-    /**
-     * Instantiates a new Date picker.
-     *
-     * @param activity the activity
-     */
     public DatePicker(Activity activity) {
         this(activity, YEAR_MONTH_DAY);
     }
@@ -326,7 +321,9 @@ public class DatePicker extends WheelPicker {
 
     private void changeYearData() {
         years.clear();
-        if (startYear < endYear) {
+        if (startYear == endYear) {
+            years.add(String.valueOf(startYear));
+        } else if (startYear < endYear) {
             //年份正序
             for (int i = startYear; i <= endYear; i++) {
                 years.add(String.valueOf(i));
@@ -342,7 +339,11 @@ public class DatePicker extends WheelPicker {
     private int changeMonthData(int year) {
         String preSelectMonth = months.size() > selectedMonthIndex ? months.get(selectedMonthIndex) : null;
         months.clear();
-        if (year == startYear) {
+        if (startYear == endYear) {
+            for (int i = startMonth; i <= endMonth; i++) {
+                months.add(DateUtils.fillZero(i));
+            }
+        } else if (year == startYear) {
             for (int i = startMonth; i <= 12; i++) {
                 months.add(DateUtils.fillZero(i));
             }
