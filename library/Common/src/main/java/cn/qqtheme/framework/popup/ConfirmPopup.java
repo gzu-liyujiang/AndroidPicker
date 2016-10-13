@@ -3,6 +3,7 @@ package cn.qqtheme.framework.popup;
 import android.app.Activity;
 import android.graphics.Color;
 import android.support.annotation.ColorInt;
+import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -17,7 +18,7 @@ import android.widget.TextView;
 import cn.qqtheme.framework.util.ConvertUtils;
 
 /**
- * 带确定及取消按钮的
+ * 带确定及取消按钮的弹窗
  *
  * @param <V> the type parameter
  * @author 李玉江[QQ:1032694760]
@@ -27,6 +28,7 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
     protected boolean topLineVisible = true;
     protected int topLineColor = 0xFFDDDDDD;
     protected int topBackgroundColor = Color.WHITE;
+    protected int topHeight = 40;//dp
     protected boolean cancelVisible = true;
     protected CharSequence cancelText = "";
     protected CharSequence submitText = "";
@@ -34,133 +36,82 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
     protected int cancelTextColor = Color.BLACK;
     protected int submitTextColor = Color.BLACK;
     protected int titleTextColor = Color.BLACK;
+    protected int cancelTextSize = 0;
+    protected int submitTextSize = 0;
+    protected int titleTextSize = 0;
 
-    /**
-     * Instantiates a new Confirm popup.
-     *
-     * @param activity the activity
-     */
     public ConfirmPopup(Activity activity) {
         super(activity);
         cancelText = activity.getString(android.R.string.cancel);
         submitText = activity.getString(android.R.string.ok);
     }
 
-    /**
-     * Sets top line color.
-     *
-     * @param topLineColor the top line color
-     */
     public void setTopLineColor(@ColorInt int topLineColor) {
         this.topLineColor = topLineColor;
     }
 
-    /**
-     * Sets top background color.
-     *
-     * @param topBackgroundColor the top background color
-     */
     public void setTopBackgroundColor(@ColorInt int topBackgroundColor) {
         this.topBackgroundColor = topBackgroundColor;
     }
 
-    /**
-     * Sets top line visible.
-     *
-     * @param topLineVisible the top line visible
-     */
+    public void setTopHeight(@IntRange(from = 10, to = 80) int topHeight) {
+        this.topHeight = topHeight;
+    }
+
     public void setTopLineVisible(boolean topLineVisible) {
         this.topLineVisible = topLineVisible;
     }
 
-    /**
-     * Sets cancel visible.
-     *
-     * @param cancelVisible the cancel visible
-     */
     public void setCancelVisible(boolean cancelVisible) {
         this.cancelVisible = cancelVisible;
     }
 
-    /**
-     * Sets cancel text.
-     *
-     * @param cancelText the cancel text
-     */
     public void setCancelText(CharSequence cancelText) {
         this.cancelText = cancelText;
     }
 
-    /**
-     * Sets cancel text.
-     *
-     * @param textRes the text res
-     */
     public void setCancelText(@StringRes int textRes) {
         this.cancelText = activity.getString(textRes);
     }
 
-    /**
-     * Sets submit text.
-     *
-     * @param submitText the submit text
-     */
     public void setSubmitText(CharSequence submitText) {
         this.submitText = submitText;
     }
 
-    /**
-     * Sets submit text.
-     *
-     * @param textRes the text res
-     */
     public void setSubmitText(@StringRes int textRes) {
         this.submitText = activity.getString(textRes);
     }
 
-    /**
-     * Sets title text.
-     *
-     * @param titleText the title text
-     */
     public void setTitleText(CharSequence titleText) {
         this.titleText = titleText;
     }
 
-    /**
-     * Sets title text.
-     *
-     * @param textRes the text res
-     */
     public void setTitleText(@StringRes int textRes) {
         this.titleText = activity.getString(textRes);
     }
 
-    /**
-     * Sets cancel text color.
-     *
-     * @param cancelTextColor the cancel text color
-     */
     public void setCancelTextColor(@ColorInt int cancelTextColor) {
         this.cancelTextColor = cancelTextColor;
     }
 
-    /**
-     * Sets submit text color.
-     *
-     * @param submitTextColor the submit text color
-     */
     public void setSubmitTextColor(@ColorInt int submitTextColor) {
         this.submitTextColor = submitTextColor;
     }
 
-    /**
-     * Sets title text color.
-     *
-     * @param titleTextColor the title text color
-     */
     public void setTitleTextColor(@ColorInt int titleTextColor) {
         this.titleTextColor = titleTextColor;
+    }
+
+    public void setCancelTextSize(@IntRange(from = 10, to = 40) int cancelTextSize) {
+        this.cancelTextSize = cancelTextSize;
+    }
+
+    public void setSubmitTextSize(@IntRange(from = 10, to = 40) int submitTextSize) {
+        this.submitTextSize = submitTextSize;
+    }
+
+    public void setTitleTextSize(@IntRange(from = 10, to = 40) int titleTextSize) {
+        this.titleTextSize = titleTextSize;
     }
 
     /**
@@ -195,15 +146,10 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
         return rootLayout;
     }
 
-    /**
-     * Make header view view.
-     *
-     * @return the view
-     */
     @Nullable
     protected View makeHeaderView() {
         RelativeLayout topButtonLayout = new RelativeLayout(activity);
-        topButtonLayout.setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, ConvertUtils.toPx(activity, 40)));
+        topButtonLayout.setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, ConvertUtils.toPx(activity, topHeight)));
         topButtonLayout.setBackgroundColor(topBackgroundColor);
         topButtonLayout.setGravity(Gravity.CENTER_VERTICAL);
 
@@ -219,6 +165,9 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
             cancelButton.setText(cancelText);
         }
         cancelButton.setTextColor(cancelTextColor);
+        if (cancelTextSize != 0) {
+            cancelButton.setTextSize(cancelTextSize);
+        }
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -241,6 +190,9 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
             titleView.setText(titleText);
         }
         titleView.setTextColor(titleTextColor);
+        if (titleTextSize != 0) {
+            titleView.setTextSize(titleTextSize);
+        }
         topButtonLayout.addView(titleView);
 
         Button submitButton = new Button(activity);
@@ -254,6 +206,9 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
             submitButton.setText(submitText);
         }
         submitButton.setTextColor(submitTextColor);
+        if (submitTextSize != 0) {
+            submitButton.setTextSize(submitTextSize);
+        }
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -266,34 +221,18 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
         return topButtonLayout;
     }
 
-    /**
-     * Init center view v.
-     *
-     * @return the v
-     */
     @NonNull
     protected abstract V makeCenterView();
 
-    /**
-     * Make footer view view.
-     *
-     * @return the view
-     */
     @Nullable
     protected View makeFooterView() {
         return null;
     }
 
-    /**
-     * On submit.
-     */
     protected void onSubmit() {
 
     }
 
-    /**
-     * On cancel.
-     */
     protected void onCancel() {
 
     }
