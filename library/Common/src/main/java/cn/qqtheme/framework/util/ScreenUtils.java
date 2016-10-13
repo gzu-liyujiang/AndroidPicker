@@ -15,12 +15,6 @@ import android.view.WindowManager;
 public final class ScreenUtils {
     private static boolean isFullScreen = false;
 
-    /**
-     * Display metrics display metrics.
-     *
-     * @param context the context
-     * @return the display metrics
-     */
     public static DisplayMetrics displayMetrics(Context context) {
         DisplayMetrics dm = new DisplayMetrics();
         WindowManager windowManager = (WindowManager) context
@@ -31,60 +25,26 @@ public final class ScreenUtils {
         return dm;
     }
 
-    /**
-     * Width pixels int.
-     *
-     * @param context the context
-     * @return the int
-     */
     public static int widthPixels(Context context) {
         return displayMetrics(context).widthPixels;
     }
 
-    /**
-     * Height pixels int.
-     *
-     * @param context the context
-     * @return the int
-     */
     public static int heightPixels(Context context) {
         return displayMetrics(context).heightPixels;
     }
 
-    /**
-     * Density float.
-     *
-     * @param context the context
-     * @return the float
-     */
     public static float density(Context context) {
         return displayMetrics(context).density;
     }
 
-    /**
-     * Density dpi int.
-     *
-     * @param context the context
-     * @return the int
-     */
     public static int densityDpi(Context context) {
         return displayMetrics(context).densityDpi;
     }
 
-    /**
-     * Is full screen boolean.
-     *
-     * @return the boolean
-     */
     public static boolean isFullScreen() {
         return isFullScreen;
     }
 
-    /**
-     * Toggle full displayMetrics.
-     *
-     * @param activity the activity
-     */
     public static void toggleFullScreen(Activity activity) {
         Window window = activity.getWindow();
         int flagFullscreen = WindowManager.LayoutParams.FLAG_FULLSCREEN;
@@ -99,8 +59,6 @@ public final class ScreenUtils {
 
     /**
      * 保持屏幕常亮
-     *
-     * @param activity the activity
      */
     public static void keepBright(Activity activity) {
         //需在setContentView前调用

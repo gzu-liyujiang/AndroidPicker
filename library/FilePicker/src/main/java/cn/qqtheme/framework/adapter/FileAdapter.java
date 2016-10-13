@@ -20,16 +20,13 @@ import cn.qqtheme.framework.util.FileUtils;
 import cn.qqtheme.framework.util.LogUtils;
 
 /**
- * The type File adapter.
+ * 文件目录数据适配
+ *
+ * @author 李玉江[QQ:1032694760]
+ * @since 2014-05-23 18:02
  */
 public class FileAdapter extends BaseAdapter {
-    /**
-     * The constant DIR_ROOT.
-     */
     public static final String DIR_ROOT = "..";
-    /**
-     * The constant DIR_PARENT.
-     */
     public static final String DIR_PARENT = "";
     private Context context;
     private ArrayList<FileItem> data = new ArrayList<FileItem>();
@@ -45,74 +42,34 @@ public class FileAdapter extends BaseAdapter {
     private int folderIcon = R.drawable.file_picker_folder;
     private int fileIcon = R.drawable.file_picker_file;
 
-    /**
-     * Instantiates a new File adapter.
-     *
-     * @param context the context
-     */
     public FileAdapter(Context context) {
         this.context = context;
     }
 
-    /**
-     * Gets current path.
-     *
-     * @return the current path
-     */
     public String getCurrentPath() {
         return currentPath;
     }
 
-    /**
-     * Sets allow extensions.
-     *
-     * @param allowExtensions the allow extensions
-     */
     public void setAllowExtensions(String[] allowExtensions) {
         this.allowExtensions = allowExtensions;
     }
 
-    /**
-     * Sets only list dir.
-     *
-     * @param onlyListDir the only list dir
-     */
     public void setOnlyListDir(boolean onlyListDir) {
         this.onlyListDir = onlyListDir;
     }
 
-    /**
-     * Sets show home dir.
-     *
-     * @param showHomeDir the show home dir
-     */
     public void setShowHomeDir(boolean showHomeDir) {
         this.showHomeDir = showHomeDir;
     }
 
-    /**
-     * Sets show up dir.
-     *
-     * @param showUpDir the show up dir
-     */
     public void setShowUpDir(boolean showUpDir) {
         this.showUpDir = showUpDir;
     }
 
-    /**
-     * Sets show hide dir.
-     *
-     * @param showHideDir the show hide dir
-     */
     public void setShowHideDir(boolean showHideDir) {
         this.showHideDir = showHideDir;
     }
 
-    /**
-     * Load data array list.
-     *
-     * @param path the path
-     */
     public void loadData(String path) {
         if (path == null) {
             LogUtils.warn("current directory is null");

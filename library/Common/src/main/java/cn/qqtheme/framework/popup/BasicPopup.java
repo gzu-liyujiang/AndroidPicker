@@ -1,6 +1,7 @@
 package cn.qqtheme.framework.popup;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.support.annotation.CallSuper;
 import android.support.annotation.StyleRes;
@@ -17,7 +18,7 @@ import cn.qqtheme.framework.util.LogUtils;
 /**
  * 弹窗基类
  *
- * @param <V> the type parameter
+ * @param <V> 弹窗的内容视图类型
  * @author 李玉江[QQ:1023694760]
  * @since 2015/7/19
  */
@@ -34,11 +35,6 @@ public abstract class BasicPopup<V extends View> implements DialogInterface.OnKe
     private boolean isPrepared = false;
     private int gravity = Gravity.BOTTOM;//默认位于屏幕底部
 
-    /**
-     * Instantiates a new Bottom popup.
-     *
-     * @param activity the activity
-     */
     public BasicPopup(Activity activity) {
         this.activity = activity;
         DisplayMetrics displayMetrics = ScreenUtils.displayMetrics(activity);
@@ -49,7 +45,7 @@ public abstract class BasicPopup<V extends View> implements DialogInterface.OnKe
     }
 
     /**
-     * Gets view.
+     * 创建弹窗的内容视图
      *
      * @return the view
      */
@@ -90,7 +86,7 @@ public abstract class BasicPopup<V extends View> implements DialogInterface.OnKe
     /**
      * 固定高度为屏幕的高
      *
-     * @param fillScreen the fill screen
+     * @param fillScreen true为全屏
      */
     public void setFillScreen(boolean fillScreen) {
         isFillScreen = fillScreen;
@@ -99,7 +95,7 @@ public abstract class BasicPopup<V extends View> implements DialogInterface.OnKe
     /**
      * 固定高度为屏幕的一半
      *
-     * @param halfScreen the half screen
+     * @param halfScreen true为半屏
      */
     public void setHalfScreen(boolean halfScreen) {
         isHalfScreen = halfScreen;
@@ -118,43 +114,33 @@ public abstract class BasicPopup<V extends View> implements DialogInterface.OnKe
     }
 
     /**
-     * Sets content view before.
+     * 设置弹窗的内容视图之前执行
      */
     protected void setContentViewBefore() {
     }
 
     /**
-     * Sets content view after.
+     * 设置弹窗的内容视图之后执行
      *
-     * @param contentView the content view
+     * @param contentView 弹窗的内容视图
      */
     protected void setContentViewAfter(V contentView) {
     }
 
-    /**
-     * Sets animation.
-     *
-     * @param animRes the anim res
-     */
     public void setAnimationStyle(@StyleRes int animRes) {
         popupDialog.setAnimationStyle(animRes);
     }
 
-    /**
-     * Sets on dismiss listener.
-     *
-     * @param onDismissListener the on dismiss listener
-     */
     public void setOnDismissListener(DialogInterface.OnDismissListener onDismissListener) {
         popupDialog.setOnDismissListener(onDismissListener);
         LogUtils.verbose("popup setOnDismissListener");
     }
 
     /**
-     * Sets size.
+     * 设置弹窗的宽和高
      *
-     * @param width  the width
-     * @param height the height
+     * @param width  宽
+     * @param height 高
      */
     public void setSize(int width, int height) {
         // fixed: 2016/1/26 修复显示之前设置宽高无效问题
@@ -163,37 +149,29 @@ public abstract class BasicPopup<V extends View> implements DialogInterface.OnKe
     }
 
     /**
-     * Sets width.
+     * 设置弹窗的宽
      *
-     * @param width the width
-     * @see #setSize(int, int) #setSize(int, int)
+     * @param width 宽
+     * @see #setSize(int, int)
      */
     public void setWidth(int width) {
         this.width = width;
     }
 
     /**
-     * Sets height.
+     * 设置弹窗的高
      *
-     * @param height the height
-     * @see #setSize(int, int) #setSize(int, int)
+     * @param height 高
+     * @see #setSize(int, int)
      */
     public void setHeight(int height) {
         this.height = height;
     }
 
-    /**
-     * Is showing boolean.
-     *
-     * @return the boolean
-     */
     public boolean isShowing() {
         return popupDialog.isShowing();
     }
 
-    /**
-     * Show.
-     */
     @CallSuper
     public void show() {
         onShowPrepare();
@@ -201,21 +179,11 @@ public abstract class BasicPopup<V extends View> implements DialogInterface.OnKe
         LogUtils.verbose("popup show");
     }
 
-    /**
-     * Dismiss.
-     */
     public void dismiss() {
         popupDialog.dismiss();
         LogUtils.verbose("popup dismiss");
     }
 
-    /**
-     * On key down boolean.
-     *
-     * @param keyCode the key code
-     * @param event   the event
-     * @return the boolean
-     */
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         return false;
     }
@@ -228,19 +196,23 @@ public abstract class BasicPopup<V extends View> implements DialogInterface.OnKe
         return false;
     }
 
-    /**
-     * Gets window.
-     *
-     * @return the window
-     */
+    public Context getContext() {
+        return popupDialog.getContext();
+    }
+
     public Window getWindow() {
         return popupDialog.getWindow();
     }
 
     /**
-     * Gets root view.
-     *
-     * @return the root view
+     * 弹框的内容视图
+     */
+    public View getContentView() {
+        return popupDialog.getContentView();
+    }
+
+    /**
+     * 弹框的根视图
      */
     public ViewGroup getRootView() {
         return popupDialog.getRootView();

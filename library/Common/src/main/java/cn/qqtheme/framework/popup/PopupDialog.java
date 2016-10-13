@@ -8,7 +8,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.support.annotation.CallSuper;
 import android.support.annotation.StyleRes;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -18,7 +17,7 @@ import cn.qqtheme.framework.R;
 import cn.qqtheme.framework.util.LogUtils;
 
 /**
- * 弹窗
+ * 弹窗，内部类，仅供{@link BasicPopup}调用
  *
  * @author 李玉江[QQ :1023694760]
  * @see android.widget.PopupWindow
@@ -28,12 +27,7 @@ class PopupDialog {
     private android.app.Dialog dialog;
     private FrameLayout contentLayout;
 
-    /**
-     * Instantiates a new PopupDialog.
-     *
-     * @param context the context
-     */
-    public PopupDialog(Context context) {
+    PopupDialog(Context context) {
         init(context);
     }
 
@@ -49,83 +43,50 @@ class PopupDialog {
         dialog.setCanceledOnTouchOutside(true);//触摸屏幕取消窗体
         dialog.setCancelable(true);//按返回键取消窗体
         Window window = dialog.getWindow();
-        window.setWindowAnimations(R.style.Animation_Popup);
-        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        //android.util.AndroidRuntimeException: requestFeature() must be called before adding content
-        window.requestFeature(Window.FEATURE_NO_TITLE);
-        window.setContentView(contentLayout);
+        if (window != null) {
+            window.setWindowAnimations(R.style.Animation_Popup);
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            //android.util.AndroidRuntimeException: requestFeature() must be called before adding content
+            window.requestFeature(Window.FEATURE_NO_TITLE);
+            window.setContentView(contentLayout);
+        }
     }
 
-    /**
-     * Gets context.
-     *
-     * @return the context
-     */
-    public Context getContext() {
+    Context getContext() {
         return contentLayout.getContext();
     }
 
-    /**
-     * Sets animation.
-     *
-     * @param animRes the anim res
-     */
-    public void setAnimationStyle(@StyleRes int animRes) {
+    void setAnimationStyle(@StyleRes int animRes) {
         Window window = dialog.getWindow();
-        window.setWindowAnimations(animRes);
+        if (window != null) {
+            window.setWindowAnimations(animRes);
+        }
     }
 
-    /**
-     * Is showing boolean.
-     *
-     * @return the boolean
-     */
-    public boolean isShowing() {
+    boolean isShowing() {
         return dialog.isShowing();
     }
 
-    /**
-     * Show.
-     */
     @CallSuper
-    public void show() {
+    void show() {
         dialog.show();
     }
 
-    /**
-     * Dismiss.
-     */
     @CallSuper
-    public void dismiss() {
+    void dismiss() {
         dialog.dismiss();
     }
 
-    /**
-     * Sets content view.
-     *
-     * @param view the view
-     */
-    public void setContentView(View view) {
+    void setContentView(View view) {
         contentLayout.removeAllViews();
         contentLayout.addView(view);
     }
 
-    /**
-     * Gets content view.
-     *
-     * @return the content view
-     */
-    public View getContentView() {
+    View getContentView() {
         return contentLayout.getChildAt(0);
     }
 
-    /**
-     * Sets size.
-     *
-     * @param width  the width
-     * @param height the height
-     */
-    public void setSize(int width, int height) {
+    void setSize(int width, int height) {
         LogUtils.verbose(String.format("will set popup width/height to: %s/%s", width, height));
         ViewGroup.LayoutParams params = contentLayout.getLayoutParams();
         if (params == null) {
@@ -137,39 +98,19 @@ class PopupDialog {
         contentLayout.setLayoutParams(params);
     }
 
-    /**
-     * Sets on dismiss listener.
-     *
-     * @param onDismissListener the on dismiss listener
-     */
-    public void setOnDismissListener(DialogInterface.OnDismissListener onDismissListener) {
+    void setOnDismissListener(DialogInterface.OnDismissListener onDismissListener) {
         dialog.setOnDismissListener(onDismissListener);
     }
 
-    /**
-     * Sets on key listener.
-     *
-     * @param onKeyListener the on key listener
-     */
-    public void setOnKeyListener(DialogInterface.OnKeyListener onKeyListener) {
+    void setOnKeyListener(DialogInterface.OnKeyListener onKeyListener) {
         dialog.setOnKeyListener(onKeyListener);
     }
 
-    /**
-     * Gets window.
-     *
-     * @return the window
-     */
-    public Window getWindow() {
+    Window getWindow() {
         return dialog.getWindow();
     }
 
-    /**
-     * Gets root view.
-     *
-     * @return the root view
-     */
-    public ViewGroup getRootView() {
+    ViewGroup getRootView() {
         return contentLayout;
     }
 

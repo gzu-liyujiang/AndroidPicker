@@ -10,8 +10,8 @@ import java.io.IOException;
 /**
  * 存储设备工具类
  *
- * @author 李玉江[QQ :1023694760]
- * @version 2013 -11-2
+ * @author 李玉江[QQ:1023694760]
+ * @since 2013-11-2
  */
 public final class StorageUtils {
 
@@ -32,9 +32,6 @@ public final class StorageUtils {
     /**
      * 返回以“/”结尾的外置存储根目录，可选若外置存储不可用则是否使用内部存储
      *
-     * @param context             the context
-     * @param onlyExternalStorage the only external storage
-     * @param subdir              the subdir
      * @return 诸如 ：/mnt/sdcard/subdir
      */
     public static String getRootPath(Context context, boolean onlyExternalStorage, String subdir) {
@@ -57,15 +54,13 @@ public final class StorageUtils {
         if (file != null) {
             path = FileUtils.separator(file.getAbsolutePath());
         }
-        LogUtils.debug("storage root path: " + path);
+        LogUtils.verbose("storage root path: " + path);
         return path;
     }
 
     /**
      * 返回以“/”结尾的外置存储根目录，可选若外置存储不可用则是否使用内部存储
      *
-     * @param context the context
-     * @param subdir  the subdir
      * @return 诸如 ：/mnt/sdcard/
      */
     public static String getRootPath(Context context, String subdir) {
@@ -75,8 +70,6 @@ public final class StorageUtils {
     /**
      * 返回以“/”结尾的外置存储根目录，可选若外置存储不可用则是否使用内部存储
      *
-     * @param context             the context
-     * @param onlyExternalStorage the only external storage
      * @return 诸如 ：/mnt/sdcard/
      */
     public static String getRootPath(Context context, boolean onlyExternalStorage) {
@@ -86,7 +79,6 @@ public final class StorageUtils {
     /**
      * 返回以“/”结尾的外置存储根目录，若外置存储不可用则使用内部存储
      *
-     * @param context the context
      * @return 诸如 ：/mnt/sdcard/
      */
     public static String getRootPath(Context context) {
@@ -96,9 +88,7 @@ public final class StorageUtils {
     /**
      * 下载的文件的保存路径，以“/”结尾
      *
-     * @param context the context
      * @return 诸如 ：/mnt/sdcard/Download/
-     * @throws Exception the exception
      */
     public static String getDownloadPath(Context context) throws Exception {
         File file;
@@ -113,8 +103,6 @@ public final class StorageUtils {
     /**
      * 各种类型的文件的专用的保存路径，以“/”结尾
      *
-     * @param context the context
-     * @param type    the type
      * @return 诸如 ：/mnt/sdcard/Android/data/[package]/files/[type]/
      */
     public static String getPrivatePath(Context context, String type) {
@@ -122,8 +110,8 @@ public final class StorageUtils {
         if (externalMounted()) {
             file = context.getExternalFilesDir(type);
         }
+        //高频触发java.lang.NullPointerException，是SD卡不可用或暂时繁忙么？
         if (file == null) {
-            //SD卡不可用或暂时繁忙？
             if (type == null) {
                 file = context.getFilesDir();
             } else {
@@ -136,50 +124,28 @@ public final class StorageUtils {
     }
 
     /**
-     * Gets internal root path.
-     *
-     * @param context the context
-     * @return the internal root path
+     * 返回以“/”结尾的内部存储根目录
      */
     public static String getInternalRootPath(Context context) {
         return FileUtils.separator(context.getFilesDir().getAbsolutePath());
     }
 
     /**
-     * Gets private root path.
-     *
-     * @param context the context
-     * @return the private root path
+     * 各种类型的文件的专用的内部存储保存路径，以“/”结尾
      */
     public static String getPrivateRootPath(Context context) {
         return getPrivatePath(context, null);
     }
 
     /**
-     * Gets plugin path.
-     *
-     * @param context the context
-     * @return the plugin path
-     */
-    public static String getPluginPath(Context context) {
-        return getPrivatePath(context, "plugin");
-    }
-
-    /**
-     * Gets temporary dir path.
-     *
-     * @param context the context
-     * @return the temporary dir path
+     * 返回以“/”结尾的临时存储目录
      */
     public static String getTemporaryDirPath(Context context) {
         return getPrivatePath(context, "temporary");
     }
 
     /**
-     * Gets temporary file path.
-     *
-     * @param context the context
-     * @return the temporary file path
+     * 返回以“/”结尾的临时存储文件
      */
     public static String getTemporaryFilePath(Context context) {
         try {
@@ -190,11 +156,7 @@ public final class StorageUtils {
     }
 
     /**
-     * Gets cache path.
-     *
-     * @param context the context
-     * @param type    the type
-     * @return the cache path
+     * 各种类型的文件的专用的缓存存储保存路径，以“/”结尾
      */
     public static String getCachePath(Context context, String type) {
         File file;
@@ -212,10 +174,7 @@ public final class StorageUtils {
     }
 
     /**
-     * Gets cache root path.
-     *
-     * @param context the context
-     * @return the cache root path
+     * 返回以“/”结尾的缓存存储根目录
      */
     public static String getCacheRootPath(Context context) {
         return getCachePath(context, null);

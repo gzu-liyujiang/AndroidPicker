@@ -20,17 +20,11 @@ import cn.qqtheme.framework.widget.WheelView;
  */
 public class AddressPicker extends LinkagePicker {
     private OnAddressPickListener onAddressPickListener;
-    /**
-     * 只显示地市及区县
-     */
+    //只显示地市及区县
     private boolean hideProvince = false;
-    /**
-     * 只显示省份及地市
-     */
+    //只显示省份及地市
     private boolean hideCounty = false;
-    /**
-     * 省市县数据
-     */
+    //省市县数据
     private List<Province> provinceList = new ArrayList<Province>();
 
     public AddressPicker(Activity activity, ArrayList<Province> data) {
@@ -73,11 +67,7 @@ public class AddressPicker extends LinkagePicker {
     }
 
     /**
-     * Sets selected item.
-     *
-     * @param province the province
-     * @param city     the city
-     * @param county   the county
+     * 设置默认选中的省市县
      */
     public void setSelectedItem(String province, String city, String county) {
         super.setSelectedItem(province, city, county);
@@ -87,8 +77,6 @@ public class AddressPicker extends LinkagePicker {
      * 隐藏省级行政区，只显示地市级和区县级。
      * 设置为true的话，地址数据中只需要某个省份的即可
      * 参见示例中的“assets/city2.json”
-     *
-     * @param hideProvince the hide province
      */
     public void setHideProvince(boolean hideProvince) {
         this.hideProvince = hideProvince;
@@ -98,18 +86,11 @@ public class AddressPicker extends LinkagePicker {
      * 隐藏县级行政区，只显示省级和市级。
      * 设置为true的话，hideProvince将强制为false
      * 数据源依然使用“assets/city.json” 仅在逻辑上隐藏县级选择框，实际项目中应该去掉县级数据。
-     *
-     * @param hideCounty the hide county
      */
     public void setHideCounty(boolean hideCounty) {
         this.hideCounty = hideCounty;
     }
 
-    /**
-     * Sets on address pick listener.
-     *
-     * @param listener the listener
-     */
     public void setOnAddressPickListener(OnAddressPickListener listener) {
         this.onAddressPickListener = listener;
     }

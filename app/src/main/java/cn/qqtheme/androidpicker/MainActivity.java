@@ -51,7 +51,7 @@ public class MainActivity extends Activity {
         NumberPicker picker = new NumberPicker(this);
         picker.setAnimationStyle(R.style.Animation_CustomPopup);
         picker.setOffset(2);//偏移量
-        picker.setRange(40, 100);//数字范围
+        picker.setRange(40, 100, 1);//数字范围
         picker.setSelectedItem(65);
         picker.setLabel("Kg");
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
@@ -65,7 +65,7 @@ public class MainActivity extends Activity {
 
     public void onAnimator(View view) {
         CustomHeaderAndFooterPicker picker = new CustomHeaderAndFooterPicker(this);
-        picker.setGravity(Gravity.CENTER);
+        picker.setGravity(Gravity.CENTER);//居中
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
             public void onOptionPicked(int position, String option) {
@@ -108,7 +108,7 @@ public class MainActivity extends Activity {
     public void onYearMonthPicker(View view) {
         DatePicker picker = new DatePicker(this, DatePicker.YEAR_MONTH);
         picker.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
-        picker.setRangeStart(2050, 5, 20);
+        picker.setRangeStart(2020, 5, 20);
         picker.setRangeEnd(2020, 11, 11);
         picker.setSelectedItem(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1);
         picker.setOnDatePickListener(new DatePicker.OnYearMonthPickListener() {
@@ -205,8 +205,14 @@ public class MainActivity extends Activity {
         picker.setTopBackgroundColor(0xFFEEEEEE);
         picker.setLineVisible(true);
         picker.setTopLineColor(0xFFEE0000);
+        picker.setTopHeight(50);
+        picker.setTitleText("请选择");
+        picker.setTitleTextColor(0xFF999999);
+        picker.setTitleTextSize(24);
         picker.setCancelTextColor(0xFF33B5E5);
+        picker.setCancelTextSize(22);
         picker.setSubmitTextColor(0xFF33B5E5);
+        picker.setSubmitTextSize(22);
         picker.setTextColor(0xFFFF0000, 0xFF999999);
         picker.setLineColor(0xFFEE0000);
         picker.setSelectedItem("射手");
@@ -222,7 +228,7 @@ public class MainActivity extends Activity {
     public void onNumberPicker(View view) {
         NumberPicker picker = new NumberPicker(this);
         picker.setOffset(2);//偏移量
-        picker.setRange(145, 200);//数字范围
+        picker.setRange(145, 200, 1);//数字范围
         picker.setSelectedItem(172);
         picker.setLabel("厘米");
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {

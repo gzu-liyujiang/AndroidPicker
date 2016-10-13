@@ -1,7 +1,7 @@
 # Summary
 [![API](https://img.shields.io/badge/API-9%2B-green.svg)](https://github.com/gzu-liyujiang/AndroidPicker)
 [![Download](https://api.bintray.com/packages/gzu-liyujiang/maven/WheelPicker/images/download.svg)](http://jcenter.bintray.com/cn/qqtheme/framework/)   
-安卓选择器类库，包括日期选择器、时间选择器、单项选择器、城市选择器、颜色选择器、文件选择器、目录选择器、数字选择器、星座选择器、生肖选择器等，可自定义顶部及底部界面，可自定义窗口动画。   
+安卓选择器类库，包括日期选择器、时间选择器、单项选择器、城市选择器、颜色选择器、文件选择器、目录选择器、数字选择器、星座选择器、生肖选择器等，可自定义顶部及底部界面，可自定义窗口动画。
 欢迎大伙儿在[Issues](https://github.com/gzu-liyujiang/AndroidPicker/issues)提交你的意见或建议。    
 欢迎Fork & Pull requests贡献您的代码。[查看更新日志](https://github.com/gzu-liyujiang/AndroidPicker/blob/master/ChangeLog.md)。     
 
@@ -80,35 +80,21 @@ dependencies {
 ### 自定义顶部及底部界面
 添加自己的类，继承自现有的选择器，覆盖makeHeaderView、makeFooterView、onSubmit、onCancel，在确定选择时调用onSubmit，
 取消选择时调用onCancel。详见示例：CustomHeaderAndFooterPicker.java。
-```java
-public class CustomHeaderAndFooterPicker extends OptionPicker {
-
-    @Nullable
-    @Override
-    protected View makeHeaderView() {
-        return null;//顶部视图
-    }
-
-    @Nullable
-    @Override
-    protected View makeFooterView() {
-        return null;//底部视图
-    }
-
-    @Override
-    public void onSubmit() {
-        super.onSubmit();//点击确定
-    }
-
-    @Override
-    protected void onCancel() {
-        super.onCancel();//点击取消
-    }
-
-}
-```
 
 # Sample （更多用法详见示例项目）
+自定义选择器：
+```java
+        CustomHeaderAndFooterPicker picker = new CustomHeaderAndFooterPicker(this);
+        picker.setGravity(Gravity.CENTER);//居中
+        picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
+            @Override
+            public void onOptionPicked(int position, String option) {
+                showToast(option);
+            }
+        });
+        picker.show();
+```
+
 日期选择器：
 ```java
         DatePicker picker = new DatePicker(this, DatePicker.YEAR_MONTH_DAY);
@@ -125,9 +111,9 @@ public class CustomHeaderAndFooterPicker extends OptionPicker {
 
 时间选择器：
 ```java
-        //默认选中当前时间
-        TimePicker picker = new TimePicker(this, TimePicker.HOUR_OF_DAY);
-        picker.setGravity(Gravity.CENTER);
+        TimePicker picker = new TimePicker(this, TimePicker.HOUR_12);
+        picker.setRangeStart(9, 0);//09:00
+        picker.setRangeEnd(12, 30);//12:30
         picker.setTopLineVisible(false);
         picker.setOnTimePickListener(new TimePicker.OnTimePickListener() {
             @Override
@@ -159,7 +145,7 @@ public class CustomHeaderAndFooterPicker extends OptionPicker {
 ```java
         NumberPicker picker = new NumberPicker(this);
         picker.setOffset(2);//偏移量
-        picker.setRange(145, 200);//数字范围
+        picker.setRange(145, 200, 1);//数字范围
         picker.setSelectedItem(172);
         picker.setLabel("厘米");
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
@@ -198,15 +184,22 @@ public class CustomHeaderAndFooterPicker extends OptionPicker {
         });
         picker.setLabel("座");
         picker.setTopBackgroundColor(0xFFEEEEEE);
+        picker.setLineVisible(true);
         picker.setTopLineColor(0xFFEE0000);
+        picker.setTopHeight(50);
+        picker.setTitleText("请选择");
+        picker.setTitleTextColor(0xFF999999);
+        picker.setTitleTextSize(24);
         picker.setCancelTextColor(0xFF33B5E5);
+        picker.setCancelTextSize(22);
         picker.setSubmitTextColor(0xFF33B5E5);
+        picker.setSubmitTextSize(22);
         picker.setTextColor(0xFFFF0000, 0xFF999999);
         picker.setLineColor(0xFFEE0000);
         picker.setSelectedItem("射手");
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
-            public void onOptionPicked(String option) {
+            public void onOptionPicked(int position, String option) {
                 showToast(option);
             }
         });
@@ -261,12 +254,13 @@ https://github.com/jbruchanov/AndroidColorPicker
 # Screenshots
 ![自定义选择器效果图](/screenshots/custom.gif)   
 ![日期选择器效果图](/screenshots/date.gif)         
-![时间选择器效果图](/screenshots/time.gif)   
+![日期选择器效果图](/screenshots/yearmonth.jpg)
+![时间选择器效果图](/screenshots/time.gif)
 ![单项选择器效果图](/screenshots/option.gif)         
 ![地址选择器效果图](/screenshots/address.gif)   
 ![地址选择器效果图](/screenshots/address.png)       
 ![数字选择器效果图](/screenshots/number.gif)   
-![星座选择器效果图](/screenshots/constellation.gif)     
+![星座选择器效果图](/screenshots/constellation.jpg)
 ![颜色选择器效果图](/screenshots/color.gif)   
 ![文件选择器效果图](/screenshots/file.gif)    
 ![目录选择器效果图](/screenshots/dir.gif)   

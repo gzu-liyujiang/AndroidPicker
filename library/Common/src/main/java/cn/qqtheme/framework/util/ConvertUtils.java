@@ -1,22 +1,46 @@
 package cn.qqtheme.framework.util;
 
 import android.annotation.TargetApi;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
-import android.graphics.*;
-import android.graphics.drawable.*;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.NinePatchDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
+import android.support.annotation.ColorInt;
 import android.util.TypedValue;
+import android.view.View;
+import android.widget.ListView;
+import android.widget.ScrollView;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
-import java.util.Arrays;
 
 /**
  * 数据类型转换、单位转换
@@ -25,24 +49,12 @@ import java.util.Arrays;
  * @since 2014-4-18
  */
 public class ConvertUtils {
-    /**
-     * The constant GB.
-     */
     public static final long GB = 1073741824;
-    /**
-     * The constant MB.
-     */
     public static final long MB = 1048576;
-    /**
-     * The constant KB.
-     */
     public static final long KB = 1024;
 
     /**
      * 转换为6位十六进制颜色代码，不含“#”
-     *
-     * @param color the color
-     * @return string string
      */
     public static String toColorString(int color) {
         return toColorString(color, false);
@@ -50,10 +62,6 @@ public class ConvertUtils {
 
     /**
      * 转换为6位十六进制颜色代码，不含“#”
-     *
-     * @param color        the color
-     * @param includeAlpha the include alpha
-     * @return string string
      */
     public static String toColorString(int color, boolean includeAlpha) {
         String alpha = Integer.toHexString(Color.alpha(color));
@@ -85,10 +93,6 @@ public class ConvertUtils {
 
     /**
      * 将指定的日期转换为一定格式的字符串
-     *
-     * @param date   the date
-     * @param format the format
-     * @return string string
      */
     public static String toDateString(Date date, String format) {
         SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.CHINA);
@@ -97,9 +101,6 @@ public class ConvertUtils {
 
     /**
      * 将当前的日期转换为一定格式的字符串
-     *
-     * @param format the format
-     * @return string string
      */
     public static String toDateString(String format) {
         return toDateString(Calendar.getInstance(Locale.CHINA).getTime(), format);
@@ -109,7 +110,6 @@ public class ConvertUtils {
      * 将指定的日期字符串转换为日期时间
      *
      * @param dateStr 如：2014-04-08 23:02
-     * @return date date
      */
     public static Date toDate(String dateStr) {
         return DateUtils.parseDate(dateStr);
@@ -119,29 +119,36 @@ public class ConvertUtils {
      * 将指定的日期字符串转换为时间戳
      *
      * @param dateStr 如：2014-04-08 23:02
-     * @return long long
      */
     public static long toTimemillis(String dateStr) {
         return toDate(dateStr).getTime();
     }
 
-    /**
-     * To string string.
-     *
-     * @param objects the objects
-     * @return the string
-     */
+    public static String toSlashString(String str) {
+        String result = "";
+        char[] chars = str.toCharArray();
+        for (char chr : chars) {
+            if (chr == '"' || chr == '\'' || chr == '\\') {
+                result += "\\";//符合"、'、\这三个符号的前面加一个\
+            }
+            result += chr;
+        }
+        return result;
+    }
+
+    public static <T> T[] toArray(List<T> list) {
+        //noinspection unchecked
+        return (T[]) list.toArray();
+    }
+
+    public static <T> List<T> toList(T[] array) {
+        return Arrays.asList(array);
+    }
+
     public static String toString(Object[] objects) {
         return Arrays.deepToString(objects);
     }
 
-    /**
-     * To string string.
-     *
-     * @param objects the objects
-     * @param tag     the tag
-     * @return the string
-     */
     public static String toString(Object[] objects, String tag) {
         StringBuilder sb = new StringBuilder();
         for (Object object : objects) {
@@ -151,12 +158,6 @@ public class ConvertUtils {
         return sb.toString();
     }
 
-    /**
-     * To byte array byte [ ].
-     *
-     * @param is the is
-     * @return the byte [ ]
-     */
     public static byte[] toByteArray(InputStream is) {
         if (is == null) {
             return null;
@@ -170,19 +171,14 @@ public class ConvertUtils {
             }
             byte[] bytes = os.toByteArray();
             os.close();
+            is.close();
             return bytes;
         } catch (IOException e) {
-            e.printStackTrace();
+            LogUtils.warn(e);
         }
         return null;
     }
 
-    /**
-     * To byte array byte [ ].
-     *
-     * @param bitmap the bitmap
-     * @return the byte [ ]
-     */
     public static byte[] toByteArray(Bitmap bitmap) {
         if (bitmap == null) {
             return null;
@@ -194,19 +190,11 @@ public class ConvertUtils {
         try {
             os.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            LogUtils.warn(e);
         }
         return bytes;
     }
 
-    /**
-     * To bitmap bitmap.
-     *
-     * @param bytes  the bytes
-     * @param width  the width
-     * @param height the height
-     * @return the bitmap
-     */
     public static Bitmap toBitmap(byte[] bytes, int width, int height) {
         Bitmap bitmap = null;
         if (bytes.length != 0) {
@@ -228,22 +216,13 @@ public class ConvertUtils {
         return bitmap;
     }
 
-    /**
-     * To bitmap bitmap.
-     *
-     * @param bytes the bytes
-     * @return the bitmap
-     */
     public static Bitmap toBitmap(byte[] bytes) {
         return toBitmap(bytes, -1, -1);
     }
 
     /**
-     * convert Drawable to Bitmap
+     * 将Drawable转换为Bitmap
      * 参考：http://kylines.iteye.com/blog/1660184
-     *
-     * @param drawable the drawable
-     * @return bitmap bitmap
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static Bitmap toBitmap(Drawable drawable) {
@@ -270,41 +249,156 @@ public class ConvertUtils {
     }
 
     /**
-     * convert Bitmap to Drawable
-     *
-     * @param bitmap the bitmap
-     * @return drawable drawable
+     * 从第三方文件选择器获取路径。
+     * 参见：http://blog.csdn.net/zbjdsbj/article/details/42387551
      */
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    public static String toPath(Context context, Uri uri) {
+        if (uri == null) {
+            LogUtils.verbose("uri is null");
+            return "";
+        }
+        LogUtils.verbose("uri: " + uri.toString());
+        String path = uri.getPath();
+        String scheme = uri.getScheme();
+        String authority = uri.getAuthority();
+        //是否是4.4及以上版本
+        boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+        // DocumentProvider
+        if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
+            String docId = DocumentsContract.getDocumentId(uri);
+            String[] split = docId.split(":");
+            String type = split[0];
+            Uri contentUri = null;
+            switch (authority) {
+                // ExternalStorageProvider
+                case "com.android.externalstorage.documents":
+                    if ("primary".equalsIgnoreCase(type)) {
+                        return Environment.getExternalStorageDirectory() + "/" + split[1];
+                    }
+                    break;
+                // DownloadsProvider
+                case "com.android.providers.downloads.documents":
+                    contentUri = ContentUris.withAppendedId(
+                            Uri.parse("content://downloads/public_downloads"), Long.valueOf(docId));
+                    return _queryPathFromMediaStore(context, contentUri, null, null);
+                // MediaProvider
+                case "com.android.providers.media.documents":
+                    if ("image".equals(type)) {
+                        contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                    } else if ("video".equals(type)) {
+                        contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+                    } else if ("audio".equals(type)) {
+                        contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                    }
+                    String selection = "_id=?";
+                    String[] selectionArgs = new String[]{split[1]};
+                    return _queryPathFromMediaStore(context, contentUri, selection, selectionArgs);
+            }
+        }
+        // MediaStore (and general)
+        else {
+            if ("content".equalsIgnoreCase(scheme)) {
+                // Return the remote address
+                if (authority.equals("com.google.android.apps.photos.content")) {
+                    return uri.getLastPathSegment();
+                }
+                return _queryPathFromMediaStore(context, uri, null, null);
+            }
+            // File
+            else if ("file".equalsIgnoreCase(scheme)) {
+                return uri.getPath();
+            }
+        }
+        LogUtils.verbose("uri to path: " + path);
+        return path;
+    }
+
+    private static String _queryPathFromMediaStore(Context context, Uri uri, String selection, String[] selectionArgs) {
+        String filePath = null;
+        try {
+            String[] projection = {MediaStore.Images.Media.DATA};
+            Cursor cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
+            if (cursor != null) {
+                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                cursor.moveToFirst();
+                filePath = cursor.getString(column_index);
+                cursor.close();
+            }
+        } catch (Exception e) {
+            LogUtils.error(e);
+        }
+        return filePath;
+    }
+
+    /**
+     * 把view转化为bitmap（截图）
+     * 参见：http://www.cnblogs.com/lee0oo0/p/3355468.html
+     */
+    public static Bitmap toBitmap(View view) {
+        int width = view.getWidth();
+        int height = view.getHeight();
+        if (view instanceof ListView) {
+            height = 0;
+            // 获取listView实际高度
+            ListView listView = (ListView) view;
+            for (int i = 0; i < listView.getChildCount(); i++) {
+                height += listView.getChildAt(i).getHeight();
+            }
+        } else if (view instanceof ScrollView) {
+            height = 0;
+            // 获取scrollView实际高度
+            ScrollView scrollView = (ScrollView) view;
+            for (int i = 0; i < scrollView.getChildCount(); i++) {
+                height += scrollView.getChildAt(i).getHeight();
+            }
+        }
+        view.setDrawingCacheEnabled(true);
+        view.clearFocus();
+        view.setPressed(false);
+        boolean willNotCache = view.willNotCacheDrawing();
+        view.setWillNotCacheDrawing(false);
+        // Reset the drawing cache background color to fully transparent for the duration of this operation
+        int color = view.getDrawingCacheBackgroundColor();
+        view.setDrawingCacheBackgroundColor(Color.WHITE);//截图去黑色背景(透明像素)
+        if (color != Color.WHITE) {
+            view.destroyDrawingCache();
+        }
+        view.buildDrawingCache();
+        Bitmap cacheBitmap = view.getDrawingCache();
+        if (cacheBitmap == null) {
+            return null;
+        }
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        canvas.drawBitmap(cacheBitmap, 0, 0, null);
+        canvas.save(Canvas.ALL_SAVE_FLAG);
+        canvas.restore();
+        if (!bitmap.isRecycled()) {
+            LogUtils.verbose("recycle bitmap: " + bitmap.toString());
+            bitmap.recycle();
+        }
+        // Restore the view
+        view.destroyDrawingCache();
+        view.setWillNotCacheDrawing(willNotCache);
+        view.setDrawingCacheBackgroundColor(color);
+        return bitmap;
+    }
+
     public static Drawable toDrawable(Bitmap bitmap) {
         return bitmap == null ? null : new BitmapDrawable(null, bitmap);
     }
 
-    /**
-     * convert Drawable to byte array
-     *
-     * @param drawable the drawable
-     * @return byte [ ]
-     */
     public static byte[] toByteArray(Drawable drawable) {
         return toByteArray(toBitmap(drawable));
     }
 
-    /**
-     * convert byte array to Drawable
-     *
-     * @param bytes the bytes
-     * @return drawable drawable
-     */
     public static Drawable toDrawable(byte[] bytes) {
         return toDrawable(toBitmap(bytes));
     }
 
     /**
      * dp转换为px
-     *
-     * @param context the context
-     * @param dpValue the dp value
-     * @return int int
      */
     public static int toPx(Context context, float dpValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
@@ -313,12 +407,6 @@ public class ConvertUtils {
         return pxValue;
     }
 
-    /**
-     * To px int.
-     *
-     * @param dpValue the dp value
-     * @return the int
-     */
     public static int toPx(float dpValue) {
         Resources resources = Resources.getSystem();
         float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, resources.getDisplayMetrics());
@@ -327,10 +415,6 @@ public class ConvertUtils {
 
     /**
      * px转换为dp
-     *
-     * @param context the context
-     * @param pxValue the px value
-     * @return int int
      */
     public static int toDp(Context context, float pxValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
@@ -341,10 +425,6 @@ public class ConvertUtils {
 
     /**
      * px转换为sp
-     *
-     * @param context the context
-     * @param pxValue the px value
-     * @return int int
      */
     public static int toSp(Context context, float pxValue) {
         final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
@@ -353,12 +433,6 @@ public class ConvertUtils {
         return spValue;
     }
 
-    /**
-     * To gbk string.
-     *
-     * @param str the str
-     * @return the string
-     */
     public static String toGbk(String str) {
         try {
             return new String(str.getBytes("utf-8"), "gbk");
@@ -368,12 +442,6 @@ public class ConvertUtils {
         }
     }
 
-    /**
-     * To file size string string.
-     *
-     * @param fileSize the file size
-     * @return the string
-     */
     public static String toFileSizeString(long fileSize) {
         DecimalFormat df = new DecimalFormat("0.00");
         String fileSizeString;
@@ -389,20 +457,15 @@ public class ConvertUtils {
         return fileSizeString;
     }
 
-    /**
-     * To string string.
-     *
-     * @param is the is
-     * @return the string
-     */
-    public static String toString(InputStream is) {
-        StringBuilder sb = new StringBuilder();
+    public static String toString(InputStream is, String charset) {
+        StringBuffer sb = new StringBuffer();
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-            String line = null;
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is, charset));
+            String line;
             while ((line = reader.readLine()) != null) {
-                sb.append(line);
+                sb.append(line).append("\n");
             }
+            reader.close();
             is.close();
         } catch (IOException e) {
             LogUtils.error(e);
@@ -410,34 +473,33 @@ public class ConvertUtils {
         return sb.toString();
     }
 
-    /**
-     * To round drawable shape drawable.
-     *
-     * @param color  the color
-     * @param radius the radius
-     * @return the shape drawable
-     */
-    public static ShapeDrawable toRoundDrawable(int color, int radius) {
-        int r = toPx(radius);
-        float[] outerR = new float[]{r, r, r, r, r, r, r, r};
+    public static String toString(InputStream is) {
+        return toString(is, "utf-8");
+    }
+
+    public static ShapeDrawable toRoundDrawable(@ColorInt int color, int radius) {
+        float[] outerR = new float[]{radius, radius, radius, radius, radius, radius, radius, radius};
         RoundRectShape shape = new RoundRectShape(outerR, null, null);
         ShapeDrawable drawable = new ShapeDrawable(shape);
         drawable.getPaint().setColor(color);
         return drawable;
     }
 
+    public static StateListDrawable toStateRoundDrawable(@ColorInt int color, int radius) {
+        return toStateListDrawable(new ColorDrawable(Color.TRANSPARENT), toRoundDrawable(color, radius));
+    }
+
+    public static StateListDrawable toStateRoundDrawable(@ColorInt int normalColor, @ColorInt int focusColor, int radius) {
+        return toStateListDrawable(toRoundDrawable(normalColor, radius), toRoundDrawable(focusColor, radius));
+    }
+
     /**
      * 对TextView、Button等设置不同状态时其文字颜色。
      * 参见：http://blog.csdn.net/sodino/article/details/6797821
      * Modified by liyujiang at 2015.08.13
-     *
-     * @param normalColor  the normal color
-     * @param pressedColor the pressed color
-     * @param focusedColor the focused color
-     * @param unableColor  the unable color
-     * @return the color state list
      */
-    public static ColorStateList toColorStateList(int normalColor, int pressedColor, int focusedColor, int unableColor) {
+    public static ColorStateList toColorStateList(@ColorInt int normalColor, @ColorInt int pressedColor,
+                                                  @ColorInt int focusedColor, @ColorInt int unableColor) {
         int[] colors = new int[]{pressedColor, focusedColor, normalColor, focusedColor, unableColor, normalColor};
         int[][] states = new int[6][];
         states[0] = new int[]{android.R.attr.state_pressed, android.R.attr.state_enabled};
@@ -449,26 +511,10 @@ public class ConvertUtils {
         return new ColorStateList(states, colors);
     }
 
-    /**
-     * To color state list color state list.
-     *
-     * @param normalColor  the normal color
-     * @param pressedColor the pressed color
-     * @return the color state list
-     */
-    public static ColorStateList toColorStateList(int normalColor, int pressedColor) {
+    public static ColorStateList toColorStateList(@ColorInt int normalColor, @ColorInt int pressedColor) {
         return toColorStateList(normalColor, pressedColor, pressedColor, normalColor);
     }
 
-    /**
-     * To state list drawable state list drawable.
-     *
-     * @param normal  the normal
-     * @param pressed the pressed
-     * @param focused the focused
-     * @param unable  the unable
-     * @return the state list drawable
-     */
     public static StateListDrawable toStateListDrawable(Drawable normal, Drawable pressed, Drawable focused, Drawable unable) {
         StateListDrawable drawable = new StateListDrawable();
         drawable.addState(new int[]{android.R.attr.state_pressed, android.R.attr.state_enabled}, pressed);
@@ -480,16 +526,8 @@ public class ConvertUtils {
         return drawable;
     }
 
-    /**
-     * To state list drawable state list drawable.
-     *
-     * @param normalColor  the normal color
-     * @param pressedColor the pressed color
-     * @param focusedColor the focused color
-     * @param unableColor  the unable color
-     * @return the state list drawable
-     */
-    public static StateListDrawable toStateListDrawable(int normalColor, int pressedColor, int focusedColor, int unableColor) {
+    public static StateListDrawable toStateListDrawable(@ColorInt int normalColor, @ColorInt int pressedColor,
+                                                        @ColorInt int focusedColor, @ColorInt int unableColor) {
         StateListDrawable drawable = new StateListDrawable();
         Drawable normal = new ColorDrawable(normalColor);
         Drawable pressed = new ColorDrawable(pressedColor);
@@ -504,26 +542,16 @@ public class ConvertUtils {
         return drawable;
     }
 
-    /**
-     * To state list drawable state list drawable.
-     *
-     * @param normal  the normal
-     * @param pressed the pressed
-     * @return the state list drawable
-     */
     public static StateListDrawable toStateListDrawable(Drawable normal, Drawable pressed) {
         return toStateListDrawable(normal, pressed, pressed, normal);
     }
 
-    /**
-     * To state list drawable state list drawable.
-     *
-     * @param normalColor  the normal color
-     * @param pressedColor the pressed color
-     * @return the state list drawable
-     */
-    public static StateListDrawable toStateListDrawable(int normalColor, int pressedColor) {
+    public static StateListDrawable toStateListDrawable(@ColorInt int normalColor, @ColorInt int pressedColor) {
         return toStateListDrawable(normalColor, pressedColor, pressedColor, normalColor);
+    }
+
+    public static StateListDrawable toStateListDrawable(@ColorInt int pressedColor) {
+        return toStateListDrawable(Color.TRANSPARENT, pressedColor);
     }
 
 }

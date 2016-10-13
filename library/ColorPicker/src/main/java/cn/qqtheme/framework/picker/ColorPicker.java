@@ -27,8 +27,8 @@ import cn.qqtheme.framework.widget.ColorPanelView;
 /**
  * 颜色选择器。
  *
- * @author 李玉江[QQ :1032694760]
- * @version 2015 /9/29
+ * @author 李玉江[QQ:1032694760]
+ * @since 2015/9/29
  */
 public class ColorPicker extends ConfirmPopup<LinearLayout> implements TextView.OnEditorActionListener {
     private static final int MULTI_ID = 0x1;
@@ -39,11 +39,6 @@ public class ColorPicker extends ConfirmPopup<LinearLayout> implements TextView.
     private ColorStateList hexValDefaultColor;
     private OnColorPickListener onColorPickListener;
 
-    /**
-     * Instantiates a new Color picker.
-     *
-     * @param activity the activity
-     */
     public ColorPicker(Activity activity) {
         super(activity);
         setHalfScreen(true);
@@ -117,11 +112,6 @@ public class ColorPicker extends ConfirmPopup<LinearLayout> implements TextView.
         }
     }
 
-    /**
-     * Gets current color.
-     *
-     * @return the current color
-     */
     @ColorInt
     public int getCurrentColor() {
         return Color.parseColor("#" + hexValView.getText());
@@ -135,19 +125,14 @@ public class ColorPicker extends ConfirmPopup<LinearLayout> implements TextView.
     }
 
     /**
-     * Sets init color.
+     * 设置初始默认颜色
      *
-     * @param initColor the init color
+     * @param initColor 颜色值，如：0xFFFF00FF
      */
     public void setInitColor(int initColor) {
         this.initColor = initColor;
     }
 
-    /**
-     * Sets on color pick listener.
-     *
-     * @param onColorPickListener the on color pick listener
-     */
     public void setOnColorPickListener(OnColorPickListener onColorPickListener) {
         this.onColorPickListener = onColorPickListener;
     }
@@ -176,15 +161,10 @@ public class ColorPicker extends ConfirmPopup<LinearLayout> implements TextView.
     }
 
     /**
-     * The interface On color pick listener.
+     * 颜色选择回调
      */
     public interface OnColorPickListener {
 
-        /**
-         * On color picked.
-         *
-         * @param pickedColor the picked color
-         */
         void onColorPicked(@ColorInt int pickedColor);
 
     }

@@ -51,7 +51,7 @@ public class TimePicker extends WheelPicker {
      * 安卓开发应避免使用枚举类（enum），因为相比于静态常量enum会花费两倍以上的内存。
      * http://developer.android.com/training/articles/memory.html#Overhead
      */
-    @IntDef(flag = false, value = {HOUR_OF_DAY, HOUR, HOUR_24, HOUR_12})
+    @IntDef(value = {HOUR_OF_DAY, HOUR, HOUR_24, HOUR_12})
     @Retention(RetentionPolicy.SOURCE)
     public @interface Mode {
     }
