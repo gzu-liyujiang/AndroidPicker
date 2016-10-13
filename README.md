@@ -260,8 +260,9 @@ https://github.com/jbruchanov/AndroidColorPicker
 ![地址选择器效果图](/screenshots/address.gif)   
 ![地址选择器效果图](/screenshots/address.png)       
 ![数字选择器效果图](/screenshots/number.gif)   
-![星座选择器效果图](/screenshots/constellation.jpg)
-![颜色选择器效果图](/screenshots/color.gif)   
+![星座选择器效果图](/screenshots/constellation.gif)
+![生肖选择器效果图](/screenshots/chinesezodiac.jpg)
+![颜色选择器效果图](/screenshots/color.gif)
 ![文件选择器效果图](/screenshots/file.gif)    
 ![目录选择器效果图](/screenshots/dir.gif)   
 
