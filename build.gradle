@@ -180,10 +180,10 @@ subprojects {
                 }
 
                 bintray {
-                    Properties properties = new Properties()
-                    properties.load(project.rootProject.file('local.properties').newDataInputStream())
-                    user = properties.getProperty("bintray.user")
-                    key = properties.getProperty("bintray.apikey")
+                    // You should configure "bintray.user" and "bintray.apiKey" in the gradle.properties 
+					// that in gradle cache directory
+                    user = safeGetProperty("bintray.user")
+                    key = safeGetProperty("bintray.apikey")
 
                     publications = ['mavenJava']
                     publish = true    //是否发布
@@ -202,14 +202,13 @@ subprojects {
                             desc = project.pomDescription
                             gpg {
                                 sign = false    //是否GPG签名，可使用Gpg4win创建密钥文件
-                                passphrase = properties.getProperty("bintray.gpg.password")
-                                //GPG签名所用密钥
+								//GPG签名所用密钥
+                                passphrase = safeGetProperty("bintray.gpg.password")
                             }
                             mavenCentralSync {
                                 sync = false    //是否同步到Maven Central
-                                user = properties.getProperty("sonatype.user")    //sonatype用户名
-                                password = properties.getProperty("sonatype.password")
-                                //sonatype密码
+                                user = safeGetProperty("sonatype.user") //sonatype用户名
+                                password = safeGetProperty("sonatype.password")	//sonatype密码
                                 close = '1'
                             }
                         }
@@ -219,5 +218,9 @@ subprojects {
             }
         }
     }
+}
+
+String safeGetProperty(String key) {
+    hasProperty("key") ? getProperty("key") : ""
 }
 
