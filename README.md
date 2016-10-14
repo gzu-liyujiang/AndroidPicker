@@ -47,7 +47,7 @@ dependencies {
 # ProGuard
 由于地址选择器使用了[fastjson](https://github.com/alibaba/fastjson)来解析，混淆时候需要加入以下类似的规则，不混淆Province、City等实体类。
 ```
--keepattributes Exceptions,InnerClasses,Signature
+-keepattributes InnerClasses,Signature
 -keepattributes *Annotation*
 
 -keep class cn.qqtheme.framework.entity.** { *;}
@@ -112,8 +112,8 @@ void setTopHeight(int topHeight)
 void setTopLineColor(int topLineColor)
 设置顶部标题栏下划线颜色     
 void setTopLineVisible(boolean topLineVisible)
-设置顶部标题栏下划线是否显示
-......
+设置顶部标题栏下划线是否显示    
+......   
 
 # Custom
 #### 自定义窗口进入退出动画(可选)
@@ -317,18 +317,18 @@ https://github.com/wangjiegulu/WheelView
 https://github.com/jbruchanov/AndroidColorPicker      
 
 # Screenshots
-![自定义选择器效果图](/screenshots/custom.gif)
-![日期选择器效果图](/screenshots/date.gif)         
-![日期选择器效果图](/screenshots/monthday.jpg)
-![时间选择器效果图](/screenshots/time.gif)
-![单项选择器效果图](/screenshots/option.gif)         
-![地址选择器效果图](/screenshots/address.gif)
-![地址选择器效果图](/screenshots/address.png)       
-![数字选择器效果图](/screenshots/number.gif)
-![星座选择器效果图](/screenshots/constellation.jpg)
-![颜色选择器效果图](/screenshots/color.gif)
-![文件选择器效果图](/screenshots/file.gif)
-![目录选择器效果图](/screenshots/dir.gif)
+![自定义选择器效果图](/screenshots/custom.gif)   
+![日期选择器效果图](/screenshots/date.gif)            
+![日期选择器效果图](/screenshots/monthday.jpg)   
+![时间选择器效果图](/screenshots/time.gif)   
+![单项选择器效果图](/screenshots/option.gif)           
+![地址选择器效果图](/screenshots/address.gif)   
+![地址选择器效果图](/screenshots/address.png)         
+![数字选择器效果图](/screenshots/number.gif)   
+![星座选择器效果图](/screenshots/constellation.jpg)   
+![颜色选择器效果图](/screenshots/color.gif)    
+![文件选择器效果图](/screenshots/file.gif)    
+![目录选择器效果图](/screenshots/dir.gif)    
 
 # Contact
 <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=1032694760&site=穿青人&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:1032694760:51" alt="点击这里给我发消息" title="点击这里给我发消息"/></a>
