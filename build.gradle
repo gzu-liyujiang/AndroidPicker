@@ -180,10 +180,10 @@ subprojects {
                 }
 
                 bintray {
-                    Properties properties = new Properties()
-                    properties.load(project.rootProject.file('local.properties').newDataInputStream())
-                    user = properties.getProperty("bintray.user")
-                    key = properties.getProperty("bintray.apikey")
+                    // You should configure "bintray.user" and "bintray.apiKey" in the gradle.properties
+                    // that in gradle cache directory (${HOME}/.gradle/gradle.properties)
+                    user = safeGetProperty("bintray.user")
+                    key = safeGetProperty("bintray.apikey")
 
                     publications = ['mavenJava']
                     publish = true    //是否发布
@@ -215,3 +215,6 @@ subprojects {
     }
 }
 
+String safeGetProperty(String key) {
+    hasProperty("key") ? getProperty("key") : ""
+}
