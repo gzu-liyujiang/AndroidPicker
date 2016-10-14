@@ -18,6 +18,7 @@ import java.util.Comparator;
 import java.util.Locale;
 
 import cn.qqtheme.framework.util.DateUtils;
+import cn.qqtheme.framework.util.LogUtils;
 import cn.qqtheme.framework.widget.WheelView;
 
 /**
@@ -27,18 +28,9 @@ import cn.qqtheme.framework.widget.WheelView;
  * @since 2015/12/14
  */
 public class DatePicker extends WheelPicker {
-    /**
-     * 年月日
-     */
-    public static final int YEAR_MONTH_DAY = 0;
-    /**
-     * 年月
-     */
-    public static final int YEAR_MONTH = 1;
-    /**
-     * 月日
-     */
-    public static final int MONTH_DAY = 2;
+    public static final int YEAR_MONTH_DAY = 0;//年月日
+    public static final int YEAR_MONTH = 1;//年月
+    public static final int MONTH_DAY = 2;//月日
     private ArrayList<String> years = new ArrayList<String>();
     private ArrayList<String> months = new ArrayList<String>();
     private ArrayList<String> days = new ArrayList<String>();
@@ -122,6 +114,8 @@ public class DatePicker extends WheelPicker {
             this.startYear = startYearOrMonth;
             this.startMonth = startMonthOrDay;
         } else {
+            int year = Calendar.getInstance(Locale.CHINA).get(Calendar.YEAR);
+            startYear = endYear = year;
             this.startMonth = startYearOrMonth;
             this.startDay = startMonthOrDay;
         }
@@ -143,24 +137,6 @@ public class DatePicker extends WheelPicker {
         }
     }
 
-    private int findItemIndex(ArrayList<String> items, int item) {
-        //折半查找有序元素的索引
-        int index = Collections.binarySearch(items, item, new Comparator<Object>() {
-            @Override
-            public int compare(Object lhs, Object rhs) {
-                String lhsStr = lhs.toString();
-                String rhsStr = rhs.toString();
-                lhsStr = lhsStr.startsWith("0") ? lhsStr.substring(1) : lhsStr;
-                rhsStr = rhsStr.startsWith("0") ? rhsStr.substring(1) : rhsStr;
-                return Integer.parseInt(lhsStr) - Integer.parseInt(rhsStr);
-            }
-        });
-        if (index < 0) {
-            index = 0;
-        }
-        return index;
-    }
-
     /**
      * 设置默认选中的年月日
      */
@@ -177,15 +153,17 @@ public class DatePicker extends WheelPicker {
      * 设置默认选中的年月或者月日
      */
     public void setSelectedItem(int yearOrMonth, int monthOrDay) {
-        int year = Calendar.getInstance(Locale.CHINA).get(Calendar.YEAR);
-        changeYearData();
         if (mode == MONTH_DAY) {
+            int year = Calendar.getInstance(Locale.CHINA).get(Calendar.YEAR);
+            startYear = endYear = year;
+            changeYearData();
             changeMonthData(year);
             changeDayData(year, yearOrMonth);
             selectedMonthIndex = findItemIndex(months, yearOrMonth);
             selectedDayIndex = findItemIndex(days, monthOrDay);
         } else {
-            changeMonthData(year);
+            changeYearData();
+            changeMonthData(yearOrMonth);
             selectedYearIndex = findItemIndex(years, yearOrMonth);
             selectedMonthIndex = findItemIndex(months, monthOrDay);
         }
@@ -268,7 +246,6 @@ public class DatePicker extends WheelPicker {
             if (!TextUtils.isEmpty(yearLabel)) {
                 yearTextView.setText(yearLabel);
             }
-            changeYearData();
             if (selectedYearIndex == 0) {
                 yearView.setItems(years);
             } else {
@@ -319,6 +296,24 @@ public class DatePicker extends WheelPicker {
         return layout;
     }
 
+    private int findItemIndex(ArrayList<String> items, int item) {
+        //折半查找有序元素的索引，效率应该高于items.indexOf(...)
+        int index = Collections.binarySearch(items, item, new Comparator<Object>() {
+            @Override
+            public int compare(Object lhs, Object rhs) {
+                String lhsStr = lhs.toString();
+                String rhsStr = rhs.toString();
+                lhsStr = lhsStr.startsWith("0") ? lhsStr.substring(1) : lhsStr;
+                rhsStr = rhsStr.startsWith("0") ? rhsStr.substring(1) : rhsStr;
+                return Integer.parseInt(lhsStr) - Integer.parseInt(rhsStr);
+            }
+        });
+        if (index < 0) {
+            index = 0;
+        }
+        return index;
+    }
+
     private void changeYearData() {
         years.clear();
         if (startYear == endYear) {
@@ -356,7 +351,9 @@ public class DatePicker extends WheelPicker {
                 months.add(DateUtils.fillZero(i));
             }
         }
-        selectedMonthIndex = (preSelectMonth == null || !months.contains(preSelectMonth)) ? 0 : months.indexOf(preSelectMonth);
+        //当前设置的月份不在指定范围，则默认选中范围开始的月份
+        int preSelectMonthIndex = preSelectMonth == null ? 0 : months.indexOf(preSelectMonth);
+        selectedMonthIndex = preSelectMonthIndex == -1 ? 0 : preSelectMonthIndex;
         return DateUtils.trimZero(months.get(selectedMonthIndex));
     }
 
@@ -368,12 +365,16 @@ public class DatePicker extends WheelPicker {
             for (int i = startDay; i <= maxDays; i++) {
                 days.add(DateUtils.fillZero(i));
             }
-            selectedDayIndex = (preSelectDay == null || !days.contains(preSelectDay)) ? 0 : days.indexOf(preSelectDay);
+            //当前设置的日子不在指定范围，则默认选中范围开始的日子
+            int preSelectDayIndex = preSelectDay == null ? 0 : days.indexOf(preSelectDay);
+            selectedDayIndex = preSelectDayIndex == -1 ? 0 : preSelectDayIndex;
         } else if (year == endYear && month == endMonth) {
             for (int i = 1; i <= endDay; i++) {
                 days.add(DateUtils.fillZero(i));
             }
-            selectedDayIndex = (preSelectDay == null || !days.contains(preSelectDay)) ? 0 : days.indexOf(preSelectDay);
+            //当前设置的日子不在指定范围，则默认选中范围开始的日子
+            int preSelectDayIndex = preSelectDay == null ? 0 : days.indexOf(preSelectDay);
+            selectedDayIndex = preSelectDayIndex == -1 ? 0 : preSelectDayIndex;
         } else {
             for (int i = 1; i <= maxDays; i++) {
                 days.add(DateUtils.fillZero(i));

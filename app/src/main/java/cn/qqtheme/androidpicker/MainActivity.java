@@ -11,7 +11,6 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import cn.qqtheme.framework.picker.AddressPicker;
 import cn.qqtheme.framework.picker.ColorPicker;
@@ -27,8 +26,6 @@ import cn.qqtheme.framework.util.DateUtils;
 import cn.qqtheme.framework.util.StorageUtils;
 
 public class MainActivity extends Activity {
-
-    private Calendar calendar = Calendar.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,8 +75,8 @@ public class MainActivity extends Activity {
     public void onYearMonthDayPicker(View view) {
         DatePicker picker = new DatePicker(this);
         picker.setRangeStart(2016, 8, 29);
-        picker.setRangeEnd(2022, 1, 1);
-        picker.setSelectedItem(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
+        picker.setRangeEnd(2022, 1, 11);
+        picker.setSelectedItem(2016, 10, 14);
         picker.setOnDatePickListener(new DatePicker.OnYearMonthDayPickListener() {
             @Override
             public void onDatePicked(String year, String month, String day) {
@@ -93,8 +90,6 @@ public class MainActivity extends Activity {
     public void onYearMonthDayTimePicker(View view) {
         DateTimePicker picker = new DateTimePicker(this, DateTimePicker.HOUR_OF_DAY);
         picker.setRange(2000, 2030);
-        picker.setSelectedItem(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH),
-                calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE));
         picker.setOnDateTimePickListener(new DateTimePicker.OnYearMonthDayTimePickListener() {
             @Override
             public void onDateTimePicked(String year, String month, String day, String hour, String minute) {
@@ -108,9 +103,9 @@ public class MainActivity extends Activity {
     public void onYearMonthPicker(View view) {
         DatePicker picker = new DatePicker(this, DatePicker.YEAR_MONTH);
         picker.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
-        picker.setRangeStart(2020, 5, 20);
+        picker.setRangeStart(2016, 10, 14);
         picker.setRangeEnd(2020, 11, 11);
-        picker.setSelectedItem(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1);
+        picker.setSelectedItem(2016, 9);
         picker.setOnDatePickListener(new DatePicker.OnYearMonthPickListener() {
             @Override
             public void onDatePicked(String year, String month) {
@@ -123,7 +118,7 @@ public class MainActivity extends Activity {
     public void onMonthDayPicker(View view) {
         DatePicker picker = new DatePicker(this, DatePicker.MONTH_DAY);
         picker.setGravity(Gravity.CENTER);//弹框居中
-        picker.setSelectedItem(calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
+        picker.setSelectedItem(10, 14);
         picker.setOnDatePickListener(new DatePicker.OnMonthDayPickListener() {
             @Override
             public void onDatePicked(String month, String day) {
@@ -134,9 +129,9 @@ public class MainActivity extends Activity {
     }
 
     public void onTimePicker(View view) {
-        TimePicker picker = new TimePicker(this, TimePicker.HOUR_12);
+        TimePicker picker = new TimePicker(this, TimePicker.HOUR_24);
         picker.setRangeStart(9, 0);//09:00
-        picker.setRangeEnd(12, 30);//12:30
+        picker.setRangeEnd(18, 0);//18:30
         picker.setTopLineVisible(false);
         picker.setOnTimePickListener(new TimePicker.OnTimePickListener() {
             @Override

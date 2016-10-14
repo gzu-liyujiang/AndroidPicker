@@ -229,35 +229,16 @@ public class TimePicker extends WheelPicker {
         }
     }
 
-    /**
-     * Gets selected hour.
-     *
-     * @return the selected hour
-     */
     public String getSelectedHour() {
         return selectedHour;
     }
 
-    /**
-     * Gets selected minute.
-     *
-     * @return the selected minute
-     */
     public String getSelectedMinute() {
         return selectedMinute;
     }
 
-    /**
-     * The interface On time pick listener.
-     */
     public interface OnTimePickListener {
 
-        /**
-         * On time picked.
-         *
-         * @param hour   the hour
-         * @param minute the minute
-         */
         void onTimePicked(String hour, String minute);
 
     }
