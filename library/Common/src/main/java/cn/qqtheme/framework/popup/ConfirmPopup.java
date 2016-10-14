@@ -46,70 +46,121 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
         submitText = activity.getString(android.R.string.ok);
     }
 
+    /**
+     * 设置顶部标题栏下划线颜色
+     */
     public void setTopLineColor(@ColorInt int topLineColor) {
         this.topLineColor = topLineColor;
     }
 
+    /**
+     * 设置顶部标题栏背景颜色
+     */
     public void setTopBackgroundColor(@ColorInt int topBackgroundColor) {
         this.topBackgroundColor = topBackgroundColor;
     }
 
+    /**
+     * 设置顶部标题栏高度（单位为dp）
+     */
     public void setTopHeight(@IntRange(from = 10, to = 80) int topHeight) {
         this.topHeight = topHeight;
     }
 
+    /**
+     * 设置顶部标题栏下划线是否显示
+     */
     public void setTopLineVisible(boolean topLineVisible) {
         this.topLineVisible = topLineVisible;
     }
 
+    /**
+     * 设置顶部标题栏取消按钮是否显示
+     */
     public void setCancelVisible(boolean cancelVisible) {
         this.cancelVisible = cancelVisible;
     }
 
+    /**
+     * 设置顶部标题栏取消按钮文字
+     */
     public void setCancelText(CharSequence cancelText) {
         this.cancelText = cancelText;
     }
 
+    /**
+     * 设置顶部标题栏取消按钮文字
+     */
     public void setCancelText(@StringRes int textRes) {
         this.cancelText = activity.getString(textRes);
     }
 
+    /**
+     * 设置顶部标题栏确定按钮文字
+     */
     public void setSubmitText(CharSequence submitText) {
         this.submitText = submitText;
     }
 
+    /**
+     * 设置顶部标题栏确定按钮文字
+     */
     public void setSubmitText(@StringRes int textRes) {
         this.submitText = activity.getString(textRes);
     }
 
+    /**
+     * 设置顶部标题栏标题文字
+     */
     public void setTitleText(CharSequence titleText) {
         this.titleText = titleText;
     }
 
+    /**
+     * 设置顶部标题栏标题文字
+     */
     public void setTitleText(@StringRes int textRes) {
         this.titleText = activity.getString(textRes);
     }
 
+    /**
+     * 设置顶部标题栏取消按钮文字颜色
+     */
     public void setCancelTextColor(@ColorInt int cancelTextColor) {
         this.cancelTextColor = cancelTextColor;
     }
 
+    /**
+     * 设置顶部标题栏确定按钮文字颜色
+     */
     public void setSubmitTextColor(@ColorInt int submitTextColor) {
         this.submitTextColor = submitTextColor;
     }
 
+    /**
+     * 设置顶部标题栏标题文字颜色
+     */
     public void setTitleTextColor(@ColorInt int titleTextColor) {
         this.titleTextColor = titleTextColor;
     }
 
+    /**
+     * 设置顶部标题栏取消按钮文字大小（单位为sp）
+     */
     public void setCancelTextSize(@IntRange(from = 10, to = 40) int cancelTextSize) {
         this.cancelTextSize = cancelTextSize;
     }
 
+    /**
+     * 设置顶部标题栏确定按钮文字大小（单位为sp）
+     */
     public void setSubmitTextSize(@IntRange(from = 10, to = 40) int submitTextSize) {
         this.submitTextSize = submitTextSize;
     }
 
+    /**
+     * 设置顶部标题栏标题文字大小（单位为sp）
+     */
     public void setTitleTextSize(@IntRange(from = 10, to = 40) int titleTextSize) {
         this.titleTextSize = titleTextSize;
     }

@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IntRange;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -133,7 +134,7 @@ public class WheelView extends ScrollView {
         tv.setPadding(padding, padding, padding, padding);
         if (0 == itemHeight) {
             itemHeight = getViewMeasuredHeight(tv);
-            LogUtils.debug(this, "itemHeight: " + itemHeight);
+            LogUtils.verbose(this, "itemHeight: " + itemHeight);
             views.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, itemHeight * displayItemCount));
             LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) this.getLayoutParams();
             setLayoutParams(new LinearLayout.LayoutParams(lp.width, itemHeight * displayItemCount));
@@ -154,6 +155,7 @@ public class WheelView extends ScrollView {
                 position = divided + offset + 1;
             }
         }
+        LogUtils.verbose("current scroll position : " + position);
 
         int childSize = views.getChildCount();
         for (int i = 0; i < childSize; i++) {
@@ -208,13 +210,14 @@ public class WheelView extends ScrollView {
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         super.onScrollChanged(l, t, oldl, oldt);
+        LogUtils.verbose(this, "horizontal scroll origin: " + l + ", vertical scroll origin: " + t);
         refreshItemView(t);
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        LogUtils.debug(this, "w: " + w + ", h: " + h + ", oldw: " + oldw + ", oldh: " + oldh);
+        LogUtils.verbose(this, "w: " + w + ", h: " + h + ", oldw: " + oldw + ", oldh: " + oldh);
         viewWidth = w;
         setBackgroundDrawable(null);
     }
@@ -232,10 +235,10 @@ public class WheelView extends ScrollView {
                 previousY = ev.getY();
                 break;
             case MotionEvent.ACTION_UP:
-                LogUtils.debug(this, String.format("items=%s, offset=%s", items.size(), offset));
-                LogUtils.debug(this, "selectedIndex=" + selectedIndex);
+                LogUtils.verbose(this, String.format("items=%s, offset=%s", items.size(), offset));
+                LogUtils.verbose(this, "selectedIndex=" + selectedIndex);
                 float delta = ev.getY() - previousY;
-                LogUtils.debug(this, "delta=" + delta);
+                LogUtils.verbose(this, "delta=" + delta);
                 if (selectedIndex == offset && delta > 0) {
                     //滑动到第一项时，若继续向下滑动，则自动跳到最后一项
                     setSelectedIndex(items.size() - offset * 2 - 1);
@@ -253,147 +256,71 @@ public class WheelView extends ScrollView {
     private void _setItems(List<String> list) {
         items.clear();
         items.addAll(list);
-
         // 前面和后面补全
         for (int i = 0; i < offset; i++) {
             items.addFirst("");
             items.addLast("");
         }
-
         initData();
-
     }
 
-    /**
-     * Sets items.
-     *
-     * @param list the list
-     */
     public void setItems(List<String> list) {
         _setItems(list);
         // 2015/12/25 初始化时设置默认选中项
         setSelectedIndex(0);
     }
 
-    /**
-     * Sets items.
-     *
-     * @param list  the list
-     * @param index the index
-     */
     public void setItems(List<String> list, int index) {
         _setItems(list);
         setSelectedIndex(index);
     }
 
-    /**
-     * Sets items.
-     *
-     * @param list the list
-     * @param item the item
-     */
     public void setItems(List<String> list, String item) {
         _setItems(list);
         setSelectedItem(item);
     }
 
-    /**
-     * Gets text size.
-     *
-     * @return the text size
-     */
     public int getTextSize() {
         return textSize;
     }
 
-    /**
-     * Sets text size.
-     *
-     * @param textSize the text size
-     */
     public void setTextSize(int textSize) {
         this.textSize = textSize;
     }
 
-    /**
-     * Gets text color.
-     *
-     * @return the text color
-     */
     public int getTextColor() {
         return textColorFocus;
     }
 
-    /**
-     * Sets text color.
-     *
-     * @param textColorNormal the text color normal
-     * @param textColorFocus  the text color focus
-     */
     public void setTextColor(@ColorInt int textColorNormal, @ColorInt int textColorFocus) {
         this.textColorNormal = textColorNormal;
         this.textColorFocus = textColorFocus;
     }
 
-    /**
-     * Sets text color.
-     *
-     * @param textColor the text color
-     */
     public void setTextColor(@ColorInt int textColor) {
         this.textColorFocus = textColor;
     }
 
-    /**
-     * Is line visible boolean.
-     *
-     * @return the boolean
-     */
     public boolean isLineVisible() {
         return lineVisible;
     }
 
-    /**
-     * Sets line visible.
-     *
-     * @param lineVisible the line visible
-     */
     public void setLineVisible(boolean lineVisible) {
         this.lineVisible = lineVisible;
     }
 
-    /**
-     * Gets line color.
-     *
-     * @return the line color
-     */
     public int getLineColor() {
         return lineColor;
     }
 
-    /**
-     * Sets line color.
-     *
-     * @param lineColor the line color
-     */
     public void setLineColor(@ColorInt int lineColor) {
         this.lineColor = lineColor;
     }
 
-    /**
-     * Gets offset.
-     *
-     * @return the offset
-     */
     public int getOffset() {
         return offset;
     }
 
-    /**
-     * Sets offset.
-     *
-     * @param offset the offset
-     */
     public void setOffset(@IntRange(from = 1, to = 4) int offset) {
         if (offset < 1 || offset > 4) {
             throw new IllegalArgumentException("Offset must between 1 and 4");
@@ -403,8 +330,6 @@ public class WheelView extends ScrollView {
 
     /**
      * 从0开始计数，所有项包括偏移量
-     *
-     * @param index
      */
     private void setSelectedIndex(@IntRange(from = 0) final int index) {
         isUserScroll = false;
@@ -420,11 +345,6 @@ public class WheelView extends ScrollView {
         });
     }
 
-    /**
-     * Sets selected item.
-     *
-     * @param item the item
-     */
     public void setSelectedItem(String item) {
         for (int i = 0; i < items.size(); i++) {
             if (items.get(i).equals(item)) {
@@ -435,36 +355,18 @@ public class WheelView extends ScrollView {
         }
     }
 
-    /**
-     * Gets selected item.
-     *
-     * @return the selected item
-     */
     public String getSelectedItem() {
         return items.get(selectedIndex);
     }
 
-    /**
-     * Gets selected index.
-     *
-     * @return the selected index
-     */
     public int getSelectedIndex() {
         return selectedIndex - offset;
     }
 
-    /**
-     * Sets on wheel view listener.
-     *
-     * @param onWheelViewListener the on wheel view listener
-     */
     public void setOnWheelViewListener(OnWheelViewListener onWheelViewListener) {
         this.onWheelViewListener = onWheelViewListener;
     }
 
-    /**
-     * The interface On wheel view listener.
-     */
     public interface OnWheelViewListener {
         /**
          * 滑动选择回调
@@ -489,7 +391,7 @@ public class WheelView extends ScrollView {
             if (initialY - newY == 0) { // stopped
                 final int remainder = initialY % itemHeight;
                 final int divided = initialY / itemHeight;
-                LogUtils.debug(this, "initialY: " + initialY + ", remainder: " + remainder + ", divided: " + divided);
+                LogUtils.verbose(this, "initialY: " + initialY + ", remainder: " + remainder + ", divided: " + divided);
                 if (remainder == 0) {
                     selectedIndex = divided + offset;
                     onSelectedCallBack();
@@ -523,7 +425,7 @@ public class WheelView extends ScrollView {
 
     private class LineDrawable extends Drawable {
 
-        public LineDrawable() {
+        LineDrawable() {
             if (viewWidth == 0) {
                 viewWidth = ((Activity) context).getWindowManager().getDefaultDisplay().getWidth();
                 LogUtils.debug(this, "viewWidth: " + viewWidth);
@@ -542,7 +444,7 @@ public class WheelView extends ScrollView {
         }
 
         @Override
-        public void draw(Canvas canvas) {
+        public void draw(@NonNull Canvas canvas) {
             if (null == selectedAreaBorder) {
                 selectedAreaBorder = new int[2];
                 selectedAreaBorder[0] = itemHeight * offset;

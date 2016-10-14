@@ -8,7 +8,17 @@
 # Install
 “app”是测试用例；“library”包括WheelPicker、ColorPicker、FilePicker，
 WheelPicker包括DateTimePicker、OptionPicker、LinkagePicker、AddressPicker、NumberPicker等，
-可下载本项目手动进行源代码集成，导入“library”下的相关module（记得将module下的build.gradle修改类似于下面的内容，否则可能会报错找不到BuildToolsVersion）：
+#### 懒人建议直接远程加载jcenter里的
+其中latest.release为最新版，也可以[参照此处指定具体的版本号](https://github.com/gzu-liyujiang/AndroidPicker/releases)：
+```groovy
+dependencies {
+    compile 'cn.qqtheme.framework:WheelPicker:latest.release'
+    compile 'cn.qqtheme.framework:FilePicker:latest.release'
+    compile 'cn.qqtheme.framework:ColorPicker:latest.release'
+}
+```
+#### 需要学习或修改源代码，则下载本项目手动集成
+下载示例项目后导入“library”下的相关module到你的项目（记得将module下的build.gradle修改类似于下面的内容，否则可能会报错找不到BuildToolsVersion）：
 ```groovy
 apply plugin: 'com.android.library'
 
@@ -34,24 +44,75 @@ dependencies {
     compile project(':ColorPicker')
 }
 ```
-也可以直接远程加载jcenter里的（latest.release为最新版，也可以[参照此处指定具体的版本号](https://github.com/gzu-liyujiang/AndroidPicker/releases)）：
-```groovy
-dependencies {
-    compile 'cn.qqtheme.framework:WheelPicker:latest.release'
-    compile 'cn.qqtheme.framework:FilePicker:latest.release'
-    compile 'cn.qqtheme.framework:ColorPicker:latest.release'
-}
-```
-*注：*
-本项目使用gradle来构建，迁移到Eclipse比较麻烦，建议换为Android Studio或Intellij IDEA。
+# ProGuard
 由于地址选择器使用了[fastjson](https://github.com/alibaba/fastjson)来解析，混淆时候需要加入以下类似的规则，不混淆Province、City等实体类。
 ```
 -keep class cn.qqtheme.framework.entity.** { *;}
 -keep class cn.qqtheme.framework.picker.AddressPicker$* { *;}
 ```
 
+# Method
+void setFillScreen(boolean fillScreen)
+固定高度为屏幕的高     
+void setGravity(int gravity)
+位于屏幕何处     
+void setHalfScreen(boolean halfScreen)
+固定高度为屏幕的一半     
+void setHeight(int height)
+设置弹窗的高     
+void setSize(int width, int height)
+设置弹窗的宽和高     
+void setWidth(int width)
+设置弹窗的宽     
+void setLineColor(int lineColor)
+设置分隔线颜色     
+void setLineVisible(boolean lineVisible)
+设置分隔线是否可见     
+void setOffset(int offset)
+设置选项偏移量，默认为1，范围为1~4。     
+void setTextColor(int textColor)
+设置文字颜色     
+void setTextColor(int textColorFocus, int textColorNormal)
+设置文字颜色     
+void setTextSize(int textSize)
+设置文字大小     
+void setCancelText(java.lang.CharSequence cancelText)
+设置顶部标题栏取消按钮文字     
+void setCancelText(int textRes)
+设置顶部标题栏取消按钮文字     
+void setCancelTextColor(int cancelTextColor)
+设置顶部标题栏取消按钮文字颜色     
+void setCancelTextSize(int cancelTextSize)
+设置顶部标题栏取消按钮文字大小（单位为sp）     
+void setCancelVisible(boolean cancelVisible)
+设置顶部标题栏取消按钮是否显示     
+void setSubmitText(java.lang.CharSequence submitText)
+设置顶部标题栏确定按钮文字     
+void setSubmitText(int textRes)
+设置顶部标题栏确定按钮文字     
+void setSubmitTextColor(int submitTextColor)
+设置顶部标题栏确定按钮文字颜色     
+void setSubmitTextSize(int submitTextSize)
+设置顶部标题栏确定按钮文字大小（单位为sp）     
+void setTitleText(java.lang.CharSequence titleText)
+设置顶部标题栏标题文字     
+void setTitleText(int textRes)
+设置顶部标题栏标题文字     
+void setTitleTextColor(int titleTextColor)
+设置顶部标题栏标题文字颜色     
+void setTitleTextSize(int titleTextSize)
+设置顶部标题栏标题文字大小（单位为sp）     
+void setTopBackgroundColor(int topBackgroundColor)
+设置顶部标题栏背景颜色     
+void setTopHeight(int topHeight)
+设置顶部标题栏高度（单位为dp）     
+void setTopLineColor(int topLineColor)
+设置顶部标题栏下划线颜色     
+void setTopLineVisible(boolean topLineVisible)
+设置顶部标题栏下划线是否显示
+
 # Custom
-### 自定义窗口进入退出动画(可选)
+#### 自定义窗口进入退出动画(可选)
 推荐使用[ViewAnimator](https://github.com/gzu-liyujiang/ViewAnimator)这个动画库来实现：
 ```groovy
 dependencies {
@@ -77,7 +138,7 @@ dependencies {
     picker.setAnimationStyle(R.style.Animation_CustomPopup);
 ```
 
-### 自定义顶部及底部界面
+#### 自定义顶部及底部界面
 添加自己的类，继承自现有的选择器，覆盖makeHeaderView、makeFooterView、onSubmit、onCancel，在确定选择时调用onSubmit，
 取消选择时调用onCancel。详见示例：CustomHeaderAndFooterPicker.java。
 
@@ -157,7 +218,7 @@ dependencies {
         picker.show();
 ```
 
-二三级联动选择器（参见地址选择器）
+二三级联动选择器（详见示例项目，参见地址选择器）
 
 地址选择器（含省级、地级、县级）：
 ```java
@@ -252,19 +313,18 @@ https://github.com/wangjiegulu/WheelView
 https://github.com/jbruchanov/AndroidColorPicker      
 
 # Screenshots
-![自定义选择器效果图](/screenshots/custom.gif)   
+![自定义选择器效果图](/screenshots/custom.gif)
 ![日期选择器效果图](/screenshots/date.gif)         
-![日期选择器效果图](/screenshots/yearmonth.jpg)
+![日期选择器效果图](/screenshots/monthday.jpg)
 ![时间选择器效果图](/screenshots/time.gif)
 ![单项选择器效果图](/screenshots/option.gif)         
-![地址选择器效果图](/screenshots/address.gif)   
+![地址选择器效果图](/screenshots/address.gif)
 ![地址选择器效果图](/screenshots/address.png)       
-![数字选择器效果图](/screenshots/number.gif)   
-![星座选择器效果图](/screenshots/constellation.gif)
-![生肖选择器效果图](/screenshots/chinesezodiac.jpg)
+![数字选择器效果图](/screenshots/number.gif)
+![星座选择器效果图](/screenshots/constellation.jpg)
 ![颜色选择器效果图](/screenshots/color.gif)
-![文件选择器效果图](/screenshots/file.gif)    
-![目录选择器效果图](/screenshots/dir.gif)   
+![文件选择器效果图](/screenshots/file.gif)
+![目录选择器效果图](/screenshots/dir.gif)
 
 # Contact
 <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=1032694760&site=穿青人&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:1032694760:51" alt="点击这里给我发消息" title="点击这里给我发消息"/></a>
