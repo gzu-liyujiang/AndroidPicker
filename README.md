@@ -47,6 +47,9 @@ dependencies {
 # ProGuard
 由于地址选择器使用了[fastjson](https://github.com/alibaba/fastjson)来解析，混淆时候需要加入以下类似的规则，不混淆Province、City等实体类。
 ```
+-keepattributes Exceptions,InnerClasses,Signature
+-keepattributes *Annotation*
+
 -keep class cn.qqtheme.framework.entity.** { *;}
 -keep class cn.qqtheme.framework.picker.AddressPicker$* { *;}
 ```
@@ -110,6 +113,7 @@ void setTopLineColor(int topLineColor)
 设置顶部标题栏下划线颜色     
 void setTopLineVisible(boolean topLineVisible)
 设置顶部标题栏下划线是否显示
+......
 
 # Custom
 #### 自定义窗口进入退出动画(可选)
@@ -140,7 +144,7 @@ dependencies {
 
 #### 自定义顶部及底部界面
 添加自己的类，继承自现有的选择器，覆盖makeHeaderView、makeFooterView、onSubmit、onCancel，在确定选择时调用onSubmit，
-取消选择时调用onCancel。详见示例：CustomHeaderAndFooterPicker.java。
+取消选择时调用onCancel。详见示例：[CustomHeaderAndFooterPicker.java](https://github.com/gzu-liyujiang/AndroidPicker/blob/master/app/src/main/java/cn/qqtheme/androidpicker/CustomHeaderAndFooterPicker.java)。
 
 # Sample （更多用法详见示例项目）
 自定义选择器：
