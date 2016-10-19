@@ -227,16 +227,16 @@ dependencies {
 
 地址选择器（含省级、地级、县级）：
 ```java
-        ArrayList<AddressPicker.Province> data = new ArrayList<AddressPicker.Province>();
+        ArrayList<Province> data = new ArrayList<Province>();
         String json = AssetsUtils.readText(this, "city.json");
-        data.addAll(JSON.parseArray(json, AddressPicker.Province.class));
+        data.addAll(JSON.parseArray(json, Province.class));
         AddressPicker picker = new AddressPicker(this, result);
         picker.setSelectedItem("贵州", "贵阳", "花溪");
         //picker.setHideProvince(true);//加上此句举将只显示地级及县级
         //picker.setHideCounty(true);//加上此句举将只显示省级及地级
         picker.setOnAddressPickListener(new AddressPicker.OnAddressPickListener() {
             @Override
-            public void onAddressPicked(String province, String city, String county) {
+            public void onAddressPicked(Province province, City city, County county) {
                 showToast(province + city + county);
             }
         });

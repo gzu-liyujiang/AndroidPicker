@@ -9,6 +9,9 @@ import android.widget.LinearLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.qqtheme.framework.entity.City;
+import cn.qqtheme.framework.entity.County;
+import cn.qqtheme.framework.entity.Province;
 import cn.qqtheme.framework.widget.WheelView;
 
 /**
@@ -16,6 +19,9 @@ import cn.qqtheme.framework.widget.WheelView;
  * 地址数据见示例项目的“assets/city.json”，来源于国家统计局官网（http://www.stats.gov.cn/tjsj/tjbz/xzqhdm）
  *
  * @author 李玉江[QQ:1032694760]
+ * @see Province
+ * @see City
+ * @see County
  * @since 2015/12/15
  */
 public class AddressPicker extends LinkagePicker {
@@ -73,6 +79,54 @@ public class AddressPicker extends LinkagePicker {
         super.setSelectedItem(province, city, county);
     }
 
+    @Deprecated
+    @Override
+    public int getSelectedFirstIndex() {
+        return super.getSelectedFirstIndex();
+    }
+
+    @Deprecated
+    @Override
+    public int getSelectedSecondIndex() {
+        return super.getSelectedSecondIndex();
+    }
+
+    @Deprecated
+    @Override
+    public int getSelectedThirdIndex() {
+        return super.getSelectedThirdIndex();
+    }
+
+    @Deprecated
+    @Override
+    public String getSelectedFirstText() {
+        return super.getSelectedFirstText();
+    }
+
+    @Deprecated
+    @Override
+    public String getSelectedSecondText() {
+        return super.getSelectedSecondText();
+    }
+
+    @Deprecated
+    @Override
+    public String getSelectedThirdText() {
+        return super.getSelectedThirdText();
+    }
+
+    public Province getSelectedProvince() {
+        return provinceList.get(selectedFirstIndex);
+    }
+
+    public City getSelectedCity() {
+        return getSelectedProvince().getCities().get(selectedSecondIndex);
+    }
+
+    public County getSelectedCounty() {
+        return getSelectedCity().getCounties().get(selectedThirdIndex);
+    }
+
     /**
      * 隐藏省级行政区，只显示地市级和区县级。
      * 设置为true的话，地址数据中只需要某个省份的即可
@@ -110,12 +164,20 @@ public class AddressPicker extends LinkagePicker {
         if (firstList.size() == 0) {
             throw new IllegalArgumentException("please initial data at first, can't be empty");
         }
+        int[] widths = getColumnWidths(hideProvince || hideCounty);
+        int provinceWidth = widths[0];
+        int cityWidth = widths[1];
+        int countyWidth = widths[2];
+        if (hideProvince) {
+            provinceWidth = 0;
+            cityWidth = widths[0];
+            countyWidth = widths[1];
+        }
         LinearLayout layout = new LinearLayout(activity);
         layout.setOrientation(LinearLayout.HORIZONTAL);
         layout.setGravity(Gravity.CENTER);
         final WheelView provinceView = new WheelView(activity);
-        final int width = screenWidthPixels / 3;
-        provinceView.setLayoutParams(new LinearLayout.LayoutParams(width, WRAP_CONTENT));
+        provinceView.setLayoutParams(new LinearLayout.LayoutParams(provinceWidth, WRAP_CONTENT));
         provinceView.setTextSize(textSize);
         provinceView.setTextColor(textColorNormal, textColorFocus);
         provinceView.setLineVisible(lineVisible);
@@ -126,7 +188,7 @@ public class AddressPicker extends LinkagePicker {
             provinceView.setVisibility(View.GONE);
         }
         final WheelView cityView = new WheelView(activity);
-        cityView.setLayoutParams(new LinearLayout.LayoutParams(width, WRAP_CONTENT));
+        cityView.setLayoutParams(new LinearLayout.LayoutParams(cityWidth, WRAP_CONTENT));
         cityView.setTextSize(textSize);
         cityView.setTextColor(textColorNormal, textColorFocus);
         cityView.setLineVisible(lineVisible);
@@ -134,7 +196,7 @@ public class AddressPicker extends LinkagePicker {
         cityView.setOffset(offset);
         layout.addView(cityView);
         final WheelView countyView = new WheelView(activity);
-        countyView.setLayoutParams(new LinearLayout.LayoutParams(width, WRAP_CONTENT));
+        countyView.setLayoutParams(new LinearLayout.LayoutParams(countyWidth, WRAP_CONTENT));
         countyView.setTextSize(textSize);
         countyView.setTextColor(textColorNormal, textColorFocus);
         countyView.setLineVisible(lineVisible);
@@ -150,6 +212,7 @@ public class AddressPicker extends LinkagePicker {
             public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
                 selectedFirstText = item;
                 selectedFirstIndex = selectedIndex;
+                selectedSecondIndex = 0;
                 selectedThirdIndex = 0;
                 //根据省份获取地市。若不是用户手动滚动，说明联动需要指定默认项
                 cityView.setItems(secondList.get(selectedFirstIndex), isUserScroll ? 0 : selectedSecondIndex);
@@ -168,6 +231,7 @@ public class AddressPicker extends LinkagePicker {
             public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
                 selectedSecondText = item;
                 selectedSecondIndex = selectedIndex;
+                selectedThirdIndex = 0;
                 //根据地市获取区县
                 ArrayList<String> tmp = thirdList.get(selectedFirstIndex).get(selectedSecondIndex);
                 if (tmp.size() > 0) {
@@ -191,11 +255,11 @@ public class AddressPicker extends LinkagePicker {
     @Override
     public void onSubmit() {
         if (onAddressPickListener != null) {
-            Province province = provinceList.get(selectedFirstIndex);
-            City city = provinceList.get(selectedFirstIndex).getCities().get(selectedSecondIndex);
+            Province province = getSelectedProvince();
+            City city = getSelectedCity();
             County county = null;
             if (!hideCounty) {
-                county = provinceList.get(selectedFirstIndex).getCities().get(selectedSecondIndex).getCounties().get(selectedThirdIndex);
+                county = getSelectedCounty();
             }
             onAddressPickListener.onAddressPicked(province, city, county);
         }
@@ -211,78 +275,10 @@ public class AddressPicker extends LinkagePicker {
          *
          * @param province the province
          * @param city     the city
-         * @param county   the county ，if {@hideCounty} is true，this is null
+         * @param county   the county ，if {@code hideCounty} is true，this is null
          */
         void onAddressPicked(Province province, City city, County county);
 
-    }
-
-    /**
-     * 省市县抽象，本类及其子类不可混淆
-     */
-    public abstract static class Area {
-        private String areaId;
-        private String areaName;
-
-        public String getAreaId() {
-            return areaId;
-        }
-
-        public void setAreaId(String areaId) {
-            this.areaId = areaId;
-        }
-
-        public String getAreaName() {
-            return areaName;
-        }
-
-        public void setAreaName(String areaName) {
-            this.areaName = areaName;
-        }
-
-        @Override
-        public String toString() {
-            return "areaId=" + areaId + ",areaName=" + areaName;
-        }
-
-    }
-
-    /**
-     * 省份
-     */
-    public static class Province extends Area {
-        private ArrayList<City> cities = new ArrayList<City>();
-
-        public ArrayList<City> getCities() {
-            return cities;
-        }
-
-        public void setCities(ArrayList<City> cities) {
-            this.cities = cities;
-        }
-
-    }
-
-    /**
-     * 地市
-     */
-    public static class City extends Area {
-        private ArrayList<County> counties = new ArrayList<County>();
-
-        public ArrayList<County> getCounties() {
-            return counties;
-        }
-
-        public void setCounties(ArrayList<County> counties) {
-            this.counties = counties;
-        }
-
-    }
-
-    /**
-     * 区县
-     */
-    public static class County extends Area {
     }
 
 }

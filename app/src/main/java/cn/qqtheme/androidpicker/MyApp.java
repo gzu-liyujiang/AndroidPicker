@@ -17,6 +17,9 @@ public class MyApp extends Application {
     public void onCreate() {
         super.onCreate();
         AppConfig.DEBUG_ENABLE = true;//BuildConfig.DEBUG;
+        if (!AppConfig.DEBUG_ENABLE) {
+            android.util.Log.d(AppConfig.DEBUG_TAG, "logcat is disabled");
+        }
     }
 
 }

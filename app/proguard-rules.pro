@@ -38,6 +38,7 @@
     *;
 }
 
+#使用fastjson，不能混淆泛型和注解
 -keepattributes Exceptions,InnerClasses,Signature
 -keepattributes *Annotation*
 
@@ -48,6 +49,5 @@
 -dontwarn android.support.**
 -keep class android.support.v4.** { *; }
 
-#不混淆地址选择器的实体类，一般fastjson能正常解析
+#不混淆地址选择器的实体类，以便fastjson能正常解析
 -keep class cn.qqtheme.framework.entity.** { *;}
--keep class cn.qqtheme.framework.picker.AddressPickerr$* { *;}

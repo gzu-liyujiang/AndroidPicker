@@ -5,7 +5,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.0'
+        classpath 'com.android.tools.build:gradle:2.2.1'
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.5"
     }
 }
@@ -181,7 +181,7 @@ subprojects {
 
                 bintray {
                     // You should configure "bintray.user" and "bintray.apiKey" in the gradle.properties
-                    // that in gradle cache directory (${HOME}/.gradle/gradle.properties)
+                    // that in gradle cache directory (～/.gradle/gradle.properties)
                     user = safeGetProperty("bintray.user")
                     key = safeGetProperty("bintray.apikey")
 

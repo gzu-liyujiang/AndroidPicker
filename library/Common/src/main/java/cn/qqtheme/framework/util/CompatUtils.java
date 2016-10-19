@@ -60,9 +60,10 @@ public class CompatUtils {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     @ColorInt
     public static int getColor(Context context, @ColorRes int colorRes) {
-        if (Build.VERSION.SDK_INT < 21) {
+        if (Build.VERSION.SDK_INT < 23) {
             //noinspection deprecation
             return context.getResources().getColor(colorRes);
         } else {
