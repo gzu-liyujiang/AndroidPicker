@@ -9,6 +9,9 @@ import com.alibaba.fastjson.JSON;
 
 import java.util.ArrayList;
 
+import cn.qqtheme.framework.entity.City;
+import cn.qqtheme.framework.entity.County;
+import cn.qqtheme.framework.entity.Province;
 import cn.qqtheme.framework.picker.AddressPicker;
 import cn.qqtheme.framework.util.ConvertUtils;
 
@@ -16,9 +19,9 @@ import cn.qqtheme.framework.util.ConvertUtils;
  * 获取地址数据并显示地址选择器
  *
  * @author 李玉江[QQ:1032694760]
- * @version 2015/12/15
+ * @since 2015/12/15
  */
-public class AddressInitTask extends AsyncTask<String, Void, ArrayList<AddressPicker.Province>> {
+public class AddressInitTask extends AsyncTask<String, Void, ArrayList<Province>> {
     private Activity activity;
     private ProgressDialog dialog;
     private String selectedProvince = "", selectedCity = "", selectedCounty = "";
@@ -42,7 +45,7 @@ public class AddressInitTask extends AsyncTask<String, Void, ArrayList<AddressPi
     }
 
     @Override
-    protected ArrayList<AddressPicker.Province> doInBackground(String... params) {
+    protected ArrayList<Province> doInBackground(String... params) {
         if (params != null) {
             switch (params.length) {
                 case 1:
@@ -61,10 +64,10 @@ public class AddressInitTask extends AsyncTask<String, Void, ArrayList<AddressPi
                     break;
             }
         }
-        ArrayList<AddressPicker.Province> data = new ArrayList<AddressPicker.Province>();
+        ArrayList<Province> data = new ArrayList<Province>();
         try {
             String json = ConvertUtils.toString(activity.getAssets().open("city.json"));
-            data.addAll(JSON.parseArray(json, AddressPicker.Province.class));
+            data.addAll(JSON.parseArray(json, Province.class));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -72,15 +75,20 @@ public class AddressInitTask extends AsyncTask<String, Void, ArrayList<AddressPi
     }
 
     @Override
-    protected void onPostExecute(ArrayList<AddressPicker.Province> result) {
+    protected void onPostExecute(ArrayList<Province> result) {
         dialog.dismiss();
         if (result.size() > 0) {
             AddressPicker picker = new AddressPicker(activity, result);
             picker.setHideCounty(hideCounty);
+            if (hideCounty){
+                picker.setColumnWeight(1/3.0, 2/3.0);//将屏幕分为3份，省级和地级的比例为1:2
+            } else {
+                picker.setColumnWeight(1/5.0, 2/5.0, 2/5.0);//省级、地级和县级的比例为1:2:2
+            }
             picker.setSelectedItem(selectedProvince, selectedCity, selectedCounty);
             picker.setOnAddressPickListener(new AddressPicker.OnAddressPickListener() {
                 @Override
-                public void onAddressPicked(AddressPicker.Province province, AddressPicker.City city, AddressPicker.County county) {
+                public void onAddressPicked(Province province, City city, County county) {
                     if (county == null) {
                         Toast.makeText(activity, "province : " + province + ", city: " + city, Toast.LENGTH_LONG).show();
                     } else {

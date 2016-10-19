@@ -12,6 +12,9 @@ import com.alibaba.fastjson.JSON;
 
 import java.util.ArrayList;
 
+import cn.qqtheme.framework.entity.City;
+import cn.qqtheme.framework.entity.County;
+import cn.qqtheme.framework.entity.Province;
 import cn.qqtheme.framework.picker.AddressPicker;
 import cn.qqtheme.framework.picker.ColorPicker;
 import cn.qqtheme.framework.picker.DatePicker;
@@ -241,15 +244,15 @@ public class MainActivity extends Activity {
 
     public void onAddress2Picker(View view) {
         try {
-            ArrayList<AddressPicker.Province> data = new ArrayList<AddressPicker.Province>();
+            ArrayList<Province> data = new ArrayList<Province>();
             String json = ConvertUtils.toString(getAssets().open("city2.json"));
-            data.addAll(JSON.parseArray(json, AddressPicker.Province.class));
+            data.addAll(JSON.parseArray(json, Province.class));
             AddressPicker picker = new AddressPicker(this, data);
             picker.setHideProvince(true);
             picker.setSelectedItem("贵州", "贵阳", "花溪");
             picker.setOnAddressPickListener(new AddressPicker.OnAddressPickListener() {
                 @Override
-                public void onAddressPicked(AddressPicker.Province province, AddressPicker.City city, AddressPicker.County county) {
+                public void onAddressPicked(Province province, City city, County county) {
                     if (county == null) {
                         showToast("province : " + province + ", city: " + city);
                     } else {
@@ -265,7 +268,7 @@ public class MainActivity extends Activity {
 
 
     public void onAddress3Picker(View view) {
-        new AddressInitTask(this, true).execute("四川", "成都");
+        new AddressInitTask(this, true).execute("四川", "阿坝");
     }
 
     public void onColorPicker(View view) {
