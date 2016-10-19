@@ -83,7 +83,7 @@ public class AddressInitTask extends AsyncTask<String, Void, ArrayList<Province>
             if (hideCounty){
                 picker.setColumnWeight(1/3.0, 2/3.0);//将屏幕分为3份，省级和地级的比例为1:2
             } else {
-                picker.setColumnWeight(1/5.0, 2/5.0, 2/5.0);//省级、地级和县级的比例为1:2:2
+                picker.setColumnWeight(2/8.0, 3/8.0, 3/8.0);//省级、地级和县级的比例为2:3:3
             }
             picker.setSelectedItem(selectedProvince, selectedCity, selectedCounty);
             picker.setOnAddressPickListener(new AddressPicker.OnAddressPickListener() {

@@ -234,7 +234,7 @@ dependencies {
         picker.setSelectedItem("贵州", "贵阳", "花溪");
         //picker.setHideProvince(true);//加上此句举将只显示地级及县级
         //picker.setHideCounty(true);//加上此句举将只显示省级及地级
-        //picker.setColumnWeight(1/5.0, 2/5.0, 2/5.0);//省级、地级和县级的比例为1:2:2
+        //picker.setColumnWeight(2/8.0, 3/8.0, 3/8.0);//省级、地级和县级的比例为2:3:3
         picker.setOnAddressPickListener(new AddressPicker.OnAddressPickListener() {
             @Override
             public void onAddressPicked(Province province, City city, County county) {

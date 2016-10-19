@@ -212,14 +212,19 @@ public class AddressPicker extends LinkagePicker {
             public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
                 selectedFirstText = item;
                 selectedFirstIndex = selectedIndex;
-                selectedSecondIndex = 0;
                 selectedThirdIndex = 0;
-                //根据省份获取地市。若不是用户手动滚动，说明联动需要指定默认项
-                cityView.setItems(secondList.get(selectedFirstIndex), isUserScroll ? 0 : selectedSecondIndex);
+                //根据省份获取地市
+                ArrayList<String> cities = secondList.get(selectedFirstIndex);
+                if (cities.size() < selectedSecondIndex) {
+                    //上一次选择的地级的索引超出了当前省份下的地市数
+                    selectedSecondIndex = 0;
+                }
+                //若不是用户手动滚动，说明联动需要指定默认项
+                cityView.setItems(cities, isUserScroll ? 0 : selectedSecondIndex);
                 //根据地市获取区县
-                ArrayList<ArrayList<String>> tmp = thirdList.get(selectedFirstIndex);
-                if (tmp.size() > 0) {
-                    countyView.setItems(tmp.get(0), isUserScroll ? 0 : selectedThirdIndex);
+                ArrayList<ArrayList<String>> counties = thirdList.get(selectedFirstIndex);
+                if (counties.size() > 0) {
+                    countyView.setItems(counties.get(0), isUserScroll ? 0 : selectedThirdIndex);
                 } else {
                     countyView.setItems(new ArrayList<String>());
                 }
@@ -231,11 +236,14 @@ public class AddressPicker extends LinkagePicker {
             public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
                 selectedSecondText = item;
                 selectedSecondIndex = selectedIndex;
-                selectedThirdIndex = 0;
                 //根据地市获取区县
-                ArrayList<String> tmp = thirdList.get(selectedFirstIndex).get(selectedSecondIndex);
-                if (tmp.size() > 0) {
-                    countyView.setItems(tmp, isUserScroll ? 0 : selectedThirdIndex);
+                ArrayList<String> counties = thirdList.get(selectedFirstIndex).get(selectedSecondIndex);
+                if (counties.size() < selectedThirdIndex) {
+                    //上一次选择的区县的索引超出了当前地市下的区县数
+                    selectedThirdIndex = 0;
+                }
+                if (counties.size() > 0) {
+                    countyView.setItems(counties, isUserScroll ? 0 : selectedThirdIndex);
                 } else {
                     countyView.setItems(new ArrayList<String>());
                 }
