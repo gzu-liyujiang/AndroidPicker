@@ -1,5 +1,9 @@
 apply plugin: 'com.android.application'
 
+ext {
+    isLibrary = false
+}
+
 android {
 
     buildTypes {
@@ -11,7 +15,7 @@ android {
             //是否混淆
             minifyEnabled true
             //混淆配置文件
-            proguardFile 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 

@@ -1,5 +1,5 @@
 @rem C:\Users\Administrator\.m2\repository
-./gradlew.bat publishToMavenLocal --stacktrace
+./gradlew publishToMavenLocal --info
 
 @rem http://jcenter.bintray.com
 @rem ./gradlew.bat bintrayUpload --stacktrace

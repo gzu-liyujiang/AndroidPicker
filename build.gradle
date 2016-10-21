@@ -1,33 +1,36 @@
 //参考：https://raw.github.com/dm77/barcodescanner/master/build.gradle
+//参考：https://raw.github.com/liungkejin/GradlePublish/master/java-bintray.gradle
 
 buildscript {
     repositories {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.1'
+        classpath 'com.android.tools.build:gradle:2.2.2'
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.5"
     }
 }
 
 allprojects {
-    group = PROJ_GROUP
-    version = PROJ_VERSION
+    group = GROUP
+    version = VERSION_NAME
 
     repositories {
         jcenter() //bintray的maven库
         mavenCentral() //sonatype的maven库
-        mavenLocal() //本地maven库
+        mavenLocal() //本地的maven库
+        maven {
+            url "https://www.jitpack.io" //jitpack的maven库
+        }
         flatDir {
-            dirs 'libs' //本地.aar文件
+            dirs 'libs' //本地aar文件
         }
     }
 
     ext {
         isLibrary = false
-        pomGroup = PROJ_GROUP
-        pomArtifactId = "library"
-        pomVersion = PROJ_VERSION
+        pomArtifactId = project.name
+        pomVersion = VERSION_NAME
         pomDescription = 'This is library description'
     }
 
@@ -41,7 +44,7 @@ subprojects {
         if (hasAppPlugin || hasLibPlugin) {
             android {
                 compileSdkVersion COMPILE_SDK_VERSION as int
-                buildToolsVersion BUILD_TOOLS_VERSION
+                buildToolsVersion BUILD_TOOL_VERSION
 
                 defaultConfig {
                     minSdkVersion MIN_SDK_VERSION as int
@@ -53,8 +56,7 @@ subprojects {
                 buildTypes {
                     release {
                         debuggable false
-                        minifyEnabled false
-                        proguardFile getDefaultProguardFile('proguard-android.txt')
+                        minifyEnabled false //实时构建库项目时若启用混淆，APP模块引用会造成部分方法找不到
                     }
                     debug {
                         debuggable true
@@ -83,138 +85,17 @@ subprojects {
             }
 
             dependencies {
-                compile "com.android.support:support-v4:latest.release"
-                compile "com.android.support:support-annotations:latest.release"
+                compile "com.android.support:support-v4:${ANDROID_SUPPORT_VERSION}"
+                compile "com.android.support:support-annotations:${ANDROID_SUPPORT_VERSION}"
             }
         }
 
         if (project.isLibrary) {
             configure(project) {
-                // 这个脚本是用来发布库项目到jcenter
-                apply plugin: 'com.jfrog.bintray'
-                apply plugin: 'maven-publish'
-
-                version = project.pomVersion   //版本号
-                group = PROJ_GROUP    // 包名
-                project.archivesBaseName = project.pomArtifactId
-
-                task sourcesJar(type: Jar) {
-                    from android.sourceSets.main.java.srcDirs
-                    classifier = 'sources'
-                }
-
-                task javadoc(type: Javadoc) {
-                    source = android.sourceSets.main.java.srcDirs
-                    classpath += configurations.compile
-                    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-                    exclude '**/BuildConfig.java'
-                    exclude '**/R.java'
-                    failOnError = false
-                }
-
-                task javadocJar(type: Jar, dependsOn: javadoc) {
-                    classifier = 'javadoc'
-                    from javadoc.destinationDir
-                }
-
-                javadoc {
-                    options {
-                        encoding "UTF-8"
-                        charSet 'UTF-8'
-                        author true
-                        version true
-                        links "http://docs.oracle.com/javase/7/docs/api"
-                        title project.pomArtifactId
-                    }
-                }
-
-                publishing {
-                    publications {
-                        mavenJava(MavenPublication) {
-                            artifactId project.pomArtifactId
-                            artifact "${buildDir}/outputs/aar/${project.pomArtifactId}-release.aar"
-                            artifact javadocJar
-                            artifact sourcesJar
-
-                            pom.withXml {
-                                Node root = asNode()
-                                root.appendNode('name', project.pomArtifactId)
-                                root.appendNode('description', project.pomDescription)
-                                root.appendNode('url', PROJ_WEBSITE_URL)
-
-                                def issues = root.appendNode('issueManagement')
-                                issues.appendNode('system', 'github')
-                                issues.appendNode('url', PROJ_ISSUE_URL)
-
-                                def scm = root.appendNode('scm')
-                                scm.appendNode('url', PROJ_GIT_URL)
-                                scm.appendNode('connection', "scm:git:${PROJ_GIT_URL}")
-                                scm.appendNode('developerConnection', "scm:git:${PROJ_GIT_URL}")
-
-                                def license = root.appendNode('licenses').appendNode('license')
-                                license.appendNode('name', "The Apache Software License, Version 2.0")
-                                license.appendNode('url', "http://www.apache.org/licenses/LICENSE-2.0.txt")
-                                license.appendNode('distribution', "repo")
-
-                                def developer = root.appendNode('developers').appendNode('developer')
-                                developer.appendNode('id', DEVELOPER_ID)
-                                developer.appendNode('name', DEVELOPER_NAME)
-                                developer.appendNode('email', DEVELOPER_EMAIL)
-
-                                def dependenciesNode = root.appendNode('dependencies')
-                                configurations.compile.allDependencies.each {
-                                    if (it.group && it.name && it.version) {
-                                        def dependencyNode = dependenciesNode.appendNode('dependency')
-                                        dependencyNode.appendNode('groupId', it.group)
-                                        dependencyNode.appendNode('artifactId', it.name)
-                                        dependencyNode.appendNode('version', it.version)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                afterEvaluate {
-                    publishing.publications.mavenJava.artifact(bundleRelease)
-                }
-
-                bintray {
-                    // You should configure "bintray.user" and "bintray.apiKey" in the gradle.properties
-                    // that in gradle cache directory (～/.gradle/gradle.properties)
-                    user = safeGetProperty("bintray.user")
-                    key = safeGetProperty("bintray.apikey")
-
-                    publications = ['mavenJava']
-                    publish = true    //是否发布
-
-                    pkg {
-                        repo = "maven"    //上传的中央仓库名称
-                        name = project.pomArtifactId    //发布到中央仓库上的项目名字
-                        desc = project.pomDescription
-                        websiteUrl = PROJ_WEBSITE_URL   //项目主页
-                        issueTrackerUrl = PROJ_ISSUE_URL    //项目讨论页
-                        vcsUrl = PROJ_GIT_URL    //项目GIT仓库
-                        licenses = ["Apache-2.0"]
-                        publicDownloadNumbers = true
-                        version {
-                            name = project.pomVersion
-                            desc = project.pomDescription
-                            gpg {
-                                sign = false    //是否GPG签名，可使用Gpg4win创建密钥文件
-                            }
-                            mavenCentralSync {
-                                sync = false    //是否同步到Maven Central
-                            }
-                        }
-                    }
-                }
-
+                apply from: "${rootDir}/publish.gradle" //调用发布脚本
             }
         }
+
     }
 }
 
-String safeGetProperty(String key) {
-    hasProperty("key") ? getProperty("key") : ""
-}
