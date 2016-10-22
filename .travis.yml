@@ -1,8 +1,7 @@
 language: android
 sudo: false
 jdk:
-  #- oraclejdk8
-  - openjdk8
+  - oraclejdk8
 android:
   components:
     - tools
