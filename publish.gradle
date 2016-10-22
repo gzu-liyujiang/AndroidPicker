@@ -85,8 +85,13 @@ publishing {
 bintray {
     // You should configure "bintray.user" and "bintray.apiKey" in the gradle.properties
     // that in gradle cache directory (～/.gradle/gradle.properties)
-    user = getProperty("bintray.user")
-    key = getProperty("bintray.apikey")
+    try {
+        user = getProperty("bintray.user")
+        key = getProperty("bintray.apikey")
+    } catch (Exception) {
+        user = ""
+        key = ""
+    }
 
     publications = ['myPublicationName'] //对应前面的publishing.publications.mavenJava
     publish = true    //是否发布
