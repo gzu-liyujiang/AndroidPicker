@@ -21,6 +21,34 @@ android {
 
 }
 
+tasks.all { task ->
+    def name = task.name;
+    if (name.contains("assemble") || name.contains("build")) {
+        task.doLast {
+            copyDebugApk();
+        }
+    }
+}
+
+def copyDebugApk() {
+    def debugOld = "${rootDir}/${project.name}/build/outputs/apk/app-debug.apk";
+    def debugNew = "${rootDir}/app-debug.apk";
+    def fis = new FileInputStream(debugOld);
+    def fos = new FileOutputStream(debugNew);
+    byte[] buffer = new byte[1024];
+    while (true) {
+        def len = fis.read(buffer);
+        if (len == -1) {
+            fis.close();
+            fos.flush();
+            fos.close();
+            break;
+        } else {
+            fos.write(buffer, 0, len);
+        }
+    }
+}
+
 dependencies {
     compile 'com.alibaba:fastjson:1.1.54.android'
     compile 'com.github.florent37:viewanimator:1.0.3'

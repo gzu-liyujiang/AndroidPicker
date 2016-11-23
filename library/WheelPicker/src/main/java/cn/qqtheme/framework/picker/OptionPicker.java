@@ -22,15 +22,9 @@ import cn.qqtheme.framework.widget.WheelView;
 public class OptionPicker extends WheelPicker {
     protected ArrayList<String> options = new ArrayList<String>();
     private OnOptionPickListener onOptionPickListener;
-    private int selectedOption = 0;
+    private int selectedOptionIndex = 0;
     private String label = "";
 
-    /**
-     * Instantiates a new Option picker.
-     *
-     * @param activity the activity
-     * @param options  the options
-     */
     public OptionPicker(Activity activity, String[] options) {
         super(activity);
         this.options.addAll(Arrays.asList(options));
@@ -53,7 +47,7 @@ public class OptionPicker extends WheelPicker {
      */
     public void setSelectedIndex(int index) {
         if (index >= 0 && index < options.size()) {
-            selectedOption = index;
+            selectedOptionIndex = index;
         }
     }
 
@@ -93,11 +87,11 @@ public class OptionPicker extends WheelPicker {
         if (!TextUtils.isEmpty(label)) {
             labelView.setText(label);
         }
-        optionView.setItems(options, selectedOption);
+        optionView.setItems(options, selectedOptionIndex);
         optionView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
             @Override
             public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
-                selectedOption = selectedIndex;
+                selectedOptionIndex = selectedIndex;
             }
         });
         return layout;
@@ -106,39 +100,20 @@ public class OptionPicker extends WheelPicker {
     @Override
     public void onSubmit() {
         if (onOptionPickListener != null) {
-            onOptionPickListener.onOptionPicked(selectedOption, options.get(selectedOption));
+            onOptionPickListener.onOptionPicked(selectedOptionIndex, options.get(selectedOptionIndex));
         }
     }
 
-    /**
-     * Gets selected option.
-     *
-     * @return the selected option
-     */
     public String getSelectedOption() {
-        return options.get(selectedOption);
+        return options.get(selectedOptionIndex);
     }
 
-    /**
-     * Get the selected position.
-     *
-     * @return the selected position
-     */
     public int getSelectedPosition() {
-        return selectedOption;
+        return selectedOptionIndex;
     }
 
-    /**
-     * The interface On option pick listener.
-     */
     public interface OnOptionPickListener {
 
-        /**
-         * On option picked.
-         *
-         * @param position the position you selected
-         * @param option   the option
-         */
         void onOptionPicked(int position, String option);
 
     }

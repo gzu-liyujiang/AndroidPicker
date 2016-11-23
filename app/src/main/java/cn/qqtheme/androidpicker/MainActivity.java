@@ -150,7 +150,7 @@ public class MainActivity extends Activity {
                 "第一项", "第二项", "这是一个很长很长很长很长很长很长很长很长很长的很长很长的很长很长的项"
         });
         picker.setOffset(2);
-        picker.setSelectedIndex(1);
+        picker.setSelectedIndex(0);
         picker.setTextSize(11);
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
@@ -225,6 +225,8 @@ public class MainActivity extends Activity {
 
     public void onNumberPicker(View view) {
         NumberPicker picker = new NumberPicker(this);
+        picker.setWidth(picker.getScreenWidthPixels() / 2);
+        picker.setLineVisible(false);
         picker.setOffset(2);//偏移量
         picker.setRange(145, 200, 1);//数字范围
         picker.setSelectedItem(172);

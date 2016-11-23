@@ -44,6 +44,14 @@ public abstract class BasicPopup<V extends View> implements DialogInterface.OnKe
         popupDialog.setOnKeyListener(this);
     }
 
+    public int getScreenWidthPixels() {
+        return screenWidthPixels;
+    }
+
+    public int getScreenHeightPixels() {
+        return screenHeightPixels;
+    }
+
     /**
      * 创建弹窗的内容视图
      *

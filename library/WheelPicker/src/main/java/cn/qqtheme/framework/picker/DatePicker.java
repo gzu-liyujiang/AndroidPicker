@@ -334,6 +334,14 @@ public class DatePicker extends WheelPicker {
     private int changeMonthData(int year) {
         String preSelectMonth = months.size() > selectedMonthIndex ? months.get(selectedMonthIndex) : null;
         months.clear();
+        if (startMonth < 1 || endMonth < 1 || startMonth > 12 || endMonth > 12) {
+            throw new IllegalArgumentException("month out of range [1-12]");
+        }
+        if (startMonth > endMonth) {
+            int tmp = startMonth;
+            startMonth = endMonth;
+            endMonth = tmp;
+        }
         if (startYear == endYear) {
             for (int i = startMonth; i <= endMonth; i++) {
                 months.add(DateUtils.fillZero(i));
