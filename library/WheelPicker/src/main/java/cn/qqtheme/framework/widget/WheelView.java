@@ -341,6 +341,8 @@ public class WheelView extends ScrollView {
                 //选中这一项的值
                 selectedIndex = index + offset;
                 onSelectedCallBack();
+                //默认选中第一项时颜色需要高亮
+                refreshItemView(itemHeight * index);
             }
         });
     }
@@ -445,6 +447,9 @@ public class WheelView extends ScrollView {
 
         @Override
         public void draw(@NonNull Canvas canvas) {
+            if (!lineVisible) {
+                return;
+            }
             if (null == selectedAreaBorder) {
                 selectedAreaBorder = new int[2];
                 selectedAreaBorder[0] = itemHeight * offset;
