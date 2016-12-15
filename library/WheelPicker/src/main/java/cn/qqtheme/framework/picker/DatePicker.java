@@ -18,7 +18,6 @@ import java.util.Comparator;
 import java.util.Locale;
 
 import cn.qqtheme.framework.util.DateUtils;
-import cn.qqtheme.framework.util.LogUtils;
 import cn.qqtheme.framework.widget.WheelView;
 
 /**
@@ -34,6 +33,7 @@ public class DatePicker extends WheelPicker {
     private ArrayList<String> years = new ArrayList<String>();
     private ArrayList<String> months = new ArrayList<String>();
     private ArrayList<String> days = new ArrayList<String>();
+    private OnWheelListener onWheelListener;
     private OnDatePickListener onDatePickListener;
     private String yearLabel = "年", monthLabel = "月", dayLabel = "日";
     private int startYear = 2010, startMonth = 1, startDay = 1;
@@ -169,6 +169,13 @@ public class DatePicker extends WheelPicker {
         }
     }
 
+    /**
+     * 设置滑动监听器
+     */
+    public void setOnWheelListener(OnWheelListener onWheelListener) {
+        this.onWheelListener = onWheelListener;
+    }
+
     public void setOnDatePickListener(OnDatePickListener listener) {
         this.onDatePickListener = listener;
     }
@@ -192,6 +199,7 @@ public class DatePicker extends WheelPicker {
         yearView.setLineVisible(lineVisible);
         yearView.setLineColor(lineColor);
         yearView.setOffset(offset);
+        yearView.setCycleDisable(cycleDisable);
         layout.addView(yearView);
         TextView yearTextView = new TextView(activity);
         yearTextView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
@@ -208,6 +216,7 @@ public class DatePicker extends WheelPicker {
         monthView.setLineVisible(lineVisible);
         monthView.setLineColor(lineColor);
         monthView.setOffset(offset);
+        monthView.setCycleDisable(cycleDisable);
         layout.addView(monthView);
         TextView monthTextView = new TextView(activity);
         monthTextView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
@@ -224,6 +233,7 @@ public class DatePicker extends WheelPicker {
         dayView.setLineVisible(lineVisible);
         dayView.setLineColor(lineColor);
         dayView.setOffset(offset);
+        dayView.setCycleDisable(cycleDisable);
         layout.addView(dayView);
         TextView dayTextView = new TextView(activity);
         dayTextView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
@@ -251,10 +261,13 @@ public class DatePicker extends WheelPicker {
             } else {
                 yearView.setItems(years, selectedYearIndex);
             }
-            yearView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
+            yearView.setOnWheelListener(new WheelView.OnWheelListener() {
                 @Override
-                public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
-                    selectedYearIndex = selectedIndex;
+                public void onSelected(boolean isUserScroll, int index, String item) {
+                    selectedYearIndex = index;
+                    if (onWheelListener != null) {
+                        onWheelListener.onYearWheeled(selectedYearIndex, item);
+                    }
                     //需要根据年份及月份动态计算天数
                     int year = DateUtils.trimZero(item);
                     changeDayData(year, changeMonthData(year));
@@ -271,10 +284,13 @@ public class DatePicker extends WheelPicker {
         } else {
             monthView.setItems(months, selectedMonthIndex);
         }
-        monthView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
+        monthView.setOnWheelListener(new WheelView.OnWheelListener() {
             @Override
-            public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
-                selectedMonthIndex = selectedIndex;
+            public void onSelected(boolean isUserScroll, int index, String item) {
+                selectedMonthIndex = index;
+                if (onWheelListener != null) {
+                    onWheelListener.onMonthWheeled(selectedMonthIndex, item);
+                }
                 if (mode != YEAR_MONTH) {
                     changeDayData(DateUtils.trimZero(years.get(selectedYearIndex)), DateUtils.trimZero(item));
                     dayView.setItems(days, selectedDayIndex);
@@ -286,10 +302,13 @@ public class DatePicker extends WheelPicker {
                 dayTextView.setText(dayLabel);
             }
             dayView.setItems(days, selectedDayIndex);
-            dayView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
+            dayView.setOnWheelListener(new WheelView.OnWheelListener() {
                 @Override
-                public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
-                    selectedDayIndex = selectedIndex;
+                public void onSelected(boolean isUserScroll, int index, String item) {
+                    selectedDayIndex = index;
+                    if (onWheelListener != null) {
+                        onWheelListener.onDayWheeled(selectedDayIndex, item);
+                    }
                 }
             });
         }
@@ -446,6 +465,16 @@ public class DatePicker extends WheelPicker {
     public interface OnMonthDayPickListener extends OnDatePickListener {
 
         void onDatePicked(String month, String day);
+
+    }
+
+    public interface OnWheelListener {
+
+        void onYearWheeled(int index, String year);
+
+        void onMonthWheeled(int index, String month);
+
+        void onDayWheeled(int index, String day);
 
     }
 

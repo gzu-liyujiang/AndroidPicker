@@ -26,6 +26,7 @@ import cn.qqtheme.framework.widget.WheelView;
  */
 public class AddressPicker extends LinkagePicker {
     private OnAddressPickListener onAddressPickListener;
+    private OnWheelListener onWheelListener;
     //只显示地市及区县
     private boolean hideProvince = false;
     //只显示省份及地市
@@ -79,42 +80,6 @@ public class AddressPicker extends LinkagePicker {
         super.setSelectedItem(province, city, county);
     }
 
-    @Deprecated
-    @Override
-    public int getSelectedFirstIndex() {
-        return super.getSelectedFirstIndex();
-    }
-
-    @Deprecated
-    @Override
-    public int getSelectedSecondIndex() {
-        return super.getSelectedSecondIndex();
-    }
-
-    @Deprecated
-    @Override
-    public int getSelectedThirdIndex() {
-        return super.getSelectedThirdIndex();
-    }
-
-    @Deprecated
-    @Override
-    public String getSelectedFirstText() {
-        return super.getSelectedFirstText();
-    }
-
-    @Deprecated
-    @Override
-    public String getSelectedSecondText() {
-        return super.getSelectedSecondText();
-    }
-
-    @Deprecated
-    @Override
-    public String getSelectedThirdText() {
-        return super.getSelectedThirdText();
-    }
-
     public Province getSelectedProvince() {
         return provinceList.get(selectedFirstIndex);
     }
@@ -145,13 +110,23 @@ public class AddressPicker extends LinkagePicker {
         this.hideCounty = hideCounty;
     }
 
+    /**
+     * 设置滑动监听器
+     */
+    public void setOnWheelListener(OnWheelListener onWheelListener) {
+        this.onWheelListener = onWheelListener;
+    }
+
     public void setOnAddressPickListener(OnAddressPickListener listener) {
         this.onAddressPickListener = listener;
     }
 
+    /**
+     * @deprecated use {@link #setOnAddressPickListener(OnAddressPickListener)} instead
+     */
     @Deprecated
     @Override
-    public void setOnLinkageListener(OnLinkageListener onLinkageListener) {
+    public final void setOnLinkageListener(OnLinkageListener onLinkageListener) {
         throw new UnsupportedOperationException("Please use setOnAddressPickListener instead.");
     }
 
@@ -183,6 +158,7 @@ public class AddressPicker extends LinkagePicker {
         provinceView.setLineVisible(lineVisible);
         provinceView.setLineColor(lineColor);
         provinceView.setOffset(offset);
+        provinceView.setCycleDisable(cycleDisable);
         layout.addView(provinceView);
         if (hideProvince) {
             provinceView.setVisibility(View.GONE);
@@ -194,6 +170,7 @@ public class AddressPicker extends LinkagePicker {
         cityView.setLineVisible(lineVisible);
         cityView.setLineColor(lineColor);
         cityView.setOffset(offset);
+        cityView.setCycleDisable(cycleDisable);
         layout.addView(cityView);
         final WheelView countyView = new WheelView(activity);
         countyView.setLayoutParams(new LinearLayout.LayoutParams(countyWidth, WRAP_CONTENT));
@@ -202,17 +179,21 @@ public class AddressPicker extends LinkagePicker {
         countyView.setLineVisible(lineVisible);
         countyView.setLineColor(lineColor);
         countyView.setOffset(offset);
+        countyView.setCycleDisable(cycleDisable);
         layout.addView(countyView);
         if (hideCounty) {
             countyView.setVisibility(View.GONE);
         }
         provinceView.setItems(firstList, selectedFirstIndex);
-        provinceView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
+        provinceView.setOnWheelListener(new WheelView.OnWheelListener() {
             @Override
-            public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
-                selectedFirstText = item;
-                selectedFirstIndex = selectedIndex;
+            public void onSelected(boolean isUserScroll, int index, String item) {
+                selectedFirstItem = item;
+                selectedFirstIndex = index;
                 selectedThirdIndex = 0;
+                if (onWheelListener != null) {
+                    onWheelListener.onProvinceWheeled(selectedFirstIndex, selectedFirstItem);
+                }
                 //根据省份获取地市
                 ArrayList<String> cities = secondList.get(selectedFirstIndex);
                 if (cities.size() < selectedSecondIndex) {
@@ -231,11 +212,14 @@ public class AddressPicker extends LinkagePicker {
             }
         });
         cityView.setItems(secondList.get(selectedFirstIndex), selectedSecondIndex);
-        cityView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
+        cityView.setOnWheelListener(new WheelView.OnWheelListener() {
             @Override
-            public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
-                selectedSecondText = item;
-                selectedSecondIndex = selectedIndex;
+            public void onSelected(boolean isUserScroll, int index, String item) {
+                selectedSecondItem = item;
+                selectedSecondIndex = index;
+                if (onWheelListener != null) {
+                    onWheelListener.onCityWheeled(selectedSecondIndex, selectedSecondItem);
+                }
                 //根据地市获取区县
                 ArrayList<String> counties = thirdList.get(selectedFirstIndex).get(selectedSecondIndex);
                 if (counties.size() < selectedThirdIndex) {
@@ -250,11 +234,14 @@ public class AddressPicker extends LinkagePicker {
             }
         });
         countyView.setItems(thirdList.get(selectedFirstIndex).get(selectedSecondIndex), selectedThirdIndex);
-        countyView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
+        countyView.setOnWheelListener(new WheelView.OnWheelListener() {
             @Override
-            public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
-                selectedThirdText = item;
-                selectedThirdIndex = selectedIndex;
+            public void onSelected(boolean isUserScroll, int index, String item) {
+                selectedThirdItem = item;
+                selectedThirdIndex = index;
+                if (onWheelListener != null) {
+                    onWheelListener.onCountyWheeled(selectedThirdIndex, selectedThirdItem);
+                }
             }
         });
         return layout;
@@ -286,6 +273,19 @@ public class AddressPicker extends LinkagePicker {
          * @param county   the county ，if {@code hideCounty} is true，this is null
          */
         void onAddressPicked(Province province, City city, County county);
+
+    }
+
+    /**
+     * 滑动回调
+     */
+    public interface OnWheelListener {
+
+        void onProvinceWheeled(int index, String province);
+
+        void onCityWheeled(int index, String city);
+
+        void onCountyWheeled(int index, String county);
 
     }
 

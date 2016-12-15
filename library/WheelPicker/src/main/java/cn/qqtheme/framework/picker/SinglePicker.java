@@ -89,6 +89,7 @@ public class SinglePicker<T> extends WheelPicker {
         optionView.setLineVisible(lineVisible);
         optionView.setLineColor(lineColor);
         optionView.setOffset(offset);
+        optionView.setCycleDisable(cycleDisable);
         layout.addView(optionView);
         TextView labelView = new TextView(activity);
         labelView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
