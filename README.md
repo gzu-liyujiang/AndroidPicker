@@ -168,6 +168,23 @@ dependencies {
         });
         picker.show();
 ```
+内嵌选择器：
+```java
+        final TimePicker picker = new TimePicker(this, TimePicker.HOUR_12);
+        picker.setOnWheelListener(new TimePicker.OnWheelListener() {
+            @Override
+            public void onHourWheeled(int index, String hour) {
+                textView.setText(hour + ":" + picker.getSelectedMinute());
+            }
+
+            @Override
+            public void onMinuteWheeled(int index, String minute) {
+                textView.setText(picker.getSelectedHour() + ":" + minute);
+            }
+        });
+        ViewGroup viewGroup = (ViewGroup) findViewById(R.id.wheelview_container);
+        viewGroup.addView(picker.getContentView());
+```
 
 日期选择器：
 ```java
