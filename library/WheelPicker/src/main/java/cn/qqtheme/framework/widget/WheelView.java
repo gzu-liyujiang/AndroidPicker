@@ -60,7 +60,7 @@ public class WheelView extends ScrollView {
     private Runnable scrollerTask = new ScrollerTask();
     private int itemHeight = 0;
     private int[] selectedAreaBorder;//获取选中区域的边界
-    private OnWheelViewListener onWheelViewListener;
+    private OnWheelListener onWheelListener;
 
     private Paint paint;
     private int viewWidth;
@@ -176,11 +176,11 @@ public class WheelView extends ScrollView {
      * 选中回调
      */
     private void onSelectedCallBack() {
-        if (null != onWheelViewListener) {
+        if (null != onWheelListener) {
             // 2015/12/25 真实的index应该忽略偏移量
             int realIndex = selectedIndex - offset;
             LogUtils.verbose("isUserScroll=" + isUserScroll + ",selectedIndex=" + selectedIndex + ",realIndex=" + realIndex);
-            onWheelViewListener.onSelected(isUserScroll, realIndex, items.get(this.selectedIndex));
+            onWheelListener.onSelected(isUserScroll, realIndex, items.get(this.selectedIndex));
         }
     }
 
@@ -336,8 +336,9 @@ public class WheelView extends ScrollView {
         this.post(new Runnable() {
             @Override
             public void run() {
-                //滚动到选中项的位置
-                smoothScrollTo(0, index * itemHeight);
+                //滚动到选中项的位置，smoothScrollTo滚动视觉效果有延迟
+                //smoothScrollTo(0, index * itemHeight);
+                scrollTo(0, index * itemHeight);
                 //选中这一项的值
                 selectedIndex = index + offset;
                 onSelectedCallBack();
@@ -365,19 +366,19 @@ public class WheelView extends ScrollView {
         return selectedIndex - offset;
     }
 
-    public void setOnWheelViewListener(OnWheelViewListener onWheelViewListener) {
-        this.onWheelViewListener = onWheelViewListener;
+    public void setOnWheelListener(OnWheelListener onWheelListener) {
+        this.onWheelListener = onWheelListener;
     }
 
-    public interface OnWheelViewListener {
+    public interface OnWheelListener {
         /**
          * 滑动选择回调
          *
          * @param isUserScroll  是否用户手动滚动，用于联动效果判断是否自动重置选中项
-         * @param selectedIndex 当前选择项的索引
+         * @param index 当前选择项的索引
          * @param item          当前选择项的值
          */
-        void onSelected(boolean isUserScroll, int selectedIndex, String item);
+        void onSelected(boolean isUserScroll, int index, String item);
     }
 
     private class ScrollerTask implements Runnable {
