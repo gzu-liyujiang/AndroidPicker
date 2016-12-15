@@ -71,7 +71,7 @@ public abstract class BasicPopup<V extends View> implements DialogInterface.OnKe
         V view = makeContentView();
         popupDialog.setContentView(view);// 设置弹出窗体的布局
         setContentViewAfter(view);
-        LogUtils.verbose("do something before popup show");
+        LogUtils.verbose(this, "do something before popup show");
         if (width == 0 && height == 0) {
             //未明确指定宽高，优先考虑全屏再考虑半屏然后再考虑包裹内容
             width = screenWidthPixels;
@@ -141,7 +141,7 @@ public abstract class BasicPopup<V extends View> implements DialogInterface.OnKe
 
     public void setOnDismissListener(DialogInterface.OnDismissListener onDismissListener) {
         popupDialog.setOnDismissListener(onDismissListener);
-        LogUtils.verbose("popup setOnDismissListener");
+        LogUtils.verbose(this, "popup setOnDismissListener");
     }
 
     /**
@@ -184,12 +184,12 @@ public abstract class BasicPopup<V extends View> implements DialogInterface.OnKe
     public void show() {
         onShowPrepare();
         popupDialog.show();
-        LogUtils.verbose("popup show");
+        LogUtils.verbose(this, "popup show");
     }
 
     public void dismiss() {
         popupDialog.dismiss();
-        LogUtils.verbose("popup dismiss");
+        LogUtils.verbose(this, "popup dismiss");
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -216,6 +216,8 @@ public abstract class BasicPopup<V extends View> implements DialogInterface.OnKe
      * 弹框的内容视图
      */
     public View getContentView() {
+        // fixed: 2016-12-15 可以取出选择器视图添加到其他容器中
+        onShowPrepare();
         return popupDialog.getContentView();
     }
 

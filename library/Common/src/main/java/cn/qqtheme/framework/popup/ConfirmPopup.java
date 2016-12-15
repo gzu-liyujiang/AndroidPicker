@@ -39,6 +39,8 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
     protected int cancelTextSize = 0;
     protected int submitTextSize = 0;
     protected int titleTextSize = 0;
+    protected int backgroundColor = Color.WHITE;
+    protected TextView titleView;
 
     public ConfirmPopup(Activity activity) {
         super(activity);
@@ -113,7 +115,11 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
      * 设置顶部标题栏标题文字
      */
     public void setTitleText(CharSequence titleText) {
-        this.titleText = titleText;
+        if (titleView != null) {
+            titleView.setText(titleText);
+        } else {
+            this.titleText = titleText;
+        }
     }
 
     /**
@@ -166,6 +172,13 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
     }
 
     /**
+     * 设置选择器主体背景颜色
+     */
+    public void setBackgroundColor(@ColorInt int backgroundColor) {
+        this.backgroundColor = backgroundColor;
+    }
+
+    /**
      * @see #makeHeaderView()
      * @see #makeCenterView()
      * @see #makeFooterView()
@@ -174,7 +187,7 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
     protected final View makeContentView() {
         LinearLayout rootLayout = new LinearLayout(activity);
         rootLayout.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
-        rootLayout.setBackgroundColor(Color.WHITE);
+        rootLayout.setBackgroundColor(backgroundColor);
         rootLayout.setOrientation(LinearLayout.VERTICAL);
         rootLayout.setGravity(Gravity.CENTER);
         rootLayout.setPadding(0, 0, 0, 0);
@@ -228,7 +241,7 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
         });
         topButtonLayout.addView(cancelButton);
 
-        TextView titleView = new TextView(activity);
+        titleView = new TextView(activity);
         RelativeLayout.LayoutParams titleLayoutParams = new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
         int margin = ConvertUtils.toPx(activity, 20);
         titleLayoutParams.leftMargin = margin;

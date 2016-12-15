@@ -93,6 +93,7 @@ public class ColorPicker extends ConfirmPopup<LinearLayout> implements TextView.
         hexValView.setPadding(0, 0, 0, 0);
         hexValView.setSingleLine(true);
         hexValView.setOnEditorActionListener(this);
+        hexValView.setEnabled(false);
         hexValDefaultColor = hexValView.getTextColors();
         previewLayout.addView(hexValView);
         rootLayout.addView(previewLayout);

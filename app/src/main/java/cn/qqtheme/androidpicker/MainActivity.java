@@ -47,17 +47,21 @@ public class MainActivity extends Activity {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
+    public void onNestView(View view) {
+        startActivity(new Intent(this, NestActivity.class));
+    }
+
     public void onAnimationStyle(View view) {
         NumberPicker picker = new NumberPicker(this);
         picker.setAnimationStyle(R.style.Animation_CustomPopup);
         picker.setOffset(2);//偏移量
-        picker.setRange(40, 100, 1);//数字范围
-        picker.setSelectedItem(65);
-        picker.setLabel("Kg");
-        picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
+        picker.setRange(10.50, 20.00, 1.5);//数字范围
+        picker.setSelectedItem(10.50);
+        picker.setLabel("℃");
+        picker.setOnNumberPickListener(new NumberPicker.OnNumberPickListener() {
             @Override
-            public void onOptionPicked(int position, String option) {
-                showToast(option);
+            public void onItemPicked(int index, Number item) {
+                showToast("index=" + index + ", item=" + item.doubleValue());
             }
         });
         picker.show();
@@ -66,17 +70,17 @@ public class MainActivity extends Activity {
     public void onAnimator(View view) {
         CustomHeaderAndFooterPicker picker = new CustomHeaderAndFooterPicker(this);
         picker.setGravity(Gravity.CENTER);//居中
-        picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
+        picker.setOnItemPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
-            public void onOptionPicked(int position, String option) {
-                showToast(option);
+            public void onItemPicked(int index, String item) {
+                showToast("index=" + index + ", item=" + item);
             }
         });
         picker.show();
     }
 
     public void onYearMonthDayPicker(View view) {
-        DatePicker picker = new DatePicker(this);
+        final DatePicker picker = new DatePicker(this);
         picker.setRangeStart(2016, 8, 29);
         picker.setRangeEnd(2022, 1, 11);
         picker.setSelectedItem(2016, 10, 14);
@@ -84,6 +88,22 @@ public class MainActivity extends Activity {
             @Override
             public void onDatePicked(String year, String month, String day) {
                 showToast(year + "-" + month + "-" + day);
+            }
+        });
+        picker.setOnWheelListener(new DatePicker.OnWheelListener() {
+            @Override
+            public void onYearWheeled(int index, String year) {
+                picker.setTitleText(year + "-" + picker.getSelectedMonth() + "-" + picker.getSelectedDay());
+            }
+
+            @Override
+            public void onMonthWheeled(int index, String month) {
+                picker.setTitleText(picker.getSelectedYear() + "-" + month + "-" + picker.getSelectedDay());
+            }
+
+            @Override
+            public void onDayWheeled(int index, String day) {
+                picker.setTitleText(picker.getSelectedYear() + "-" + picker.getSelectedMonth() + "-" + day);
             }
         });
         picker.show();
@@ -152,10 +172,10 @@ public class MainActivity extends Activity {
         picker.setOffset(2);
         picker.setSelectedIndex(0);
         picker.setTextSize(11);
-        picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
+        picker.setOnItemPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
-            public void onOptionPicked(int position, String option) {
-                showToast(option);
+            public void onItemPicked(int index, String item) {
+                showToast("index=" + index + ", item=" + item);
             }
         });
         picker.show();
@@ -213,11 +233,12 @@ public class MainActivity extends Activity {
         picker.setSubmitTextSize(22);
         picker.setTextColor(0xFFFF0000, 0xFF999999);
         picker.setLineColor(0xFFEE0000);
+        picker.setBackgroundColor(0xFFF1F1F1);
         picker.setSelectedItem("射手");
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
-            public void onOptionPicked(int position, String option) {
-                showToast(option);
+            public void onItemPicked(int index, String item) {
+                showToast("index=" + index + ", item=" + item);
             }
         });
         picker.show();
@@ -231,10 +252,10 @@ public class MainActivity extends Activity {
         picker.setRange(145, 200, 1);//数字范围
         picker.setSelectedItem(172);
         picker.setLabel("厘米");
-        picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
+        picker.setOnNumberPickListener(new NumberPicker.OnNumberPickListener() {
             @Override
-            public void onOptionPicked(int position, String option) {
-                showToast(option);
+            public void onItemPicked(int index, Number item) {
+                showToast("index=" + index + ", item=" + item.intValue());
             }
         });
         picker.show();
@@ -250,6 +271,7 @@ public class MainActivity extends Activity {
             String json = ConvertUtils.toString(getAssets().open("city2.json"));
             data.addAll(JSON.parseArray(json, Province.class));
             AddressPicker picker = new AddressPicker(this, data);
+            picker.setCycleDisable(true);
             picker.setHideProvince(true);
             picker.setSelectedItem("贵州", "贵阳", "花溪");
             picker.setOnAddressPickListener(new AddressPicker.OnAddressPickListener() {

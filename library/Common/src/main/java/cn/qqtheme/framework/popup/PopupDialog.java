@@ -83,7 +83,11 @@ class PopupDialog {
     }
 
     View getContentView() {
-        return contentLayout.getChildAt(0);
+        // IllegalStateException: The specified child already has a parent.
+        // You must call removeView() on the child's parent first.
+        FrameLayout layout = new FrameLayout(getContext());
+        layout.addView(contentLayout.getChildAt(0));
+        return layout;
     }
 
     void setSize(int width, int height) {

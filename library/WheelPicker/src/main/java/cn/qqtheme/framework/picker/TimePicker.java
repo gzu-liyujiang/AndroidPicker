@@ -26,6 +26,7 @@ import cn.qqtheme.framework.widget.WheelView;
 public class TimePicker extends WheelPicker {
     public static final int HOUR_24 = 0;//24小时制
     public static final int HOUR_12 = 1;//12小时制
+    private OnWheelListener onWheelListener;
     private OnTimePickListener onTimePickListener;
     private int mode;
     private String hourLabel = "时", minuteLabel = "分";
@@ -88,7 +89,7 @@ public class TimePicker extends WheelPicker {
             illegal = true;
         }
         if (illegal) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("out of range");
         }
         this.startHour = startHour;
         this.startMinute = startMinute;
@@ -109,7 +110,7 @@ public class TimePicker extends WheelPicker {
             illegal = true;
         }
         if (illegal) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("out of range");
         }
         this.endHour = endHour;
         this.endMinute = endMinute;
@@ -121,6 +122,13 @@ public class TimePicker extends WheelPicker {
     public void setSelectedItem(int hour, int minute) {
         selectedHour = DateUtils.fillZero(hour);
         selectedMinute = DateUtils.fillZero(minute);
+    }
+
+    /**
+     * 设置滑动监听器
+     */
+    public void setOnWheelListener(OnWheelListener onWheelListener) {
+        this.onWheelListener = onWheelListener;
     }
 
     public void setOnTimePickListener(OnTimePickListener listener) {
@@ -139,6 +147,7 @@ public class TimePicker extends WheelPicker {
         hourView.setTextColor(textColorNormal, textColorFocus);
         hourView.setLineVisible(lineVisible);
         hourView.setLineColor(lineColor);
+        hourView.setCycleDisable(cycleDisable);
         layout.addView(hourView);
         TextView hourTextView = new TextView(activity);
         hourTextView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
@@ -155,6 +164,7 @@ public class TimePicker extends WheelPicker {
         minuteView.setLineVisible(lineVisible);
         minuteView.setLineColor(lineColor);
         minuteView.setOffset(offset);
+        minuteView.setCycleDisable(cycleDisable);
         layout.addView(minuteView);
         TextView minuteTextView = new TextView(activity);
         minuteTextView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
@@ -174,17 +184,23 @@ public class TimePicker extends WheelPicker {
         }
         hourView.setItems(hours, selectedHour);
         minuteView.setItems(changeMinuteData(selectedHour), selectedMinute);
-        hourView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
+        hourView.setOnWheelListener(new WheelView.OnWheelListener() {
             @Override
-            public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
+            public void onSelected(boolean isUserScroll, int index, String item) {
                 selectedHour = item;
+                if (onWheelListener != null) {
+                    onWheelListener.onHourWheeled(index, selectedHour);
+                }
                 minuteView.setItems(changeMinuteData(item), selectedMinute);
             }
         });
-        minuteView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
+        minuteView.setOnWheelListener(new WheelView.OnWheelListener() {
             @Override
-            public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
+            public void onSelected(boolean isUserScroll, int index, String item) {
                 selectedMinute = item;
+                if (onWheelListener != null) {
+                    onWheelListener.onMinuteWheeled(index, selectedMinute);
+                }
             }
         });
         return layout;
@@ -240,6 +256,14 @@ public class TimePicker extends WheelPicker {
     public interface OnTimePickListener {
 
         void onTimePicked(String hour, String minute);
+
+    }
+
+    public interface OnWheelListener {
+
+        void onHourWheeled(int index, String hour);
+
+        void onMinuteWheeled(int index, String minute);
 
     }
 

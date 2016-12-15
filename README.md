@@ -6,7 +6,8 @@
 
 安卓选择器类库，包括日期选择器、时间选择器、单项选择器、城市选择器、颜色选择器、文件选择器、目录选择器、数字选择器、星座选择器、生肖选择器等，可自定义顶部及底部界面，可自定义窗口动画。
 欢迎大伙儿在[Issues](https://github.com/gzu-liyujiang/AndroidPicker/issues)提交你的意见或建议。    
-欢迎Fork & Pull requests贡献您的代码。[查看更新日志](https://github.com/gzu-liyujiang/AndroidPicker/blob/master/ChangeLog.md)。     
+欢迎Fork & Pull requests贡献您的代码，大家共同学习。
+[查看更新日志](https://github.com/gzu-liyujiang/AndroidPicker/blob/master/ChangeLog.md)，×新版本未对旧版API作兼容处理，升级后若编译报错请根据错误提示更改×。
 
 # Install
 “app”是测试用例；“library”包括WheelPicker、ColorPicker、FilePicker，
@@ -20,14 +21,15 @@ dependencies {
     compile 'cn.qqtheme.framework:ColorPicker:latest.release'
 }
 ```
+若无法下载的话，可换[JitPack](https://jitpack.io/#gzu-liyujiang/AndroidPicker)的仓库试试！
 #### 需要学习或修改源代码，则下载本项目手动集成
 下载示例项目后导入“library”下的相关module到你的项目（记得将module下的build.gradle修改类似于下面的内容，否则可能会报错找不到BuildToolsVersion）：
 ```groovy
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion 22.0.1
+    compileSdkVersion 23
+    buildToolsVersion 23.0.1
 
     defaultConfig {
         minSdkVersion 14
@@ -58,6 +60,8 @@ dependencies {
 ```
 
 # Method
+View getContentView()
+得到选择器视图，可内嵌到其他视图容器
 void setFillScreen(boolean fillScreen)
 固定高度为屏幕的高     
 void setGravity(int gravity)
@@ -116,7 +120,9 @@ void setTopLineColor(int topLineColor)
 设置顶部标题栏下划线颜色     
 void setTopLineVisible(boolean topLineVisible)
 设置顶部标题栏下划线是否显示    
-......   
+void setBackgroundColor(int backgroundColor)
+设置主体背景颜色
+......
 
 # Custom
 #### 自定义窗口进入退出动画(可选)
@@ -321,14 +327,14 @@ https://github.com/wangjiegulu/WheelView
 https://github.com/jbruchanov/AndroidColorPicker      
 
 # Screenshots
-![自定义选择器效果图](/screenshots/custom.gif)   
+![滑轮选择器内嵌效果图](/screenshots/nestwheelview.jpg)
+![自定义选择器效果图](/screenshots/custom.gif)
 ![日期选择器效果图](/screenshots/date.gif)            
 ![日期选择器效果图](/screenshots/monthday.jpg)   
 ![时间选择器效果图](/screenshots/time.gif)   
 ![单项选择器效果图](/screenshots/option.gif)           
 ![地址选择器效果图](/screenshots/address.gif)   
-![地址选择器效果图](/screenshots/address.png)         
-![数字选择器效果图](/screenshots/number.gif)   
+![数字选择器效果图](/screenshots/number.gif)
 ![星座选择器效果图](/screenshots/constellation.jpg)   
 ![颜色选择器效果图](/screenshots/color.gif)    
 ![文件选择器效果图](/screenshots/file.gif)    

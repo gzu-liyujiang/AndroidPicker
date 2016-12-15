@@ -187,10 +187,10 @@ public class DateTimePicker extends WheelPicker {
             } else {
                 yearView.setItems(years, selectedYearIndex);
             }
-            yearView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
+            yearView.setOnWheelListener(new WheelView.OnWheelListener() {
                 @Override
-                public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
-                    selectedYearIndex = selectedIndex;
+                public void onSelected(boolean isUserScroll, int index, String item) {
+                    selectedYearIndex = index;
                     //需要根据年份及月份动态计算天数
                     days.clear();
                     int maxDays = DateUtils.calculateDaysInMonth(DateUtils.trimZero(item), DateUtils.trimZero(months.get(selectedMonthIndex)));
@@ -213,10 +213,10 @@ public class DateTimePicker extends WheelPicker {
         } else {
             monthView.setItems(months, selectedMonthIndex);
         }
-        monthView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
+        monthView.setOnWheelListener(new WheelView.OnWheelListener() {
             @Override
-            public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
-                selectedMonthIndex = selectedIndex;
+            public void onSelected(boolean isUserScroll, int index, String item) {
+                selectedMonthIndex = index;
                 if (mode != YEAR_MONTH) {
                     //年月日或年月模式下，需要根据年份及月份动态计算天数
                     days.clear();
@@ -241,10 +241,10 @@ public class DateTimePicker extends WheelPicker {
             } else {
                 dayView.setItems(days, selectedDayIndex);
             }
-            dayView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
+            dayView.setOnWheelListener(new WheelView.OnWheelListener() {
                 @Override
-                public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
-                    selectedDayIndex = selectedIndex;
+                public void onSelected(boolean isUserScroll, int index, String item) {
+                    selectedDayIndex = index;
                 }
             });
         }
@@ -265,15 +265,15 @@ public class DateTimePicker extends WheelPicker {
             minutes.add(DateUtils.fillZero(i));
         }
         minuteView.setItems(minutes, selectedMinute);
-        hourView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
+        hourView.setOnWheelListener(new WheelView.OnWheelListener() {
             @Override
-            public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
+            public void onSelected(boolean isUserScroll, int index, String item) {
                 selectedHour = item;
             }
         });
-        minuteView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
+        minuteView.setOnWheelListener(new WheelView.OnWheelListener() {
             @Override
-            public void onSelected(boolean isUserScroll, int selectedIndex, String item) {
+            public void onSelected(boolean isUserScroll, int index, String item) {
                 selectedMinute = item;
             }
         });

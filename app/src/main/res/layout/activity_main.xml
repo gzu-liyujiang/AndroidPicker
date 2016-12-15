@@ -11,6 +11,12 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="onNestView"
+            android:text="选择器视图内嵌" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:onClick="onAnimationStyle"
             android:text="窗口动画(基于XML)" />
 
