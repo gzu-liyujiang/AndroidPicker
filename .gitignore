@@ -13,3 +13,5 @@ local.properties
 proguard/
 *.log
 *.apk
+/*.sh
+/*.cmd
