@@ -70,6 +70,7 @@ public class WheelView extends ScrollView {
     private int lineColor = LINE_COLOR;
     private boolean lineVisible = true;
     private boolean isUserScroll = false;//是否用户手动滚动
+    private boolean cycleDisable = false;//是否禁用伪循环
     private float previousY = 0;//记录按下时的Y坐标
 
     public WheelView(Context context) {
@@ -237,12 +238,16 @@ public class WheelView extends ScrollView {
             case MotionEvent.ACTION_UP:
                 LogUtils.verbose(this, String.format("items=%s, offset=%s", items.size(), offset));
                 LogUtils.verbose(this, "selectedIndex=" + selectedIndex);
+                if (cycleDisable) {
+                    startScrollerTask();
+                    break;
+                }
                 float delta = ev.getY() - previousY;
                 LogUtils.verbose(this, "delta=" + delta);
                 if (selectedIndex == offset && delta > 0) {
                     //滑动到第一项时，若继续向下滑动，则自动跳到最后一项
                     setSelectedIndex(items.size() - offset * 2 - 1);
-                } else if (selectedIndex == items.size() - offset - 1 && delta < 0) {
+                } else if (selectedIndex == (items.size() - offset - 1) && delta < 0) {
                     //滑动到最后一项时，若继续向上滑动，则自动跳到第一项
                     setSelectedIndex(0);
                 } else {
@@ -326,6 +331,10 @@ public class WheelView extends ScrollView {
             throw new IllegalArgumentException("Offset must between 1 and 4");
         }
         this.offset = offset;
+    }
+
+    public void setCycleDisable(boolean cycleDisable) {
+        this.cycleDisable = cycleDisable;
     }
 
     /**

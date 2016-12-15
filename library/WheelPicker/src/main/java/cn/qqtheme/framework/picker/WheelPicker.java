@@ -21,6 +21,7 @@ public abstract class WheelPicker extends ConfirmPopup<View> {
     protected int lineColor = WheelView.LINE_COLOR;
     protected boolean lineVisible = true;
     protected int offset = WheelView.OFF_SET;
+    protected boolean cycleDisable = false;
 
     public WheelPicker(Activity activity) {
         super(activity);
@@ -68,6 +69,21 @@ public abstract class WheelPicker extends ConfirmPopup<View> {
      */
     public void setOffset(@IntRange(from = 1, to = 4) int offset) {
         this.offset = offset;
+    }
+
+    /**
+     * 设置是否禁用伪循环
+     */
+    public void setCycleDisable(boolean cycleDisable) {
+        this.cycleDisable = cycleDisable;
+    }
+
+    /**
+     * 得到选择器视图，可内嵌到其他视图容器
+     */
+    @Override
+    public View getContentView() {
+        return makeCenterView();
     }
 
 }
