@@ -12,7 +12,6 @@
 # Install
 “app”是测试用例；“library”包括WheelPicker、ColorPicker、FilePicker，
 WheelPicker包括DatePicker、TimePicker、OptionPicker、LinkagePicker、AddressPicker、NumberPicker等。
-其中WheelView这个类是核心，可以扩展出各种效果的滑轮选择器。
 #### 懒人建议直接远程加载jcenter里的
 其中latest.release为最新版，也可以[参照此处指定具体的版本号](https://github.com/gzu-liyujiang/AndroidPicker/releases)：
 ```groovy
@@ -62,7 +61,6 @@ dependencies {
 -keepattributes *Annotation*
 
 -keep class cn.qqtheme.framework.entity.** { *;}
--keep class cn.qqtheme.framework.picker.AddressPicker$* { *;}
 ```
 
 # Method
@@ -131,7 +129,9 @@ void setBackgroundColor(int backgroundColor)
 ......
 
 # Custom
-#### 自定义窗口进入退出动画(可选)
+#### 自定义视图
+WheelView这个类是滑轮选择器的核心，可以扩展出各种效果，参见demo的[NestActivity.java](https://github.com/gzu-liyujiang/AndroidPicker/blob/master/app/src/main/java/cn/qqtheme/androidpicker/NestActivity.java)。
+#### 自定义窗口进入退出动画
 推荐使用[ViewAnimator](https://github.com/gzu-liyujiang/ViewAnimator)这个动画库来实现：
 ```groovy
 dependencies {
@@ -144,19 +144,6 @@ dependencies {
                 .interpolator(new AccelerateInterpolator())
                 .start();
 ```
-或者使用XML定义动画：
-```xml
-<resources>
-    <style name="Animation.CustomPopup" parent="@android:style/Animation">
-        <item name="android:windowEnterAnimation">@anim/popup_in</item>
-        <item name="android:windowExitAnimation">@anim/popup_out</item>
-    </style>
-</resources>
-```
-```java
-    picker.setAnimationStyle(R.style.Animation_CustomPopup);
-```
-
 #### 自定义顶部及底部界面
 添加自己的类，继承自现有的选择器，覆盖makeHeaderView、makeFooterView、onSubmit、onCancel，在确定选择时调用onSubmit，
 取消选择时调用onCancel。详见示例：[CustomHeaderAndFooterPicker.java](https://github.com/gzu-liyujiang/AndroidPicker/blob/master/app/src/main/java/cn/qqtheme/androidpicker/CustomHeaderAndFooterPicker.java)。
