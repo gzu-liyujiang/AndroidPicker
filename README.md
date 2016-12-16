@@ -7,11 +7,12 @@
 安卓选择器类库，包括日期选择器、时间选择器、单项选择器、城市选择器、颜色选择器、文件选择器、目录选择器、数字选择器、星座选择器、生肖选择器等，可自定义顶部及底部界面，可自定义窗口动画。
 欢迎大伙儿在[Issues](https://github.com/gzu-liyujiang/AndroidPicker/issues)提交你的意见或建议。    
 欢迎Fork & Pull requests贡献您的代码，大家共同学习。
-[查看更新日志](https://github.com/gzu-liyujiang/AndroidPicker/blob/master/ChangeLog.md)，×新版本未对旧版API作兼容处理，升级后若编译报错请根据错误提示更改×。
+[查看更新日志](https://github.com/gzu-liyujiang/AndroidPicker/blob/master/ChangeLog.md)，新版本未对旧版API作兼容处理，升级后若编译报错请根据错误提示更改。
 
 # Install
 “app”是测试用例；“library”包括WheelPicker、ColorPicker、FilePicker，
-WheelPicker包括DateTimePicker、OptionPicker、LinkagePicker、AddressPicker、NumberPicker等，
+WheelPicker包括DatePicker、TimePicker、OptionPicker、LinkagePicker、AddressPicker、NumberPicker等。
+其中WheelView这个类是核心，可以扩展出各种效果的滑轮选择器。
 #### 懒人建议直接远程加载jcenter里的
 其中latest.release为最新版，也可以[参照此处指定具体的版本号](https://github.com/gzu-liyujiang/AndroidPicker/releases)：
 ```groovy
@@ -40,6 +41,7 @@ android {
 dependencies {
     compile project(':Common') //Common模块不需要加此句
 }
+
 ```
 然后依赖（WheelPicker、FilePicker及ColorPicker是独立的，需要用哪个就compile哪个）：
 ```groovy
@@ -49,6 +51,10 @@ dependencies {
     compile project(':ColorPicker')
 }
 ```
+#### 使用Eclipse的话如何集成？
+直接下载本项目，复制Common及WheelPicker模块下的“src/main/java”下的所有java代码到你的项目里即可。
+如果需要颜色选择器或文件选择器，则复制Common及ColorPicker或FilePicker模块下的“src/main/java”及“src/main/res”下的所有文件到你的项目里。
+
 # ProGuard
 由于地址选择器使用了[fastjson](https://github.com/alibaba/fastjson)来解析，混淆时候需要加入以下类似的规则，不混淆Province、City等实体类。
 ```
@@ -60,7 +66,7 @@ dependencies {
 ```
 
 # Method
-View getContentView()
+android.view.View getContentView()
 得到选择器视图，可内嵌到其他视图容器
 void setFillScreen(boolean fillScreen)
 固定高度为屏幕的高     

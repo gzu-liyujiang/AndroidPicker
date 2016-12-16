@@ -1,3 +1,6 @@
+//参见：https://github.com/bintray/gradle-bintray-plugin
+//参见：https://raw.githubusercontent.com/liungkejin/GradlePublish/master/java-bintray.gradle
+
 apply plugin: 'maven-publish' //发布项目到maven库
 apply plugin: 'com.jfrog.bintray' //上传项目到jcenter
 
@@ -5,11 +8,19 @@ version = project.pomVersion   //版本号
 group = GROUP    // 包名
 project.archivesBaseName = project.pomArtifactId
 
+/**
+ * generate xxx-sources.jar
+ * 生成 xxx-sources.jar, 即将源代码打包
+ */
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
     classifier = 'sources'
 }
 
+/**
+ * generate javadoc
+ * 生成 javadoc 文档
+ */
 task javadoc(type: Javadoc) {
     source = android.sourceSets.main.java.srcDirs
     classpath += configurations.compile
@@ -19,11 +30,18 @@ task javadoc(type: Javadoc) {
     failOnError = false
 }
 
+/**
+ * generate xxx-javadoc.jar
+ * 将生成的 javadoc 打包为 xxx-javadoc.jar, 它依赖于 javadoc 任务
+ */
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
     from javadoc.destinationDir
 }
 
+/**
+ * javadoc 配置
+ */
 javadoc {
     options {
         encoding "UTF-8"
@@ -37,9 +55,9 @@ javadoc {
 
 publishing {
     publications {
-        myPublicationName(MavenPublication) {
+        MyPublication(MavenPublication) {
             artifactId project.pomArtifactId
-            artifact "${buildDir}/outputs/aar/${project.pomArtifactId}-release.aar"
+            //artifact "${buildDir}/outputs/aar/${project.pomArtifactId}-release.aar"
             artifact javadocJar
             artifact sourcesJar
 
@@ -82,6 +100,10 @@ publishing {
     }
 }
 
+afterEvaluate {
+    publishing.publications.MyPublication.artifact(bundleRelease)
+}
+
 bintray {
     // You should configure "bintray.user" and "bintray.apiKey" in the gradle.properties
     // that in gradle cache directory (～/.gradle/gradle.properties)
@@ -94,8 +116,10 @@ bintray {
         key = ""
     }
 
-    publications = ['myPublicationName'] //对应前面的publishing.publications.mavenJava
-    publish = true    //是否发布
+    publications = ['MyPublication'] //对应前面的publishing.publications.mavenJava
+    dryRun = false //[Default: false] Whether to run this as dry-run, without deploying
+    publish = true //[Default: false] Whether version should be auto published after an upload
+    override = true //[Default: false] Whether to override version artifacts already published
 
     pkg {
         repo = "maven"    //上传的中央仓库名称
@@ -106,6 +130,7 @@ bintray {
         vcsUrl = GIT_URL    //项目GIT仓库
         licenses = ["Apache-2.0"]
         publicDownloadNumbers = true
+        githubReleaseNotesFile = 'README.md' //Optional Github readme file
         version {
             name = project.pomVersion
             desc = project.pomDescription
