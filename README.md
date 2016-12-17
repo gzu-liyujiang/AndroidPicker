@@ -6,7 +6,7 @@
 
 安卓选择器类库，包括日期选择器、时间选择器、单项选择器、城市选择器、颜色选择器、文件选择器、目录选择器、数字选择器、星座选择器、生肖选择器等，可自定义顶部及底部界面，可自定义窗口动画。
 欢迎大伙儿在[Issues](https://github.com/gzu-liyujiang/AndroidPicker/issues)提交你的意见或建议。    
-欢迎Fork & Pull requests贡献您的代码，大家共同学习。
+欢迎Fork & Pull requests贡献您的代码，大家共同学习【[AndroidPicker交流群](https://jq.qq.com/?_wv=1027&k=42bKOeD)】。
 [查看更新日志](https://github.com/gzu-liyujiang/AndroidPicker/blob/master/ChangeLog.md)，新版本未对旧版API作兼容处理，升级后若编译报错请根据错误提示更改。
 
 # Install
@@ -22,6 +22,7 @@ dependencies {
 }
 ```
 若无法下载的话，可换[JitPack](https://jitpack.io/#gzu-liyujiang/AndroidPicker)的仓库试试！
+第一步，在项目根目录下的build.gradle里加：
 ```
 repositories {
     maven {
@@ -29,6 +30,7 @@ repositories {
     }
 }
 ```
+第二步，在项目的app模块下的build.gradle里加：
 ```
 dependencies {
     compile 'com.github.gzu-liyujiang.AndroidPicker:WheelPicker:版本号'
