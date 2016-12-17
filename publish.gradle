@@ -57,7 +57,7 @@ publishing {
     publications {
         MyPublication(MavenPublication) {
             artifactId project.pomArtifactId
-            //artifact "${buildDir}/outputs/aar/${project.pomArtifactId}-release.aar"
+            artifact "${buildDir}/outputs/aar/${project.pomArtifactId}-release.aar"
             artifact javadocJar
             artifact sourcesJar
 

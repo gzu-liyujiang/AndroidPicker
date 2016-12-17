@@ -93,10 +93,7 @@ public class WheelView extends ScrollView {
 
         // 2015/12/15 去掉ScrollView的阴影
         setFadingEdgeLength(0);
-        if (Build.VERSION.SDK_INT >= 9) {
-            setOverScrollMode(OVER_SCROLL_NEVER);
-        }
-
+        setOverScrollMode(OVER_SCROLL_NEVER);
         setVerticalScrollBarEnabled(false);
 
         views = new LinearLayout(context);
@@ -375,6 +372,14 @@ public class WheelView extends ScrollView {
         return selectedIndex - offset;
     }
 
+    /**
+     * @deprecated use {@link #setOnWheelListener(OnWheelListener)} instead
+     */
+    @Deprecated
+    public void setOnWheelViewListener(OnWheelViewListener onWheelListener) {
+        setOnWheelListener(onWheelListener);
+    }
+
     public void setOnWheelListener(OnWheelListener onWheelListener) {
         this.onWheelListener = onWheelListener;
     }
@@ -383,11 +388,18 @@ public class WheelView extends ScrollView {
         /**
          * 滑动选择回调
          *
-         * @param isUserScroll  是否用户手动滚动，用于联动效果判断是否自动重置选中项
-         * @param index 当前选择项的索引
-         * @param item          当前选择项的值
+         * @param isUserScroll 是否用户手动滚动，用于联动效果判断是否自动重置选中项
+         * @param index        当前选择项的索引
+         * @param item         当前选择项的值
          */
         void onSelected(boolean isUserScroll, int index, String item);
+    }
+
+    /**
+     * @deprecated use {@link OnWheelListener} instead
+     */
+    @Deprecated
+    public interface OnWheelViewListener extends OnWheelListener {
     }
 
     private class ScrollerTask implements Runnable {

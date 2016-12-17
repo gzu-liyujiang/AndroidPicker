@@ -57,7 +57,14 @@ public class NumberPicker extends SinglePicker<Number> {
         super.setOnItemPickListener(listener);
     }
 
-    public interface OnNumberPickListener extends OnItemPickListener<Number> {
+    public static abstract class OnNumberPickListener implements OnItemPickListener<Number> {
+
+        public abstract void onNumberPicked(int index, Number item);
+
+        @Override
+        public final void onItemPicked(int index, Number item) {
+            onNumberPicked(index, item);
+        }
 
     }
 

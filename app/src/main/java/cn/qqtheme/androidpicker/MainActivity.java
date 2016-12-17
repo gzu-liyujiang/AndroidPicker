@@ -60,7 +60,7 @@ public class MainActivity extends Activity {
         picker.setLabel("℃");
         picker.setOnNumberPickListener(new NumberPicker.OnNumberPickListener() {
             @Override
-            public void onItemPicked(int index, Number item) {
+            public void onNumberPicked(int index, Number item) {
                 showToast("index=" + index + ", item=" + item.doubleValue());
             }
         });
@@ -70,10 +70,10 @@ public class MainActivity extends Activity {
     public void onAnimator(View view) {
         CustomHeaderAndFooterPicker picker = new CustomHeaderAndFooterPicker(this);
         picker.setGravity(Gravity.CENTER);//居中
-        picker.setOnItemPickListener(new OptionPicker.OnOptionPickListener() {
+        picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
-            public void onItemPicked(int index, String item) {
-                showToast("index=" + index + ", item=" + item);
+            public void onOptionPicked(int position, String option) {
+                showToast("index=" + position + ", item=" + option);
             }
         });
         picker.show();
@@ -172,9 +172,9 @@ public class MainActivity extends Activity {
         picker.setOffset(2);
         picker.setSelectedIndex(0);
         picker.setTextSize(11);
-        picker.setOnItemPickListener(new OptionPicker.OnOptionPickListener() {
+        picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
-            public void onItemPicked(int index, String item) {
+            public void onOptionPicked(int index, String item) {
                 showToast("index=" + index + ", item=" + item);
             }
         });
@@ -237,7 +237,7 @@ public class MainActivity extends Activity {
         picker.setSelectedItem("射手");
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
-            public void onItemPicked(int index, String item) {
+            public void onOptionPicked(int index, String item) {
                 showToast("index=" + index + ", item=" + item);
             }
         });
@@ -254,7 +254,7 @@ public class MainActivity extends Activity {
         picker.setLabel("厘米");
         picker.setOnNumberPickListener(new NumberPicker.OnNumberPickListener() {
             @Override
-            public void onItemPicked(int index, Number item) {
+            public void onNumberPicked(int index, Number item) {
                 showToast("index=" + index + ", item=" + item.intValue());
             }
         });

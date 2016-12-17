@@ -29,7 +29,7 @@ public class NestActivity extends Activity {
         wheelView.setItems(Arrays.asList(new String[]{
                 "贵州穿青人",
                 "少数民族",
-                "不在56少数个民族之列",
+                "不在56个少数民族之列",
                 "第57个民族"}));
         wheelView.setOnWheelListener(new WheelView.OnWheelListener() {
             @Override

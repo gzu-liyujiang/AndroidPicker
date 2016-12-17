@@ -22,6 +22,20 @@ dependencies {
 }
 ```
 若无法下载的话，可换[JitPack](https://jitpack.io/#gzu-liyujiang/AndroidPicker)的仓库试试！
+```
+repositories {
+    maven {
+        url "https://www.jitpack.io"
+    }
+}
+```
+```
+dependencies {
+    compile 'com.github.gzu-liyujiang.AndroidPicker:WheelPicker:版本号'
+    compile 'com.github.gzu-liyujiang.AndroidPicker:FilePicker:版本号'
+    compile 'com.github.gzu-liyujiang.AndroidPicker:ColorPicker:版本号'
+}
+```
 #### 需要学习或修改源代码，则下载本项目手动集成
 下载示例项目后导入“library”下的相关module到你的项目（记得将module下的build.gradle修改类似于下面的内容，否则可能会报错找不到BuildToolsVersion）：
 ```groovy
@@ -62,7 +76,6 @@ dependencies {
 
 -keep class cn.qqtheme.framework.entity.** { *;}
 ```
-
 # Method
 android.view.View getContentView()
 得到选择器视图，可内嵌到其他视图容器
@@ -131,6 +144,20 @@ void setBackgroundColor(int backgroundColor)
 # Custom
 #### 自定义视图
 WheelView这个类是滑轮选择器的核心，可以扩展出各种效果，参见demo的[NestActivity.java](https://github.com/gzu-liyujiang/AndroidPicker/blob/master/app/src/main/java/cn/qqtheme/androidpicker/NestActivity.java)。
+```java
+        WheelView wheelView = (WheelView) findViewById(R.id.wheelview);
+        wheelView.setItems(Arrays.asList(new String[]{
+                "贵州穿青人",
+                "少数民族",
+                "不在56个少数民族之列",
+                "第57个民族"}));
+        wheelView.setOnWheelListener(new WheelView.OnWheelListener() {
+            @Override
+            public void onSelected(boolean isUserScroll, int index, String item) {
+                // do something
+            }
+        });
+```
 #### 自定义窗口进入退出动画
 推荐使用[ViewAnimator](https://github.com/gzu-liyujiang/ViewAnimator)这个动画库来实现：
 ```groovy
