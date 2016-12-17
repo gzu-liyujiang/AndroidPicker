@@ -6,13 +6,13 @@
 
 安卓选择器类库，包括日期选择器、时间选择器、单项选择器、城市选择器、颜色选择器、文件选择器、目录选择器、数字选择器、星座选择器、生肖选择器等，可自定义顶部及底部界面，可自定义窗口动画。
 欢迎大伙儿在[Issues](https://github.com/gzu-liyujiang/AndroidPicker/issues)提交你的意见或建议。    
-欢迎Fork & Pull requests贡献您的代码，大家共同学习【[AndroidPicker交流群](https://jq.qq.com/?_wv=1027&k=42bKOeD)】。
-[查看更新日志](https://github.com/gzu-liyujiang/AndroidPicker/blob/master/ChangeLog.md)，新版本未对旧版API作兼容处理，升级后若编译报错请根据错误提示更改。
+欢迎Fork & Pull requests贡献您的代码，大家共同学习【[AndroidPicker交流群 604235437](https://jq.qq.com/?_wv=1027&k=42bKOeD)】。
+[查看更新日志](https://github.com/gzu-liyujiang/AndroidPicker/blob/master/ChangeLog.md)，**新版本未对旧版API作兼容处理，升级后若编译报错请根据错误提示更改**。
 
 # Install
 “app”是测试用例；“library”包括WheelPicker、ColorPicker、FilePicker，
 WheelPicker包括DatePicker、TimePicker、OptionPicker、LinkagePicker、AddressPicker、NumberPicker等。
-#### 懒人建议直接远程加载jcenter里的
+#### ~~懒人建议直接远程加载jcenter里的~~
 其中latest.release为最新版，也可以[参照此处指定具体的版本号](https://github.com/gzu-liyujiang/AndroidPicker/releases)：
 ```groovy
 dependencies {
@@ -21,7 +21,7 @@ dependencies {
     compile 'cn.qqtheme.framework:ColorPicker:latest.release'
 }
 ```
-若无法下载的话，可换[JitPack](https://jitpack.io/#gzu-liyujiang/AndroidPicker)的仓库试试！
+#### 若jcenter仓库里的无法下载的话，可换[JitPack](https://jitpack.io/#gzu-liyujiang/AndroidPicker)的仓库试试：
 第一步，在项目根目录下的build.gradle里加：
 ```
 repositories {
@@ -78,71 +78,6 @@ dependencies {
 
 -keep class cn.qqtheme.framework.entity.** { *;}
 ```
-# Method
-android.view.View getContentView()
-得到选择器视图，可内嵌到其他视图容器
-void setFillScreen(boolean fillScreen)
-固定高度为屏幕的高     
-void setGravity(int gravity)
-位于屏幕何处     
-void setHalfScreen(boolean halfScreen)
-固定高度为屏幕的一半     
-void setHeight(int height)
-设置弹窗的高     
-void setSize(int width, int height)
-设置弹窗的宽和高     
-void setWidth(int width)
-设置弹窗的宽     
-void setLineColor(int lineColor)
-设置分隔线颜色     
-void setLineVisible(boolean lineVisible)
-设置分隔线是否可见     
-void setOffset(int offset)
-设置选项偏移量，默认为1，范围为1~4。     
-void setTextColor(int textColor)
-设置文字颜色     
-void setTextColor(int textColorFocus, int textColorNormal)
-设置文字颜色     
-void setTextSize(int textSize)
-设置文字大小     
-void setCancelText(java.lang.CharSequence cancelText)
-设置顶部标题栏取消按钮文字     
-void setCancelText(int textRes)
-设置顶部标题栏取消按钮文字     
-void setCancelTextColor(int cancelTextColor)
-设置顶部标题栏取消按钮文字颜色     
-void setCancelTextSize(int cancelTextSize)
-设置顶部标题栏取消按钮文字大小（单位为sp）     
-void setCancelVisible(boolean cancelVisible)
-设置顶部标题栏取消按钮是否显示     
-void setSubmitText(java.lang.CharSequence submitText)
-设置顶部标题栏确定按钮文字     
-void setSubmitText(int textRes)
-设置顶部标题栏确定按钮文字     
-void setSubmitTextColor(int submitTextColor)
-设置顶部标题栏确定按钮文字颜色     
-void setSubmitTextSize(int submitTextSize)
-设置顶部标题栏确定按钮文字大小（单位为sp）     
-void setTitleText(java.lang.CharSequence titleText)
-设置顶部标题栏标题文字     
-void setTitleText(int textRes)
-设置顶部标题栏标题文字     
-void setTitleTextColor(int titleTextColor)
-设置顶部标题栏标题文字颜色     
-void setTitleTextSize(int titleTextSize)
-设置顶部标题栏标题文字大小（单位为sp）     
-void setTopBackgroundColor(int topBackgroundColor)
-设置顶部标题栏背景颜色     
-void setTopHeight(int topHeight)
-设置顶部标题栏高度（单位为dp）     
-void setTopLineColor(int topLineColor)
-设置顶部标题栏下划线颜色     
-void setTopLineVisible(boolean topLineVisible)
-设置顶部标题栏下划线是否显示    
-void setBackgroundColor(int backgroundColor)
-设置主体背景颜色
-......
-
 # Custom
 #### 自定义视图
 WheelView这个类是滑轮选择器的核心，可以扩展出各种效果，参见demo的[NestActivity.java](https://github.com/gzu-liyujiang/AndroidPicker/blob/master/app/src/main/java/cn/qqtheme/androidpicker/NestActivity.java)。
