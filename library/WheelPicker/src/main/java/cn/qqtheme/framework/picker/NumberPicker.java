@@ -26,7 +26,7 @@ public class NumberPicker extends SinglePicker<Number> {
      */
     public void setRange(int startNumber, int endNumber, int step) {
         for (int i = startNumber; i <= endNumber; i = i + step) {
-            items.add(i);
+            addItem(i);
         }
     }
 
@@ -35,7 +35,7 @@ public class NumberPicker extends SinglePicker<Number> {
      */
     public void setRange(double startNumber, double endNumber, double step) {
         for (double i = startNumber; i <= endNumber; i = i + step) {
-            items.add(i);
+            addItem(i);
         }
     }
 

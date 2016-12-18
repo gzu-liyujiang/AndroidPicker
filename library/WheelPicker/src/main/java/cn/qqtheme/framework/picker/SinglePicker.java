@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +22,9 @@ import cn.qqtheme.framework.widget.WheelView;
  * @since 2015/9/29
  */
 public class SinglePicker<T> extends WheelPicker {
-    protected ArrayList<T> items = new ArrayList<T>();
+    private List<T> items = new ArrayList<T>();
+    private List<String> itemStrings = new ArrayList<String>();
+    private WheelView wheelView;
     private OnWheelListener onWheelListener;
     private OnItemPickListener<T> onItemPickListener;
     private int selectedItemIndex = 0;
@@ -33,10 +36,46 @@ public class SinglePicker<T> extends WheelPicker {
 
     public SinglePicker(Activity activity, List<T> items) {
         super(activity);
+        setItems(items);
+    }
+
+    /**
+     * 添加数据项
+     */
+    public void addItem(T item) {
+        items.add(item);
+        itemStrings.add(formatToString(item));
+    }
+
+    /**
+     * 移除数据项
+     */
+    public void removeItem(T item) {
+        items.remove(item);
+        itemStrings.remove(formatToString(item));
+    }
+
+    /**
+     * 设置数据项
+     */
+    public void setItems(T[] items) {
+        setItems(Arrays.asList(items));
+    }
+
+    /**
+     * 设置数据项
+     */
+    public void setItems(List<T> items) {
         if (null == items || items.size() == 0) {
             return;
         }
-        this.items.addAll(items);
+        this.items = items;
+        for (T item : items) {
+            itemStrings.add(formatToString(item));
+        }
+        if (null != wheelView) {
+            wheelView.setItems(itemStrings, selectedItemIndex);
+        }
     }
 
     /**
@@ -59,7 +98,7 @@ public class SinglePicker<T> extends WheelPicker {
      * 设置默认选中的项
      */
     public void setSelectedItem(@NonNull T item) {
-        setSelectedIndex(items.indexOf(item));
+        setSelectedIndex(itemStrings.indexOf(formatToString(item)));
     }
 
     /**
@@ -82,15 +121,14 @@ public class SinglePicker<T> extends WheelPicker {
         LinearLayout layout = new LinearLayout(activity);
         layout.setOrientation(LinearLayout.HORIZONTAL);
         layout.setGravity(Gravity.CENTER);
-        WheelView optionView = new WheelView(activity);
-        optionView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
-        optionView.setTextSize(textSize);
-        optionView.setTextColor(textColorNormal, textColorFocus);
-        optionView.setLineVisible(lineVisible);
-        optionView.setLineColor(lineColor);
-        optionView.setOffset(offset);
-        optionView.setCycleDisable(cycleDisable);
-        layout.addView(optionView);
+        wheelView = new WheelView(activity);
+        wheelView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT, 1.0f));
+        wheelView.setTextSize(textSize);
+        wheelView.setTextColor(textColorNormal, textColorFocus);
+        wheelView.setLineConfig(lineConfig);
+        wheelView.setOffset(offset);
+        wheelView.setCycleDisable(cycleDisable);
+        layout.addView(wheelView);
         TextView labelView = new TextView(activity);
         labelView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
         labelView.setTextColor(textColorFocus);
@@ -99,8 +137,8 @@ public class SinglePicker<T> extends WheelPicker {
         if (!TextUtils.isEmpty(label)) {
             labelView.setText(label);
         }
-        optionView.setItems(getStringList(), selectedItemIndex);
-        optionView.setOnWheelListener(new WheelView.OnWheelListener() {
+        wheelView.setItems(itemStrings, selectedItemIndex);
+        wheelView.setOnWheelListener(new WheelView.OnWheelListener() {
             @Override
             public void onSelected(boolean isUserScroll, int index, String item) {
                 selectedItemIndex = index;
@@ -112,12 +150,11 @@ public class SinglePicker<T> extends WheelPicker {
         return layout;
     }
 
-    private List<String> getStringList() {
-        List<String> stringList = new ArrayList<String>();
-        for (T item : items) {
-            stringList.add(item.toString());
+    private String formatToString(T item) {
+        if (item instanceof Float || item instanceof Double) {
+            return new DecimalFormat("0.00").format(item);
         }
-        return stringList;
+        return item.toString();
     }
 
     @Override
