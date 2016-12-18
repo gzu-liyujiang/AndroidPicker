@@ -21,6 +21,7 @@ import cn.qqtheme.framework.widget.WheelView;
  * Builder:Android Studio
  */
 public class NestActivity extends Activity {
+    private CarNumberPicker picker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +31,7 @@ public class NestActivity extends Activity {
 
         final TextView textView = (TextView) findViewById(R.id.wheelview_tips);
         WheelView wheelView = (WheelView) findViewById(R.id.wheelview_single);
-        wheelView.setItems(new String[]{ "少数民族", "贵州穿青人", "不在56个少数民族之列", "第57个民族"});
+        wheelView.setItems(new String[]{"少数民族", "贵州穿青人", "不在56个少数民族之列", "第57个民族"}, 1);
         wheelView.setTextColor(0xFFFF00FF);
         WheelView.LineConfig config = new WheelView.LineConfig();
         config.setColor(0xFFFF00FF);//线颜色
@@ -45,7 +46,7 @@ public class NestActivity extends Activity {
             }
         });
 
-        final CarNumberPicker picker = new CarNumberPicker(this);
+        picker = new CarNumberPicker(this);
         picker.setLineConfig(new WheelView.LineConfig(0));
         picker.setOffset(3);
         picker.setOnWheelListener(new CarNumberPicker.OnWheelListener() {
@@ -65,6 +66,10 @@ public class NestActivity extends Activity {
 
     public void onBack(View view) {
         finish();
+    }
+
+    public void onCarNumber(View view) {
+        picker.show();
     }
 
 }

@@ -31,6 +31,14 @@
             android:gravity="center_vertical"
             android:text="内嵌选择器"/>
 
+        <TextView
+            style="?android:textAppearanceMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:onClick="onCarNumber"
+            android:text="车牌"/>
+
     </LinearLayout>
 
     <TextView
