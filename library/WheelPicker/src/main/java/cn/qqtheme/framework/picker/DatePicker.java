@@ -196,8 +196,7 @@ public class DatePicker extends WheelPicker {
         yearView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
         yearView.setTextSize(textSize);
         yearView.setTextColor(textColorNormal, textColorFocus);
-        yearView.setLineVisible(lineVisible);
-        yearView.setLineColor(lineColor);
+        yearView.setLineConfig(lineConfig);
         yearView.setOffset(offset);
         yearView.setCycleDisable(cycleDisable);
         layout.addView(yearView);
@@ -213,8 +212,7 @@ public class DatePicker extends WheelPicker {
         monthView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
         monthView.setTextSize(textSize);
         monthView.setTextColor(textColorNormal, textColorFocus);
-        monthView.setLineVisible(lineVisible);
-        monthView.setLineColor(lineColor);
+        monthView.setLineConfig(lineConfig);
         monthView.setOffset(offset);
         monthView.setCycleDisable(cycleDisable);
         layout.addView(monthView);
@@ -230,8 +228,7 @@ public class DatePicker extends WheelPicker {
         dayView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
         dayView.setTextSize(textSize);
         dayView.setTextColor(textColorNormal, textColorFocus);
-        dayView.setLineVisible(lineVisible);
-        dayView.setLineColor(lineColor);
+        dayView.setLineConfig(lineConfig);
         dayView.setOffset(offset);
         dayView.setCycleDisable(cycleDisable);
         layout.addView(dayView);

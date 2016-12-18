@@ -1,29 +1,31 @@
 package cn.qqtheme.framework.widget;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.support.annotation.ColorInt;
+import android.support.annotation.FloatRange;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.Size;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import cn.qqtheme.framework.util.ConvertUtils;
 import cn.qqtheme.framework.util.LogUtils;
 
 /**
@@ -43,12 +45,14 @@ public class WheelView extends ScrollView {
     public static final int TEXT_SIZE = 20;
     public static final int TEXT_COLOR_FOCUS = 0XFF0288CE;
     public static final int TEXT_COLOR_NORMAL = 0XFFBBBBBB;
+    public static final int LINE_ALPHA = 150;
     public static final int LINE_COLOR = 0XFF83CDE6;
+    public static final float LINE_THICK = 1f;
     public static final int OFF_SET = 1;
-    private static final int DELAY = 50;
+    private static final int DELAY = 30;
 
     private Context context;
-    private LinearLayout views;
+    private LinearLayout views;//容器
     private LinkedList<String> items = new LinkedList<String>();
     private int offset = OFF_SET; // 偏移量（需要在最前面和最后面补全）
 
@@ -59,19 +63,16 @@ public class WheelView extends ScrollView {
 
     private Runnable scrollerTask = new ScrollerTask();
     private int itemHeight = 0;
-    private int[] selectedAreaBorder;//获取选中区域的边界
     private OnWheelListener onWheelListener;
 
-    private Paint paint;
-    private int viewWidth;
     private int textSize = TEXT_SIZE;
     private int textColorNormal = TEXT_COLOR_NORMAL;
     private int textColorFocus = TEXT_COLOR_FOCUS;
-    private int lineColor = LINE_COLOR;
-    private boolean lineVisible = true;
     private boolean isUserScroll = false;//是否用户手动滚动
     private boolean cycleDisable = false;//是否禁用伪循环
     private float previousY = 0;//记录按下时的Y坐标
+
+    private LineConfig lineConfig;
 
     public WheelView(Context context) {
         super(context);
@@ -107,6 +108,8 @@ public class WheelView extends ScrollView {
     }
 
     private void initData() {
+        long startTime = System.currentTimeMillis();
+
         displayItemCount = offset * 2 + 1;
 
         // 2015/12/15 添加此句才可以支持联动效果
@@ -118,6 +121,9 @@ public class WheelView extends ScrollView {
 
         // 2016/1/15 焦点文字颜色高亮位置，逆推“int position = y / itemHeight + offset”
         refreshItemView(itemHeight * (selectedIndex - offset));
+
+        long millis = System.currentTimeMillis() - startTime;
+        LogUtils.verbose(this, "init data spent " + millis + "ms");
     }
 
     private TextView createView(String item) {
@@ -128,13 +134,16 @@ public class WheelView extends ScrollView {
         tv.setText(item);
         tv.setTextSize(textSize);
         tv.setGravity(Gravity.CENTER);
-        int padding = dip2px(15);
+        int padding = ConvertUtils.toPx(context, 12);
         tv.setPadding(padding, padding, padding, padding);
         if (0 == itemHeight) {
-            itemHeight = getViewMeasuredHeight(tv);
+            int wSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
+            int hSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2, MeasureSpec.AT_MOST);
+            tv.measure(wSpec, hSpec);
+            itemHeight = tv.getMeasuredHeight();
             LogUtils.verbose(this, "itemHeight: " + itemHeight);
             views.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, itemHeight * displayItemCount));
-            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) this.getLayoutParams();
+            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) getLayoutParams();
             setLayoutParams(new LinearLayout.LayoutParams(lp.width, itemHeight * displayItemCount));
         }
         return tv;
@@ -182,27 +191,55 @@ public class WheelView extends ScrollView {
         }
     }
 
-    private int dip2px(float dpValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dpValue * scale + 0.5f);
-    }
-
-    private int getViewMeasuredHeight(View view) {
-        int width = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
-        int expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2, MeasureSpec.AT_MOST);
-        view.measure(width, expandSpec);
-        return view.getMeasuredHeight();
-    }
-
+    @Deprecated
     @Override
-    public void setBackground(Drawable background) {
-        setBackgroundDrawable(background);
+    public final void setBackgroundColor(int color) {
+        throwUnsupportedException();
     }
 
+    @Deprecated
+    @Override
+    public final void setBackgroundResource(int resid) {
+        throwUnsupportedException();
+    }
+
+    @Deprecated
+    @Override
+    public final void setBackground(Drawable background) {
+        throwUnsupportedException();
+    }
+
+    @Deprecated
     @SuppressWarnings("deprecation")
     @Override
-    public void setBackgroundDrawable(Drawable background) {
-        super.setBackgroundDrawable(new LineDrawable());
+    public final void setBackgroundDrawable(Drawable background) {
+        throwUnsupportedException();
+    }
+
+    private void throwUnsupportedException() {
+        throw new UnsupportedOperationException("don't set background");
+    }
+
+    private void changeBackgroundLineDrawable(boolean isSizeChanged) {
+        LogUtils.verbose(this, "isSizeChanged=" + isSizeChanged + ", config is " + lineConfig);
+        //noinspection deprecation
+        super.setBackgroundDrawable(new LineDrawable(lineConfig));
+    }
+
+    public void setLineConfig(@Nullable LineConfig config) {
+        if (null == config) {
+            LogUtils.verbose(this, "line config is null");
+            return;
+        }
+        if (null == lineConfig) {
+            config.setWidth(getResources().getDisplayMetrics().widthPixels);
+            int[] area = new int[2];
+            area[0] = itemHeight * offset;
+            area[1] = itemHeight * (offset + 1);
+            config.setArea(area);
+        }
+        lineConfig = config;
+        changeBackgroundLineDrawable(false);
     }
 
     @Override
@@ -215,9 +252,19 @@ public class WheelView extends ScrollView {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        LogUtils.verbose(this, "w: " + w + ", h: " + h + ", oldw: " + oldw + ", oldh: " + oldh);
-        viewWidth = w;
-        setBackgroundDrawable(null);
+        LogUtils.verbose(this, "onSizeChanged viewWidth=" + w);
+        if (null == lineConfig) {
+            lineConfig = new LineConfig();
+            lineConfig.setColor(LINE_COLOR);
+            lineConfig.setWidth(w);
+            lineConfig.setThick(ConvertUtils.toPx(context, LINE_THICK));
+        }
+        lineConfig.setWidth(w);
+        int[] area = new int[2];
+        area[0] = itemHeight * offset;
+        area[1] = itemHeight * (offset + 1);
+        lineConfig.setArea(area);
+        changeBackgroundLineDrawable(true);
     }
 
     @Override
@@ -272,6 +319,10 @@ public class WheelView extends ScrollView {
         setSelectedIndex(0);
     }
 
+    public void setItems(String[] list) {
+        setItems(Arrays.asList(list));
+    }
+
     public void setItems(List<String> list, int index) {
         _setItems(list);
         setSelectedIndex(index);
@@ -280,6 +331,14 @@ public class WheelView extends ScrollView {
     public void setItems(List<String> list, String item) {
         _setItems(list);
         setSelectedItem(item);
+    }
+
+    public void setItems(String[] list, int index) {
+        setItems(Arrays.asList(list), index);
+    }
+
+    public void setItems(String[] list, String item) {
+        setItems(Arrays.asList(list), item);
     }
 
     public int getTextSize() {
@@ -301,22 +360,6 @@ public class WheelView extends ScrollView {
 
     public void setTextColor(@ColorInt int textColor) {
         this.textColorFocus = textColor;
-    }
-
-    public boolean isLineVisible() {
-        return lineVisible;
-    }
-
-    public void setLineVisible(boolean lineVisible) {
-        this.lineVisible = lineVisible;
-    }
-
-    public int getLineColor() {
-        return lineColor;
-    }
-
-    public void setLineColor(@ColorInt int lineColor) {
-        this.lineColor = lineColor;
     }
 
     public int getOffset() {
@@ -412,73 +455,155 @@ public class WheelView extends ScrollView {
                 return;
             }
             int newY = getScrollY();
-            if (initialY - newY == 0) { // stopped
-                final int remainder = initialY % itemHeight;
-                final int divided = initialY / itemHeight;
-                LogUtils.verbose(this, "initialY: " + initialY + ", remainder: " + remainder + ", divided: " + divided);
-                if (remainder == 0) {
-                    selectedIndex = divided + offset;
-                    onSelectedCallBack();
-                } else {
-                    if (remainder > itemHeight / 2) {
-                        post(new Runnable() {
-                            @Override
-                            public void run() {
-                                smoothScrollTo(0, initialY - remainder + itemHeight);
-                                selectedIndex = divided + offset + 1;
-                                onSelectedCallBack();
-                            }
-                        });
-                    } else {
-                        post(new Runnable() {
-                            @Override
-                            public void run() {
-                                smoothScrollTo(0, initialY - remainder);
-                                selectedIndex = divided + offset;
-                                onSelectedCallBack();
-                            }
-                        });
-                    }
-                }
-            } else {
+            if (initialY - newY != 0) {
                 startScrollerTask();
+                return;
+            }
+            // stopped
+            final int remainder = initialY % itemHeight;
+            final int divided = initialY / itemHeight;
+            LogUtils.verbose(this, "initialY: " + initialY + ", remainder: " + remainder + ", divided: " + divided);
+            if (remainder == 0) {
+                selectedIndex = divided + offset;
+                onSelectedCallBack();
+                return;
+            }
+            if (remainder > itemHeight / 2) {
+                post(new Runnable() {
+                    @Override
+                    public void run() {
+                        smoothScrollTo(0, initialY - remainder + itemHeight);
+                        selectedIndex = divided + offset + 1;
+                        onSelectedCallBack();
+                    }
+                });
+            } else {
+                post(new Runnable() {
+                    @Override
+                    public void run() {
+                        smoothScrollTo(0, initialY - remainder);
+                        selectedIndex = divided + offset;
+                        onSelectedCallBack();
+                    }
+                });
             }
         }
 
     }
 
-    private class LineDrawable extends Drawable {
+    /**
+     * 选中项的分割线
+     */
+    public static class LineConfig {
+        private int color = LINE_COLOR;
+        private int alpha = LINE_ALPHA;
+        private float ratio = (float) (1.0 / 6.0);
+        private float thick = -1;// dp
+        private int width = 0;
+        private int[] area = null;
 
-        LineDrawable() {
-            if (viewWidth == 0) {
-                viewWidth = ((Activity) context).getWindowManager().getDefaultDisplay().getWidth();
-                LogUtils.debug(this, "viewWidth: " + viewWidth);
-            }
+        public LineConfig() {
+            super();
+        }
 
-            // 2015/12/22 可设置分隔线是否可见
-            if (!lineVisible) {
-                return;
-            }
+        public LineConfig(@FloatRange(from = 0, to = 1) float ratio) {
+            this.ratio = ratio;
+        }
 
-            if (null == paint) {
-                paint = new Paint();
-                paint.setColor(lineColor);
-                paint.setStrokeWidth(dip2px(1f));
+        @ColorInt
+        public int getColor() {
+            return color;
+        }
+
+        /**
+         * 线颜色
+         */
+        public void setColor(@ColorInt int color) {
+            this.color = color;
+        }
+
+        @IntRange(from = 1, to = 255)
+        public int getAlpha() {
+            return alpha;
+        }
+
+        /**
+         * 线透明度
+         */
+        public void setAlpha(@IntRange(from = 1, to = 255) int alpha) {
+            this.alpha = alpha;
+        }
+
+        @FloatRange(from = 0, to = 1)
+        public float getRatio() {
+            return ratio;
+        }
+
+        /**
+         * 线比例，范围为0-1,0表示最长，1表示最短
+         */
+        public void setRatio(@FloatRange(from = 0, to = 1) float ratio) {
+            this.ratio = ratio;
+        }
+
+        public float getThick() {
+            if (thick == -1) {
+                thick = ConvertUtils.toPx(LINE_THICK);
             }
+            return thick;
+        }
+
+        /**
+         * 线粗
+         */
+        public void setThick(float thick) {
+            this.thick = thick;
+        }
+
+        protected int getWidth() {
+            return width;
+        }
+
+        protected void setWidth(int width) {
+            this.width = width;
+        }
+
+        @Size(2)
+        protected int[] getArea() {
+            return area;
+        }
+
+        protected void setArea(@Size(2) int[] area) {
+            this.area = area;
+        }
+
+        @Override
+        public String toString() {
+            return "color=" + color + ", alpha=" + alpha + ", thick=" + thick + ", width=" + width;
+        }
+
+    }
+
+    private static class LineDrawable extends Drawable {
+        private Paint paint;
+        private LineConfig config;
+
+        LineDrawable(LineConfig cfg) {
+            this.config = cfg;
+            paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            paint.setColor(config.getColor());
+            paint.setAlpha(config.getAlpha());
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setStrokeWidth(config.getThick());
         }
 
         @Override
         public void draw(@NonNull Canvas canvas) {
-            if (!lineVisible) {
-                return;
-            }
-            if (null == selectedAreaBorder) {
-                selectedAreaBorder = new int[2];
-                selectedAreaBorder[0] = itemHeight * offset;
-                selectedAreaBorder[1] = itemHeight * (offset + 1);
-            }
-            canvas.drawLine(viewWidth / 6, selectedAreaBorder[0], viewWidth * 5 / 6, selectedAreaBorder[0], paint);
-            canvas.drawLine(viewWidth / 6, selectedAreaBorder[1], viewWidth * 5 / 6, selectedAreaBorder[1], paint);
+            int[] area = config.getArea();
+            int width = config.getWidth();
+            float ratio = config.getRatio();
+            canvas.drawLine(width * ratio, area[0], width * (1 - ratio), area[0], paint);
+            canvas.drawLine(width * ratio, area[1], width * (1 - ratio), area[1], paint);
         }
 
         @Override
@@ -495,6 +620,7 @@ public class WheelView extends ScrollView {
         public int getOpacity() {
             return PixelFormat.UNKNOWN;
         }
+
     }
 
 }

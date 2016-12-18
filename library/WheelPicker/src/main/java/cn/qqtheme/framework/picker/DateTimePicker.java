@@ -90,8 +90,7 @@ public class DateTimePicker extends WheelPicker {
         yearView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
         yearView.setTextSize(textSize);
         yearView.setTextColor(textColorNormal, textColorFocus);
-        yearView.setLineVisible(lineVisible);
-        yearView.setLineColor(lineColor);
+        yearView.setLineConfig(lineConfig);
         yearView.setOffset(offset);
         layout.addView(yearView);
         TextView yearTextView = new TextView(activity);
@@ -107,8 +106,7 @@ public class DateTimePicker extends WheelPicker {
         monthView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
         monthView.setTextSize(textSize);
         monthView.setTextColor(textColorNormal, textColorFocus);
-        monthView.setLineVisible(lineVisible);
-        monthView.setLineColor(lineColor);
+        monthView.setLineConfig(lineConfig);
         monthView.setOffset(offset);
         layout.addView(monthView);
         TextView monthTextView = new TextView(activity);
@@ -124,8 +122,7 @@ public class DateTimePicker extends WheelPicker {
         dayView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
         dayView.setTextSize(textSize);
         dayView.setTextColor(textColorNormal, textColorFocus);
-        dayView.setLineVisible(lineVisible);
-        dayView.setLineColor(lineColor);
+        dayView.setLineConfig(lineConfig);
         dayView.setOffset(offset);
         layout.addView(dayView);
         TextView dayTextView = new TextView(activity);
@@ -141,8 +138,7 @@ public class DateTimePicker extends WheelPicker {
         hourView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
         hourView.setTextSize(textSize);
         hourView.setTextColor(textColorNormal, textColorFocus);
-        hourView.setLineVisible(lineVisible);
-        hourView.setLineColor(lineColor);
+        hourView.setLineConfig(lineConfig);
         layout.addView(hourView);
         TextView hourTextView = new TextView(activity);
         hourTextView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
@@ -157,8 +153,7 @@ public class DateTimePicker extends WheelPicker {
         minuteView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
         minuteView.setTextSize(textSize);
         minuteView.setTextColor(textColorNormal, textColorFocus);
-        minuteView.setLineVisible(lineVisible);
-        minuteView.setLineColor(lineColor);
+        minuteView.setLineConfig(lineConfig);
         minuteView.setOffset(offset);
         layout.addView(minuteView);
 
