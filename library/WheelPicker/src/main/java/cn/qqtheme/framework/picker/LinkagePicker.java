@@ -16,7 +16,7 @@ import cn.qqtheme.framework.widget.WheelView;
 
 /**
  * 两级、三级联动选择器。默认只初始化第一级数据，第二三级数据由联动获得。
- * <p>
+ * <p/>
  * Author:李玉江[QQ:1032694760]
  * DateTime:2016/5/6 20:34
  * Builder:Android Studio
@@ -163,7 +163,7 @@ public class LinkagePicker extends WheelPicker {
      * 三级联动默认每列宽度为屏幕宽度的三分之一，两级联动默认每列宽度为屏幕宽度的一半。
      */
     @Size(3)
-    protected final int[] getColumnWidths(boolean onlyTwoColumn) {
+    protected int[] getColumnWidths(boolean onlyTwoColumn) {
         LogUtils.verbose(this, String.format(java.util.Locale.CHINA, "column weight is: %f-%f-%f"
                 , firstColumnWeight, secondColumnWeight, thirdColumnWeight));
         int[] widths = new int[3];
@@ -301,13 +301,15 @@ public class LinkagePicker extends WheelPicker {
 
     }
 
-    public interface OnWheelListener {
+    public static abstract class OnWheelListener {
 
-        void onFirstWheeled(int index, String item);
+        public abstract void onFirstWheeled(int index, String item);
 
-        void onSecondWheeled(int index, String item);
+        public abstract void onSecondWheeled(int index, String item);
 
-        void onThirdWheeled(int index, String item);
+        public void onThirdWheeled(int index, String item) {
+
+        }
 
     }
 

@@ -22,6 +22,7 @@ public abstract class WheelPicker extends ConfirmPopup<View> {
     protected int offset = WheelView.OFF_SET;
     protected boolean cycleDisable = false;
     protected WheelView.LineConfig lineConfig;
+    private View contentView;
 
     public WheelPicker(Activity activity) {
         super(activity);
@@ -84,7 +85,7 @@ public abstract class WheelPicker extends ConfirmPopup<View> {
      * 设置选项偏移量，默认为1，范围为1-4。
      * 1显示三条、2显示5条、3显示7条、4显示9条
      */
-    public void setOffset(@IntRange(from = 1, to = 4) int offset) {
+    public void setOffset(@IntRange(from = 1, to = 3) int offset) {
         this.offset = offset;
     }
 
@@ -100,7 +101,10 @@ public abstract class WheelPicker extends ConfirmPopup<View> {
      */
     @Override
     public View getContentView() {
-        return makeCenterView();
+        if (null == contentView) {
+            contentView = makeCenterView();
+        }
+        return contentView;
     }
 
 }

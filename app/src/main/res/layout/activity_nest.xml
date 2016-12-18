@@ -10,7 +10,8 @@
         android:layout_height="50dp"
         android:background="#FFCCCCCC"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="10dp">
 
         <TextView
             style="?android:textAppearanceMedium"
@@ -48,7 +49,8 @@
     <LinearLayout
         android:id="@+id/wheelview_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
         android:orientation="vertical"/>
 
 </LinearLayout>

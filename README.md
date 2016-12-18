@@ -4,14 +4,14 @@
 [![JitPack](https://jitpack.io/v/gzu-liyujiang/AndroidPicker.svg)](https://jitpack.io/#gzu-liyujiang/AndroidPicker)
 [![Build Status](https://travis-ci.org/gzu-liyujiang/AndroidPicker.svg?branch=master)](https://travis-ci.org/gzu-liyujiang/AndroidPicker)
 
-安卓选择器类库，包括日期选择器、时间选择器、单项选择器、城市选择器、颜色选择器、文件选择器、目录选择器、数字选择器、星座选择器、生肖选择器等，可自定义顶部及底部界面，可自定义窗口动画。
+安卓选择器类库，包括日期选择器、时间选择器、单项选择器、城市地址选择器、车牌号选择器、数字选择器、星座选择器、生肖选择器、颜色选择器、文件选择器、目录选择器等，可自定义顶部及底部界面，可自定义窗口动画……
 欢迎大伙儿在[Issues](https://github.com/gzu-liyujiang/AndroidPicker/issues)提交你的意见或建议。    
 欢迎Fork & Pull requests贡献您的代码，大家共同学习【[AndroidPicker交流群 604235437](https://jq.qq.com/?_wv=1027&k=42bKOeD)】。
 [查看更新日志](https://github.com/gzu-liyujiang/AndroidPicker/blob/master/ChangeLog.md)，**新版本未对旧版API作兼容处理，升级后若编译报错请根据错误提示更改**。
 
 # Install
 “app”是测试用例；“library”包括WheelPicker、ColorPicker、FilePicker，
-WheelPicker包括DatePicker、TimePicker、OptionPicker、LinkagePicker、AddressPicker、NumberPicker等。
+WheelPicker包括DatePicker、TimePicker、OptionPicker、LinkagePicker、AddressPicker、NumberPicker、CarNumberPicker等。
 #### ~~懒人建议直接远程加载jcenter里的~~
 WheelPicker、FilePicker及ColorPicker是独立的，需要用哪个就compile哪个。
 latest.release表示使用最新版，也可以[参照此处指定具体的版本号](https://github.com/gzu-liyujiang/AndroidPicker/releases)：
@@ -115,16 +115,18 @@ dependencies {
 ```
 选择器内嵌到其他视图容器：
 ```java
-        final TimePicker picker = new TimePicker(this, TimePicker.HOUR_12);
-        picker.setOnWheelListener(new TimePicker.OnWheelListener() {
+        final CarNumberPicker picker = new CarNumberPicker(this);
+        picker.setWidth(picker.getScreenWidthPixels() / 2);
+        picker.setLineConfig(new WheelView.LineConfig(0));//使用最长的分割线
+        picker.setOnWheelListener(new CarNumberPicker.OnWheelListener() {
             @Override
-            public void onHourWheeled(int index, String hour) {
-                textView.setText(hour + ":" + picker.getSelectedMinute());
+            public void onFirstWheeled(int index, String item) {
+                textView.setText(item + ":" + picker.getSelectedSecondItem());
             }
 
             @Override
-            public void onMinuteWheeled(int index, String minute) {
-                textView.setText(picker.getSelectedHour() + ":" + minute);
+            public void onSecondWheeled(int index, String item) {
+                textView.setText(picker.getSelectedFirstItem() + ":" + item);
             }
         });
         ViewGroup viewGroup = (ViewGroup) findViewById(R.id.wheelview_container);

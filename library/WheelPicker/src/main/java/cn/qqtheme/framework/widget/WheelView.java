@@ -43,6 +43,7 @@ import cn.qqtheme.framework.util.LogUtils;
  */
 public class WheelView extends ScrollView {
     public static final int TEXT_SIZE = 20;
+    public static final int TEXT_PADDING = 10;
     public static final int TEXT_COLOR_FOCUS = 0XFF0288CE;
     public static final int TEXT_COLOR_NORMAL = 0XFFBBBBBB;
     public static final int LINE_ALPHA = 150;
@@ -134,7 +135,7 @@ public class WheelView extends ScrollView {
         tv.setText(item);
         tv.setTextSize(textSize);
         tv.setGravity(Gravity.CENTER);
-        int padding = ConvertUtils.toPx(context, 12);
+        int padding = ConvertUtils.toPx(context, TEXT_PADDING);
         tv.setPadding(padding, padding, padding, padding);
         if (0 == itemHeight) {
             int wSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
@@ -366,9 +367,9 @@ public class WheelView extends ScrollView {
         return offset;
     }
 
-    public void setOffset(@IntRange(from = 1, to = 4) int offset) {
-        if (offset < 1 || offset > 4) {
-            throw new IllegalArgumentException("Offset must between 1 and 4");
+    public void setOffset(@IntRange(from = 1, to = 3) int offset) {
+        if (offset < 1 || offset > 3) {
+            throw new IllegalArgumentException("Offset must between 1 and 3");
         }
         this.offset = offset;
     }
