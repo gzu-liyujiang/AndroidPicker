@@ -27,6 +27,7 @@ import cn.qqtheme.framework.util.ConvertUtils;
 public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
     protected boolean topLineVisible = true;
     protected int topLineColor = 0xFFDDDDDD;
+    protected int topLineHeight = 1;//dp
     protected int topBackgroundColor = Color.WHITE;
     protected int topHeight = 40;//dp
     protected boolean cancelVisible = true;
@@ -40,7 +41,7 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
     protected int submitTextSize = 0;
     protected int titleTextSize = 0;
     protected int backgroundColor = Color.WHITE;
-    protected TextView titleView;
+    private TextView titleView;
 
     public ConfirmPopup(Activity activity) {
         super(activity);
@@ -53,6 +54,13 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
      */
     public void setTopLineColor(@ColorInt int topLineColor) {
         this.topLineColor = topLineColor;
+    }
+
+    /**
+     * 设置顶部标题栏下划线高度，单位为dp
+     */
+    public void setTopLineHeight(int topLineHeight) {
+        this.topLineHeight = topLineHeight;
     }
 
     /**
@@ -198,7 +206,8 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
         }
         if (topLineVisible) {
             View lineView = new View(activity);
-            lineView.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, 1));
+            int height = ConvertUtils.toPx(activity, topLineHeight);
+            lineView.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, height));
             lineView.setBackgroundColor(topLineColor);
             rootLayout.addView(lineView);
         }

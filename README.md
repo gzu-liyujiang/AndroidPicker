@@ -13,7 +13,8 @@
 “app”是测试用例；“library”包括WheelPicker、ColorPicker、FilePicker，
 WheelPicker包括DatePicker、TimePicker、OptionPicker、LinkagePicker、AddressPicker、NumberPicker等。
 #### ~~懒人建议直接远程加载jcenter里的~~
-其中latest.release为最新版，也可以[参照此处指定具体的版本号](https://github.com/gzu-liyujiang/AndroidPicker/releases)：
+WheelPicker、FilePicker及ColorPicker是独立的，需要用哪个就compile哪个。
+latest.release表示使用最新版，也可以[参照此处指定具体的版本号](https://github.com/gzu-liyujiang/AndroidPicker/releases)：
 ```groovy
 dependencies {
     compile 'cn.qqtheme.framework:WheelPicker:latest.release'
@@ -38,34 +39,6 @@ dependencies {
     compile 'com.github.gzu-liyujiang.AndroidPicker:ColorPicker:版本号'
 }
 ```
-#### 需要学习或修改源代码，则下载本项目手动集成
-下载示例项目后导入“library”下的相关module到你的项目（记得将module下的build.gradle修改类似于下面的内容，否则可能会报错找不到BuildToolsVersion）：
-```groovy
-apply plugin: 'com.android.library'
-
-android {
-    compileSdkVersion 23
-    buildToolsVersion 23.0.1
-
-    defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 22
-    }
-}
-
-dependencies {
-    compile project(':Common') //Common模块不需要加此句
-}
-
-```
-然后依赖（WheelPicker、FilePicker及ColorPicker是独立的，需要用哪个就compile哪个）：
-```groovy
-dependencies {
-    compile project(':WheelPicker')
-    compile project(':FilePicker')
-    compile project(':ColorPicker')
-}
-```
 #### 使用Eclipse的话如何集成？
 直接下载本项目，复制Common及WheelPicker模块下的“src/main/java”下的所有java代码到你的项目里即可。
 如果需要颜色选择器或文件选择器，则复制Common及ColorPicker或FilePicker模块下的“src/main/java”及“src/main/res”下的所有文件到你的项目里。
@@ -78,24 +51,39 @@ dependencies {
 
 -keep class cn.qqtheme.framework.entity.** { *;}
 ```
+
 # Custom
 #### 自定义视图
 WheelView这个类是滑轮选择器的核心，可以扩展出各种效果，参见demo的[NestActivity.java](https://github.com/gzu-liyujiang/AndroidPicker/blob/master/app/src/main/java/cn/qqtheme/androidpicker/NestActivity.java)。
 ```java
-        WheelView wheelView = (WheelView) findViewById(R.id.wheelview);
-        wheelView.setItems(Arrays.asList(new String[]{
-                "贵州穿青人",
-                "少数民族",
-                "不在56个少数民族之列",
-                "第57个民族"}));
-        wheelView.setOnWheelListener(new WheelView.OnWheelListener() {
-            @Override
-            public void onSelected(boolean isUserScroll, int index, String item) {
-                // do something
-            }
-        });
+WheelView wheelView = (WheelView) findViewById(R.id.wheelview);
+wheelView.setTextColor(0xFFFF00FF);
+WheelView.LineConfig config = new WheelView.LineConfig();
+config.setColor(0xFFFF00FF);//线颜色
+config.setAlpha(100);//线透明度
+config.setRatio((float) (1.0 / 10.0));//线比率
+config.setThick(ConvertUtils.toPx(this, 10));//线粗
+wheelView.setLineConfig(config);
+wheelView.setItems(new String[]{"贵州穿青人", "少数民族", "不在56个少数民族之列", "第57个民族"});
+wheelView.setOnWheelListener(new WheelView.OnWheelListener() {
+    @Override
+    public void onSelected(boolean isUserScroll, int index, String item) {
+        // do something
+    }
+});
 ```
 #### 自定义窗口进入退出动画
+在xml里定义好动画，然后调用setAnimationStyle()即可，如：
+```xml
+    <style name="Animation.Popup" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
+
+```
+```java
+picker.setAnimationStyle(R.style.Animation_Popup);
+```
 推荐使用[ViewAnimator](https://github.com/gzu-liyujiang/ViewAnimator)这个动画库来实现：
 ```groovy
 dependencies {
@@ -125,7 +113,7 @@ dependencies {
         });
         picker.show();
 ```
-内嵌选择器：
+选择器内嵌到其他视图容器：
 ```java
         final TimePicker picker = new TimePicker(this, TimePicker.HOUR_12);
         picker.setOnWheelListener(new TimePicker.OnWheelListener() {
@@ -172,7 +160,7 @@ dependencies {
         picker.show();
 ```
 
-单项选择器（可用于性别、学历、职业、星座等选择）：
+单项选择器（可用于性别、学历、职业、生肖、星座等选择）：
 ```java
         OptionPicker picker = new OptionPicker(this, new String[]{
                 "第一项", "第二项", "这是一个很长很长很长很长很长很长很长很长很长的很长很长的很长很长的项"
@@ -180,6 +168,7 @@ dependencies {
         picker.setOffset(2);
         picker.setSelectedIndex(1);
         picker.setTextSize(11);
+        picker.setLineConfig(new WheelView.LineConfig(0));//使用最长的线
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
             public void onOptionPicked(String option) {
@@ -189,7 +178,7 @@ dependencies {
         picker.show();
 ```
 
-数字选择器(可用于身高、体重、年龄等选择)：
+数字选择器(可用于身高、体重、年龄、温度等选择)：
 ```java
         NumberPicker picker = new NumberPicker(this);
         picker.setOffset(2);//偏移量
@@ -205,7 +194,7 @@ dependencies {
         picker.show();
 ```
 
-二三级联动选择器（详见示例项目，参见地址选择器）
+二三级联动选择器（详见示例项目，参见AddressPicker）
 
 地址选择器（含省级、地级、县级）：
 ```java
@@ -226,30 +215,42 @@ dependencies {
         picker.show();
 ```
 
-星座选择器：
+星座选择器（参见ConstellationPicker）：
 ```java
-        OptionPicker picker = new OptionPicker(this, new String[]{
-                "水瓶", "双鱼", "白羊", "金牛", "双子", "巨蟹", "狮子", "处女", "天秤", "天蝎", "射手", "摩羯",
-        });
-        picker.setLabel("座");
+        boolean isChinese = Locale.getDefault().getDisplayLanguage().contains("中文");
+        OptionPicker picker = new OptionPicker(this,
+                isChinese ? new String[]{
+                        "水瓶", "双鱼", "白羊", "金牛", "双子", "巨蟹",
+                        "狮子", "处女", "天秤", "天蝎", "射手", "摩羯"
+                } : new String[]{
+                        "Aquarius", "Pisces", "Aries", "Taurus", "Gemini", "Cancer",
+                        "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn"
+                });
+        picker.setLabel(isChinese ? "座" : "");
         picker.setTopBackgroundColor(0xFFEEEEEE);
-        picker.setLineVisible(true);
-        picker.setTopLineColor(0xFFEE0000);
         picker.setTopHeight(50);
-        picker.setTitleText("请选择");
+        picker.setTopLineColor(0xFF33B5E5);
+        picker.setTopLineHeight(1);
+        picker.setTitleText(isChinese ? "请选择" : "Please pick");
         picker.setTitleTextColor(0xFF999999);
         picker.setTitleTextSize(24);
         picker.setCancelTextColor(0xFF33B5E5);
         picker.setCancelTextSize(22);
         picker.setSubmitTextColor(0xFF33B5E5);
         picker.setSubmitTextSize(22);
-        picker.setTextColor(0xFFFF0000, 0xFF999999);
-        picker.setLineColor(0xFFEE0000);
-        picker.setSelectedItem("射手");
+        picker.setTextColor(0xFFEE0000, 0xFF999999);
+        WheelView.LineConfig config = new WheelView.LineConfig();
+        config.setColor(0xFFEE0000);//线颜色
+        config.setAlpha(140);//线透明度
+        config.setRatio((float) (1.0 / 8.0));//线比率
+        picker.setLineConfig(config);
+        picker.setBackgroundColor(0xFFE1E1E1);
+        //picker.setSelectedItem(isChinese ? "射手" : "Sagittarius");
+        picker.setSelectedIndex(10);
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
-            public void onOptionPicked(int position, String option) {
-                showToast(option);
+            public void onOptionPicked(int index, String item) {
+                showToast("index=" + index + ", item=" + item);
             }
         });
         picker.show();
@@ -272,7 +273,7 @@ dependencies {
 ```java
         FilePicker picker = new FilePicker(this, FilePicker.FILE);
         picker.setShowHideDir(false);
-        picker.setRootPath(StorageUtils.getRootPath(this) + "Download/");
+        picker.setRootPath(StorageUtils.getExternalRootPath() + "Download/");
         //picker.setAllowExtensions(new String[]{".apk"});
         picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {
             @Override
@@ -294,11 +295,6 @@ dependencies {
         });
         picker.show();
 ```
-
-# Thanks
-库项目修改使用了以下项目：      
-https://github.com/wangjiegulu/WheelView      
-https://github.com/jbruchanov/AndroidColorPicker      
 
 # Screenshots
 ![滑轮选择器内嵌效果图](/screenshots/nestwheelview.jpg)

@@ -1,7 +1,7 @@
 package cn.qqtheme.framework.entity;
 
 /**
- * 省市县抽象，本类及其子类不可混淆
+ * 省市县抽象，为了使用FastJson及LiteOrm之类的库，本类及其子类不可混淆
  * <br/>
  * Author:李玉江[QQ:1032694760]
  * DateTime:2016-10-15 19:06

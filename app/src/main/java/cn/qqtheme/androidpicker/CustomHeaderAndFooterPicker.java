@@ -12,23 +12,27 @@ import com.github.florent37.viewanimator.AnimationListener;
 import com.github.florent37.viewanimator.ViewAnimator;
 
 import cn.qqtheme.framework.picker.OptionPicker;
+import cn.qqtheme.framework.picker.SinglePicker;
+import cn.qqtheme.framework.widget.WheelView;
 
 /**
  * 自定义顶部及底部
- * <p/>
+ * <p>
  * Author:李玉江[QQ:1032694760]
  * Email:liyujiang_tk@yeah.net
  * DateTime:2016/1/29 14:47
  * Builder:Android Studio
  */
-public class CustomHeaderAndFooterPicker extends OptionPicker {
+public class CustomHeaderAndFooterPicker extends OptionPicker implements SinglePicker.OnWheelListener {
+    private TextView titleView;
 
     public CustomHeaderAndFooterPicker(Activity activity) {
         super(activity, new String[]{
-                "C/C++", "Java", "PHP", "Swift", "Node.js", "C#", "HTML5"
+                "Java/Android", "PHP/MySQL", "HTML/CSS/JS", "C/C++"
         });
-        setTitleText("请选择你最擅长的语言");
-        setSelectedItem("PHP");
+        setSelectedIndex(1);
+        setLineConfig(new WheelView.LineConfig(0.06f));
+        setOnWheelListener(this);
     }
 
     @Override
@@ -59,8 +63,14 @@ public class CustomHeaderAndFooterPicker extends OptionPicker {
     @Override
     protected View makeHeaderView() {
         View view = LayoutInflater.from(activity).inflate(R.layout.picker_header, null);
-        TextView titleView = (TextView) view.findViewById(R.id.picker_title);
+        titleView = (TextView) view.findViewById(R.id.picker_title);
         titleView.setText(titleText);
+        view.findViewById(R.id.picker_close).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
         return view;
     }
 
@@ -90,13 +100,10 @@ public class CustomHeaderAndFooterPicker extends OptionPicker {
     }
 
     @Override
-    public void onSubmit() {
-        super.onSubmit();
-    }
-
-    @Override
-    protected void onCancel() {
-        super.onCancel();
+    public void onWheeled(int index, String item) {
+        if (titleView != null) {
+            titleView.setText(item);
+        }
     }
 
 }

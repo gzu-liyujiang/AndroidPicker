@@ -1,6 +1,7 @@
 package cn.qqtheme.framework.entity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 省份
@@ -10,13 +11,13 @@ import java.util.ArrayList;
  * Builder:Android Studio
  */
 public class Province extends Area {
-    private ArrayList<City> cities = new ArrayList<City>();
+    private List<City> cities = new ArrayList<City>();
 
-    public ArrayList<City> getCities() {
+    public List<City> getCities() {
         return cities;
     }
 
-    public void setCities(ArrayList<City> cities) {
+    public void setCities(List<City> cities) {
         this.cities = cities;
     }
 

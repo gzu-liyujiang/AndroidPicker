@@ -9,6 +9,8 @@ import java.io.IOException;
 
 /**
  * 存储设备工具类
+ * <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+ * <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
  *
  * @author 李玉江[QQ:1023694760]
  * @since 2013-11-2
@@ -30,133 +32,94 @@ public final class StorageUtils {
     }
 
     /**
-     * 返回以“/”结尾的外置存储根目录，可选若外置存储不可用则是否使用内部存储
-     *
-     * @return 诸如 ：/mnt/sdcard/subdir
+     * 返回以“/”结尾的内部存储根目录
      */
-    public static String getRootPath(Context context, boolean onlyExternalStorage, String subdir) {
+    public static String getInternalRootPath(Context context, String type) {
         File file;
-        if (externalMounted()) {
-            file = Environment.getExternalStorageDirectory();
+        if (TextUtils.isEmpty(type)) {
+            file = context.getFilesDir();
         } else {
-            if (onlyExternalStorage) {
-                file = new File("/");
-            } else {
-                file = context.getFilesDir();
-            }
-        }
-        if (!TextUtils.isEmpty(subdir)) {
-            file = new File(file, subdir);
+            file = new File(FileUtils.separator(context.getFilesDir().getAbsolutePath()) + type);
             //noinspection ResultOfMethodCallIgnored
             file.mkdirs();
         }
-        String path = "/";
+        String path = "";
         if (file != null) {
             path = FileUtils.separator(file.getAbsolutePath());
         }
-        LogUtils.verbose("storage root path: " + path);
+        LogUtils.verbose("internal storage root path: " + path);
         return path;
     }
 
-    /**
-     * 返回以“/”结尾的外置存储根目录，可选若外置存储不可用则是否使用内部存储
-     *
-     * @return 诸如 ：/mnt/sdcard/
-     */
-    public static String getRootPath(Context context, String subdir) {
-        return getRootPath(context, false, subdir);
+    public static String getInternalRootPath(Context context) {
+        return getInternalRootPath(context, null);
     }
 
     /**
-     * 返回以“/”结尾的外置存储根目录，可选若外置存储不可用则是否使用内部存储
-     *
-     * @return 诸如 ：/mnt/sdcard/
+     * 返回以“/”结尾的外部存储根目录，外置卡不可用则返回空字符串
      */
-    public static String getRootPath(Context context, boolean onlyExternalStorage) {
-        return getRootPath(context, onlyExternalStorage, null);
-    }
-
-    /**
-     * 返回以“/”结尾的外置存储根目录，若外置存储不可用则使用内部存储
-     *
-     * @return 诸如 ：/mnt/sdcard/
-     */
-    public static String getRootPath(Context context) {
-        return getRootPath(context, false);
-    }
-
-    /**
-     * 下载的文件的保存路径，以“/”结尾
-     *
-     * @return 诸如 ：/mnt/sdcard/Download/
-     */
-    public static String getDownloadPath(Context context) throws Exception {
-        File file;
+    public static String getExternalRootPath(String type) {
+        File file = null;
         if (externalMounted()) {
-            file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        } else {
-            throw new Exception("外置存储不可用！");
+            file = Environment.getExternalStorageDirectory();
         }
-        return FileUtils.separator(file.getAbsolutePath());
+        if (file != null && !TextUtils.isEmpty(type)) {
+            file = new File(file, type);
+            //noinspection ResultOfMethodCallIgnored
+            file.mkdirs();
+        }
+        String path = "";
+        if (file != null) {
+            path = FileUtils.separator(file.getAbsolutePath());
+        }
+        LogUtils.verbose("external storage root path: " + path);
+        return path;
+    }
+
+    public static String getExternalRootPath() {
+        return getExternalRootPath(null);
     }
 
     /**
      * 各种类型的文件的专用的保存路径，以“/”结尾
      *
-     * @return 诸如 ：/mnt/sdcard/Android/data/[package]/files/[type]/
+     * @return 诸如：/mnt/sdcard/Android/data/[package]/files/[type]/
      */
-    public static String getPrivatePath(Context context, String type) {
+    public static String getExternalPrivatePath(Context context, String type) {
         File file = null;
         if (externalMounted()) {
             file = context.getExternalFilesDir(type);
         }
         //高频触发java.lang.NullPointerException，是SD卡不可用或暂时繁忙么？
-        if (file == null) {
-            if (type == null) {
-                file = context.getFilesDir();
-            } else {
-                file = new File(FileUtils.separator(context.getFilesDir().getAbsolutePath()) + type);
-                //noinspection ResultOfMethodCallIgnored
-                file.mkdirs();
-            }
+        String path = "";
+        if (file != null) {
+            path = FileUtils.separator(file.getAbsolutePath());
+        }
+        LogUtils.verbose("external storage private path: " + path);
+        return path;
+    }
+
+    public static String getExternalPrivatePath(Context context) {
+        return getExternalPrivatePath(context, null);
+    }
+
+    /**
+     * 下载的文件的保存路径，必须为外部存储，以“/”结尾
+     *
+     * @return 诸如 ：/mnt/sdcard/Download/
+     */
+    public static String getDownloadPath() throws RuntimeException {
+        File file;
+        if (externalMounted()) {
+            file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        } else {
+            throw new RuntimeException("外置存储不可用！");
         }
         return FileUtils.separator(file.getAbsolutePath());
     }
 
     /**
-     * 返回以“/”结尾的内部存储根目录
-     */
-    public static String getInternalRootPath(Context context) {
-        return FileUtils.separator(context.getFilesDir().getAbsolutePath());
-    }
-
-    /**
-     * 各种类型的文件的专用的内部存储保存路径，以“/”结尾
-     */
-    public static String getPrivateRootPath(Context context) {
-        return getPrivatePath(context, null);
-    }
-
-    /**
-     * 返回以“/”结尾的临时存储目录
-     */
-    public static String getTemporaryDirPath(Context context) {
-        return getPrivatePath(context, "temporary");
-    }
-
-    /**
-     * 返回以“/”结尾的临时存储文件
-     */
-    public static String getTemporaryFilePath(Context context) {
-        try {
-            return File.createTempFile("lyj_", ".tmp", context.getCacheDir()).getAbsolutePath();
-        } catch (IOException e) {
-            return getTemporaryDirPath(context) + "lyj.tmp";
-        }
-    }
-
-    /**
-     * 各种类型的文件的专用的缓存存储保存路径，以“/”结尾
+     * 各种类型的文件的专用的缓存存储保存路径，优先使用外置存储，以“/”结尾
      */
     public static String getCachePath(Context context, String type) {
         File file;
@@ -165,19 +128,39 @@ public final class StorageUtils {
         } else {
             file = context.getCacheDir();
         }
-        if (type != null) {
+        if (!TextUtils.isEmpty(type)) {
             file = new File(file, type);
             //noinspection ResultOfMethodCallIgnored
             file.mkdirs();
         }
-        return FileUtils.separator(file != null ? file.getAbsolutePath() : null);
+        String path = "";
+        if (file != null) {
+            path = FileUtils.separator(file.getAbsolutePath());
+        }
+        LogUtils.verbose("external or internal storage cache path: " + path);
+        return path;
+    }
+
+    public static String getCachePath(Context context) {
+        return getCachePath(context, null);
     }
 
     /**
-     * 返回以“/”结尾的缓存存储根目录
+     * 返回以“/”结尾的临时存储目录
      */
-    public static String getCacheRootPath(Context context) {
-        return getCachePath(context, null);
+    public static String getTempDirPath(Context context) {
+        return getExternalPrivatePath(context, "temporary");
+    }
+
+    /**
+     * 返回临时存储文件路径
+     */
+    public static String getTempFilePath(Context context) {
+        try {
+            return File.createTempFile("lyj_", ".tmp", context.getCacheDir()).getAbsolutePath();
+        } catch (IOException e) {
+            return getTempDirPath(context) + "lyj.tmp";
+        }
     }
 
 }

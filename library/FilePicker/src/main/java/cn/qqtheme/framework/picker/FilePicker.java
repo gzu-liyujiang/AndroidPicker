@@ -57,7 +57,11 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
     public FilePicker(Activity activity, @Mode int mode) {
         super(activity);
         setHalfScreen(true);
-        this.initPath = StorageUtils.getRootPath(activity);
+        try {
+            this.initPath = StorageUtils.getDownloadPath();
+        } catch (RuntimeException e) {
+            this.initPath = StorageUtils.getInternalRootPath(activity);
+        }
         this.mode = mode;
         this.emptyHint = (mode == DIRECTORY ? "没有所需目录" : "没有所需文件");
         this.adapter = new FileAdapter(activity);

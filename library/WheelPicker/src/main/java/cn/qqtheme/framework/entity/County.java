@@ -8,4 +8,14 @@ package cn.qqtheme.framework.entity;
  * Builder:Android Studio
  */
 public class County extends Area {
+    private String cityId;
+
+    public String getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(String cityId) {
+        this.cityId = cityId;
+    }
+
 }

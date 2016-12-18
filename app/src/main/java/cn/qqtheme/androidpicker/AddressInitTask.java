@@ -14,6 +14,7 @@ import cn.qqtheme.framework.entity.County;
 import cn.qqtheme.framework.entity.Province;
 import cn.qqtheme.framework.picker.AddressPicker;
 import cn.qqtheme.framework.util.ConvertUtils;
+import cn.qqtheme.framework.widget.WheelView;
 
 /**
  * 获取地址数据并显示地址选择器
@@ -29,9 +30,6 @@ public class AddressInitTask extends AsyncTask<String, Void, ArrayList<Province>
 
     /**
      * 初始化为不显示区县的模式
-     *
-     * @param activity
-     * @param hideCounty is hide County
      */
     public AddressInitTask(Activity activity, boolean hideCounty) {
         this.activity = activity;
@@ -80,12 +78,13 @@ public class AddressInitTask extends AsyncTask<String, Void, ArrayList<Province>
         if (result.size() > 0) {
             AddressPicker picker = new AddressPicker(activity, result);
             picker.setHideCounty(hideCounty);
-            if (hideCounty){
-                picker.setColumnWeight(1/3.0, 2/3.0);//将屏幕分为3份，省级和地级的比例为1:2
+            if (hideCounty) {
+                picker.setColumnWeight(1 / 3.0, 2 / 3.0);//将屏幕分为3份，省级和地级的比例为1:2
             } else {
-                picker.setColumnWeight(2/8.0, 3/8.0, 3/8.0);//省级、地级和县级的比例为2:3:3
+                picker.setColumnWeight(2 / 8.0, 3 / 8.0, 3 / 8.0);//省级、地级和县级的比例为2:3:3
             }
             picker.setSelectedItem(selectedProvince, selectedCity, selectedCounty);
+            picker.setLineConfig(new WheelView.LineConfig(0));//使用最长的分割线
             picker.setOnAddressPickListener(new AddressPicker.OnAddressPickListener() {
                 @Override
                 public void onAddressPicked(Province province, City city, County county) {

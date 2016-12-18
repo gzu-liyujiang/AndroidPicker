@@ -101,7 +101,7 @@ public class DateUtils extends android.text.format.DateUtils {
         long elapsedMinutes = differentMilliSeconds / minutesInMilli;
         differentMilliSeconds = differentMilliSeconds % minutesInMilli;
         long elapsedSeconds = differentMilliSeconds / secondsInMilli;
-        LogUtils.debug(String.format(Locale.CHINA, "different: %d ms, %d days, %d hours, %d minutes, %d seconds",
+        LogUtils.verbose(String.format(Locale.CHINA, "different: %d ms, %d days, %d hours, %d minutes, %d seconds",
                 differentMilliSeconds, elapsedDays, elapsedHours, elapsedMinutes, elapsedSeconds));
         return new long[]{elapsedDays, elapsedHours, elapsedMinutes, elapsedSeconds};
     }
@@ -206,6 +206,21 @@ public class DateUtils extends android.text.format.DateUtils {
      */
     public static Date parseDate(String dateStr) {
         return parseDate(dateStr, "yyyy-MM-dd HH:mm:ss");
+    }
+
+    /**
+     * 将指定的日期转换为一定格式的字符串
+     */
+    public static String formatDate(Date date, String format) {
+        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.CHINA);
+        return sdf.format(date);
+    }
+
+    /**
+     * 将当前日期转换为一定格式的字符串
+     */
+    public static String formatDate(String format) {
+        return formatDate(Calendar.getInstance(Locale.CHINA).getTime(), format);
     }
 
 }

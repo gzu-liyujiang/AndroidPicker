@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import cn.qqtheme.framework.entity.City;
 import cn.qqtheme.framework.entity.County;
@@ -27,6 +29,7 @@ import cn.qqtheme.framework.picker.TimePicker;
 import cn.qqtheme.framework.util.ConvertUtils;
 import cn.qqtheme.framework.util.DateUtils;
 import cn.qqtheme.framework.util.StorageUtils;
+import cn.qqtheme.framework.widget.WheelView;
 
 public class MainActivity extends Activity {
 
@@ -55,8 +58,8 @@ public class MainActivity extends Activity {
         NumberPicker picker = new NumberPicker(this);
         picker.setAnimationStyle(R.style.Animation_CustomPopup);
         picker.setOffset(2);//偏移量
-        picker.setRange(10.50, 20.00, 1.5);//数字范围
-        picker.setSelectedItem(10.50);
+        picker.setRange(10.5, 20, 1.5);//数字范围
+        picker.setSelectedItem(18.0);
         picker.setLabel("℃");
         picker.setOnNumberPickListener(new NumberPicker.OnNumberPickListener() {
             @Override
@@ -82,8 +85,8 @@ public class MainActivity extends Activity {
     public void onYearMonthDayPicker(View view) {
         final DatePicker picker = new DatePicker(this);
         picker.setRangeStart(2016, 8, 29);
-        picker.setRangeEnd(2022, 1, 11);
-        picker.setSelectedItem(2016, 10, 14);
+        picker.setRangeEnd(2111, 1, 11);
+        picker.setSelectedItem(2050, 10, 14);
         picker.setOnDatePickListener(new DatePicker.OnYearMonthDayPickListener() {
             @Override
             public void onDatePicked(String year, String month, String day) {
@@ -126,9 +129,10 @@ public class MainActivity extends Activity {
     public void onYearMonthPicker(View view) {
         DatePicker picker = new DatePicker(this, DatePicker.YEAR_MONTH);
         picker.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
+        picker.setWidth((int) (picker.getScreenWidthPixels() * 0.6));
         picker.setRangeStart(2016, 10, 14);
         picker.setRangeEnd(2020, 11, 11);
-        picker.setSelectedItem(2016, 9);
+        picker.setSelectedItem(2019, 9);
         picker.setOnDatePickListener(new DatePicker.OnYearMonthPickListener() {
             @Override
             public void onDatePicked(String year, String month) {
@@ -172,6 +176,7 @@ public class MainActivity extends Activity {
         picker.setOffset(2);
         picker.setSelectedIndex(0);
         picker.setTextSize(11);
+        picker.setLineConfig(new WheelView.LineConfig(0));//使用最长的线
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
             public void onOptionPicked(int index, String item) {
@@ -183,28 +188,22 @@ public class MainActivity extends Activity {
 
     public void onLinkagePicker(View view) {
         ArrayList<String> firstList = new ArrayList<String>();
-        firstList.add("今天");
-        firstList.add("明天");
+        firstList.add("12小时制");
+        firstList.add("24小时制");
         ArrayList<ArrayList<String>> secondList = new ArrayList<ArrayList<String>>();
-        ArrayList<String> secondListItem = new ArrayList<String>();
+        ArrayList<String> secondListItem1 = new ArrayList<String>();
+        for (int i = 1; i <= 12; i++) {
+            secondListItem1.add(DateUtils.fillZero(i) + "点");
+        }
+        ArrayList<String> secondListItem2 = new ArrayList<String>();
         for (int i = 0; i < 24; i++) {
-            secondListItem.add(DateUtils.fillZero(i) + "点");
+            secondListItem2.add(DateUtils.fillZero(i) + "点");
         }
-        secondList.add(secondListItem);//对应今天
-        secondList.add(secondListItem);//对应明天
-        ArrayList<ArrayList<ArrayList<String>>> thirdList = new ArrayList<ArrayList<ArrayList<String>>>();
-        ArrayList<ArrayList<String>> thirdListItem1 = new ArrayList<ArrayList<String>>();
-        ArrayList<String> thirdListItem2 = new ArrayList<String>();
-        for (int i = 0; i < 60; i++) {
-            thirdListItem2.add(DateUtils.fillZero(i) + "分");
-        }
-        for (int i = 0; i < 24; i++) {
-            thirdListItem1.add(thirdListItem2);//对应0-23点
-        }
-        thirdList.add(thirdListItem1);//对应今天
-        thirdList.add(thirdListItem1);//对应明天
+        secondList.add(secondListItem1);//对应今天
+        secondList.add(secondListItem2);//对应明天
         LinkagePicker picker = new LinkagePicker(this, firstList, secondList);
-        picker.setSelectedItem("明天", "9点");
+        picker.setSelectedItem("12小时制", "9点");
+        picker.setLineConfig(new WheelView.LineConfig(0));//使用最长的线
         picker.setOnLinkageListener(new LinkagePicker.OnLinkageListener() {
 
             @Override
@@ -216,25 +215,36 @@ public class MainActivity extends Activity {
     }
 
     public void onConstellationPicker(View view) {
-        OptionPicker picker = new OptionPicker(this, new String[]{
-                "水瓶", "双鱼", "白羊", "金牛", "双子", "巨蟹", "狮子", "处女", "天秤", "天蝎", "射手", "摩羯",
-        });
-        picker.setLabel("座");
+        boolean isChinese = Locale.getDefault().getDisplayLanguage().contains("中文");
+        OptionPicker picker = new OptionPicker(this,
+                isChinese ? new String[]{
+                        "水瓶", "双鱼", "白羊", "金牛", "双子", "巨蟹",
+                        "狮子", "处女", "天秤", "天蝎", "射手", "摩羯"
+                } : new String[]{
+                        "Aquarius", "Pisces", "Aries", "Taurus", "Gemini", "Cancer",
+                        "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn"
+                });
+        picker.setLabel(isChinese ? "座" : "");
         picker.setTopBackgroundColor(0xFFEEEEEE);
-        picker.setLineVisible(true);
-        picker.setTopLineColor(0xFFEE0000);
         picker.setTopHeight(50);
-        picker.setTitleText("请选择");
+        picker.setTopLineColor(0xFF33B5E5);
+        picker.setTopLineHeight(1);
+        picker.setTitleText(isChinese ? "请选择" : "Please pick");
         picker.setTitleTextColor(0xFF999999);
         picker.setTitleTextSize(24);
         picker.setCancelTextColor(0xFF33B5E5);
         picker.setCancelTextSize(22);
         picker.setSubmitTextColor(0xFF33B5E5);
         picker.setSubmitTextSize(22);
-        picker.setTextColor(0xFFFF0000, 0xFF999999);
-        picker.setLineColor(0xFFEE0000);
-        picker.setBackgroundColor(0xFFF1F1F1);
-        picker.setSelectedItem("射手");
+        picker.setTextColor(0xFFEE0000, 0xFF999999);
+        WheelView.LineConfig config = new WheelView.LineConfig();
+        config.setColor(0xFFEE0000);//线颜色
+        config.setAlpha(140);//线透明度
+        config.setRatio((float) (1.0 / 8.0));//线比率
+        picker.setLineConfig(config);
+        picker.setBackgroundColor(0xFFE1E1E1);
+        //picker.setSelectedItem(isChinese ? "射手" : "Sagittarius");
+        picker.setSelectedIndex(10);
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
             public void onOptionPicked(int index, String item) {
@@ -324,7 +334,7 @@ public class MainActivity extends Activity {
     public void onDirPicker(View view) {
         //noinspection MissingPermission
         FilePicker picker = new FilePicker(this, FilePicker.DIRECTORY);
-        picker.setRootPath(StorageUtils.getRootPath(this) + "Download/");
+        picker.setRootPath(StorageUtils.getExternalRootPath() + "Download/");
         picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {
             @Override
             public void onFilePicked(String currentPath) {

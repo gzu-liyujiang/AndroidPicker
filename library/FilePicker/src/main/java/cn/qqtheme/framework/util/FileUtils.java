@@ -28,8 +28,10 @@ import java.util.regex.Pattern;
 
 /**
  * 文件处理
+ * <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+ * <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
  *
- * @author 李玉江[QQ :1023694760]
+ * @author 李玉江[QQ:1023694760]
  * @since 2014-4-18
  */
 public final class FileUtils {
@@ -57,7 +59,7 @@ public final class FileUtils {
     }
 
     /**
-     * 为目录结尾添加“/”
+     * 将目录分隔符统一为平台默认的分隔符，并为目录结尾添加分隔符
      */
     public static String separator(String path) {
         String separator = File.separator;
@@ -74,7 +76,7 @@ public final class FileUtils {
         }
         try {
             c.close();
-        } catch (Throwable t) {
+        } catch (IOException t) {
             // do nothing
             LogUtils.warn(t);
         }
@@ -104,7 +106,6 @@ public final class FileUtils {
         if (dirs == null) {
             return new File[0];
         }
-        int len = dirs.length;
         if (excludeDirs == null) {
             excludeDirs = new String[0];
         }
@@ -237,8 +238,7 @@ public final class FileUtils {
      * 列出指定目录下的所有文件
      */
     public static File[] listFiles(String startDirPath, Pattern filterPattern) {
-        return listFiles(startDirPath, filterPattern, BY_NAME_ASC)
-                ;
+        return listFiles(startDirPath, filterPattern, BY_NAME_ASC);
     }
 
     /**
@@ -300,7 +300,6 @@ public final class FileUtils {
                 result = deleteRootDir && deleteResolveEBUSY(file);
             } else {
                 for (File f : files) {
-                    //noinspection MissingPermission
                     delete(f, deleteRootDir);
                     result = deleteResolveEBUSY(f);
                 }
@@ -330,7 +329,6 @@ public final class FileUtils {
     public static boolean delete(String path, boolean deleteRootDir) {
         File file = new File(path);
         if (file.exists()) {
-            //noinspection MissingPermission
             return delete(file, deleteRootDir);
         }
         return false;
@@ -340,7 +338,6 @@ public final class FileUtils {
      * 删除文件或目录, 不删除最顶层目录
      */
     public static boolean delete(String path) {
-        //noinspection MissingPermission
         return delete(path, false);
     }
 
@@ -348,7 +345,6 @@ public final class FileUtils {
      * 删除文件或目录, 不删除最顶层目录
      */
     public static boolean delete(File file) {
-        //noinspection MissingPermission
         return delete(file, false);
     }
 
@@ -357,7 +353,6 @@ public final class FileUtils {
      */
     public static boolean copy(String src, String tar) {
         File srcFile = new File(src);
-        //noinspection MissingPermission
         return srcFile.exists() && copy(srcFile, new File(tar));
     }
 
@@ -385,7 +380,6 @@ public final class FileUtils {
                 //noinspection ResultOfMethodCallIgnored
                 tar.mkdirs();
                 for (File file : files) {
-                    //noinspection MissingPermission
                     copy(file.getAbsoluteFile(), new File(tar.getAbsoluteFile(), file.getName()));
                 }
             }
@@ -400,7 +394,6 @@ public final class FileUtils {
      * 移动文件或目录
      */
     public static boolean move(String src, String tar) {
-        //noinspection MissingPermission
         return move(new File(src), new File(tar));
     }
 
@@ -408,7 +401,6 @@ public final class FileUtils {
      * 移动文件或目录
      */
     public static boolean move(File src, File tar) {
-        //noinspection MissingPermission
         return rename(src, tar);
     }
 
@@ -416,7 +408,6 @@ public final class FileUtils {
      * 文件重命名
      */
     public static boolean rename(String oldPath, String newPath) {
-        //noinspection MissingPermission
         return rename(new File(oldPath), new File(newPath));
     }
 
@@ -441,7 +432,7 @@ public final class FileUtils {
         try {
             byte[] data = readByte(filepath);
             if (data != null) {
-                return new String(data, charset);
+                return new String(data, charset).trim();
             }
         } catch (Exception e) {
             LogUtils.warn(e);
@@ -486,7 +477,6 @@ public final class FileUtils {
      */
     public static boolean writeText(String filepath, String content, String charset) {
         try {
-            //noinspection MissingPermission
             writeByte(filepath, content.getBytes(charset));
             return true;
         } catch (Exception e) {
@@ -499,7 +489,6 @@ public final class FileUtils {
      * 保存文本内容
      */
     public static boolean writeText(String filepath, String content) {
-        //noinspection MissingPermission
         return writeText(filepath, content, "utf-8");
     }
 
@@ -560,6 +549,21 @@ public final class FileUtils {
             return 0;
         }
         return file.length();
+    }
+
+    /**
+     * 获取文件或网址的名称（包括后缀）
+     */
+    public static String getName(String pathOrUrl) {
+        if (pathOrUrl == null) {
+            return "";
+        }
+        int pos = pathOrUrl.lastIndexOf('/');
+        if (0 <= pos) {
+            return pathOrUrl.substring(pos + 1);
+        } else {
+            return String.valueOf(System.currentTimeMillis()) + "." + getExtension(pathOrUrl);
+        }
     }
 
     /**
@@ -660,7 +664,6 @@ public final class FileUtils {
      * 创建多级别的目录
      */
     public static boolean makeDirs(String path) {
-        //noinspection MissingPermission
         return makeDirs(new File(path));
     }
 
