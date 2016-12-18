@@ -226,14 +226,16 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
         topButtonLayout.setBackgroundColor(topBackgroundColor);
         topButtonLayout.setGravity(Gravity.CENTER_VERTICAL);
 
+        int padding = ConvertUtils.toPx(activity, 10);
         Button cancelButton = new Button(activity);
         cancelButton.setVisibility(cancelVisible ? View.VISIBLE : View.GONE);
-        RelativeLayout.LayoutParams cancelButtonLayoutParams = new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+        RelativeLayout.LayoutParams cancelButtonLayoutParams = new RelativeLayout.LayoutParams(WRAP_CONTENT, MATCH_PARENT);
         cancelButtonLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
         cancelButtonLayoutParams.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
         cancelButton.setLayoutParams(cancelButtonLayoutParams);
         cancelButton.setBackgroundColor(Color.TRANSPARENT);
         cancelButton.setGravity(Gravity.CENTER);
+        cancelButton.setPadding(padding, 0, padding, 0);
         if (!TextUtils.isEmpty(cancelText)) {
             cancelButton.setText(cancelText);
         }
@@ -269,12 +271,13 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
         topButtonLayout.addView(titleView);
 
         Button submitButton = new Button(activity);
-        RelativeLayout.LayoutParams submitButtonLayoutParams = new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+        RelativeLayout.LayoutParams submitButtonLayoutParams = new RelativeLayout.LayoutParams(WRAP_CONTENT, MATCH_PARENT);
         submitButtonLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
         submitButtonLayoutParams.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
         submitButton.setLayoutParams(submitButtonLayoutParams);
         submitButton.setBackgroundColor(Color.TRANSPARENT);
         submitButton.setGravity(Gravity.CENTER);
+        submitButton.setPadding(padding, 0, padding, 0);
         if (!TextUtils.isEmpty(submitText)) {
             submitButton.setText(submitText);
         }

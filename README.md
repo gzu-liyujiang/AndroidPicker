@@ -116,8 +116,6 @@ dependencies {
 选择器内嵌到其他视图容器：
 ```java
         final CarNumberPicker picker = new CarNumberPicker(this);
-        picker.setWidth(picker.getScreenWidthPixels() / 2);
-        picker.setLineConfig(new WheelView.LineConfig(0));//使用最长的分割线
         picker.setOnWheelListener(new CarNumberPicker.OnWheelListener() {
             @Override
             public void onFirstWheeled(int index, String item) {
@@ -217,7 +215,7 @@ dependencies {
         picker.show();
 ```
 
-星座选择器（参见ConstellationPicker）：
+星座选择器：
 ```java
         boolean isChinese = Locale.getDefault().getDisplayLanguage().contains("中文");
         OptionPicker picker = new OptionPicker(this,
