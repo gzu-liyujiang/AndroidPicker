@@ -7,7 +7,7 @@
 安卓选择器类库，包括日期选择器、时间选择器、单项选择器、城市地址选择器、车牌号选择器、数字选择器、星座选择器、生肖选择器、颜色选择器、文件选择器、目录选择器等，可自定义顶部及底部界面，可自定义窗口动画……
 欢迎大伙儿在[Issues](https://github.com/gzu-liyujiang/AndroidPicker/issues)提交你的意见或建议。    
 欢迎Fork & Pull requests贡献您的代码，大家共同学习【[AndroidPicker交流群 604235437](https://jq.qq.com/?_wv=1027&k=42bKOeD)】。
-[查看更新日志](https://github.com/gzu-liyujiang/AndroidPicker/blob/master/ChangeLog.md)，**新版本未对旧版API作兼容处理，升级后若编译报错请根据错误提示更改**。
+[查看更新日志](https://github.com/gzu-liyujiang/AndroidPicker/blob/master/ChangeLog.md)，**新版本可能未对旧版API作兼容处理，升级后若编译报错请根据错误提示更改**。
 
 # Install
 “app”是测试用例；“library”包括WheelPicker、ColorPicker、FilePicker，
@@ -185,10 +185,10 @@ dependencies {
         picker.setRange(145, 200, 1);//数字范围
         picker.setSelectedItem(172);
         picker.setLabel("厘米");
-        picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
+        picker.setOnNumberPickListener(new NumberPicker.OnNumberPickListener() {
             @Override
-            public void onOptionPicked(String option) {
-                showToast(option);
+            public void onNumberPicked(int index, Number item) {
+                showToast("index=" + index + ", item=" + item.intValue());
             }
         });
         picker.show();

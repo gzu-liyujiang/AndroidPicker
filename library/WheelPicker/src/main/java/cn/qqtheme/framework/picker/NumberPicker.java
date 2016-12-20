@@ -57,6 +57,19 @@ public class NumberPicker extends SinglePicker<Number> {
         super.setOnItemPickListener(listener);
     }
 
+    /**
+     * @deprecated use {@link #setOnNumberPickListener(OnNumberPickListener)} instead
+     */
+    @Deprecated
+    public void setOnOptionPickListener(final OptionPicker.OnOptionPickListener listener) {
+        setOnNumberPickListener(new OnNumberPickListener() {
+            @Override
+            public void onNumberPicked(int index, Number item) {
+                listener.onOptionPicked(index, item.toString());
+            }
+        });
+    }
+
     public static abstract class OnNumberPickListener implements OnItemPickListener<Number> {
 
         public abstract void onNumberPicked(int index, Number item);
