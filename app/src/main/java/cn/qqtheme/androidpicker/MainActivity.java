@@ -72,6 +72,7 @@ public class MainActivity extends Activity {
 
     public void onAnimator(View view) {
         CustomHeaderAndFooterPicker picker = new CustomHeaderAndFooterPicker(this);
+        picker.setOffset(1);
         picker.setGravity(Gravity.CENTER);//居中
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
@@ -145,6 +146,8 @@ public class MainActivity extends Activity {
     public void onMonthDayPicker(View view) {
         DatePicker picker = new DatePicker(this, DatePicker.MONTH_DAY);
         picker.setGravity(Gravity.CENTER);//弹框居中
+        picker.setRangeStart(5, 1);
+        picker.setRangeEnd(12, 31);
         picker.setSelectedItem(10, 14);
         picker.setOnDatePickListener(new DatePicker.OnMonthDayPickListener() {
             @Override
@@ -173,7 +176,7 @@ public class MainActivity extends Activity {
         OptionPicker picker = new OptionPicker(this, new String[]{
                 "第一项", "第二项", "这是一个很长很长很长很长很长很长很长很长很长的很长很长的很长很长的项"
         });
-        picker.setOffset(2);
+        picker.setOffset(3);
         picker.setSelectedIndex(0);
         picker.setTextSize(11);
         picker.setLineConfig(new WheelView.LineConfig(0));//使用最长的线
@@ -243,8 +246,8 @@ public class MainActivity extends Activity {
         config.setRatio((float) (1.0 / 8.0));//线比率
         picker.setLineConfig(config);
         picker.setBackgroundColor(0xFFE1E1E1);
-        //picker.setSelectedItem(isChinese ? "射手" : "Sagittarius");
-        picker.setSelectedIndex(10);
+        //picker.setSelectedItem(isChinese ? "处女" : "Virgo");
+        picker.setSelectedIndex(7);
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
             public void onOptionPicked(int index, String item) {

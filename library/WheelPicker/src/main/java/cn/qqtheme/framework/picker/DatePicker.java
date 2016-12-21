@@ -108,7 +108,7 @@ public class DatePicker extends WheelPicker {
      */
     public void setRangeStart(int startYearOrMonth, int startMonthOrDay) {
         if (mode == YEAR_MONTH_DAY) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Not support year/month/day mode");
         }
         if (mode == YEAR_MONTH) {
             this.startYear = startYearOrMonth;
@@ -126,7 +126,7 @@ public class DatePicker extends WheelPicker {
      */
     public void setRangeEnd(int endYearOrMonth, int endMonthOrDay) {
         if (mode == YEAR_MONTH_DAY) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Not support year/month/day mode");
         }
         if (mode == YEAR_MONTH) {
             this.endYear = endYearOrMonth;
@@ -353,14 +353,15 @@ public class DatePicker extends WheelPicker {
         if (startMonth < 1 || endMonth < 1 || startMonth > 12 || endMonth > 12) {
             throw new IllegalArgumentException("month out of range [1-12]");
         }
-        if (startMonth > endMonth) {
-            int tmp = startMonth;
-            startMonth = endMonth;
-            endMonth = tmp;
-        }
         if (startYear == endYear) {
-            for (int i = startMonth; i <= endMonth; i++) {
-                months.add(DateUtils.fillZero(i));
+            if (startMonth > endMonth) {
+                for (int i = endMonth; i >= startMonth; i--) {
+                    months.add(DateUtils.fillZero(i));
+                }
+            } else {
+                for (int i = startMonth; i <= endMonth; i++) {
+                    months.add(DateUtils.fillZero(i));
+                }
             }
         } else if (year == startYear) {
             for (int i = startMonth; i <= 12; i++) {
