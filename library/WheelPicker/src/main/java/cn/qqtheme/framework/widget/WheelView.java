@@ -43,14 +43,17 @@ import cn.qqtheme.framework.util.LogUtils;
  */
 public class WheelView extends ScrollView {
     public static final int TEXT_SIZE = 20;
-    public static final int TEXT_PADDING = 10;
+    public static final int TEXT_PADDING_TOP_BOTTOM = 8;
+    public static final int TEXT_PADDING_LEFT_RIGHT = 15;
     public static final int TEXT_COLOR_FOCUS = 0XFF0288CE;
     public static final int TEXT_COLOR_NORMAL = 0XFFBBBBBB;
     public static final int LINE_ALPHA = 150;
     public static final int LINE_COLOR = 0XFF83CDE6;
     public static final float LINE_THICK = 1f;
-    public static final int OFF_SET = 1;
-    private static final int DELAY = 30;
+    public static final int OFF_SET = 2;
+    private static final int DELAY = 50;
+    private static final int MATCH_PARENT = ViewGroup.LayoutParams.MATCH_PARENT;
+    private static final int WRAP_CONTENT = ViewGroup.LayoutParams.WRAP_CONTENT;
 
     private Context context;
     private LinearLayout views;//容器
@@ -129,21 +132,22 @@ public class WheelView extends ScrollView {
 
     private TextView createView(String item) {
         TextView tv = new TextView(context);
-        tv.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        tv.setLayoutParams(new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
         tv.setSingleLine(true);
         tv.setEllipsize(TextUtils.TruncateAt.END);
         tv.setText(item);
         tv.setTextSize(textSize);
         tv.setGravity(Gravity.CENTER);
-        int padding = ConvertUtils.toPx(context, TEXT_PADDING);
-        tv.setPadding(padding, padding, padding, padding);
+        int paddingTopBottom = ConvertUtils.toPx(context, TEXT_PADDING_TOP_BOTTOM);
+        int paddingLeftRight = ConvertUtils.toPx(context, TEXT_PADDING_LEFT_RIGHT);
+        tv.setPadding(paddingLeftRight, paddingTopBottom, paddingLeftRight, paddingTopBottom);
         if (0 == itemHeight) {
             int wSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
             int hSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2, MeasureSpec.AT_MOST);
             tv.measure(wSpec, hSpec);
             itemHeight = tv.getMeasuredHeight();
             LogUtils.verbose(this, "itemHeight: " + itemHeight);
-            views.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, itemHeight * displayItemCount));
+            views.setLayoutParams(new LayoutParams(MATCH_PARENT, itemHeight * displayItemCount));
             LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) getLayoutParams();
             setLayoutParams(new LinearLayout.LayoutParams(lp.width, itemHeight * displayItemCount));
         }

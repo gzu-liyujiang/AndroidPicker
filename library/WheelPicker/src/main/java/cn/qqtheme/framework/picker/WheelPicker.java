@@ -82,8 +82,17 @@ public abstract class WheelPicker extends ConfirmPopup<View> {
     }
 
     /**
-     * 设置选项偏移量，默认为1，范围为1-4。
-     * 1显示三条、2显示5条、3显示7条、4显示9条
+     * 使用最长的分割线，多级选择器时可以实现连线效果
+     *
+     * @see #setLineConfig(WheelView.LineConfig)
+     */
+    public void useMaxRatioLine() {
+        lineConfig = new WheelView.LineConfig(0);
+    }
+
+    /**
+     * 设置选项偏移量，可用来要设置显示的条目数，范围为1-3。
+     * 1显示3条、2显示5条、3显示7条
      */
     public void setOffset(@IntRange(from = 1, to = 3) int offset) {
         this.offset = offset;
