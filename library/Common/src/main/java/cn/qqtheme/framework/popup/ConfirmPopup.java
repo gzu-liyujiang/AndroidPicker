@@ -37,6 +37,7 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
     protected int cancelTextColor = Color.BLACK;
     protected int submitTextColor = Color.BLACK;
     protected int titleTextColor = Color.BLACK;
+    protected int pressedTextColor = 0XFF0288CE;
     protected int cancelTextSize = 0;
     protected int submitTextSize = 0;
     protected int titleTextSize = 0;
@@ -159,6 +160,13 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
     }
 
     /**
+     * 设置按下时的文字颜色
+     */
+    public void setPressedTextColor(int pressedTextColor) {
+        this.pressedTextColor = pressedTextColor;
+    }
+
+    /**
      * 设置顶部标题栏取消按钮文字大小（单位为sp）
      */
     public void setCancelTextSize(@IntRange(from = 10, to = 40) int cancelTextSize) {
@@ -239,7 +247,7 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
         if (!TextUtils.isEmpty(cancelText)) {
             cancelButton.setText(cancelText);
         }
-        cancelButton.setTextColor(cancelTextColor);
+        cancelButton.setTextColor(ConvertUtils.toColorStateList(cancelTextColor, pressedTextColor));
         if (cancelTextSize != 0) {
             cancelButton.setTextSize(cancelTextSize);
         }
@@ -281,7 +289,7 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
         if (!TextUtils.isEmpty(submitText)) {
             submitButton.setText(submitText);
         }
-        submitButton.setTextColor(submitTextColor);
+        submitButton.setTextColor(ConvertUtils.toColorStateList(submitTextColor, pressedTextColor));
         if (submitTextSize != 0) {
             submitButton.setTextSize(submitTextSize);
         }
