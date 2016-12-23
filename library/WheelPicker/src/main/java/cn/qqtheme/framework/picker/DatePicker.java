@@ -386,7 +386,15 @@ public class DatePicker extends WheelPicker {
         String preSelectDay = days.size() > selectedDayIndex ? days.get(selectedDayIndex) : null;
         days.clear();
         int maxDays = DateUtils.calculateDaysInMonth(year, month);
-        if (year == startYear && month == startMonth) {
+        //增加开始结束年月相同情况下判断
+         if (year == startYear && month == startMonth && year == endYear && month == endMonth) {
+            for (int i = startDay; i <= endDay; i++) {
+                days.add(DateUtils.fillZero(i));
+            }
+            //当前设置的日子不在指定范围，则默认选中范围开始的日子
+            int preSelectDayIndex = preSelectDay == null ? 0 : days.indexOf(preSelectDay);
+            selectedDayIndex = preSelectDayIndex == -1 ? 0 : preSelectDayIndex;
+        } else if (year == startYear && month == startMonth) {
             for (int i = startDay; i <= maxDays; i++) {
                 days.add(DateUtils.fillZero(i));
             }
