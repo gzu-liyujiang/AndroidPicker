@@ -54,11 +54,10 @@ public abstract class WheelPicker extends ConfirmPopup<View> {
      * 设置分隔线是否可见
      */
     public void setLineVisible(boolean lineVisible) {
-        if (lineVisible) {
+        if (null == lineConfig) {
             lineConfig = new WheelView.LineConfig();
-        } else {
-            lineConfig = null;
         }
+        lineConfig.setVisible(lineVisible);
     }
 
     /**

@@ -119,6 +119,7 @@ public class WheelView extends ScrollView {
         // 2015/12/15 添加此句才可以支持联动效果
         views.removeAllViews();
 
+        //对象复用，可参考这个基于ListView的实现方式：https://github.com/venshine/WheelView
         for (String item : items) {
             views.addView(createView(item));
         }
@@ -227,13 +228,19 @@ public class WheelView extends ScrollView {
 
     private void changeBackgroundLineDrawable(boolean isSizeChanged) {
         LogUtils.verbose(this, "isSizeChanged=" + isSizeChanged + ", config is " + lineConfig);
+        if (!lineConfig.isVisible()) {
+            return;
+        }
         //noinspection deprecation
         super.setBackgroundDrawable(new LineDrawable(lineConfig));
     }
 
     public void setLineConfig(@Nullable LineConfig config) {
         if (null == config) {
-            LogUtils.verbose(this, "line config is null");
+            LogUtils.verbose(this, "line config is null, will hide line");
+            if (null != lineConfig) {
+                lineConfig.setVisible(false);
+            }
             return;
         }
         if (null == lineConfig) {
@@ -500,6 +507,7 @@ public class WheelView extends ScrollView {
      * 选中项的分割线
      */
     public static class LineConfig {
+        private boolean visible = true;
         private int color = LINE_COLOR;
         private int alpha = LINE_ALPHA;
         private float ratio = (float) (1.0 / 6.0);
@@ -513,6 +521,17 @@ public class WheelView extends ScrollView {
 
         public LineConfig(@FloatRange(from = 0, to = 1) float ratio) {
             this.ratio = ratio;
+        }
+
+        /**
+         * 线是否可见
+         */
+        public void setVisible(boolean visible) {
+            this.visible = visible;
+        }
+
+        public boolean isVisible() {
+            return visible;
         }
 
         @ColorInt
@@ -584,7 +603,8 @@ public class WheelView extends ScrollView {
 
         @Override
         public String toString() {
-            return "color=" + color + ", alpha=" + alpha + ", thick=" + thick + ", width=" + width;
+            return "visible=" + visible + "color=" + color + ", alpha=" + alpha
+                    + ", thick=" + thick + ", width=" + width;
         }
 
     }
