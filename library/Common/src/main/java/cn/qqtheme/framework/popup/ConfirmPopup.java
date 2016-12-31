@@ -30,6 +30,7 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
     protected int topLineHeight = 1;//dp
     protected int topBackgroundColor = Color.WHITE;
     protected int topHeight = 40;//dp
+    protected int topPadding = 8;//dp
     protected boolean cancelVisible = true;
     protected CharSequence cancelText = "";
     protected CharSequence submitText = "";
@@ -42,6 +43,7 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
     protected int submitTextSize = 0;
     protected int titleTextSize = 0;
     protected int backgroundColor = Color.WHITE;
+    private Button cancelButton, submitButton;
     private TextView titleView;
 
     public ConfirmPopup(Activity activity) {
@@ -79,6 +81,13 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
     }
 
     /**
+     * 设置顶部按钮左边及右边边距（单位为dp）
+     */
+    public void setTopPadding(int topPadding) {
+        this.topPadding = topPadding;
+    }
+
+    /**
      * 设置顶部标题栏下划线是否显示
      */
     public void setTopLineVisible(boolean topLineVisible) {
@@ -89,35 +98,47 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
      * 设置顶部标题栏取消按钮是否显示
      */
     public void setCancelVisible(boolean cancelVisible) {
-        this.cancelVisible = cancelVisible;
+        if (null != cancelButton) {
+            cancelButton.setVisibility(cancelVisible ? View.VISIBLE : View.GONE);
+        } else {
+            this.cancelVisible = cancelVisible;
+        }
     }
 
     /**
      * 设置顶部标题栏取消按钮文字
      */
     public void setCancelText(CharSequence cancelText) {
-        this.cancelText = cancelText;
+        if (null != cancelButton) {
+            cancelButton.setText(cancelText);
+        } else {
+            this.cancelText = cancelText;
+        }
     }
 
     /**
      * 设置顶部标题栏取消按钮文字
      */
     public void setCancelText(@StringRes int textRes) {
-        this.cancelText = activity.getString(textRes);
+        setCancelText(activity.getString(textRes));
     }
 
     /**
      * 设置顶部标题栏确定按钮文字
      */
     public void setSubmitText(CharSequence submitText) {
-        this.submitText = submitText;
+        if (null != submitButton) {
+            submitButton.setText(submitText);
+        } else {
+            this.submitText = submitText;
+        }
     }
 
     /**
      * 设置顶部标题栏确定按钮文字
      */
     public void setSubmitText(@StringRes int textRes) {
-        this.submitText = activity.getString(textRes);
+        setSubmitText(activity.getString(textRes));
     }
 
     /**
@@ -135,28 +156,40 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
      * 设置顶部标题栏标题文字
      */
     public void setTitleText(@StringRes int textRes) {
-        this.titleText = activity.getString(textRes);
+        setTitleText(activity.getString(textRes));
     }
 
     /**
      * 设置顶部标题栏取消按钮文字颜色
      */
     public void setCancelTextColor(@ColorInt int cancelTextColor) {
-        this.cancelTextColor = cancelTextColor;
+        if (null != cancelButton) {
+            cancelButton.setTextColor(cancelTextColor);
+        } else {
+            this.cancelTextColor = cancelTextColor;
+        }
     }
 
     /**
      * 设置顶部标题栏确定按钮文字颜色
      */
     public void setSubmitTextColor(@ColorInt int submitTextColor) {
-        this.submitTextColor = submitTextColor;
+        if (null != submitButton) {
+            submitButton.setTextColor(submitTextColor);
+        } else {
+            this.submitTextColor = submitTextColor;
+        }
     }
 
     /**
      * 设置顶部标题栏标题文字颜色
      */
     public void setTitleTextColor(@ColorInt int titleTextColor) {
-        this.titleTextColor = titleTextColor;
+        if (null != titleView) {
+            titleView.setTextColor(titleTextColor);
+        } else {
+            this.titleTextColor = titleTextColor;
+        }
     }
 
     /**
@@ -192,6 +225,18 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
      */
     public void setBackgroundColor(@ColorInt int backgroundColor) {
         this.backgroundColor = backgroundColor;
+    }
+
+    public TextView getTitleView() {
+        return titleView;
+    }
+
+    public Button getCancelButton() {
+        return cancelButton;
+    }
+
+    public Button getSubmitButton() {
+        return submitButton;
     }
 
     /**
@@ -230,19 +275,20 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
     @Nullable
     protected View makeHeaderView() {
         RelativeLayout topButtonLayout = new RelativeLayout(activity);
-        topButtonLayout.setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, ConvertUtils.toPx(activity, topHeight)));
+        int height = ConvertUtils.toPx(activity, topHeight);
+        topButtonLayout.setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, height));
         topButtonLayout.setBackgroundColor(topBackgroundColor);
         topButtonLayout.setGravity(Gravity.CENTER_VERTICAL);
 
-        int padding = ConvertUtils.toPx(activity, 10);
-        Button cancelButton = new Button(activity);
+        cancelButton = new Button(activity);
         cancelButton.setVisibility(cancelVisible ? View.VISIBLE : View.GONE);
-        RelativeLayout.LayoutParams cancelButtonLayoutParams = new RelativeLayout.LayoutParams(WRAP_CONTENT, MATCH_PARENT);
-        cancelButtonLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
-        cancelButtonLayoutParams.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
-        cancelButton.setLayoutParams(cancelButtonLayoutParams);
+        RelativeLayout.LayoutParams cancelParams = new RelativeLayout.LayoutParams(WRAP_CONTENT, MATCH_PARENT);
+        cancelParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+        cancelParams.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
+        cancelButton.setLayoutParams(cancelParams);
         cancelButton.setBackgroundColor(Color.TRANSPARENT);
         cancelButton.setGravity(Gravity.CENTER);
+        int padding = ConvertUtils.toPx(activity, topPadding);
         cancelButton.setPadding(padding, 0, padding, 0);
         if (!TextUtils.isEmpty(cancelText)) {
             cancelButton.setText(cancelText);
@@ -261,13 +307,13 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
         topButtonLayout.addView(cancelButton);
 
         titleView = new TextView(activity);
-        RelativeLayout.LayoutParams titleLayoutParams = new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
-        int margin = ConvertUtils.toPx(activity, 20);
-        titleLayoutParams.leftMargin = margin;
-        titleLayoutParams.rightMargin = margin;
-        titleLayoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
-        titleLayoutParams.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
-        titleView.setLayoutParams(titleLayoutParams);
+        RelativeLayout.LayoutParams titleParams = new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+        int margin = ConvertUtils.toPx(activity, topPadding);
+        titleParams.leftMargin = margin;
+        titleParams.rightMargin = margin;
+        titleParams.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
+        titleParams.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
+        titleView.setLayoutParams(titleParams);
         titleView.setGravity(Gravity.CENTER);
         if (!TextUtils.isEmpty(titleText)) {
             titleView.setText(titleText);
@@ -278,11 +324,11 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
         }
         topButtonLayout.addView(titleView);
 
-        Button submitButton = new Button(activity);
-        RelativeLayout.LayoutParams submitButtonLayoutParams = new RelativeLayout.LayoutParams(WRAP_CONTENT, MATCH_PARENT);
-        submitButtonLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
-        submitButtonLayoutParams.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
-        submitButton.setLayoutParams(submitButtonLayoutParams);
+        submitButton = new Button(activity);
+        RelativeLayout.LayoutParams submitParams = new RelativeLayout.LayoutParams(WRAP_CONTENT, MATCH_PARENT);
+        submitParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
+        submitParams.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
+        submitButton.setLayoutParams(submitParams);
         submitButton.setBackgroundColor(Color.TRANSPARENT);
         submitButton.setGravity(Gravity.CENTER);
         submitButton.setPadding(padding, 0, padding, 0);

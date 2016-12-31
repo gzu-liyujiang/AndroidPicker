@@ -46,7 +46,7 @@ public abstract class BasicPopup<V extends View> implements DialogInterface.OnKe
 
     private void initDialog() {
         contentLayout = new FrameLayout(activity);
-        contentLayout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        contentLayout.setLayoutParams(new ViewGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
         contentLayout.setFocusable(true);
         contentLayout.setFocusableInTouchMode(true);
         //contentLayout.setFitsSystemWindows(true);
@@ -58,7 +58,7 @@ public abstract class BasicPopup<V extends View> implements DialogInterface.OnKe
         if (window != null) {
             window.setGravity(Gravity.BOTTOM);
             window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            //android.util.AndroidRuntimeException: requestFeature() must be called before adding content
+            //AndroidRuntimeException: requestFeature() must be called before adding content
             window.requestFeature(Window.FEATURE_NO_TITLE);
             window.setContentView(contentLayout);
         }
@@ -87,7 +87,7 @@ public abstract class BasicPopup<V extends View> implements DialogInterface.OnKe
      */
     public void setFillScreen(boolean fillScreen) {
         if (fillScreen) {
-            setSize(screenWidthPixels, screenHeightPixels);
+            setSize(screenWidthPixels, (int) (screenHeightPixels * 0.85f));
         }
     }
 
@@ -113,6 +113,7 @@ public abstract class BasicPopup<V extends View> implements DialogInterface.OnKe
             window.setGravity(gravity);
         }
         if (gravity == Gravity.CENTER) {
+            //居于屏幕正中间时，宽度不允许填充屏幕
             setWidth((int) (screenWidthPixels * 0.7f));
         }
     }
@@ -161,7 +162,7 @@ public abstract class BasicPopup<V extends View> implements DialogInterface.OnKe
      */
     public void setSize(int width, int height) {
         if (width == MATCH_PARENT) {
-            //360奇酷等手机对话框MATCH_PARENT时两边还会有边距
+            //360奇酷等手机对话框MATCH_PARENT时两边还会有边距，故强制填充屏幕宽
             width = screenWidthPixels;
         }
         if (width == 0 && height == 0) {
@@ -201,6 +202,13 @@ public abstract class BasicPopup<V extends View> implements DialogInterface.OnKe
      */
     public void setHeight(int height) {
         setSize(0, height);
+    }
+
+    /**
+     * 设置是否需要重新初始化视图，可用于数据刷新
+     */
+    public void setPrepared(boolean prepared) {
+        isPrepared = prepared;
     }
 
     public boolean isShowing() {
