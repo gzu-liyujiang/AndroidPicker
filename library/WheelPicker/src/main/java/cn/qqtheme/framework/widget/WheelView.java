@@ -410,6 +410,9 @@ public class WheelView extends ScrollView {
     }
 
     public void setSelectedItem(String item) {
+        if (TextUtils.isEmpty(item)) {
+            return;
+        }
         for (int i = 0; i < items.size(); i++) {
             if (items.get(i).equals(item)) {
                 //调用_setItems(List)时额外添加了offset个占位符到items里，需要忽略占位符所占的位

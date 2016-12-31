@@ -12,6 +12,7 @@ import java.util.List;
 import cn.qqtheme.framework.entity.City;
 import cn.qqtheme.framework.entity.County;
 import cn.qqtheme.framework.entity.Province;
+import cn.qqtheme.framework.util.LogUtils;
 import cn.qqtheme.framework.widget.WheelView;
 
 /**
@@ -118,6 +119,7 @@ public class AddressPicker extends LinkagePicker {
         LinearLayout layout = new LinearLayout(activity);
         layout.setOrientation(LinearLayout.HORIZONTAL);
         layout.setGravity(Gravity.CENTER);
+
         final WheelView provinceView = new WheelView(activity);
         provinceView.setLayoutParams(new LinearLayout.LayoutParams(provinceWidth, WRAP_CONTENT));
         provinceView.setTextSize(textSize);
@@ -129,6 +131,7 @@ public class AddressPicker extends LinkagePicker {
         if (hideProvince) {
             provinceView.setVisibility(View.GONE);
         }
+
         final WheelView cityView = new WheelView(activity);
         cityView.setLayoutParams(new LinearLayout.LayoutParams(cityWidth, WRAP_CONTENT));
         cityView.setTextSize(textSize);
@@ -137,6 +140,7 @@ public class AddressPicker extends LinkagePicker {
         cityView.setOffset(offset);
         cityView.setCycleDisable(cycleDisable);
         layout.addView(cityView);
+
         final WheelView countyView = new WheelView(activity);
         countyView.setLayoutParams(new LinearLayout.LayoutParams(countyWidth, WRAP_CONTENT));
         countyView.setTextSize(textSize);
@@ -148,6 +152,7 @@ public class AddressPicker extends LinkagePicker {
         if (hideCounty) {
             countyView.setVisibility(View.GONE);
         }
+
         provinceView.setItems(provider.provideFirstData(), selectedFirstIndex);
         provinceView.setOnWheelListener(new WheelView.OnWheelListener() {
             @Override
@@ -158,6 +163,7 @@ public class AddressPicker extends LinkagePicker {
                 if (onWheelListener != null) {
                     onWheelListener.onProvinceWheeled(selectedFirstIndex, selectedFirstItem);
                 }
+                LogUtils.verbose(this, "change cities after province wheeled");
                 //根据省份获取地市
                 List<String> cities = provider.provideSecondData(selectedFirstIndex);
                 if (cities.size() < selectedSecondIndex) {
@@ -166,16 +172,18 @@ public class AddressPicker extends LinkagePicker {
                 }
                 //若不是用户手动滚动，说明联动需要指定默认项
                 cityView.setItems(cities, isUserScroll ? 0 : selectedSecondIndex);
-                //根据地市获取区县
-                List<String> counties = provider.provideThirdData(selectedFirstIndex, selectedSecondIndex);
-                if (counties.size() > 0) {
-                    countyView.setItems(counties, isUserScroll ? 0 : selectedThirdIndex);
-                } else {
-                    countyView.setItems(new ArrayList<String>());
-                }
+                ////根据地市获取区县
+                //List<String> counties = provider.provideThirdData(selectedFirstIndex, selectedSecondIndex);
+                //if (counties.size() > 0) {
+                //    countyView.setItems(counties, isUserScroll ? 0 : selectedThirdIndex);
+                //} else {
+                //    countyView.setItems(new ArrayList<String>());
+                //}
             }
         });
-        cityView.setItems(provider.provideSecondData(selectedFirstIndex), selectedSecondIndex);
+
+        //由省级来联动，无需设置初始数据
+        //cityView.setItems(provider.provideSecondData(selectedFirstIndex), selectedSecondIndex);
         cityView.setOnWheelListener(new WheelView.OnWheelListener() {
             @Override
             public void onSelected(boolean isUserScroll, int index, String item) {
@@ -184,6 +192,7 @@ public class AddressPicker extends LinkagePicker {
                 if (onWheelListener != null) {
                     onWheelListener.onCityWheeled(selectedSecondIndex, selectedSecondItem);
                 }
+                LogUtils.verbose(this, "change counties after city wheeled");
                 //根据地市获取区县
                 List<String> counties = provider.provideThirdData(selectedFirstIndex, selectedSecondIndex);
                 if (counties.size() < selectedThirdIndex) {
@@ -191,13 +200,16 @@ public class AddressPicker extends LinkagePicker {
                     selectedThirdIndex = 0;
                 }
                 if (counties.size() > 0) {
+                    //若不是用户手动滚动，说明联动需要指定默认项
                     countyView.setItems(counties, isUserScroll ? 0 : selectedThirdIndex);
                 } else {
                     countyView.setItems(new ArrayList<String>());
                 }
             }
         });
-        countyView.setItems(provider.provideThirdData(selectedFirstIndex, selectedSecondIndex), selectedThirdIndex);
+
+        //由地级来联动，无需设置初始数据
+        //countyView.setItems(provider.provideThirdData(selectedFirstIndex, selectedSecondIndex), selectedThirdIndex);
         countyView.setOnWheelListener(new WheelView.OnWheelListener() {
             @Override
             public void onSelected(boolean isUserScroll, int index, String item) {
