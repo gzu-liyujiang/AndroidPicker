@@ -28,41 +28,41 @@ task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
 }
 
-/**
- * generate javadoc
- * 生成 javadoc 文档
- */
-task javadoc(type: Javadoc) {
-    source = android.sourceSets.main.java.srcDirs
-    classpath += configurations.compile
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-    exclude '**/BuildConfig.java'
-    exclude '**/R.java'
-    failOnError = false
-}
-
-/**
- * generate xxx-javadoc.jar
- * 将生成的 javadoc 打包为 xxx-javadoc.jar, 它依赖于 javadoc 任务
- */
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-/**
- * javadoc 配置
- */
-javadoc {
-    options {
-        encoding "UTF-8"
-        charSet 'UTF-8'
-        author true
-        version true
-        links "http://docs.oracle.com/javase/7/docs/api"
-        title project.pomArtifactId
-    }
-}
+///**
+// * generate javadoc
+// * 生成 javadoc 文档
+// */
+//task javadoc(type: Javadoc) {
+//    source = android.sourceSets.main.java.srcDirs
+//    classpath += configurations.compile
+//    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+//    exclude '**/BuildConfig.java'
+//    exclude '**/R.java'
+//    failOnError = false //ignore error
+//}
+//
+///**
+// * generate xxx-javadoc.jar
+// * 将生成的 javadoc 打包为 xxx-javadoc.jar, 它依赖于 javadoc 任务
+// */
+//task javadocJar(type: Jar, dependsOn: javadoc) {
+//    classifier = 'javadoc'
+//    from javadoc.destinationDir
+//}
+//
+///**
+// * javadoc 配置
+// */
+//javadoc {
+//    options {
+//        encoding "UTF-8"
+//        charSet 'UTF-8'
+//        author true
+//        version true
+//        links "http://docs.oracle.com/javase/7/docs/api"
+//        title project.pomArtifactId
+//    }
+//}
 
 publishing {
     publications {
@@ -70,7 +70,7 @@ publishing {
             artifactId project.pomArtifactId
             artifact "${buildDir}/outputs/aar/${project.pomArtifactId}-release.aar"
             artifact releaseJar
-            artifact javadocJar
+//            artifact javadocJar
             artifact sourcesJar
 
             pom.withXml {
