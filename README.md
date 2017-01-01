@@ -17,9 +17,9 @@ WheelPicker、FilePicker及ColorPicker是独立的，需要用哪个就compile�
 latest.release表示使用最新版，也可以[参照此处指定具体的版本号](https://github.com/gzu-liyujiang/AndroidPicker/releases)：
 ```groovy
 dependencies {
-    compile 'cn.qqtheme.framework:WheelPicker:latest.release'
-    compile 'cn.qqtheme.framework:FilePicker:latest.release'
-    compile 'cn.qqtheme.framework:ColorPicker:latest.release'
+    compile 'cn.qqtheme.framework:WheelPicker:版本号'
+    compile 'cn.qqtheme.framework:FilePicker:版本号'
+    compile 'cn.qqtheme.framework:ColorPicker:版本号'
 }
 ```
 #### 若jcenter仓库里的无法下载的话，可换[JitPack](https://jitpack.io/#gzu-liyujiang/AndroidPicker)的仓库试试：
@@ -40,7 +40,7 @@ dependencies {
 }
 ```
 #### 使用Eclipse的话如何集成？
-直接[下载AndroidPicker的jar包](/jars/)复制到你的项目的libs下即可。
+直接[下载AndroidPicker的jar包](/app/libs/)复制到你的项目的libs下即可。
 
 # ProGuard
 由于地址选择器使用了[fastjson](https://github.com/alibaba/fastjson)来解析，混淆时候需要加入以下类似的规则，不混淆Province、City等实体类。
