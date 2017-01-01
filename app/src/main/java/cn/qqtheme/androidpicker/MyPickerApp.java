@@ -11,12 +11,12 @@ import cn.qqtheme.framework.AppConfig;
  * DateTime:2016/7/20 20:28
  * Builder:Android Studio
  */
-public class MyApp extends Application {
+public class MyPickerApp extends Application {
 
     @Override
     public void onCreate() {
         super.onCreate();
-        AppConfig.DEBUG_ENABLE = true;//BuildConfig.DEBUG;
+        AppConfig.DEBUG_ENABLE = BuildConfig.DEBUG;
         if (!AppConfig.DEBUG_ENABLE) {
             android.util.Log.d(AppConfig.DEBUG_TAG, "logcat is disabled");
         }

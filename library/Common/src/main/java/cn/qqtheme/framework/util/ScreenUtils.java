@@ -14,8 +14,12 @@ import android.view.WindowManager;
  */
 public final class ScreenUtils {
     private static boolean isFullScreen = false;
+    private static DisplayMetrics dm = null;
 
     public static DisplayMetrics displayMetrics(Context context) {
+        if (null != dm) {
+            return dm;
+        }
         DisplayMetrics dm = new DisplayMetrics();
         WindowManager windowManager = (WindowManager) context
                 .getSystemService(Context.WINDOW_SERVICE);

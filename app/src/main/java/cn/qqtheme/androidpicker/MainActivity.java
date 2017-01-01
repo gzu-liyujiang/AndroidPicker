@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import cn.qqtheme.framework.entity.City;
@@ -190,22 +191,39 @@ public class MainActivity extends Activity {
     }
 
     public void onLinkagePicker(View view) {
-        ArrayList<String> firstList = new ArrayList<String>();
-        firstList.add("12小时制");
-        firstList.add("24小时制");
-        ArrayList<ArrayList<String>> secondList = new ArrayList<ArrayList<String>>();
-        ArrayList<String> secondListItem1 = new ArrayList<String>();
-        for (int i = 1; i <= 12; i++) {
-            secondListItem1.add(DateUtils.fillZero(i) + "点");
-        }
-        ArrayList<String> secondListItem2 = new ArrayList<String>();
-        for (int i = 0; i < 24; i++) {
-            secondListItem2.add(DateUtils.fillZero(i) + "点");
-        }
-        secondList.add(secondListItem1);//对应今天
-        secondList.add(secondListItem2);//对应明天
-        LinkagePicker picker = new LinkagePicker(this, firstList, secondList);
-        picker.setSelectedItem("12小时制", "9点");
+        LinkagePicker.DataProvider provider = new LinkagePicker.DataProvider() {
+
+            @Override
+            public boolean isOnlyTwo() {
+                return true;
+            }
+
+            @Override
+            public List<String> provideFirstData() {
+                ArrayList<String> firstList = new ArrayList<String>();
+                firstList.add("12小时制");
+                firstList.add("24小时制");
+                return firstList;
+            }
+
+            @Override
+            public List<String> provideSecondData(int firstIndex) {
+                ArrayList<String> secondList = new ArrayList<String>();
+                for (int i = 1; i <= (firstIndex == 0 ? 12 : 24); i++) {
+                    secondList.add(DateUtils.fillZero(i) + "点");
+                }
+                return secondList;
+            }
+
+            @Override
+            public List<String> provideThirdData(int firstIndex, int secondIndex) {
+                return null;
+            }
+
+        };
+        LinkagePicker picker = new LinkagePicker(this, provider);
+        picker.setSelectedIndex(0, 8);
+        //picker.setSelectedItem("12小时制", "9点");
         picker.setLineConfig(new WheelView.LineConfig(0));//使用最长的线
         picker.setOnLinkageListener(new LinkagePicker.OnLinkageListener() {
 
@@ -221,13 +239,12 @@ public class MainActivity extends Activity {
         boolean isChinese = Locale.getDefault().getDisplayLanguage().contains("中文");
         OptionPicker picker = new OptionPicker(this,
                 isChinese ? new String[]{
-                        "水瓶", "双鱼", "白羊", "金牛", "双子", "巨蟹",
-                        "狮子", "处女", "天秤", "天蝎", "射手", "摩羯"
+                        "水瓶座", "双鱼座", "白羊座", "金牛座", "双子座", "巨蟹座",
+                        "狮子座", "处女座", "天秤座", "天蝎座", "射手座", "摩羯座"
                 } : new String[]{
                         "Aquarius", "Pisces", "Aries", "Taurus", "Gemini", "Cancer",
                         "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn"
                 });
-        picker.setLabel(isChinese ? "座" : "");
         picker.setTopBackgroundColor(0xFFEEEEEE);
         picker.setTopHeight(50);
         picker.setTopLineColor(0xFF33B5E5);
@@ -246,7 +263,7 @@ public class MainActivity extends Activity {
         config.setRatio((float) (1.0 / 8.0));//线比率
         picker.setLineConfig(config);
         picker.setBackgroundColor(0xFFE1E1E1);
-        //picker.setSelectedItem(isChinese ? "处女" : "Virgo");
+        //picker.setSelectedItem(isChinese ? "处女座" : "Virgo");
         picker.setSelectedIndex(7);
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
@@ -321,7 +338,6 @@ public class MainActivity extends Activity {
     }
 
     public void onFilePicker(View view) {
-        //noinspection MissingPermission
         FilePicker picker = new FilePicker(this, FilePicker.FILE);
         picker.setShowHideDir(false);
         //picker.setAllowExtensions(new String[]{".apk"});
@@ -335,9 +351,9 @@ public class MainActivity extends Activity {
     }
 
     public void onDirPicker(View view) {
-        //noinspection MissingPermission
         FilePicker picker = new FilePicker(this, FilePicker.DIRECTORY);
         picker.setRootPath(StorageUtils.getExternalRootPath() + "Download/");
+        picker.setItemHeight(30);
         picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {
             @Override
             public void onFilePicked(String currentPath) {

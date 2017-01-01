@@ -1,23 +1,25 @@
 package cn.qqtheme.framework.entity;
 
+import android.graphics.drawable.Drawable;
+
 /**
  * 文件项信息
  *
- * @author 李玉江[QQ :1032694760]
- * @version 2014-05-23 18:02
+ * @author 李玉江[QQ:1032694760]
+ * @since 2014-05-23 18:02
  */
 public class FileItem {
-    private int icon;
+    private Drawable icon;
     private String name;
     private String path = "/";
     private long size = 0;
     private boolean isDirectory = false;
 
-    public void setIcon(int icon) {
+    public void setIcon(Drawable icon) {
         this.icon = icon;
     }
 
-    public int getIcon() {
+    public Drawable getIcon() {
         return icon;
     }
 

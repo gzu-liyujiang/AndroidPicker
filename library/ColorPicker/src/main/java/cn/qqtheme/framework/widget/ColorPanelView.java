@@ -1,7 +1,7 @@
 package cn.qqtheme.framework.widget;
 
-import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ComposeShader;
@@ -10,8 +10,8 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.RectF;
 import android.graphics.Shader;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
@@ -68,15 +68,12 @@ public class ColorPanelView extends View {
         init();
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void init() {
         setClickable(true);
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaintBackground = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaintBackground.setColor(Color.WHITE);
-        if (Build.VERSION.SDK_INT >= 11) {
-            setLayerType(View.LAYER_TYPE_SOFTWARE, isInEditMode() ? null : mPaint);
-        }
+        setLayerType(View.LAYER_TYPE_SOFTWARE, isInEditMode() ? null : mPaint);
     }
 
     @Override
@@ -362,6 +359,17 @@ public class ColorPanelView extends View {
         if (mPointerDrawable != pointerDrawable) {
             mPointerDrawable = pointerDrawable;
             requestLayout();
+        }
+    }
+
+    public void recycle() {
+        mPaint = null;
+        mPaintBackground = null;
+        if (mPointerDrawable instanceof BitmapDrawable) {
+            Bitmap bitmap = ((BitmapDrawable) mPointerDrawable).getBitmap();
+            if (null != bitmap && !bitmap.isRecycled()) {
+                bitmap.recycle();
+            }
         }
     }
 

@@ -14,9 +14,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.NinePatchDrawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.StateListDrawable;
-import android.graphics.drawable.shapes.RoundRectShape;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -35,10 +32,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -91,45 +85,12 @@ public class ConvertUtils {
         return colorString;
     }
 
-    /**
-     * 将指定的日期转换为一定格式的字符串
-     */
-    public static String toDateString(Date date, String format) {
-        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.CHINA);
-        return sdf.format(date);
-    }
-
-    /**
-     * 将当前的日期转换为一定格式的字符串
-     */
-    public static String toDateString(String format) {
-        return toDateString(Calendar.getInstance(Locale.CHINA).getTime(), format);
-    }
-
-    /**
-     * 将指定的日期字符串转换为日期时间
-     *
-     * @param dateStr 如：2014-04-08 23:02
-     */
-    public static Date toDate(String dateStr) {
-        return DateUtils.parseDate(dateStr);
-    }
-
-    /**
-     * 将指定的日期字符串转换为时间戳
-     *
-     * @param dateStr 如：2014-04-08 23:02
-     */
-    public static long toTimemillis(String dateStr) {
-        return toDate(dateStr).getTime();
-    }
-
     public static String toSlashString(String str) {
         String result = "";
         char[] chars = str.toCharArray();
         for (char chr : chars) {
             if (chr == '"' || chr == '\'' || chr == '\\') {
-                result += "\\";//符合"、'、\这三个符号的前面加一个\
+                result += "\\";//符合“"”“'”“\”这三个符号的前面加一个“\”
             }
             result += chr;
         }
@@ -165,9 +126,13 @@ public class ConvertUtils {
         try {
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             byte[] buff = new byte[100];
-            int rc = 0;
-            while ((rc = is.read(buff, 0, 100)) > 0) {
-                os.write(buff, 0, rc);
+            while (true) {
+                int len = is.read(buff, 0, 100);
+                if (len == -1) {
+                    break;
+                } else {
+                    os.write(buff, 0, len);
+                }
             }
             byte[] bytes = os.toByteArray();
             os.close();
@@ -224,17 +189,14 @@ public class ConvertUtils {
      * 将Drawable转换为Bitmap
      * 参考：http://kylines.iteye.com/blog/1660184
      */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static Bitmap toBitmap(Drawable drawable) {
         if (drawable instanceof BitmapDrawable) {
             return ((BitmapDrawable) drawable).getBitmap();
         } else if (drawable instanceof ColorDrawable) {
             //color
             Bitmap bitmap = Bitmap.createBitmap(32, 32, Bitmap.Config.ARGB_8888);
-            if (Build.VERSION.SDK_INT >= 11) {
-                Canvas canvas = new Canvas(bitmap);
-                canvas.drawColor(((ColorDrawable) drawable).getColor());
-            }
+            Canvas canvas = new Canvas(bitmap);
+            canvas.drawColor(((ColorDrawable) drawable).getColor());
             return bitmap;
         } else if (drawable instanceof NinePatchDrawable) {
             //.9.png
@@ -325,7 +287,7 @@ public class ConvertUtils {
                 filePath = cursor.getString(column_index);
                 cursor.close();
             }
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
             LogUtils.error(e);
         }
         return filePath;
@@ -386,7 +348,7 @@ public class ConvertUtils {
     }
 
     public static Drawable toDrawable(Bitmap bitmap) {
-        return bitmap == null ? null : new BitmapDrawable(null, bitmap);
+        return bitmap == null ? null : new BitmapDrawable(Resources.getSystem(), bitmap);
     }
 
     public static byte[] toByteArray(Drawable drawable) {
@@ -437,7 +399,7 @@ public class ConvertUtils {
         try {
             return new String(str.getBytes("utf-8"), "gbk");
         } catch (UnsupportedEncodingException e) {
-            LogUtils.warn(e.getMessage());
+            LogUtils.warn(e);
             return str;
         }
     }
@@ -458,12 +420,16 @@ public class ConvertUtils {
     }
 
     public static String toString(InputStream is, String charset) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(is, charset));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                sb.append(line).append("\n");
+            while (true) {
+                String line = reader.readLine();
+                if (line == null) {
+                    break;
+                } else {
+                    sb.append(line).append("\n");
+                }
             }
             reader.close();
             is.close();
@@ -475,22 +441,6 @@ public class ConvertUtils {
 
     public static String toString(InputStream is) {
         return toString(is, "utf-8");
-    }
-
-    public static ShapeDrawable toRoundDrawable(@ColorInt int color, int radius) {
-        float[] outerR = new float[]{radius, radius, radius, radius, radius, radius, radius, radius};
-        RoundRectShape shape = new RoundRectShape(outerR, null, null);
-        ShapeDrawable drawable = new ShapeDrawable(shape);
-        drawable.getPaint().setColor(color);
-        return drawable;
-    }
-
-    public static StateListDrawable toStateRoundDrawable(@ColorInt int color, int radius) {
-        return toStateListDrawable(new ColorDrawable(Color.TRANSPARENT), toRoundDrawable(color, radius));
-    }
-
-    public static StateListDrawable toStateRoundDrawable(@ColorInt int normalColor, @ColorInt int focusColor, int radius) {
-        return toStateListDrawable(toRoundDrawable(normalColor, radius), toRoundDrawable(focusColor, radius));
     }
 
     /**
@@ -513,45 +463,6 @@ public class ConvertUtils {
 
     public static ColorStateList toColorStateList(@ColorInt int normalColor, @ColorInt int pressedColor) {
         return toColorStateList(normalColor, pressedColor, pressedColor, normalColor);
-    }
-
-    public static StateListDrawable toStateListDrawable(Drawable normal, Drawable pressed, Drawable focused, Drawable unable) {
-        StateListDrawable drawable = new StateListDrawable();
-        drawable.addState(new int[]{android.R.attr.state_pressed, android.R.attr.state_enabled}, pressed);
-        drawable.addState(new int[]{android.R.attr.state_enabled, android.R.attr.state_focused}, focused);
-        drawable.addState(new int[]{android.R.attr.state_enabled}, normal);
-        drawable.addState(new int[]{android.R.attr.state_focused}, focused);
-        drawable.addState(new int[]{android.R.attr.state_window_focused}, unable);
-        drawable.addState(new int[]{}, normal);
-        return drawable;
-    }
-
-    public static StateListDrawable toStateListDrawable(@ColorInt int normalColor, @ColorInt int pressedColor,
-                                                        @ColorInt int focusedColor, @ColorInt int unableColor) {
-        StateListDrawable drawable = new StateListDrawable();
-        Drawable normal = new ColorDrawable(normalColor);
-        Drawable pressed = new ColorDrawable(pressedColor);
-        Drawable focused = new ColorDrawable(focusedColor);
-        Drawable unable = new ColorDrawable(unableColor);
-        drawable.addState(new int[]{android.R.attr.state_pressed, android.R.attr.state_enabled}, pressed);
-        drawable.addState(new int[]{android.R.attr.state_enabled, android.R.attr.state_focused}, focused);
-        drawable.addState(new int[]{android.R.attr.state_enabled}, normal);
-        drawable.addState(new int[]{android.R.attr.state_focused}, focused);
-        drawable.addState(new int[]{android.R.attr.state_window_focused}, unable);
-        drawable.addState(new int[]{}, normal);
-        return drawable;
-    }
-
-    public static StateListDrawable toStateListDrawable(Drawable normal, Drawable pressed) {
-        return toStateListDrawable(normal, pressed, pressed, normal);
-    }
-
-    public static StateListDrawable toStateListDrawable(@ColorInt int normalColor, @ColorInt int pressedColor) {
-        return toStateListDrawable(normalColor, pressedColor, pressedColor, normalColor);
-    }
-
-    public static StateListDrawable toStateListDrawable(@ColorInt int pressedColor) {
-        return toStateListDrawable(Color.TRANSPARENT, pressedColor);
     }
 
 }

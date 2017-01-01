@@ -159,57 +159,56 @@ public class AddressPicker extends LinkagePicker {
             public void onSelected(boolean isUserScroll, int index, String item) {
                 selectedFirstItem = item;
                 selectedFirstIndex = index;
-                selectedThirdIndex = 0;
+                selectedSecondIndex = 0;//重置地级索引
+                selectedThirdIndex = 0;//重置县级索引
                 if (onWheelListener != null) {
                     onWheelListener.onProvinceWheeled(selectedFirstIndex, selectedFirstItem);
                 }
-                LogUtils.verbose(this, "change cities after province wheeled");
-                //根据省份获取地市
-                List<String> cities = provider.provideSecondData(selectedFirstIndex);
-                if (cities.size() < selectedSecondIndex) {
-                    //上一次选择的地级的索引超出了当前省份下的地市数
-                    selectedSecondIndex = 0;
+                if (isUserScroll) {
+                    LogUtils.verbose(this, "change cities after province wheeled");
+                    //根据省份获取地市
+                    List<String> cities = provider.provideSecondData(selectedFirstIndex);
+                    if (cities.size() > 0) {
+                        cityView.setItems(cities, selectedSecondIndex);
+                    } else {
+                        cityView.setItems(new ArrayList<String>());
+                    }
+                    //根据地市获取区县
+                    List<String> counties = provider.provideThirdData(selectedFirstIndex, selectedSecondIndex);
+                    if (counties.size() > 0) {
+                        countyView.setItems(counties, selectedThirdIndex);
+                    } else {
+                        countyView.setItems(new ArrayList<String>());
+                    }
                 }
-                //若不是用户手动滚动，说明联动需要指定默认项
-                cityView.setItems(cities, isUserScroll ? 0 : selectedSecondIndex);
-                ////根据地市获取区县
-                //List<String> counties = provider.provideThirdData(selectedFirstIndex, selectedSecondIndex);
-                //if (counties.size() > 0) {
-                //    countyView.setItems(counties, isUserScroll ? 0 : selectedThirdIndex);
-                //} else {
-                //    countyView.setItems(new ArrayList<String>());
-                //}
             }
         });
 
-        //由省级来联动，无需设置初始数据
-        //cityView.setItems(provider.provideSecondData(selectedFirstIndex), selectedSecondIndex);
+        cityView.setItems(provider.provideSecondData(selectedFirstIndex), selectedSecondIndex);
         cityView.setOnWheelListener(new WheelView.OnWheelListener() {
             @Override
             public void onSelected(boolean isUserScroll, int index, String item) {
                 selectedSecondItem = item;
                 selectedSecondIndex = index;
+                selectedThirdIndex = 0;//重置县级索引
                 if (onWheelListener != null) {
                     onWheelListener.onCityWheeled(selectedSecondIndex, selectedSecondItem);
                 }
-                LogUtils.verbose(this, "change counties after city wheeled");
-                //根据地市获取区县
-                List<String> counties = provider.provideThirdData(selectedFirstIndex, selectedSecondIndex);
-                if (counties.size() < selectedThirdIndex) {
-                    //上一次选择的区县的索引超出了当前地市下的区县数
-                    selectedThirdIndex = 0;
-                }
-                if (counties.size() > 0) {
-                    //若不是用户手动滚动，说明联动需要指定默认项
-                    countyView.setItems(counties, isUserScroll ? 0 : selectedThirdIndex);
-                } else {
-                    countyView.setItems(new ArrayList<String>());
+                if (isUserScroll) {
+                    LogUtils.verbose(this, "change counties after city wheeled");
+                    //根据地市获取区县
+                    List<String> counties = provider.provideThirdData(selectedFirstIndex, selectedSecondIndex);
+                    if (counties.size() > 0) {
+                        //若不是用户手动滚动，说明联动需要指定默认项
+                        countyView.setItems(counties, selectedThirdIndex);
+                    } else {
+                        countyView.setItems(new ArrayList<String>());
+                    }
                 }
             }
         });
 
-        //由地级来联动，无需设置初始数据
-        //countyView.setItems(provider.provideThirdData(selectedFirstIndex, selectedSecondIndex), selectedThirdIndex);
+        countyView.setItems(provider.provideThirdData(selectedFirstIndex, selectedSecondIndex), selectedThirdIndex);
         countyView.setOnWheelListener(new WheelView.OnWheelListener() {
             @Override
             public void onSelected(boolean isUserScroll, int index, String item) {

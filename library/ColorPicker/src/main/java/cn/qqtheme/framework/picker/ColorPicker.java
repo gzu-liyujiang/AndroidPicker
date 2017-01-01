@@ -1,26 +1,22 @@
 package cn.qqtheme.framework.picker;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.support.annotation.ColorInt;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
-import android.text.InputType;
+import android.support.annotation.Nullable;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.Locale;
 
-import cn.qqtheme.framework.colorpicker.R;
 import cn.qqtheme.framework.popup.ConfirmPopup;
-import cn.qqtheme.framework.util.CompatUtils;
+import cn.qqtheme.framework.util.AssetsUtils;
 import cn.qqtheme.framework.util.ConvertUtils;
 import cn.qqtheme.framework.widget.ColorPanelView;
 
@@ -30,12 +26,14 @@ import cn.qqtheme.framework.widget.ColorPanelView;
  * @author 李玉江[QQ:1032694760]
  * @since 2015/9/29
  */
-public class ColorPicker extends ConfirmPopup<LinearLayout> implements TextView.OnEditorActionListener {
+public class ColorPicker extends ConfirmPopup<LinearLayout> {
+    @IdRes
     private static final int MULTI_ID = 0x1;
+    @IdRes
     private static final int BLACK_ID = 0x2;
     private int initColor = Color.WHITE;
     private ColorPanelView multiColorView, blackColorView;
-    private EditText hexValView;
+    private TextView hexValView;
     private ColorStateList hexValDefaultColor;
     private OnColorPickListener onColorPickListener;
 
@@ -44,46 +42,12 @@ public class ColorPicker extends ConfirmPopup<LinearLayout> implements TextView.
         setHalfScreen(true);
     }
 
+    @Nullable
     @Override
-    @NonNull
-    protected LinearLayout makeCenterView() {
-        LinearLayout rootLayout = new LinearLayout(activity);
-        rootLayout.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
-        rootLayout.setOrientation(LinearLayout.VERTICAL);
-        blackColorView = new ColorPanelView(activity);
-        //noinspection ResourceType
-        blackColorView.setId(BLACK_ID);
-        blackColorView.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, ConvertUtils.toPx(activity, 30)));
-        blackColorView.setPointerDrawable(CompatUtils.getDrawable(activity, R.drawable.color_picker_cursor_bottom));
-        blackColorView.setLockPointerInBounds(false);
-        blackColorView.setOnColorChangedListener(new ColorPanelView.OnColorChangedListener() {
-            @Override
-            public void onColorChanged(ColorPanelView view, int color) {
-                updateCurrentColor(color);
-            }
-        });
-        rootLayout.addView(blackColorView);
-        multiColorView = new ColorPanelView(activity);
-        //noinspection ResourceType
-        multiColorView.setId(MULTI_ID);
-        multiColorView.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, 0, 1.0f));
-        multiColorView.setPointerDrawable(CompatUtils.getDrawable(activity, R.drawable.color_picker_cursor_top));
-        multiColorView.setLockPointerInBounds(true);
-        multiColorView.setOnColorChangedListener(new ColorPanelView.OnColorChangedListener() {
-            @Override
-            public void onColorChanged(ColorPanelView view, int color) {
-                updateCurrentColor(color);
-            }
-        });
-        rootLayout.addView(multiColorView);
-        LinearLayout previewLayout = new LinearLayout(activity);
-        previewLayout.setOrientation(LinearLayout.HORIZONTAL);
-        previewLayout.setGravity(Gravity.CENTER);
-        previewLayout.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, ConvertUtils.toPx(activity, 30)));
-        hexValView = new EditText(activity);
-        hexValView.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
-        hexValView.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-        hexValView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+    protected View makeHeaderView() {
+        View headerView = super.makeHeaderView();
+        hexValView = getTitleView();
+        hexValView.getLayoutParams().height = ConvertUtils.toPx(activity, 30);
         hexValView.setGravity(Gravity.CENTER);
         hexValView.setBackgroundColor(initColor);
         hexValView.setTextColor(Color.BLACK);
@@ -92,11 +56,46 @@ public class ColorPicker extends ConfirmPopup<LinearLayout> implements TextView.
         hexValView.setMaxEms(8);
         hexValView.setPadding(0, 0, 0, 0);
         hexValView.setSingleLine(true);
-        hexValView.setOnEditorActionListener(this);
         hexValView.setEnabled(false);
         hexValDefaultColor = hexValView.getTextColors();
-        previewLayout.addView(hexValView);
-        rootLayout.addView(previewLayout);
+        return headerView;
+    }
+
+    @Override
+    @NonNull
+    protected LinearLayout makeCenterView() {
+        LinearLayout rootLayout = new LinearLayout(activity);
+        rootLayout.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+        rootLayout.setOrientation(LinearLayout.VERTICAL);
+
+        multiColorView = new ColorPanelView(activity);
+        multiColorView.setId(MULTI_ID);
+        multiColorView.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, 0, 1.0f));
+        Bitmap cursorTopBitmap = AssetsUtils.readBitmap(activity, "color_picker_cursor_top.png");
+        multiColorView.setPointerDrawable(ConvertUtils.toDrawable(cursorTopBitmap));
+        multiColorView.setLockPointerInBounds(true);
+        multiColorView.setOnColorChangedListener(new ColorPanelView.OnColorChangedListener() {
+            @Override
+            public void onColorChanged(ColorPanelView view, int color) {
+                updateCurrentColor(color);
+            }
+        });
+        rootLayout.addView(multiColorView);
+
+        blackColorView = new ColorPanelView(activity);
+        blackColorView.setId(BLACK_ID);
+        blackColorView.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, ConvertUtils.toPx(activity, 30)));
+        Bitmap cursorBottomBitmap = AssetsUtils.readBitmap(activity, "color_picker_cursor_bottom.png");
+        blackColorView.setPointerDrawable(ConvertUtils.toDrawable(cursorBottomBitmap));
+        blackColorView.setLockPointerInBounds(false);
+        blackColorView.setOnColorChangedListener(new ColorPanelView.OnColorChangedListener() {
+            @Override
+            public void onColorChanged(ColorPanelView view, int color) {
+                updateCurrentColor(color);
+            }
+        });
+        rootLayout.addView(blackColorView);
+
         return rootLayout;
     }
 
@@ -111,6 +110,13 @@ public class ColorPicker extends ConfirmPopup<LinearLayout> implements TextView.
         if (onColorPickListener != null) {
             onColorPickListener.onColorPicked(getCurrentColor());
         }
+    }
+
+    @Override
+    public void dismiss() {
+        super.dismiss();
+        multiColorView.recycle();
+        blackColorView.recycle();
     }
 
     @ColorInt
@@ -136,29 +142,6 @@ public class ColorPicker extends ConfirmPopup<LinearLayout> implements TextView.
 
     public void setOnColorPickListener(OnColorPickListener onColorPickListener) {
         this.onColorPickListener = onColorPickListener;
-    }
-
-    @Override
-    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-        if (actionId == EditorInfo.IME_ACTION_DONE) {
-            InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-            String hexString = hexValView.getText().toString();
-            int length = hexString.length();
-            if (length == 6 || length == 8) {
-                try {
-                    int color = Color.parseColor("#" + hexString);
-                    multiColorView.setColor(color);
-                    hexValView.setTextColor(hexValDefaultColor);
-                } catch (IllegalArgumentException e) {
-                    hexValView.setTextColor(Color.RED);
-                }
-            } else {
-                hexValView.setTextColor(Color.RED);
-            }
-            return true;
-        }
-        return false;
     }
 
     /**

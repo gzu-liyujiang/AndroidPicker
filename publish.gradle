@@ -8,13 +8,24 @@ version = project.pomVersion   //版本号
 group = GROUP    // 包名
 project.archivesBaseName = project.pomArtifactId
 
+task releaseJar(type: Jar) {
+    classifier = 'classes'
+    from 'build/intermediates/classes/release/'
+    from 'build/intermediates/bundles/release/'
+    exclude '**/aidl', '**/jni', '**/libs', '**/res'
+    exclude '**/AndroidManifest.xml', '**/classes.jar', '**/R.txt'
+    exclude '**/wheelpicker', '**/colorpicker', '**/filepicker'
+    exclude '**/BuildConfig.class', '**/R.class'
+    exclude { it.name.startsWith('R$'); }
+}
+
 /**
  * generate xxx-sources.jar
  * 生成 xxx-sources.jar, 即将源代码打包
  */
 task sourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
     classifier = 'sources'
+    from android.sourceSets.main.java.srcDirs
 }
 
 /**
@@ -27,7 +38,6 @@ task javadoc(type: Javadoc) {
     classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
     exclude '**/BuildConfig.java'
     exclude '**/R.java'
-    failOnError = false
 }
 
 /**
@@ -58,6 +68,7 @@ publishing {
         MyPublication(MavenPublication) {
             artifactId project.pomArtifactId
             artifact "${buildDir}/outputs/aar/${project.pomArtifactId}-release.aar"
+            artifact releaseJar
             artifact javadocJar
             artifact sourcesJar
 

@@ -52,7 +52,7 @@ public class WheelView extends ScrollView {
     public static final float LINE_THICK = 1f;
     public static final int OFF_SET = 2;
     private static final int DELAY = 50;//自动滚动延迟毫秒数
-    private static final int DELTA = 128;//触发伪循环的慢滚或速滑距离
+    private static final int DELTA = 100;//触发伪循环的慢滚或速滑距离
     private static final int MATCH_PARENT = ViewGroup.LayoutParams.MATCH_PARENT;
     private static final int WRAP_CONTENT = ViewGroup.LayoutParams.WRAP_CONTENT;
 
@@ -75,7 +75,6 @@ public class WheelView extends ScrollView {
     private int textColorFocus = TEXT_COLOR_FOCUS;
     private boolean isUserScroll = false;//是否用户手动滚动
     private boolean cycleDisable = false;//是否禁用伪循环
-    private float previousY = 0;//记录按下时的Y坐标
 
     private LineConfig lineConfig;
 
@@ -290,26 +289,11 @@ public class WheelView extends ScrollView {
         isUserScroll = true;//触发触摸事件，说明是用户在滚动
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                LogUtils.verbose(this, "press down, selectedIndex=" + selectedIndex);
-                previousY = ev.getY();
+                LogUtils.verbose(this, "press down, cycleDisable=" + cycleDisable);
                 break;
             case MotionEvent.ACTION_UP:
                 LogUtils.verbose(this, "press up, items=" + items.size() + ", offset=" + offset);
-                if (cycleDisable) {
-                    startScrollerTask();
-                    break;
-                }
-                float delta = ev.getY() - previousY;
-                LogUtils.verbose(this, "delta=" + delta);
-                if (selectedIndex == offset && delta > DELTA) {
-                    //滑动到第一项时，若继续向下滑动，则自动跳到最后一项
-                    setSelectedIndex(items.size() - offset * 2 - 1);
-                } else if (selectedIndex == (items.size() - offset - 1) && delta < DELTA * -1) {
-                    //滑动到最后一项时，若继续向上滑动，则自动跳到第一项
-                    setSelectedIndex(0);
-                } else {
-                    startScrollerTask();
-                }
+                startScrollerTask();
                 break;
         }
         return super.onTouchEvent(ev);
@@ -395,7 +379,7 @@ public class WheelView extends ScrollView {
      */
     private void setSelectedIndex(@IntRange(from = 0) final int index) {
         isUserScroll = false;
-        this.post(new Runnable() {
+        post(new Runnable() {
             @Override
             public void run() {
                 //滚动到选中项的位置，smoothScrollTo滚动视觉效果有延迟

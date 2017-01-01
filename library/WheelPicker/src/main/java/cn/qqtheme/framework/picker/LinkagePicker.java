@@ -18,7 +18,7 @@ import cn.qqtheme.framework.widget.WheelView;
 
 /**
  * 两级、三级联动选择器。默认只初始化第一级数据，第二三级数据由联动获得。
- * <p>
+ * <p/>
  * Author:李玉江[QQ:1032694760]
  * DateTime:2016/5/6 20:34
  * Builder:Android Studio
@@ -71,6 +71,16 @@ public class LinkagePicker extends WheelPicker {
 
     protected void setProvider(DataProvider provider) {
         this.provider = provider;
+    }
+
+    public void setSelectedIndex(int firstIndex, int secondIndex) {
+        setSelectedIndex(firstIndex, secondIndex, 0);
+    }
+
+    public void setSelectedIndex(int firstIndex, int secondIndex, int thirdIndex) {
+        selectedFirstIndex = firstIndex;
+        selectedSecondIndex = secondIndex;
+        selectedThirdIndex = thirdIndex;
     }
 
     public void setSelectedItem(String firstText, String secondText) {
@@ -279,25 +289,26 @@ public class LinkagePicker extends WheelPicker {
                 if (onWheelListener != null) {
                     onWheelListener.onFirstWheeled(selectedFirstIndex, selectedFirstItem);
                 }
-                LogUtils.verbose(this, "change second data after first wheeled");
-                List<String> secondData = provider.provideSecondData(selectedFirstIndex);
-                if (secondData.size() < selectedSecondIndex) {
-                    //上一次的第二级选择的项的索引超出了第二级的数据数
-                    selectedSecondIndex = 0;
+                if (isUserScroll) {
+                    LogUtils.verbose(this, "change second data after first wheeled");
+                    List<String> secondData = provider.provideSecondData(selectedFirstIndex);
+                    if (secondData.size() < selectedSecondIndex) {
+                        //上一次的第二级选择的项的索引超出了第二级的数据数
+                        selectedSecondIndex = 0;
+                    }
+                    selectedThirdIndex = 0;
+                    //根据第一级数据获取第二级数据。若不是用户手动滚动，说明联动需要指定默认项
+                    secondView.setItems(secondData, selectedSecondIndex);
+                    if (provider.isOnlyTwo()) {
+                        return;//仅仅二级联动
+                    }
+                    //根据第二级数据获取第三级数据
+                    thirdView.setItems(provider.provideThirdData(selectedFirstIndex, selectedSecondIndex), selectedThirdIndex);
                 }
-                selectedThirdIndex = 0;
-                //根据第一级数据获取第二级数据。若不是用户手动滚动，说明联动需要指定默认项
-                secondView.setItems(secondData, selectedSecondIndex);
-                //if (provider.isOnlyTwo()) {
-                //    return;//仅仅二级联动
-                //}
-                ////根据第二级数据获取第三级数据
-                //thirdView.setItems(provider.provideThirdData(selectedFirstIndex, selectedSecondIndex), selectedThirdIndex);
             }
         });
 
-        //由第一级来联动，无需设置初始数据
-        //secondView.setItems(provider.provideSecondData(selectedFirstIndex), selectedSecondIndex);
+        secondView.setItems(provider.provideSecondData(selectedFirstIndex), selectedSecondIndex);
         secondView.setOnWheelListener(new WheelView.OnWheelListener() {
             @Override
             public void onSelected(boolean isUserScroll, int index, String item) {
@@ -309,14 +320,16 @@ public class LinkagePicker extends WheelPicker {
                 if (provider.isOnlyTwo()) {
                     return;//仅仅二级联动
                 }
-                LogUtils.verbose(this, "change third data after second wheeled");
-                List<String> thirdData = provider.provideThirdData(selectedFirstIndex, selectedSecondIndex);
-                if (thirdData.size() < selectedThirdIndex) {
-                    //上一次的第三级选择的项的索引超出了第三级的数据数
-                    selectedThirdIndex = 0;
+                if (isUserScroll) {
+                    LogUtils.verbose(this, "change third data after second wheeled");
+                    List<String> thirdData = provider.provideThirdData(selectedFirstIndex, selectedSecondIndex);
+                    if (thirdData.size() < selectedThirdIndex) {
+                        //上一次的第三级选择的项的索引超出了第三级的数据数
+                        selectedThirdIndex = 0;
+                    }
+                    //根据第二级数据获取第三级数据
+                    thirdView.setItems(thirdData, selectedThirdIndex);
                 }
-                //根据第二级数据获取第三级数据
-                thirdView.setItems(thirdData, selectedThirdIndex);
             }
         });
         if (provider.isOnlyTwo()) {

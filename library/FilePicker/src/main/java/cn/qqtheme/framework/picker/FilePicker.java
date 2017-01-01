@@ -1,10 +1,8 @@
 package cn.qqtheme.framework.picker;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -29,8 +27,8 @@ import cn.qqtheme.framework.widget.MarqueeTextView;
 /**
  * 文件目录选择器
  *
- * @author 李玉江[QQ :1032694760]
- * @since 2015/9/29
+ * @author 李玉江[QQ:1032694760]
+ * @since 2015/9/29, 2017/01/01
  */
 public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterView.OnItemClickListener {
     public static final int DIRECTORY = 0;
@@ -53,7 +51,6 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
      * @see #FILE
      * @see #DIRECTORY
      */
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public FilePicker(Activity activity, @Mode int mode) {
         super(activity);
         setHalfScreen(true);
@@ -78,6 +75,7 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
         rootLayout.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
         rootLayout.setOrientation(LinearLayout.VERTICAL);
         rootLayout.setBackgroundColor(Color.WHITE);
+
         ListView listView = new ListView(activity);
         listView.setBackgroundColor(Color.WHITE);
         listView.setDivider(new ColorDrawable(0xFFDDDDDD));
@@ -87,6 +85,7 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
         rootLayout.addView(listView);
+
         emptyView = new TextView(activity);
         LinearLayout.LayoutParams txtParams = new LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
         txtParams.gravity = Gravity.CENTER;
@@ -95,6 +94,7 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
         emptyView.setVisibility(View.GONE);
         emptyView.setTextColor(Color.BLACK);
         rootLayout.addView(emptyView);
+
         return rootLayout;
     }
 
@@ -130,6 +130,10 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
         adapter.setShowHideDir(showHideDir);
     }
 
+    public void setItemHeight(int itemHeight) {
+        adapter.setItemHeight(itemHeight);
+    }
+
     public void setEmptyHint(CharSequence emptyHint) {
         this.emptyHint = emptyHint;
     }
@@ -138,7 +142,11 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
     protected void setContentViewBefore() {
         boolean isPickFile = mode == FILE;
         setCancelVisible(!isPickFile);
-        setSubmitText(isPickFile ? "取消" : "确定");
+        if (isPickFile) {
+            setSubmitText(activity.getString(android.R.string.cancel));
+        } else {
+            setSubmitText(activity.getString(android.R.string.ok));
+        }
     }
 
     @Override
@@ -149,14 +157,20 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
     @Override
     protected void onSubmit() {
         if (mode == FILE) {
-            LogUtils.verbose("已放弃选择！");
+            LogUtils.verbose("pick file canceled");
         } else {
             String currentPath = adapter.getCurrentPath();
-            LogUtils.debug("已选择目录：" + currentPath);
+            LogUtils.debug("picked directory: " + currentPath);
             if (onFilePickListener != null) {
                 onFilePickListener.onFilePicked(currentPath);
             }
         }
+    }
+
+    @Override
+    public void dismiss() {
+        super.dismiss();
+        adapter.recycleData();
     }
 
     public FileAdapter getAdapter() {
@@ -178,10 +192,10 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
         } else {
             String clickPath = fileItem.getPath();
             if (mode == DIRECTORY) {
-                LogUtils.warn("选择的不是有效的目录: " + clickPath);
+                LogUtils.warn("not directory: " + clickPath);
             } else {
                 dismiss();
-                LogUtils.debug("已选择文件：" + clickPath);
+                LogUtils.debug("picked path: " + clickPath);
                 if (onFilePickListener != null) {
                     onFilePickListener.onFilePicked(clickPath);
                 }
@@ -191,7 +205,7 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
 
     private void refreshCurrentDirPath(String currentPath) {
         if (currentPath.equals("/")) {
-            textView.setText("根目录");
+            textView.setText("  /  ");
         } else {
             textView.setText(currentPath);
         }

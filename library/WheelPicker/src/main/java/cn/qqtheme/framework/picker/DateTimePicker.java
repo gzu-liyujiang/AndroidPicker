@@ -23,7 +23,7 @@ import cn.qqtheme.framework.widget.WheelView;
 
 /**
  * 日期时间选择器，可同时选中日期及时间，另见{@link DatePicker}和{@link TimePicker}
- * <p>
+ * <p/>
  * Created by Dong on 2016/5/13.
  * Refactored by 李玉江 on 2016/12/31.
  */
@@ -104,7 +104,9 @@ public class DateTimePicker extends WheelPicker {
         if (dateMode == NONE && timeMode == NONE) {
             throw new IllegalArgumentException("The modes are NONE at the same time");
         }
-        textSize = 16;//年月日时分，比较宽，设置字体小一点才能显示完整
+        if (dateMode == YEAR_MONTH_DAY && timeMode != NONE) {
+            textSize = 16;//年月日时分，比较宽，设置字体小一点才能显示完整
+        }
         this.dateMode = dateMode;
         //根据时间模式初始化小时范围
         if (timeMode == HOUR_12) {
@@ -351,21 +353,36 @@ public class DateTimePicker extends WheelPicker {
     @NonNull
     @Override
     protected View makeCenterView() {
-        if (dateMode != NONE && years.size() == 0) {
-            LogUtils.verbose(this, "init date before make view");
-            // 如果未设置默认项，则需要在此初始化日期数据
+        // 如果未设置默认项，则需要在此初始化数据
+        if ((dateMode == YEAR_MONTH_DAY || dateMode == YEAR_MONTH) && years.size() == 0) {
+            LogUtils.verbose(this, "init years before make view");
             initYearData();
+        }
+        if (dateMode != NONE && months.size() == 0) {
+            LogUtils.verbose(this, "init months before make view");
             int selectedYear = DateUtils.trimZero(getSelectedYear());
             changeMonthData(selectedYear);
+        }
+        if ((dateMode == YEAR_MONTH_DAY || dateMode == MONTH_DAY) && days.size() == 0) {
+            LogUtils.verbose(this, "init days before make view");
+            int selectedYear;
+            if (dateMode == YEAR_MONTH_DAY) {
+                selectedYear = DateUtils.trimZero(getSelectedYear());
+            } else {
+                selectedYear = Calendar.getInstance(Locale.CHINA).get(Calendar.YEAR);
+            }
             int selectedMonth = DateUtils.trimZero(getSelectedMonth());
             changeDayData(selectedYear, selectedMonth);
         }
         if (timeMode != NONE && hours.size() == 0) {
-            LogUtils.verbose(this, "init time before make view");
-            // 如果未设置默认项，则需要在此初始化时间数据
+            LogUtils.verbose(this, "init hours before make view");
             initHourData();
+        }
+        if (timeMode != NONE && minutes.size() == 0) {
+            LogUtils.verbose(this, "init minutes before make view");
             changeMinuteData(DateUtils.trimZero(selectedHour));
         }
+
         LinearLayout layout = new LinearLayout(activity);
         layout.setOrientation(LinearLayout.HORIZONTAL);
         layout.setGravity(Gravity.CENTER);
@@ -391,11 +408,13 @@ public class DateTimePicker extends WheelPicker {
                     if (onWheelListener != null) {
                         onWheelListener.onYearWheeled(selectedYearIndex, item);
                     }
-                    LogUtils.verbose(this, "change months after year wheeled");
-                    //需要根据年份及月份动态计算天数
-                    int selectedYear = DateUtils.trimZero(item);
-                    changeMonthData(selectedYear);
-                    monthView.setItems(months, selectedMonthIndex);
+                    if (isUserScroll) {
+                        LogUtils.verbose(this, "change months after year wheeled");
+                        //需要根据年份及月份动态计算天数
+                        int selectedYear = DateUtils.trimZero(item);
+                        changeMonthData(selectedYear);
+                        monthView.setItems(months, selectedMonthIndex);
+                    }
                 }
             });
             layout.addView(yearView);
@@ -416,8 +435,7 @@ public class DateTimePicker extends WheelPicker {
             monthView.setLineConfig(lineConfig);
             monthView.setOffset(offset);
             monthView.setCycleDisable(cycleDisable);
-            //由年份来联动，无需设置初始数据
-            //monthView.setItems(months, selectedMonthIndex);
+            monthView.setItems(months, selectedMonthIndex);
             monthView.setOnWheelListener(new WheelView.OnWheelListener() {
                 @Override
                 public void onSelected(boolean isUserScroll, int index, String item) {
@@ -425,9 +443,14 @@ public class DateTimePicker extends WheelPicker {
                     if (onWheelListener != null) {
                         onWheelListener.onMonthWheeled(selectedMonthIndex, item);
                     }
-                    if (dateMode != YEAR_MONTH) {
+                    if (isUserScroll && (dateMode == YEAR_MONTH_DAY || dateMode == MONTH_DAY)) {
                         LogUtils.verbose(this, "change days after month wheeled");
-                        int selectedYear = DateUtils.trimZero(getSelectedYear());
+                        int selectedYear;
+                        if (dateMode == YEAR_MONTH_DAY) {
+                            selectedYear = DateUtils.trimZero(getSelectedYear());
+                        } else {
+                            selectedYear = Calendar.getInstance(Locale.CHINA).get(Calendar.YEAR);
+                        }
                         changeDayData(selectedYear, DateUtils.trimZero(item));
                         dayView.setItems(days, selectedDayIndex);
                     }
@@ -451,8 +474,7 @@ public class DateTimePicker extends WheelPicker {
             dayView.setLineConfig(lineConfig);
             dayView.setOffset(offset);
             dayView.setCycleDisable(cycleDisable);
-            //由月份来联动，无需设置初始数据
-            //dayView.setItems(days, selectedDayIndex);
+            dayView.setItems(days, selectedDayIndex);
             dayView.setOnWheelListener(new WheelView.OnWheelListener() {
                 @Override
                 public void onSelected(boolean isUserScroll, int index, String item) {
@@ -487,9 +509,11 @@ public class DateTimePicker extends WheelPicker {
                     if (onWheelListener != null) {
                         onWheelListener.onHourWheeled(index, item);
                     }
-                    LogUtils.verbose(this, "change minutes after hour wheeled");
-                    changeMinuteData(DateUtils.trimZero(item));
-                    minuteView.setItems(minutes, selectedMinute);
+                    if (isUserScroll) {
+                        LogUtils.verbose(this, "change minutes after hour wheeled");
+                        changeMinuteData(DateUtils.trimZero(item));
+                        minuteView.setItems(minutes, selectedMinute);
+                    }
                 }
             });
             layout.addView(hourView);
@@ -508,8 +532,7 @@ public class DateTimePicker extends WheelPicker {
             minuteView.setLineConfig(lineConfig);
             minuteView.setOffset(offset);
             minuteView.setCycleDisable(cycleDisable);
-            //由小时来联动，无需设置初始数据
-            //minuteView.setItems(minutes, selectedMinute);
+            minuteView.setItems(minutes, selectedMinute);
             minuteView.setOnWheelListener(new WheelView.OnWheelListener() {
                 @Override
                 public void onSelected(boolean isUserScroll, int index, String item) {

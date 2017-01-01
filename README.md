@@ -40,8 +40,7 @@ dependencies {
 }
 ```
 #### 使用Eclipse的话如何集成？
-直接下载本项目，复制Common及WheelPicker模块下的“src/main/java”下的所有java代码到你的项目里即可。
-如果需要颜色选择器或文件选择器，则复制Common及ColorPicker或FilePicker模块下的“src/main/java”及“src/main/res”下的所有文件到你的项目里。
+直接[下载AndroidPicker的jar包](/jars/)复制到你的项目的libs下即可。
 
 # ProGuard
 由于地址选择器使用了[fastjson](https://github.com/alibaba/fastjson)来解析，混淆时候需要加入以下类似的规则，不混淆Province、City等实体类。

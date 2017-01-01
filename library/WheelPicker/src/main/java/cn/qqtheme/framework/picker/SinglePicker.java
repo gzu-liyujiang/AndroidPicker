@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -121,21 +122,22 @@ public class SinglePicker<T> extends WheelPicker {
         LinearLayout layout = new LinearLayout(activity);
         layout.setOrientation(LinearLayout.HORIZONTAL);
         layout.setGravity(Gravity.CENTER);
+        layout.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
         wheelView = new WheelView(activity);
-        wheelView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT, 1.0f));
         wheelView.setTextSize(textSize);
         wheelView.setTextColor(textColorNormal, textColorFocus);
         wheelView.setLineConfig(lineConfig);
         wheelView.setOffset(offset);
         wheelView.setCycleDisable(cycleDisable);
-        layout.addView(wheelView);
-        TextView labelView = new TextView(activity);
-        labelView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
-        labelView.setTextColor(textColorFocus);
-        labelView.setTextSize(textSize);
-        layout.addView(labelView);
-        if (!TextUtils.isEmpty(label)) {
+        if (TextUtils.isEmpty(label)) {
+            layout.addView(wheelView, new LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
+        } else {
+            layout.addView(wheelView, new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+            TextView labelView = new TextView(activity);
+            labelView.setTextColor(textColorFocus);
+            labelView.setTextSize(textSize);
             labelView.setText(label);
+            layout.addView(labelView, new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
         }
         wheelView.setItems(itemStrings, selectedItemIndex);
         wheelView.setOnWheelListener(new WheelView.OnWheelListener() {
