@@ -1,10 +1,7 @@
 package cn.qqtheme.androidpicker;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
@@ -32,19 +29,21 @@ import cn.qqtheme.framework.util.DateUtils;
 import cn.qqtheme.framework.util.StorageUtils;
 import cn.qqtheme.framework.widget.WheelView;
 
-public class MainActivity extends Activity {
+public class MainActivity extends BaseActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    protected View getContentView() {
+        return inflateView(R.layout.activity_main);
+    }
+
+    @Override
+    protected void setContentViewAfter(View contentView) {
+
     }
 
     @Override
     public void onBackPressed() {
-        System.exit(0);
-        android.os.Process.killProcess(android.os.Process.myPid());
-        finish();
+        AppManager.getInstance().exitApp();
     }
 
     private void showToast(String msg) {
@@ -86,6 +85,7 @@ public class MainActivity extends Activity {
 
     public void onYearMonthDayPicker(View view) {
         final DatePicker picker = new DatePicker(this);
+        picker.setTopPadding(2);
         picker.setRangeStart(2016, 8, 29);
         picker.setRangeEnd(2111, 1, 11);
         picker.setSelectedItem(2050, 10, 14);

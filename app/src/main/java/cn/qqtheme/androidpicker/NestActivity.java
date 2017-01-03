@@ -1,15 +1,10 @@
 package cn.qqtheme.androidpicker;
 
-import android.app.Activity;
-import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.TextView;
 
 import cn.qqtheme.framework.picker.CarNumberPicker;
-import cn.qqtheme.framework.picker.LinkagePicker;
-import cn.qqtheme.framework.picker.TimePicker;
 import cn.qqtheme.framework.util.ConvertUtils;
 import cn.qqtheme.framework.widget.WheelView;
 
@@ -20,17 +15,18 @@ import cn.qqtheme.framework.widget.WheelView;
  * DateTime:2016/12/16 00:42
  * Builder:Android Studio
  */
-public class NestActivity extends Activity {
+public class NestActivity extends BaseActivity {
     private CarNumberPicker picker;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_nest);
+    protected View getContentView() {
+        return inflateView(R.layout.activity_nest);
+    }
 
-        final TextView textView = (TextView) findViewById(R.id.wheelview_tips);
-        WheelView wheelView = (WheelView) findViewById(R.id.wheelview_single);
+    @Override
+    protected void setContentViewAfter(View contentView) {
+        final TextView textView = findView(R.id.wheelview_tips);
+        WheelView wheelView = findView(R.id.wheelview_single);
         wheelView.setItems(new String[]{"少数民族", "贵州穿青人", "不在56个少数民族之列", "第57个民族"}, 1);
         wheelView.setTextColor(0xFFFF00FF);
         WheelView.LineConfig config = new WheelView.LineConfig();
@@ -60,7 +56,7 @@ public class NestActivity extends Activity {
                 textView.setText(picker.getSelectedFirstItem() + ":" + item);
             }
         });
-        ViewGroup viewGroup = (ViewGroup) findViewById(R.id.wheelview_container);
+        ViewGroup viewGroup = findView(R.id.wheelview_container);
         viewGroup.addView(picker.getContentView());
     }
 

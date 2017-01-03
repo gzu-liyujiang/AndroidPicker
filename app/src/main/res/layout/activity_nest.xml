@@ -3,12 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#FFCCCCCC"
+        android:background="@color/immersion"
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="10dp">
@@ -20,7 +21,8 @@
             android:drawableLeft="@android:drawable/ic_menu_revert"
             android:gravity="center_vertical"
             android:onClick="onBack"
-            android:text="返回"/>
+            android:text="返回"
+            android:textColor="@android:color/white"/>
 
         <TextView
             style="?android:textAppearanceMedium"
@@ -29,7 +31,8 @@
             android:layout_marginLeft="20dp"
             android:layout_weight="1.0"
             android:gravity="center_vertical"
-            android:text="内嵌选择器"/>
+            android:text="内嵌选择器"
+            android:textColor="@android:color/white"/>
 
         <TextView
             style="?android:textAppearanceMedium"
@@ -37,7 +40,8 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:onClick="onCarNumber"
-            android:text="车牌"/>
+            android:text="车牌"
+            android:textColor="@android:color/white"/>
 
     </LinearLayout>
 
