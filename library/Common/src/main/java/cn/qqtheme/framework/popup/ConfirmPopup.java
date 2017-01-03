@@ -10,7 +10,6 @@ import android.support.annotation.StringRes;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,7 +19,6 @@ import cn.qqtheme.framework.util.ConvertUtils;
 /**
  * 带确定及取消按钮的弹窗
  *
- * @param <V> the type parameter
  * @author 李玉江[QQ:1032694760]
  * @since 2015/10/21
  */
@@ -30,7 +28,7 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
     protected int topLineHeight = 1;//dp
     protected int topBackgroundColor = Color.WHITE;
     protected int topHeight = 40;//dp
-    protected int topPadding = 8;//dp
+    protected int topPadding = 15;//dp
     protected boolean cancelVisible = true;
     protected CharSequence cancelText = "";
     protected CharSequence submitText = "";
@@ -43,7 +41,7 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
     protected int submitTextSize = 0;
     protected int titleTextSize = 0;
     protected int backgroundColor = Color.WHITE;
-    private Button cancelButton, submitButton;
+    private TextView cancelButton, submitButton;
     private TextView titleView;
 
     public ConfirmPopup(Activity activity) {
@@ -228,14 +226,23 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
     }
 
     public TextView getTitleView() {
+        if (null == titleView) {
+            throw new NullPointerException("please call show at first");
+        }
         return titleView;
     }
 
-    public Button getCancelButton() {
+    public TextView getCancelButton() {
+        if (null == cancelButton) {
+            throw new NullPointerException("please call show at first");
+        }
         return cancelButton;
     }
 
-    public Button getSubmitButton() {
+    public TextView getSubmitButton() {
+        if (null == submitButton) {
+            throw new NullPointerException("please call show at first");
+        }
         return submitButton;
     }
 
@@ -280,7 +287,7 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
         topButtonLayout.setBackgroundColor(topBackgroundColor);
         topButtonLayout.setGravity(Gravity.CENTER_VERTICAL);
 
-        cancelButton = new Button(activity);
+        cancelButton = new TextView(activity);
         cancelButton.setVisibility(cancelVisible ? View.VISIBLE : View.GONE);
         RelativeLayout.LayoutParams cancelParams = new RelativeLayout.LayoutParams(WRAP_CONTENT, MATCH_PARENT);
         cancelParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
@@ -324,7 +331,7 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
         }
         topButtonLayout.addView(titleView);
 
-        submitButton = new Button(activity);
+        submitButton = new TextView(activity);
         RelativeLayout.LayoutParams submitParams = new RelativeLayout.LayoutParams(WRAP_CONTENT, MATCH_PARENT);
         submitParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
         submitParams.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
