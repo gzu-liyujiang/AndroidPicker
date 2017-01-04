@@ -11,10 +11,10 @@ project.archivesBaseName = project.pomArtifactId
 task releaseJar(type: Jar) {
     classifier = 'classes'
     from 'build/intermediates/classes/release/'
-    from 'build/intermediates/bundles/release/'
-    exclude '**/aidl', '**/jni', '**/libs', '**/res'
-    exclude '**/AndroidManifest.xml', '**/classes.jar', '**/R.txt'
-    exclude '**/wheelpicker', '**/colorpicker', '**/filepicker'
+    //from 'build/intermediates/bundles/release/'
+    //exclude '**/aidl', '**/jni', '**/libs', '**/res'
+    //exclude '**/AndroidManifest.xml', '**/classes.jar', '**/R.txt'
+    //exclude '**/wheelpicker', '**/colorpicker', '**/filepicker'
     exclude '**/BuildConfig.class', '**/R.class'
     exclude { it.name.startsWith('R$'); }
 }
