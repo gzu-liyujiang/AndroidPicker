@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -154,10 +155,15 @@ public class DateUtils extends android.text.format.DateUtils {
      * @see #fillZero(int)
      */
     public static int trimZero(@NonNull String text) {
-        if (text.startsWith("0")) {
-            text = text.substring(1);
+        try {
+            if (text.startsWith("0")) {
+                text = text.substring(1);
+            }
+            return Integer.parseInt(text);
+        } catch (NumberFormatException e) {
+            LogUtils.warn(e);
+            return 0;
         }
-        return Integer.parseInt(text);
     }
 
     /**
@@ -188,11 +194,10 @@ public class DateUtils extends android.text.format.DateUtils {
      */
     public static Date parseDate(String dateStr, String dataFormat) {
         try {
-            @SuppressLint("SimpleDateFormat")
-            SimpleDateFormat dateFormat = new SimpleDateFormat(dataFormat);
+            SimpleDateFormat dateFormat = new SimpleDateFormat(dataFormat, Locale.PRC);
             Date date = dateFormat.parse(dateStr);
             return new Date(date.getTime());
-        } catch (Exception e) {
+        } catch (ParseException e) {
             LogUtils.warn(e);
             return null;
         }
@@ -212,7 +217,7 @@ public class DateUtils extends android.text.format.DateUtils {
      * 将指定的日期转换为一定格式的字符串
      */
     public static String formatDate(Date date, String format) {
-        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.CHINA);
+        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.PRC);
         return sdf.format(date);
     }
 

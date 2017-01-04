@@ -20,6 +20,7 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.ColorInt;
+import android.support.annotation.FloatRange;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
@@ -208,44 +209,6 @@ public class ConvertUtils {
         return binaryString;
     }
 
-    /**
-     * 转换为6位十六进制颜色代码，不含“#”
-     */
-    public static String toColorString(int color) {
-        return toColorString(color, false);
-    }
-
-    /**
-     * 转换为6位十六进制颜色代码，不含“#”
-     */
-    public static String toColorString(int color, boolean includeAlpha) {
-        String alpha = Integer.toHexString(Color.alpha(color));
-        String red = Integer.toHexString(Color.red(color));
-        String green = Integer.toHexString(Color.green(color));
-        String blue = Integer.toHexString(Color.blue(color));
-        if (alpha.length() == 1) {
-            alpha = "0" + alpha;
-        }
-        if (red.length() == 1) {
-            red = "0" + red;
-        }
-        if (green.length() == 1) {
-            green = "0" + green;
-        }
-        if (blue.length() == 1) {
-            blue = "0" + blue;
-        }
-        String colorString;
-        if (includeAlpha) {
-            colorString = alpha + red + green + blue;
-            LogUtils.verbose(String.format(Locale.CHINA, "%d to color string is %s", color, colorString));
-        } else {
-            colorString = red + green + blue;
-            LogUtils.verbose(String.format(Locale.CHINA, "%d to color string is %s%s%s%s, exclude alpha is %s", color, alpha, red, green, blue, colorString));
-        }
-        return colorString;
-    }
-
     public static String toSlashString(String str) {
         String result = "";
         char[] chars = str.toCharArray();
@@ -335,6 +298,7 @@ public class ConvertUtils {
                     options.outHeight = height;
                 }
                 bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
+                bitmap.setDensity(96);// 96 dpi
             } catch (Exception e) {
                 LogUtils.error(e);
             }
@@ -602,6 +566,55 @@ public class ConvertUtils {
 
     public static String toString(InputStream is) {
         return toString(is, "utf-8");
+    }
+
+    public static int toDarkenColor(@ColorInt int color) {
+        return toDarkenColor(color, 0.8f);
+    }
+
+    public static int toDarkenColor(@ColorInt int color, @FloatRange(from = 0f, to = 1f) float value) {
+        float[] hsv = new float[3];
+        Color.colorToHSV(color, hsv);
+        hsv[2] *= value;//HSV指Hue、Saturation、Value，即色调、饱和度和亮度，此处表示修改亮度
+        return Color.HSVToColor(hsv);
+    }
+
+    /**
+     * 转换为6位十六进制颜色代码，不含“#”
+     */
+    public static String toColorString(@ColorInt int color) {
+        return toColorString(color, false);
+    }
+
+    /**
+     * 转换为6位十六进制颜色代码，不含“#”
+     */
+    public static String toColorString(@ColorInt int color, boolean includeAlpha) {
+        String alpha = Integer.toHexString(Color.alpha(color));
+        String red = Integer.toHexString(Color.red(color));
+        String green = Integer.toHexString(Color.green(color));
+        String blue = Integer.toHexString(Color.blue(color));
+        if (alpha.length() == 1) {
+            alpha = "0" + alpha;
+        }
+        if (red.length() == 1) {
+            red = "0" + red;
+        }
+        if (green.length() == 1) {
+            green = "0" + green;
+        }
+        if (blue.length() == 1) {
+            blue = "0" + blue;
+        }
+        String colorString;
+        if (includeAlpha) {
+            colorString = alpha + red + green + blue;
+            LogUtils.verbose(String.format(Locale.CHINA, "%d to color string is %s", color, colorString));
+        } else {
+            colorString = red + green + blue;
+            LogUtils.verbose(String.format(Locale.CHINA, "%d to color string is %s%s%s%s, exclude alpha is %s", color, alpha, red, green, blue, colorString));
+        }
+        return colorString;
     }
 
     /**

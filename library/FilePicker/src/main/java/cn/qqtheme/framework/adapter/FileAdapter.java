@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 import cn.qqtheme.framework.drawable.StateColorDrawable;
 import cn.qqtheme.framework.entity.FileItem;
-import cn.qqtheme.framework.util.AssetsUtils;
+import cn.qqtheme.framework.icons.FilePickerIcon;
 import cn.qqtheme.framework.util.CompatUtils;
 import cn.qqtheme.framework.util.ConvertUtils;
 import cn.qqtheme.framework.util.FileUtils;
@@ -33,8 +33,6 @@ import cn.qqtheme.framework.util.LogUtils;
 public class FileAdapter extends BaseAdapter {
     public static final String DIR_ROOT = "..";
     public static final String DIR_PARENT = "";
-    private static final int MATCH_PARENT = ViewGroup.LayoutParams.MATCH_PARENT;
-    private static final int WRAP_CONTENT = ViewGroup.LayoutParams.WRAP_CONTENT;
     private Context context;
     private ArrayList<FileItem> data = new ArrayList<FileItem>();
     private String rootPath = null;
@@ -52,10 +50,10 @@ public class FileAdapter extends BaseAdapter {
 
     public FileAdapter(Context context) {
         this.context = context;
-        homeIcon = ConvertUtils.toDrawable(AssetsUtils.readBitmap(context, "file_picker_home.png"));
-        upIcon = ConvertUtils.toDrawable(AssetsUtils.readBitmap(context, "file_picker_updir.png"));
-        folderIcon = ConvertUtils.toDrawable(AssetsUtils.readBitmap(context, "file_picker_folder.png"));
-        fileIcon = ConvertUtils.toDrawable(AssetsUtils.readBitmap(context, "file_picker_file.png"));
+        homeIcon = ConvertUtils.toDrawable(FilePickerIcon.HOME);
+        upIcon = ConvertUtils.toDrawable(FilePickerIcon.UPDIR);
+        folderIcon = ConvertUtils.toDrawable(FilePickerIcon.FOLDER);
+        fileIcon = ConvertUtils.toDrawable(FilePickerIcon.FILE);
     }
 
     public String getCurrentPath() {
@@ -208,7 +206,8 @@ public class FileAdapter extends BaseAdapter {
             layout.setOrientation(LinearLayout.HORIZONTAL);
             layout.setGravity(Gravity.CENTER_VERTICAL);
             int height = ConvertUtils.toPx(context, itemHeight);
-            layout.setLayoutParams(new ViewGroup.LayoutParams(MATCH_PARENT, height));
+            int matchParent = ViewGroup.LayoutParams.MATCH_PARENT;
+            layout.setLayoutParams(new ViewGroup.LayoutParams(matchParent, height));
             int padding = ConvertUtils.toPx(context, 5);
             layout.setPadding(padding, padding, padding, padding);
 
@@ -219,7 +218,7 @@ public class FileAdapter extends BaseAdapter {
             layout.addView(imageView);
 
             TextView textView = new TextView(context);
-            LinearLayout.LayoutParams tvParams = new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
+            LinearLayout.LayoutParams tvParams = new LinearLayout.LayoutParams(matchParent, matchParent);
             tvParams.leftMargin = ConvertUtils.toPx(context, 10);
             textView.setLayoutParams(tvParams);
             textView.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);

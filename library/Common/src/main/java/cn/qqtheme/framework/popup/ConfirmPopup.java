@@ -42,7 +42,7 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
     protected int titleTextSize = 0;
     protected int backgroundColor = Color.WHITE;
     private TextView cancelButton, submitButton;
-    private TextView titleView;
+    private View titleView;
 
     public ConfirmPopup(Activity activity) {
         super(activity);
@@ -143,8 +143,8 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
      * 设置顶部标题栏标题文字
      */
     public void setTitleText(CharSequence titleText) {
-        if (titleView != null) {
-            titleView.setText(titleText);
+        if (titleView != null && titleView instanceof TextView) {
+            ((TextView) titleView).setText(titleText);
         } else {
             this.titleText = titleText;
         }
@@ -183,8 +183,8 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
      * 设置顶部标题栏标题文字颜色
      */
     public void setTitleTextColor(@ColorInt int titleTextColor) {
-        if (null != titleView) {
-            titleView.setTextColor(titleTextColor);
+        if (null != titleView && titleView instanceof TextView) {
+            ((TextView) titleView).setTextColor(titleTextColor);
         } else {
             this.titleTextColor = titleTextColor;
         }
@@ -225,7 +225,11 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
         this.backgroundColor = backgroundColor;
     }
 
-    public TextView getTitleView() {
+    public void setTitleView(View titleView) {
+        this.titleView = titleView;
+    }
+
+    public View getTitleView() {
         if (null == titleView) {
             throw new NullPointerException("please call show at first");
         }
@@ -313,21 +317,24 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
         });
         topButtonLayout.addView(cancelButton);
 
-        titleView = new TextView(activity);
-        RelativeLayout.LayoutParams titleParams = new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
-        int margin = ConvertUtils.toPx(activity, topPadding);
-        titleParams.leftMargin = margin;
-        titleParams.rightMargin = margin;
-        titleParams.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
-        titleParams.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
-        titleView.setLayoutParams(titleParams);
-        titleView.setGravity(Gravity.CENTER);
-        if (!TextUtils.isEmpty(titleText)) {
-            titleView.setText(titleText);
-        }
-        titleView.setTextColor(titleTextColor);
-        if (titleTextSize != 0) {
-            titleView.setTextSize(titleTextSize);
+        if (null == titleView) {
+            TextView textView = new TextView(activity);
+            RelativeLayout.LayoutParams titleParams = new RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+            int margin = ConvertUtils.toPx(activity, topPadding);
+            titleParams.leftMargin = margin;
+            titleParams.rightMargin = margin;
+            titleParams.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
+            titleParams.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
+            textView.setLayoutParams(titleParams);
+            textView.setGravity(Gravity.CENTER);
+            if (!TextUtils.isEmpty(titleText)) {
+                textView.setText(titleText);
+            }
+            textView.setTextColor(titleTextColor);
+            if (titleTextSize != 0) {
+                textView.setTextSize(titleTextSize);
+            }
+            titleView = textView;
         }
         topButtonLayout.addView(titleView);
 

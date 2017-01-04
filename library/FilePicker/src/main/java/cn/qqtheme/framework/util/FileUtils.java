@@ -16,14 +16,13 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Locale;
 import java.util.regex.Pattern;
 
 /**
@@ -76,9 +75,9 @@ public final class FileUtils {
         }
         try {
             c.close();
-        } catch (IOException t) {
+        } catch (IOException e) {
             // do nothing
-            LogUtils.warn(t);
+            LogUtils.warn(e);
         }
     }
 
@@ -97,6 +96,7 @@ public final class FileUtils {
                 if (f == null) {
                     return false;
                 }
+                //noinspection RedundantIfStatement
                 if (f.isDirectory()) {
                     return true;
                 }
@@ -328,6 +328,7 @@ public final class FileUtils {
      */
     public static boolean delete(String path, boolean deleteRootDir) {
         File file = new File(path);
+        //noinspection SimplifiableIfStatement
         if (file.exists()) {
             return delete(file, deleteRootDir);
         }
@@ -368,10 +369,13 @@ public final class FileUtils {
                 BufferedInputStream bis = new BufferedInputStream(is);
                 BufferedOutputStream bos = new BufferedOutputStream(op);
                 byte[] bt = new byte[1024 * 8];
-                int len = bis.read(bt);
-                while (len != -1) {
-                    bos.write(bt, 0, len);
-                    len = bis.read(bt);
+                while (true) {
+                    int len = bis.read(bt);
+                    if (len == -1) {
+                        break;
+                    } else {
+                        bos.write(bt, 0, len);
+                    }
                 }
                 bis.close();
                 bos.close();
@@ -415,13 +419,8 @@ public final class FileUtils {
      * 文件重命名
      */
     public static boolean rename(File src, File tar) {
-        try {
-            LogUtils.verbose(String.format("rename %s to %s", src.getAbsolutePath(), tar.getAbsolutePath()));
-            return src.renameTo(tar);
-        } catch (Exception e) {
-            LogUtils.warn(e);
-            return false;
-        }
+        LogUtils.verbose(String.format("rename %s to %s", src.getAbsolutePath(), tar.getAbsolutePath()));
+        return src.renameTo(tar);
     }
 
     /**
@@ -430,11 +429,11 @@ public final class FileUtils {
     public static String readText(String filepath, String charset) {
         LogUtils.verbose(String.format("read %s use %s", filepath, charset));
         try {
-            byte[] data = readByte(filepath);
+            byte[] data = readBytes(filepath);
             if (data != null) {
                 return new String(data, charset).trim();
             }
-        } catch (Exception e) {
+        } catch (UnsupportedEncodingException e) {
             LogUtils.warn(e);
         }
         return "";
@@ -450,21 +449,25 @@ public final class FileUtils {
     /**
      * 读取文件内容, 失败将返回空串
      */
-    public static byte[] readByte(String filepath) {
+    public static byte[] readBytes(String filepath) {
         LogUtils.verbose(String.format("read %s", filepath));
         FileInputStream fis = null;
         try {
             fis = new FileInputStream(filepath);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             byte[] buffer = new byte[1024];
-            int len;
-            while ((len = fis.read(buffer, 0, buffer.length)) != -1) {
-                baos.write(buffer, 0, len);
+            while (true) {
+                int len = fis.read(buffer, 0, buffer.length);
+                if (len == -1) {
+                    break;
+                } else {
+                    baos.write(buffer, 0, len);
+                }
             }
             byte[] data = baos.toByteArray();
             baos.close();
             return data;
-        } catch (Exception e) {
+        } catch (IOException e) {
             LogUtils.warn(e);
             return null;
         } finally {
@@ -477,9 +480,9 @@ public final class FileUtils {
      */
     public static boolean writeText(String filepath, String content, String charset) {
         try {
-            writeByte(filepath, content.getBytes(charset));
+            writeBytes(filepath, content.getBytes(charset));
             return true;
-        } catch (Exception e) {
+        } catch (UnsupportedEncodingException e) {
             LogUtils.warn(e);
             return false;
         }
@@ -495,7 +498,7 @@ public final class FileUtils {
     /**
      * 保存文件内容
      */
-    public static boolean writeByte(String filepath, byte[] data) {
+    public static boolean writeBytes(String filepath, byte[] data) {
         LogUtils.verbose(String.format("write %s", filepath));
         File file = new File(filepath);
         FileOutputStream fos = null;
@@ -509,7 +512,7 @@ public final class FileUtils {
             fos = new FileOutputStream(filepath);
             fos.write(data);
             return true;
-        } catch (Exception e) {
+        } catch (IOException e) {
             LogUtils.warn(e);
             return false;
         } finally {
@@ -640,9 +643,7 @@ public final class FileUtils {
     public static String getDateTime(File file, String format) {
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(file.lastModified());
-        SimpleDateFormat chineseDateFormat = new SimpleDateFormat(format,
-                Locale.CHINA);
-        return chineseDateFormat.format(cal.getTime());
+        return DateUtils.formatDate(cal.getTime(), format);
     }
 
     /**

@@ -1,24 +1,23 @@
 package cn.qqtheme.framework.picker;
 
 import android.app.Activity;
-import android.content.res.ColorStateList;
-import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.RelativeLayout;
 
 import java.util.Locale;
 
+import cn.qqtheme.framework.icons.ColorPickerIcon;
 import cn.qqtheme.framework.popup.ConfirmPopup;
-import cn.qqtheme.framework.util.AssetsUtils;
 import cn.qqtheme.framework.util.ConvertUtils;
 import cn.qqtheme.framework.widget.ColorPanelView;
+import cn.qqtheme.framework.widget.StrokeTextView;
 
 /**
  * 颜色选择器。
@@ -33,32 +32,39 @@ public class ColorPicker extends ConfirmPopup<LinearLayout> {
     private static final int BLACK_ID = 0x2;
     private int initColor = Color.WHITE;
     private ColorPanelView multiColorView, blackColorView;
-    private TextView hexValView;
-    private ColorStateList hexValDefaultColor;
+    private StrokeTextView hexValView;
+    //private ColorStateList hexValDefaultColor;
     private OnColorPickListener onColorPickListener;
 
     public ColorPicker(Activity activity) {
         super(activity);
         setHalfScreen(true);
+        setTitleView(createTitleView(activity));
     }
 
-    @Nullable
-    @Override
-    protected View makeHeaderView() {
-        View headerView = super.makeHeaderView();
-        hexValView = getTitleView();
-        hexValView.getLayoutParams().height = ConvertUtils.toPx(activity, 30);
+    private View createTitleView(Activity activity) {
+        hexValView = new StrokeTextView(activity);//文字描边，以便背景色和文字色一样时时仍然看得见
+        int height = ConvertUtils.toPx(activity, 28);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(WRAP_CONTENT, height);
+        int margin = ConvertUtils.toPx(activity, topPadding);
+        params.leftMargin = margin;
+        params.rightMargin = margin;
+        params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
+        params.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
+        hexValView.setLayoutParams(params);
         hexValView.setGravity(Gravity.CENTER);
         hexValView.setBackgroundColor(initColor);
-        hexValView.setTextColor(Color.BLACK);
+        //hexValView.setTextColor(Color.BLACK);
+        hexValView.setBorderColor(ConvertUtils.toDarkenColor(initColor, 0.6f));
+        hexValView.setTextColor(initColor);
         hexValView.setShadowLayer(3, 0, 2, Color.WHITE);//设置阴影，以便背景色为黑色系列时仍然看得见
         hexValView.setMinEms(6);
         hexValView.setMaxEms(8);
         hexValView.setPadding(0, 0, 0, 0);
         hexValView.setSingleLine(true);
         hexValView.setEnabled(false);
-        hexValDefaultColor = hexValView.getTextColors();
-        return headerView;
+        //hexValDefaultColor = hexValView.getTextColors();
+        return hexValView;
     }
 
     @Override
@@ -71,9 +77,9 @@ public class ColorPicker extends ConfirmPopup<LinearLayout> {
         multiColorView = new ColorPanelView(activity);
         multiColorView.setId(MULTI_ID);
         multiColorView.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, 0, 1.0f));
-        Bitmap cursorTopBitmap = AssetsUtils.readBitmap(activity, "color_picker_cursor_top.png");
-        multiColorView.setPointerDrawable(ConvertUtils.toDrawable(cursorTopBitmap));
-        multiColorView.setLockPointerInBounds(true);
+        Drawable cursorTopDrawable = ConvertUtils.toDrawable(ColorPickerIcon.CURSOR_TOP);
+        ;
+        multiColorView.setPointerDrawable(cursorTopDrawable);
         multiColorView.setOnColorChangedListener(new ColorPanelView.OnColorChangedListener() {
             @Override
             public void onColorChanged(ColorPanelView view, int color) {
@@ -85,9 +91,8 @@ public class ColorPicker extends ConfirmPopup<LinearLayout> {
         blackColorView = new ColorPanelView(activity);
         blackColorView.setId(BLACK_ID);
         blackColorView.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, ConvertUtils.toPx(activity, 30)));
-        Bitmap cursorBottomBitmap = AssetsUtils.readBitmap(activity, "color_picker_cursor_bottom.png");
-        blackColorView.setPointerDrawable(ConvertUtils.toDrawable(cursorBottomBitmap));
-        blackColorView.setLockPointerInBounds(false);
+        Drawable cursorBottomDrawable = ConvertUtils.toDrawable(ColorPickerIcon.CURSOR_BOTTOM);
+        blackColorView.setPointerDrawable(cursorBottomDrawable);
         blackColorView.setOnColorChangedListener(new ColorPanelView.OnColorChangedListener() {
             @Override
             public void onColorChanged(ColorPanelView view, int color) {
@@ -127,7 +132,9 @@ public class ColorPicker extends ConfirmPopup<LinearLayout> {
     private void updateCurrentColor(int color) {
         String hexColorString = ConvertUtils.toColorString(color, false).toUpperCase(Locale.getDefault());
         hexValView.setText(hexColorString);
-        hexValView.setTextColor(hexValDefaultColor);
+        //hexValView.setTextColor(hexValDefaultColor);
+        hexValView.setBorderColor(ConvertUtils.toDarkenColor(color, 0.6f));
+        hexValView.setTextColor(color);
         hexValView.setBackgroundColor(color);
     }
 
