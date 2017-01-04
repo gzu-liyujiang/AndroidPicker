@@ -1,6 +1,5 @@
 package cn.qqtheme.framework.util;
 
-import android.annotation.SuppressLint;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 
