@@ -14,7 +14,7 @@ task releaseJar(type: Jar) {
     //from 'build/intermediates/bundles/release/'
     //exclude '**/aidl', '**/jni', '**/libs', '**/res'
     //exclude '**/AndroidManifest.xml', '**/classes.jar', '**/R.txt'
-    //exclude '**/wheelpicker', '**/colorpicker', '**/filepicker'
+    exclude '**/wheelpicker', '**/colorpicker', '**/filepicker'
     exclude '**/BuildConfig.class', '**/R.class'
     exclude { it.name.startsWith('R$'); }
 }
