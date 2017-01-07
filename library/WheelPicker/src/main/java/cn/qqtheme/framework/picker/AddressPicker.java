@@ -264,9 +264,10 @@ public class AddressPicker extends LinkagePicker {
      * 地址提供者
      */
     public static class AddressProvider implements DataProvider {
-        private List<String> firstList = new ArrayList<String>();
-        private List<List<String>> secondList = new ArrayList<List<String>>();
-        private List<List<List<String>>> thirdList = new ArrayList<List<List<String>>>();
+        // fixed: 17-1-7 The diamond operator ("<>") should be used
+        private List<String> firstList = new ArrayList<>();
+        private List<List<String>> secondList = new ArrayList<>();
+        private List<List<List<String>>> thirdList = new ArrayList<>();
 
         public AddressProvider(List<Province> provinces) {
             parseData(provinces);
@@ -299,8 +300,8 @@ public class AddressPicker extends LinkagePicker {
                 Province pro = data.get(x);
                 firstList.add(pro.getAreaName());
                 List<City> cities = pro.getCities();
-                List<String> xCities = new ArrayList<String>();
-                List<List<String>> xCounties = new ArrayList<List<String>>();
+                List<String> xCities = new ArrayList<>();
+                List<List<String>> xCounties = new ArrayList<>();
                 int citySize = cities.size();
                 //添加地市
                 for (int y = 0; y < citySize; y++) {
@@ -308,7 +309,7 @@ public class AddressPicker extends LinkagePicker {
                     cit.setProvinceId(pro.getAreaId());
                     xCities.add(cit.getAreaName());
                     List<County> counties = cit.getCounties();
-                    ArrayList<String> yCounties = new ArrayList<String>();
+                    ArrayList<String> yCounties = new ArrayList<>();
                     int countySize = counties.size();
                     //添加区县
                     if (countySize == 0) {

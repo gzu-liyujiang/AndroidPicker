@@ -71,7 +71,7 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
 
     public static final int LINE_ALPHA = 220;
     public static final int LINE_COLOR = 0XFF83CDE6;
-    public static final float LINE_THICK = 3f;//px
+    public static final float LINE_THICK = 1f;//px
 
     private static final int MATCH_PARENT = ViewGroup.LayoutParams.MATCH_PARENT;
     private static final int WRAP_CONTENT = ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -444,7 +444,8 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
             return;
         }
         float deltaY = itemView.getY();
-        if (deltaY == 0 || itemHeight == 0) {
+        // fixed: 17-1-7  Equality tests should not be made with floating point values.
+        if ((int)deltaY == 0 || itemHeight == 0) {
             return;
         }
         if (Math.abs(deltaY) < itemHeight / 2) {

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +19,7 @@ import cn.qqtheme.framework.widget.WheelView;
 
 /**
  * 两级、三级联动选择器。默认只初始化第一级数据，第二三级数据由联动获得。
- * <p/>
+ * <p>
  * Author:李玉江[QQ:1032694760]
  * DateTime:2016/5/6 20:34
  * Builder:Android Studio
@@ -198,7 +199,9 @@ public class LinkagePicker extends WheelPicker {
         LogUtils.verbose(this, String.format(java.util.Locale.CHINA, "column weight is: %f-%f-%f"
                 , firstColumnWeight, secondColumnWeight, thirdColumnWeight));
         int[] widths = new int[3];
-        if (firstColumnWeight == 0 && secondColumnWeight == 0 && thirdColumnWeight == 0) {
+        // fixed: 17-1-7 Equality tests should not be made with floating point values.
+        if ((int) firstColumnWeight == 0 && (int) secondColumnWeight == 0
+                && (int) thirdColumnWeight == 0) {
             if (onlyTwoColumn) {
                 widths[0] = screenWidthPixels / 2;
                 widths[1] = widths[0];
@@ -412,9 +415,9 @@ public class LinkagePicker extends WheelPicker {
      * 默认的数据提供者
      */
     public static class DefaultDataProvider implements DataProvider {
-        private ArrayList<String> firstList = new ArrayList<String>();
-        private ArrayList<ArrayList<String>> secondList = new ArrayList<ArrayList<String>>();
-        private ArrayList<ArrayList<ArrayList<String>>> thirdList = new ArrayList<ArrayList<ArrayList<String>>>();
+        private ArrayList<String> firstList = new ArrayList<>();
+        private ArrayList<ArrayList<String>> secondList = new ArrayList<>();
+        private ArrayList<ArrayList<ArrayList<String>>> thirdList = new ArrayList<>();
         private boolean onlyTwo = false;
 
         public DefaultDataProvider(ArrayList<String> firstList, ArrayList<ArrayList<String>> secondList,
@@ -445,7 +448,7 @@ public class LinkagePicker extends WheelPicker {
         @Override
         public List<String> provideThirdData(int firstIndex, int secondIndex) {
             if (onlyTwo) {
-                return new ArrayList<String>();
+                return new ArrayList<>();
             } else {
                 return thirdList.get(firstIndex).get(secondIndex);
             }

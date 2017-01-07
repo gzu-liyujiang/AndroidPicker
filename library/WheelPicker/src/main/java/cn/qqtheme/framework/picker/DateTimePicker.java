@@ -64,11 +64,11 @@ public class DateTimePicker extends WheelPicker {
     @Deprecated
     public static final int HOUR = 4;
 
-    private ArrayList<String> years = new ArrayList<String>();
-    private ArrayList<String> months = new ArrayList<String>();
-    private ArrayList<String> days = new ArrayList<String>();
-    private ArrayList<String> hours = new ArrayList<String>();
-    private ArrayList<String> minutes = new ArrayList<String>();
+    private ArrayList<String> years = new ArrayList<>();
+    private ArrayList<String> months = new ArrayList<>();
+    private ArrayList<String> days = new ArrayList<>();
+    private ArrayList<String> hours = new ArrayList<>();
+    private ArrayList<String> minutes = new ArrayList<>();
     private String yearLabel = "年", monthLabel = "月", dayLabel = "日";
     private String hourLabel = "时", minuteLabel = "分";
     private int selectedYearIndex = 0, selectedMonthIndex = 0, selectedDayIndex = 0;

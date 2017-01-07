@@ -77,8 +77,7 @@ public class ColorPicker extends ConfirmPopup<LinearLayout> {
         multiColorView = new ColorPanelView(activity);
         multiColorView.setId(MULTI_ID);
         multiColorView.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, 0, 1.0f));
-        Drawable cursorTopDrawable = ConvertUtils.toDrawable(ColorPickerIcon.CURSOR_TOP);
-        ;
+        Drawable cursorTopDrawable = ConvertUtils.toDrawable(ColorPickerIcon.getCursorTop());
         multiColorView.setPointerDrawable(cursorTopDrawable);
         multiColorView.setOnColorChangedListener(new ColorPanelView.OnColorChangedListener() {
             @Override
@@ -91,7 +90,7 @@ public class ColorPicker extends ConfirmPopup<LinearLayout> {
         blackColorView = new ColorPanelView(activity);
         blackColorView.setId(BLACK_ID);
         blackColorView.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, ConvertUtils.toPx(activity, 30)));
-        Drawable cursorBottomDrawable = ConvertUtils.toDrawable(ColorPickerIcon.CURSOR_BOTTOM);
+        Drawable cursorBottomDrawable = ConvertUtils.toDrawable(ColorPickerIcon.getCursorBottom());
         blackColorView.setPointerDrawable(cursorBottomDrawable);
         blackColorView.setOnColorChangedListener(new ColorPanelView.OnColorChangedListener() {
             @Override

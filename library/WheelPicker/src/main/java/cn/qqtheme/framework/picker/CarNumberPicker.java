@@ -26,7 +26,7 @@ public class CarNumberPicker extends LinkagePicker {
     }
 
     public static class CarNumberDataProvider implements DataProvider {
-        private List<String> provinces = new ArrayList<String>();
+        private List<String> provinces = new ArrayList<>();
 
         public CarNumberDataProvider() {
             provinces = Arrays.asList(
@@ -53,12 +53,12 @@ public class CarNumberPicker extends LinkagePicker {
 
         @Override
         public List<String> provideThirdData(int firstIndex, int secondIndex) {
-            return new ArrayList<String>();
+            return new ArrayList<>();
         }
 
         @NonNull
         private List<String> parseData(String province) {
-            List<String> cities = new ArrayList<String>();
+            List<String> cities = new ArrayList<>();
             switch (province) {
                 case "京":
                     for (char i = 'A'; i <= 'M'; i++) {

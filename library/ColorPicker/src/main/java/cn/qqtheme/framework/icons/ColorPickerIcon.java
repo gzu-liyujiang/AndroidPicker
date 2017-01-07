@@ -8,7 +8,16 @@ package cn.qqtheme.framework.icons;
  */
 public class ColorPickerIcon {
 
-	public static final byte[] CURSOR_BOTTOM = {
+	public static byte[] getCursorBottom() {
+		return CURSOR_BOTTOM;
+	}
+
+	public static byte[] getCursorTop() {
+		return CURSOR_TOP;
+	}
+
+	// fixed: 17-1-7 "static final" arrays should be "private"
+	private static final byte[] CURSOR_BOTTOM = {
 		-119, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13, 73, 72, 68, 82, 0, 0, 0, 40,
 		0, 0, 0, 59, 8, 6, 0, 0, 0, 9, -68, -56, 88, 0, 0, 0, 6, 98, 75, 71,
 		68, 0, -1, 0, -1, 0, -1, -96, -67, -89, -109, 0, 0, 0, 9, 112, 72, 89, 115, 0,
@@ -69,7 +78,7 @@ public class ColorPickerIcon {
 		70, 81, 84, -108, 116, 78, -18, -3, -21, 60, 64, -45, -72, -92, -126, -92, -81, 2, -6, 12,
 		39, 58, -3, 127, 51, -46, 127, -13, -49, -93, 127, 0, 85, 91, 16, -27, -57, -7, 125, 63,
 		0, 0, 0, 0, 73, 69, 78, 68, -82, 66, 96, -126};
-	public static final byte[] CURSOR_TOP = {
+	private static final byte[] CURSOR_TOP = {
 		-119, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13, 73, 72, 68, 82, 0, 0, 0, 20,
 		0, 0, 0, 20, 8, 6, 0, 0, 0, -115, -119, 29, 13, 0, 0, 0, 6, 98, 75, 71,
 		68, 0, -1, 0, -1, 0, -1, -96, -67, -89, -109, 0, 0, 0, 9, 112, 72, 89, 115, 0,

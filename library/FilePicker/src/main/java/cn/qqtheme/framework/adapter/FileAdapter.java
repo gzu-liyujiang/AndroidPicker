@@ -50,10 +50,10 @@ public class FileAdapter extends BaseAdapter {
 
     public FileAdapter(Context context) {
         this.context = context;
-        homeIcon = ConvertUtils.toDrawable(FilePickerIcon.HOME);
-        upIcon = ConvertUtils.toDrawable(FilePickerIcon.UPDIR);
-        folderIcon = ConvertUtils.toDrawable(FilePickerIcon.FOLDER);
-        fileIcon = ConvertUtils.toDrawable(FilePickerIcon.FILE);
+        homeIcon = ConvertUtils.toDrawable(FilePickerIcon.getHOME());
+        upIcon = ConvertUtils.toDrawable(FilePickerIcon.getUPDIR());
+        folderIcon = ConvertUtils.toDrawable(FilePickerIcon.getFOLDER());
+        fileIcon = ConvertUtils.toDrawable(FilePickerIcon.getFILE());
     }
 
     public String getCurrentPath() {

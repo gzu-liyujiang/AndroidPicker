@@ -200,7 +200,7 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public List<String> provideFirstData() {
-                ArrayList<String> firstList = new ArrayList<String>();
+                ArrayList<String> firstList = new ArrayList<>();
                 firstList.add("12");
                 firstList.add("24");
                 return firstList;
@@ -208,7 +208,7 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public List<String> provideSecondData(int firstIndex) {
-                ArrayList<String> secondList = new ArrayList<String>();
+                ArrayList<String> secondList = new ArrayList<>();
                 for (int i = 1; i <= (firstIndex == 0 ? 12 : 24); i++) {
                     secondList.add(DateUtils.fillZero(i));
                 }
@@ -300,7 +300,7 @@ public class MainActivity extends BaseActivity {
 
     public void onAddress2Picker(View view) {
         try {
-            ArrayList<Province> data = new ArrayList<Province>();
+            ArrayList<Province> data = new ArrayList<>();
             String json = ConvertUtils.toString(getAssets().open("city2.json"));
             data.addAll(JSON.parseArray(json, Province.class));
             AddressPicker picker = new AddressPicker(this, data);

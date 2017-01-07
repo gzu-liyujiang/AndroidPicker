@@ -142,8 +142,9 @@ public class ColorPanelView extends View {
             int phh = mPointerHeight >> 1;
             float tx, ty;
             if (!mIsBrightnessGradient) {
-                tx = mLastX - pwh;
-                ty = mLastY - phh;
+                // fixed: 17-1-7 Math operands should be cast before assignment
+                tx = (float) (mLastX - pwh);
+                ty = (float) (mLastY - phh);
                 if (mLockPointerInBounds) {
                     tx = Math.max(mGradientRect.left, Math.min(tx, mGradientRect.right - mPointerWidth));
                     ty = Math.max(mGradientRect.top, Math.min(ty, mGradientRect.bottom - mPointerHeight));
@@ -152,7 +153,7 @@ public class ColorPanelView extends View {
                     ty = Math.max(mGradientRect.top - pwh, Math.min(ty, mGradientRect.bottom - phh));
                 }
             } else {//vertical lock
-                tx = mLastX - pwh;
+                tx = (float) (mLastX - pwh);
                 ty = mPointerHeight != mPointerDrawable.getIntrinsicHeight() ? (vh >> 1) - phh : 0;
                 if (mLockPointerInBounds) {
                     tx = Math.max(mGradientRect.left, Math.min(tx, mGradientRect.right - mPointerWidth));
@@ -203,7 +204,8 @@ public class ColorPanelView extends View {
     }
 
     public void setRadius(float radius) {
-        if (radius != mRadius) {
+        // fixed: 17-1-7  Equality tests should not be made with floating point values.
+        if ((int) radius != (int) mRadius) {
             mRadius = radius;
             invalidate();
         }
@@ -297,7 +299,8 @@ public class ColorPanelView extends View {
     }
 
     private int getColorForGradient(float[] hsv) {
-        if (hsv[2] != 1f) {
+        // fixed: 17-1-7  Equality tests should not be made with floating point values.
+        if ((int) hsv[2] != 1) {
             float oldV = hsv[2];
             hsv[2] = 1;
             int color = Color.HSVToColor(hsv);

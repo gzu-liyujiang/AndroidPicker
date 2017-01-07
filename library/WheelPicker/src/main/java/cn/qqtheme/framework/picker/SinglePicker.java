@@ -25,8 +25,8 @@ import cn.qqtheme.framework.widget.WheelView;
  */
 public class SinglePicker<T> extends WheelPicker {
     private static final int ITEM_WIDTH_UNKNOWN = -99;
-    private List<T> items = new ArrayList<T>();
-    private List<String> itemStrings = new ArrayList<String>();
+    private List<T> items = new ArrayList<>();
+    private List<String> itemStrings = new ArrayList<>();
     private WheelView wheelView;
     private OnWheelListener onWheelListener;
     private OnItemPickListener<T> onItemPickListener;
