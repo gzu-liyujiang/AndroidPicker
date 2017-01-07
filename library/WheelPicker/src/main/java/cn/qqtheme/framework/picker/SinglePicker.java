@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import cn.qqtheme.framework.util.ConvertUtils;
 import cn.qqtheme.framework.widget.WheelView;
 
 /**
@@ -23,6 +24,7 @@ import cn.qqtheme.framework.widget.WheelView;
  * @since 2015/9/29
  */
 public class SinglePicker<T> extends WheelPicker {
+    private static final int ITEM_WIDTH_UNKNOWN = -99;
     private List<T> items = new ArrayList<T>();
     private List<String> itemStrings = new ArrayList<String>();
     private WheelView wheelView;
@@ -30,6 +32,7 @@ public class SinglePicker<T> extends WheelPicker {
     private OnItemPickListener<T> onItemPickListener;
     private int selectedItemIndex = 0;
     private String label = "";
+    private int itemWidth = ITEM_WIDTH_UNKNOWN;
 
     public SinglePicker(Activity activity, T[] items) {
         this(activity, Arrays.asList(items));
@@ -103,6 +106,18 @@ public class SinglePicker<T> extends WheelPicker {
     }
 
     /**
+     * 设置选项的宽(dp)
+     */
+    public void setItemWidth(int itemWidth) {
+        if (null != wheelView) {
+            int width = ConvertUtils.toPx(activity, itemWidth);
+            wheelView.setLayoutParams(new LinearLayout.LayoutParams(width, wheelView.getLayoutParams().height));
+        } else {
+            this.itemWidth = itemWidth;
+        }
+    }
+
+    /**
      * 设置滑动监听器
      */
     public void setOnWheelListener(OnWheelListener onWheelListener) {
@@ -120,25 +135,30 @@ public class SinglePicker<T> extends WheelPicker {
             throw new IllegalArgumentException("please initial items at first, can't be empty");
         }
         LinearLayout layout = new LinearLayout(activity);
+        layout.setLayoutParams(new ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
         layout.setOrientation(LinearLayout.HORIZONTAL);
         layout.setGravity(Gravity.CENTER);
-        layout.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
+
         wheelView = new WheelView(activity);
         wheelView.setTextSize(textSize);
         wheelView.setTextColor(textColorNormal, textColorFocus);
         wheelView.setLineConfig(lineConfig);
         wheelView.setOffset(offset);
         wheelView.setCycleDisable(cycleDisable);
+        layout.addView(wheelView);
+
         if (TextUtils.isEmpty(label)) {
-            layout.addView(wheelView, new LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
+            wheelView.setLayoutParams(new LinearLayout.LayoutParams(screenWidthPixels, WRAP_CONTENT));
         } else {
-            layout.addView(wheelView, new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+            wheelView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
             TextView labelView = new TextView(activity);
+            labelView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
             labelView.setTextColor(textColorFocus);
             labelView.setTextSize(textSize);
             labelView.setText(label);
-            layout.addView(labelView, new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+            layout.addView(labelView);
         }
+
         wheelView.setItems(itemStrings, selectedItemIndex);
         wheelView.setOnWheelListener(new WheelView.OnWheelListener() {
             @Override
@@ -149,6 +169,10 @@ public class SinglePicker<T> extends WheelPicker {
                 }
             }
         });
+        if (itemWidth != ITEM_WIDTH_UNKNOWN) {
+            int width = ConvertUtils.toPx(activity, itemWidth);
+            wheelView.setLayoutParams(new LinearLayout.LayoutParams(width, wheelView.getLayoutParams().height));
+        }
         return layout;
     }
 
@@ -172,6 +196,10 @@ public class SinglePicker<T> extends WheelPicker {
 
     public int getSelectedIndex() {
         return selectedItemIndex;
+    }
+
+    public WheelView getWheelView() {
+        return wheelView;
     }
 
     public interface OnItemPickListener<T> {

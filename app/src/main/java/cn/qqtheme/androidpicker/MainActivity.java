@@ -177,7 +177,7 @@ public class MainActivity extends BaseActivity {
         OptionPicker picker = new OptionPicker(this, new String[]{
                 "第一项", "第二项", "这是一个很长很长很长很长很长很长很长很长很长的很长很长的很长很长的项"
         });
-        picker.setOffset(3);
+        picker.setOffset(1);
         picker.setSelectedIndex(0);
         picker.setTextSize(11);
         picker.setLineConfig(new WheelView.LineConfig(0));//使用最长的线
@@ -201,8 +201,8 @@ public class MainActivity extends BaseActivity {
             @Override
             public List<String> provideFirstData() {
                 ArrayList<String> firstList = new ArrayList<String>();
-                firstList.add("12小时制");
-                firstList.add("24小时制");
+                firstList.add("12");
+                firstList.add("24");
                 return firstList;
             }
 
@@ -210,7 +210,7 @@ public class MainActivity extends BaseActivity {
             public List<String> provideSecondData(int firstIndex) {
                 ArrayList<String> secondList = new ArrayList<String>();
                 for (int i = 1; i <= (firstIndex == 0 ? 12 : 24); i++) {
-                    secondList.add(DateUtils.fillZero(i) + "点");
+                    secondList.add(DateUtils.fillZero(i));
                 }
                 return secondList;
             }
@@ -222,8 +222,10 @@ public class MainActivity extends BaseActivity {
 
         };
         LinkagePicker picker = new LinkagePicker(this, provider);
+        picker.setCycleDisable(true);
+        picker.setLabel("小时制", "点");
         picker.setSelectedIndex(0, 8);
-        //picker.setSelectedItem("12小时制", "9点");
+        //picker.setSelectedItem("12", "9");
         picker.setLineConfig(new WheelView.LineConfig(0));//使用最长的线
         picker.setOnLinkageListener(new LinkagePicker.OnLinkageListener() {
 
@@ -262,6 +264,7 @@ public class MainActivity extends BaseActivity {
         config.setAlpha(140);//线透明度
         config.setRatio((float) (1.0 / 8.0));//线比率
         picker.setLineConfig(config);
+        picker.setItemWidth(200);
         picker.setBackgroundColor(0xFFE1E1E1);
         //picker.setSelectedItem(isChinese ? "处女座" : "Virgo");
         picker.setSelectedIndex(7);
@@ -302,6 +305,8 @@ public class MainActivity extends BaseActivity {
             data.addAll(JSON.parseArray(json, Province.class));
             AddressPicker picker = new AddressPicker(this, data);
             picker.setCycleDisable(true);
+            picker.setLineVisible(false);
+            picker.setShadowVisible(true);
             picker.setHideProvince(true);
             picker.setSelectedItem("贵州", "贵阳", "花溪");
             picker.setOnAddressPickListener(new AddressPicker.OnAddressPickListener() {

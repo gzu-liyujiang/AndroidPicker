@@ -19,7 +19,7 @@ public abstract class WheelPicker extends ConfirmPopup<View> {
     protected int textSize = WheelView.TEXT_SIZE;
     protected int textColorNormal = WheelView.TEXT_COLOR_NORMAL;
     protected int textColorFocus = WheelView.TEXT_COLOR_FOCUS;
-    protected int offset = WheelView.OFF_SET;
+    protected int offset = WheelView.ITEM_OFF_SET;
     protected boolean cycleDisable = false;
     protected WheelView.LineConfig lineConfig;
     private View contentView;
@@ -58,6 +58,16 @@ public abstract class WheelPicker extends ConfirmPopup<View> {
             lineConfig = new WheelView.LineConfig();
         }
         lineConfig.setVisible(lineVisible);
+    }
+
+    /**
+     * 设置分隔阴影是否可见
+     */
+    public void setShadowVisible(boolean shadowVisible) {
+        if (null == lineConfig) {
+            lineConfig = new WheelView.LineConfig();
+        }
+        lineConfig.setShadowVisible(shadowVisible);
     }
 
     /**

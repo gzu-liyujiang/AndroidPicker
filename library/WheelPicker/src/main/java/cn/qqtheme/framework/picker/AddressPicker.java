@@ -164,22 +164,20 @@ public class AddressPicker extends LinkagePicker {
                 if (onWheelListener != null) {
                     onWheelListener.onProvinceWheeled(selectedFirstIndex, selectedFirstItem);
                 }
-                if (isUserScroll) {
-                    LogUtils.verbose(this, "change cities after province wheeled");
-                    //根据省份获取地市
-                    List<String> cities = provider.provideSecondData(selectedFirstIndex);
-                    if (cities.size() > 0) {
-                        cityView.setItems(cities, selectedSecondIndex);
-                    } else {
-                        cityView.setItems(new ArrayList<String>());
-                    }
-                    //根据地市获取区县
-                    List<String> counties = provider.provideThirdData(selectedFirstIndex, selectedSecondIndex);
-                    if (counties.size() > 0) {
-                        countyView.setItems(counties, selectedThirdIndex);
-                    } else {
-                        countyView.setItems(new ArrayList<String>());
-                    }
+                LogUtils.verbose(this, "change cities after province wheeled");
+                //根据省份获取地市
+                List<String> cities = provider.provideSecondData(selectedFirstIndex);
+                if (cities.size() > 0) {
+                    cityView.setItems(cities, selectedSecondIndex);
+                } else {
+                    cityView.setItems(new ArrayList<String>());
+                }
+                //根据地市获取区县
+                List<String> counties = provider.provideThirdData(selectedFirstIndex, selectedSecondIndex);
+                if (counties.size() > 0) {
+                    countyView.setItems(counties, selectedThirdIndex);
+                } else {
+                    countyView.setItems(new ArrayList<String>());
                 }
             }
         });
@@ -194,16 +192,14 @@ public class AddressPicker extends LinkagePicker {
                 if (onWheelListener != null) {
                     onWheelListener.onCityWheeled(selectedSecondIndex, selectedSecondItem);
                 }
-                if (isUserScroll) {
-                    LogUtils.verbose(this, "change counties after city wheeled");
-                    //根据地市获取区县
-                    List<String> counties = provider.provideThirdData(selectedFirstIndex, selectedSecondIndex);
-                    if (counties.size() > 0) {
-                        //若不是用户手动滚动，说明联动需要指定默认项
-                        countyView.setItems(counties, selectedThirdIndex);
-                    } else {
-                        countyView.setItems(new ArrayList<String>());
-                    }
+                LogUtils.verbose(this, "change counties after city wheeled");
+                //根据地市获取区县
+                List<String> counties = provider.provideThirdData(selectedFirstIndex, selectedSecondIndex);
+                if (counties.size() > 0) {
+                    //若不是用户手动滚动，说明联动需要指定默认项
+                    countyView.setItems(counties, selectedThirdIndex);
+                } else {
+                    countyView.setItems(new ArrayList<String>());
                 }
             }
         });

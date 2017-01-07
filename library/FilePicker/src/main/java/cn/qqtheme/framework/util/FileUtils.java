@@ -198,6 +198,7 @@ public final class FileUtils {
                 if (f.isDirectory()) {
                     return false;
                 }
+                //noinspection SimplifiableIfStatement
                 if (filterPattern == null) {
                     return true;
                 }

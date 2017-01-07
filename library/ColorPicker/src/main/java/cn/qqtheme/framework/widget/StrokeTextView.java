@@ -23,6 +23,7 @@ import cn.qqtheme.framework.util.ConvertUtils;
  */
 public class StrokeTextView extends TextView {
     private TextPaint textPaint;
+    private boolean isStroke = false;
     private int borderWidth = 3;//dp
     private int textColor = Color.WHITE;
     private int borderColor = Color.BLACK;
@@ -30,6 +31,12 @@ public class StrokeTextView extends TextView {
     public StrokeTextView(Context context) {
         super(context);
         init();
+    }
+
+    public StrokeTextView(Context context, boolean isStroke) {
+        super(context);
+        init();
+        this.isStroke = isStroke;
     }
 
     public StrokeTextView(Context context, AttributeSet attrs) {
@@ -44,6 +51,11 @@ public class StrokeTextView extends TextView {
 
     private void init() {
         textPaint = getPaint();
+    }
+
+    public void setStroke(boolean stroke) {
+        isStroke = stroke;
+        invalidate();
     }
 
     public void setBorderWidth(int borderWidth) {
@@ -70,6 +82,10 @@ public class StrokeTextView extends TextView {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        if (!isStroke) {
+            super.onDraw(canvas);
+            return;
+        }
         if (textColor == borderColor) {
             borderColor = ConvertUtils.toDarkenColor(borderColor, 0.7f);
         }

@@ -2,312 +2,197 @@ package cn.qqtheme.framework.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
+import android.os.Build;
 import android.support.annotation.ColorInt;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.FloatRange;
 import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.annotation.Size;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.AbsListView;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 import cn.qqtheme.framework.util.ConvertUtils;
 import cn.qqtheme.framework.util.LogUtils;
 
 /**
- * 基于原版(https://github.com/wangjiegulu/WheelView)作了一下修改：
- * 去掉回弹阴影
- * 修正以便支持联动效果
- * 可设置颜色
- * 设置文字大小
- * 分隔线是否可见
- * 初始设置选中选项
- * 伪循环滚动
+ * 滑轮控件，参见：https://github.com/venshine/WheelView
+ * <br />
+ * Author:李玉江[QQ:1032694760]
+ * DateTime:2017/01/06 18:05
+ * Builder:Android Studio
  *
- * @author 李玉江[QQ:1023694760]
- * @since 2015/12/17
+ * @see WheelAdapter
+ * @see ItemView
+ * @see LineConfig
+ * @see OnWheelListener
+ * @see WheelDrawable
+ * @see HoloWheelDrawable
+ * @see ShadowWheelDrawable
  */
-public class WheelView extends ScrollView {
-    public static final int TEXT_SIZE = 20;
-    public static final int TEXT_PADDING_TOP_BOTTOM = 8;
-    public static final int TEXT_PADDING_LEFT_RIGHT = 15;
+public class WheelView extends ListView implements ListView.OnScrollListener, View.OnTouchListener {
+    public static final int SMOOTH_SCROLL_DURATION = 50;//ms
+
+    public static final int TEXT_SIZE = 16;//sp
+    public static final float TEXT_ALPHA = 0.7f;
     public static final int TEXT_COLOR_FOCUS = 0XFF0288CE;
     public static final int TEXT_COLOR_NORMAL = 0XFFBBBBBB;
-    public static final int LINE_ALPHA = 150;
+
+    public static final int ITEM_OFF_SET = 2;
+    public static final int ITEM_HEIGHT = 45;//dp
+    public static final int ITEM_PADDING_TOP_BOTTOM = 8;//dp
+    public static final int ITEM_PADDING_LEFT_RIGHT = 15;//dp
+    public static final int ITEM_MARGIN = 5;//dp
+    public static final int ITEM_TAG_IMAGE = 100;
+    public static final int ITEM_TAG_TEXT = 101;
+
+    public static final int LINE_ALPHA = 220;
     public static final int LINE_COLOR = 0XFF83CDE6;
-    public static final float LINE_THICK = 1f;
-    public static final int OFF_SET = 2;
-    private static final int DELAY = 50;//自动滚动延迟毫秒数
-    private static final int DELTA = 100;//触发伪循环的慢滚或速滑距离
+    public static final float LINE_THICK = 3f;//px
+
     private static final int MATCH_PARENT = ViewGroup.LayoutParams.MATCH_PARENT;
     private static final int WRAP_CONTENT = ViewGroup.LayoutParams.WRAP_CONTENT;
 
-    private Context context;
-    private LinearLayout views;//容器
-    private LinkedList<String> items = new LinkedList<String>();
-    private int offset = OFF_SET; // 偏移量（需要在最前面和最后面补全）
-
-    private int displayItemCount; // 每页显示的数量
-
-    private int selectedIndex = OFF_SET;//索引值含补全的占位符的索引
-    private int initialY;
-
-    private Runnable scrollerTask = new ScrollerTask();
-    private int itemHeight = 0;
+    private int itemHeight = 0; // 每一项高度
+    private int currentPosition = -1;    // 记录滚轮当前刻度
+    private WheelAdapter adapter = new WheelAdapter();
     private OnWheelListener onWheelListener;
 
     private int textSize = TEXT_SIZE;
     private int textColorNormal = TEXT_COLOR_NORMAL;
     private int textColorFocus = TEXT_COLOR_FOCUS;
     private boolean isUserScroll = false;//是否用户手动滚动
-    private boolean cycleDisable = false;//是否禁用伪循环
-
-    private LineConfig lineConfig;
+    private LineConfig lineConfig = null;//分割线配置
 
     public WheelView(Context context) {
         super(context);
-        init(context);
+        init();
     }
 
     public WheelView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context);
+        init();
     }
 
-    public WheelView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        init(context);
+    public WheelView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init();
     }
 
-    private void init(Context context) {
-        this.context = context;
-
-        // 2015/12/15 去掉ScrollView的阴影
+    private void init() {
+        setVerticalScrollBarEnabled(false);
+        setScrollingCacheEnabled(false);
+        setCacheColorHint(Color.TRANSPARENT);
         setFadingEdgeLength(0);
         setOverScrollMode(OVER_SCROLL_NEVER);
-        setVerticalScrollBarEnabled(false);
-
-        views = new LinearLayout(context);
-        views.setOrientation(LinearLayout.VERTICAL);
-        addView(views);
-    }
-
-    private void startScrollerTask() {
-        initialY = getScrollY();
-        postDelayed(scrollerTask, DELAY);
-    }
-
-    private void initData() {
-        long startTime = System.currentTimeMillis();
-
-        displayItemCount = offset * 2 + 1;
-
-        // 2015/12/15 添加此句才可以支持联动效果
-        views.removeAllViews();
-
-        //对象复用，可参考这个基于ListView的实现方式：https://github.com/venshine/WheelView
-        for (String item : items) {
-            views.addView(createView(item));
+        setLayoutParams(new ViewGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+        setDividerHeight(0);
+        setOnScrollListener(this);
+        setOnTouchListener(this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setNestedScrollingEnabled(true);
         }
-
-        // 2016/1/15 焦点文字颜色高亮位置，逆推“int position = y / itemHeight + offset”
-        refreshItemView(itemHeight * (selectedIndex - offset));
-
-        long millis = System.currentTimeMillis() - startTime;
-        LogUtils.verbose(this, "init data spent " + millis + "ms");
+        addOnGlobalLayoutListener();
+        super.setAdapter(adapter);
     }
 
-    private TextView createView(String item) {
-        TextView tv = new TextView(context);
-        tv.setLayoutParams(new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
-        tv.setSingleLine(true);
-        tv.setEllipsize(TextUtils.TruncateAt.END);
-        tv.setText(item);
-        tv.setTextSize(textSize);
-        tv.setGravity(Gravity.CENTER);
-        int paddingTopBottom = ConvertUtils.toPx(context, TEXT_PADDING_TOP_BOTTOM);
-        int paddingLeftRight = ConvertUtils.toPx(context, TEXT_PADDING_LEFT_RIGHT);
-        tv.setPadding(paddingLeftRight, paddingTopBottom, paddingLeftRight, paddingTopBottom);
-        if (0 == itemHeight) {
-            int wSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
-            int hSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2, MeasureSpec.AT_MOST);
-            tv.measure(wSpec, hSpec);
-            itemHeight = tv.getMeasuredHeight();
-            LogUtils.verbose(this, "itemHeight: " + itemHeight);
-            views.setLayoutParams(new LayoutParams(MATCH_PARENT, itemHeight * displayItemCount));
-            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) getLayoutParams();
-            setLayoutParams(new LinearLayout.LayoutParams(lp.width, itemHeight * displayItemCount));
-        }
-        return tv;
-    }
-
-
-    private void refreshItemView(int y) {
-        int position = y / itemHeight + offset;
-        int remainder = y % itemHeight;
-        int divided = y / itemHeight;
-
-        if (remainder == 0) {
-            position = divided + offset;
-        } else {
-            if (remainder > itemHeight / 2) {
-                position = divided + offset + 1;
+    private void addOnGlobalLayoutListener() {
+        getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver
+                .OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                } else {
+                    getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                }
+                int childCount = getChildCount();
+                if (childCount > 0 && itemHeight == 0) {
+                    itemHeight = getChildAt(0).getHeight();
+                    LogUtils.verbose(this, "itemHeight=" + itemHeight);
+                    if (itemHeight != 0) {
+                        int wheelSize = adapter.getWheelSize();
+                        ViewGroup.LayoutParams params = getLayoutParams();
+                        params.height = itemHeight * wheelSize;
+                        refreshVisibleItems(getFirstVisiblePosition(),
+                                getCurrentPosition() + wheelSize / 2, wheelSize / 2);
+                        changeBackground();
+                    }
+                }
             }
-        }
-        LogUtils.verbose("current scroll position : " + position);
+        });
+    }
 
-        int childSize = views.getChildCount();
-        for (int i = 0; i < childSize; i++) {
-            TextView itemView = (TextView) views.getChildAt(i);
-            if (null == itemView) {
-                return;
-            }
-            // 2015/12/15 可设置颜色
-            if (position == i) {
-                itemView.setTextColor(textColorFocus);
+    /**
+     * 设置背景
+     */
+    private void changeBackground() {
+        int wheelSize = adapter.getWheelSize();
+        if (null == lineConfig) {
+            lineConfig = new LineConfig();
+        }
+        lineConfig.setWidth(getWidth());
+        lineConfig.setHeight(itemHeight * wheelSize);
+        lineConfig.setWheelSize(wheelSize);
+        lineConfig.setItemHeight(itemHeight);
+        Drawable drawable;
+        WheelDrawable holoWheelDrawable = new HoloWheelDrawable(lineConfig);
+        if (lineConfig.isShadowVisible()) {
+            WheelDrawable shadowWheelDrawable = new ShadowWheelDrawable(lineConfig);
+            if (lineConfig.isVisible()) {
+                drawable = new LayerDrawable(new Drawable[]{shadowWheelDrawable, holoWheelDrawable});
             } else {
-                itemView.setTextColor(textColorNormal);
+                drawable = shadowWheelDrawable;
             }
+        } else {
+            drawable = holoWheelDrawable;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            super.setBackground(drawable);
+        } else {
+            //noinspection deprecation
+            super.setBackgroundDrawable(drawable);
         }
     }
 
     /**
-     * 选中回调
+     * 设置滚轮是否循环滚动
      */
-    private void onSelectedCallback() {
-        if (null != onWheelListener) {
-            // 2015/12/25 真实的index应该忽略偏移量
-            int realIndex = selectedIndex - offset;
-            LogUtils.verbose("isUserScroll=" + isUserScroll + ",selectedIndex=" + selectedIndex + ",realIndex=" + realIndex);
-            onWheelListener.onSelected(isUserScroll, realIndex, items.get(this.selectedIndex));
+    public void setLoop(boolean loop) {
+        if (loop != adapter.isLoop()) {
+            setSelection(0);
+            adapter.setLoop(loop);
         }
-    }
-
-    @Deprecated
-    @Override
-    public final void setBackgroundColor(int color) {
-        throwUnsupportedException();
-    }
-
-    @Deprecated
-    @Override
-    public final void setBackgroundResource(int resid) {
-        throwUnsupportedException();
-    }
-
-    @Deprecated
-    @Override
-    public final void setBackground(Drawable background) {
-        throwUnsupportedException();
-    }
-
-    @Deprecated
-    @SuppressWarnings("deprecation")
-    @Override
-    public final void setBackgroundDrawable(Drawable background) {
-        throwUnsupportedException();
-    }
-
-    private void throwUnsupportedException() {
-        throw new UnsupportedOperationException("don't set background");
-    }
-
-    private void changeBackgroundLineDrawable(boolean isSizeChanged) {
-        LogUtils.verbose(this, "isSizeChanged=" + isSizeChanged + ", config is " + lineConfig);
-        if (!lineConfig.isVisible()) {
-            return;
-        }
-        //noinspection deprecation
-        super.setBackgroundDrawable(new LineDrawable(lineConfig));
-    }
-
-    public void setLineConfig(@Nullable LineConfig config) {
-        if (null == config) {
-            LogUtils.verbose(this, "line config is null, will hide line");
-            if (null != lineConfig) {
-                lineConfig.setVisible(false);
-            }
-            return;
-        }
-        if (null == lineConfig) {
-            config.setWidth(getResources().getDisplayMetrics().widthPixels);
-            int[] area = new int[2];
-            area[0] = itemHeight * offset;
-            area[1] = itemHeight * (offset + 1);
-            config.setArea(area);
-        }
-        lineConfig = config;
-        changeBackgroundLineDrawable(false);
-    }
-
-    @Override
-    protected void onScrollChanged(int l, int t, int oldl, int oldt) {
-        super.onScrollChanged(l, t, oldl, oldt);
-        LogUtils.verbose(this, "horizontal scroll origin: " + l + ", vertical scroll origin: " + t);
-        refreshItemView(t);
-    }
-
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        LogUtils.verbose(this, "onSizeChanged viewWidth=" + w);
-        if (null == lineConfig) {
-            lineConfig = new LineConfig();
-            lineConfig.setColor(LINE_COLOR);
-            lineConfig.setWidth(w);
-            lineConfig.setThick(ConvertUtils.toPx(context, LINE_THICK));
-        }
-        lineConfig.setWidth(w);
-        int[] area = new int[2];
-        area[0] = itemHeight * offset;
-        area[1] = itemHeight * (offset + 1);
-        lineConfig.setArea(area);
-        changeBackgroundLineDrawable(true);
-    }
-
-    @Override
-    public void fling(int velocityY) {
-        super.fling(velocityY / 3);
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent ev) {
-        isUserScroll = true;//触发触摸事件，说明是用户在滚动
-        switch (ev.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                LogUtils.verbose(this, "press down, cycleDisable=" + cycleDisable);
-                break;
-            case MotionEvent.ACTION_UP:
-                LogUtils.verbose(this, "press up, items=" + items.size() + ", offset=" + offset);
-                startScrollerTask();
-                break;
-        }
-        return super.onTouchEvent(ev);
     }
 
     private void _setItems(List<String> list) {
-        items.clear();
-        items.addAll(list);
-        // 前面和后面补全
-        for (int i = 0; i < offset; i++) {
-            items.addFirst("");
-            items.addLast("");
+        if (null == list || list.size() == 0) {
+            throw new IllegalArgumentException("data are empty");
         }
-        initData();
+        adapter.setData(list);
     }
 
     public void setItems(List<String> list) {
@@ -360,71 +245,244 @@ public class WheelView extends ScrollView {
     }
 
     public int getOffset() {
-        return offset;
+        return (adapter.getWheelSize() - 1) / 2;
     }
 
+    /**
+     * 设置滚轮个数偏移量
+     */
     public void setOffset(@IntRange(from = 1, to = 3) int offset) {
         if (offset < 1 || offset > 3) {
             throw new IllegalArgumentException("Offset must between 1 and 3");
         }
-        this.offset = offset;
+        int wheelSize = offset * 2 + 1;
+        adapter.setWheelSize(wheelSize);
     }
 
     public void setCycleDisable(boolean cycleDisable) {
-        this.cycleDisable = cycleDisable;
-    }
-
-    /**
-     * 从0开始计数，所有项包括偏移量
-     */
-    private void setSelectedIndex(@IntRange(from = 0) final int index) {
-        isUserScroll = false;
-        post(new Runnable() {
-            @Override
-            public void run() {
-                //滚动到选中项的位置，smoothScrollTo滚动视觉效果有延迟
-                //smoothScrollTo(0, index * itemHeight);
-                scrollTo(0, index * itemHeight);
-                //选中这一项的值
-                selectedIndex = index + offset;
-                onSelectedCallback();
-                //默认选中第一项时颜色需要高亮
-                refreshItemView(itemHeight * index);
-            }
-        });
-    }
-
-    public void setSelectedItem(String item) {
-        if (TextUtils.isEmpty(item)) {
-            return;
-        }
-        for (int i = 0; i < items.size(); i++) {
-            if (items.get(i).equals(item)) {
-                //调用_setItems(List)时额外添加了offset个占位符到items里，需要忽略占位符所占的位
-                setSelectedIndex(i - offset);
-                break;
-            }
-        }
-    }
-
-    public String getSelectedItem() {
-        return items.get(selectedIndex);
+        adapter.setLoop(!cycleDisable);
     }
 
     public int getSelectedIndex() {
-        return selectedIndex - offset;
+        return getCurrentPosition();
+    }
+
+    public void setSelectedIndex(int index) {
+        setSelection(index);
     }
 
     /**
-     * @deprecated use {@link #setOnWheelListener(OnWheelListener)} instead
+     * 获取当前滚轮位置的数据
+     */
+    @Override
+    public String getSelectedItem() {
+        int position = getCurrentPosition();
+        return adapter.getData().get(position);
+    }
+
+    public void setSelectedItem(String item) {
+        setSelection(adapter.getData().indexOf(item));
+    }
+
+    /**
+     * 设置滚轮位置
+     */
+    @Override
+    public void setSelection(final int selection) {
+        isUserScroll = false;
+        super.setSelection(getRealPosition(selection));
+        refreshCurrentPosition();
+    }
+
+    /**
+     * 获得滚轮当前真实位置
+     */
+    private int getRealPosition(int position) {
+        int realCount = adapter.getRealCount();
+        if (realCount == 0) {
+            return 0;
+        }
+        if (adapter.isLoop()) {
+            int d = Integer.MAX_VALUE / 2 / realCount;
+            return position + d * realCount - adapter.getWheelSize() / 2;
+        }
+        return position;
+    }
+
+    /**
+     * 获取当前滚轮位置
+     */
+    public int getCurrentPosition() {
+        if (currentPosition == -1) {
+            return 0;
+        }
+        return currentPosition;
+    }
+
+    /**
+     * 设置滚轮数据适配器
+     *
+     * @deprecated 使用{@link #setItems}代替
      */
     @Deprecated
-    public void setOnWheelViewListener(OnWheelViewListener onWheelListener) {
-        setOnWheelListener(onWheelListener);
+    @Override
+    public void setAdapter(ListAdapter adapter) {
+        if (adapter != null && adapter instanceof WheelAdapter) {
+            this.adapter = (WheelAdapter) adapter;
+            super.setAdapter(this.adapter);
+        } else {
+            throw new IllegalArgumentException("please invoke setItems");
+        }
+    }
+
+    /**
+     * 获得滚轮数据总数
+     */
+    public int getWheelCount() {
+        return adapter.getRealCount();
+    }
+
+    private int getSmoothDistance(float scrollDistance) {
+        if (Math.abs(scrollDistance) <= 2) {
+            return (int) scrollDistance;
+        } else if (Math.abs(scrollDistance) < 12) {
+            return scrollDistance > 0 ? 2 : -2;
+        } else {
+            return (int) (scrollDistance / 6);  // 减缓平滑滑动速率
+        }
+    }
+
+    private void refreshCurrentPosition() {
+        if (getChildAt(0) == null || itemHeight == 0) {
+            return;
+        }
+        int firstPosition = getFirstVisiblePosition();
+        if (adapter.isLoop() && firstPosition == 0) {
+            return;
+        }
+        int position;
+        if (Math.abs(getChildAt(0).getY()) <= itemHeight / 2) {
+            position = firstPosition;
+        } else {
+            position = firstPosition + 1;
+        }
+        int wheelSize = adapter.getWheelSize();
+        refreshVisibleItems(firstPosition, position + wheelSize / 2, wheelSize / 2);
+        if (adapter.isLoop()) {
+            position = (position + wheelSize / 2) % getWheelCount();
+        }
+        if (position == currentPosition) {
+            LogUtils.verbose("scrolling position: " + position);
+            return;
+        }
+        currentPosition = position;
+        LogUtils.verbose("refresh position as: " + position);
+        postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                int index = getSelectedIndex();
+                String item = getSelectedItem();
+                LogUtils.verbose("isUserScroll=" + isUserScroll + ", index=" + index + ", item=" + item);
+                if (null != onWheelListener) {
+                    onWheelListener.onSelected(isUserScroll, index, item);
+                }
+            }
+        }, 10);
+    }
+
+    private void refreshVisibleItems(int firstPosition, int curPosition, int offset) {
+        for (int i = curPosition - offset; i <= curPosition + offset; i++) {
+            View itemView = getChildAt(i - firstPosition);
+            if (itemView == null) {
+                continue;
+            }
+            TextView textView = (TextView) itemView.findViewWithTag(ITEM_TAG_TEXT);
+            refreshTextView(i, curPosition, itemView, textView);
+        }
+    }
+
+    private void refreshTextView(int position, int curPosition, View
+            itemView, TextView textView) {
+        if (curPosition == position) { // 选中
+            float defTextZoom = 1.1f;
+            setTextView(itemView, textView, textColorFocus, textSize * defTextZoom, 1.0f);
+        } else { // 未选中
+            int delta = Math.abs(position - curPosition);
+            float alpha = (float) Math.pow(TEXT_ALPHA, delta);
+            setTextView(itemView, textView, textColorNormal, textSize, alpha);
+        }
+    }
+
+    private void setTextView(View itemView, TextView textView, int textColor, float textSize, float textAlpha) {
+        textView.setTextColor(textColor);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSize);
+        itemView.setAlpha(textAlpha);
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        v.getParent().requestDisallowInterceptTouchEvent(true);
+        isUserScroll = true;//触发触摸事件，说明是用户在滚动
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                LogUtils.verbose(this, "press down");
+                break;
+            case MotionEvent.ACTION_UP:
+                LogUtils.verbose(this, "press up: currentPosition=" + getCurrentPosition());
+                break;
+        }
+        return false;
+    }
+
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+        if (scrollState != SCROLL_STATE_IDLE) {
+            return;
+        }
+        View itemView = getChildAt(0);
+        if (itemView == null) {
+            return;
+        }
+        float deltaY = itemView.getY();
+        if (deltaY == 0 || itemHeight == 0) {
+            return;
+        }
+        if (Math.abs(deltaY) < itemHeight / 2) {
+            int d = getSmoothDistance(deltaY);
+            smoothScrollBy(d, SMOOTH_SCROLL_DURATION);
+        } else {
+            int d = getSmoothDistance(itemHeight + deltaY);
+            smoothScrollBy(d, SMOOTH_SCROLL_DURATION);
+        }
+    }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int
+            visibleItemCount, int totalItemCount) {
+        if (visibleItemCount != 0) {
+            refreshCurrentPosition();
+        }
+    }
+
+    @Override
+    protected void onMeasure(int widthSpec, int heightSpec) {
+        int width = getLayoutParams().width;
+        LogUtils.verbose(this, "onMeasure: width is " + width);
+        if (width == WRAP_CONTENT) {
+            //宽度自适应
+            super.onMeasure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED), heightSpec);
+        } else {
+            //宽度填充屏幕或明确设置了宽度
+            super.onMeasure(widthSpec, heightSpec);
+        }
     }
 
     public void setOnWheelListener(OnWheelListener onWheelListener) {
         this.onWheelListener = onWheelListener;
+    }
+
+    public void setLineConfig(LineConfig lineConfig) {
+        this.lineConfig = lineConfig;
     }
 
     public interface OnWheelListener {
@@ -445,63 +503,20 @@ public class WheelView extends ScrollView {
     public interface OnWheelViewListener extends OnWheelListener {
     }
 
-    private class ScrollerTask implements Runnable {
-
-        @Override
-        public void run() {
-            // 2015/12/17 java.lang.ArithmeticException: divide by zero
-            if (itemHeight == 0) {
-                LogUtils.debug(this, "itemHeight is zero");
-                return;
-            }
-            int newY = getScrollY();
-            if (initialY - newY != 0) {
-                startScrollerTask();
-                return;
-            }
-            // stopped
-            final int remainder = initialY % itemHeight;
-            final int divided = initialY / itemHeight;
-            LogUtils.verbose(this, "initialY: " + initialY + ", remainder: " + remainder + ", divided: " + divided);
-            if (remainder == 0) {
-                selectedIndex = divided + offset;
-                onSelectedCallback();
-                return;
-            }
-            if (remainder > itemHeight / 2) {
-                post(new Runnable() {
-                    @Override
-                    public void run() {
-                        smoothScrollTo(0, initialY - remainder + itemHeight);
-                        selectedIndex = divided + offset + 1;
-                        onSelectedCallback();
-                    }
-                });
-            } else {
-                post(new Runnable() {
-                    @Override
-                    public void run() {
-                        smoothScrollTo(0, initialY - remainder);
-                        selectedIndex = divided + offset;
-                        onSelectedCallback();
-                    }
-                });
-            }
-        }
-
-    }
-
     /**
      * 选中项的分割线
      */
     public static class LineConfig {
         private boolean visible = true;
+        private boolean shadowVisible = false;
         private int color = LINE_COLOR;
         private int alpha = LINE_ALPHA;
         private float ratio = (float) (1.0 / 6.0);
-        private float thick = -1;// dp
+        private float thick = LINE_THICK;// px
         private int width = 0;
-        private int[] area = null;
+        private int height = 0;
+        private int itemHeight = 0;
+        private int wheelSize = 0;
 
         public LineConfig() {
             super();
@@ -520,6 +535,17 @@ public class WheelView extends ScrollView {
 
         public boolean isVisible() {
             return visible;
+        }
+
+        /**
+         * 阴影是否可见
+         */
+        public void setShadowVisible(boolean shadowVisible) {
+            this.shadowVisible = shadowVisible;
+        }
+
+        public boolean isShadowVisible() {
+            return shadowVisible;
         }
 
         @ColorInt
@@ -559,9 +585,6 @@ public class WheelView extends ScrollView {
         }
 
         public float getThick() {
-            if (thick == -1) {
-                thick = ConvertUtils.toPx(LINE_THICK);
-            }
             return thick;
         }
 
@@ -580,13 +603,28 @@ public class WheelView extends ScrollView {
             this.width = width;
         }
 
-        @Size(2)
-        protected int[] getArea() {
-            return area;
+        protected int getHeight() {
+            return height;
         }
 
-        protected void setArea(@Size(2) int[] area) {
-            this.area = area;
+        protected void setHeight(int height) {
+            this.height = height;
+        }
+
+        protected int getItemHeight() {
+            return itemHeight;
+        }
+
+        protected void setItemHeight(int itemHeight) {
+            this.itemHeight = itemHeight;
+        }
+
+        protected int getWheelSize() {
+            return wheelSize;
+        }
+
+        protected void setWheelSize(int wheelSize) {
+            this.wheelSize = wheelSize;
         }
 
         @Override
@@ -597,41 +635,342 @@ public class WheelView extends ScrollView {
 
     }
 
-    private static class LineDrawable extends Drawable {
-        private Paint paint;
-        private LineConfig config;
+    private static class ItemView extends LinearLayout {
+        private ImageView imageView;
+        private TextView textView;
 
-        LineDrawable(LineConfig cfg) {
-            this.config = cfg;
-            paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-            paint.setColor(config.getColor());
-            paint.setAlpha(config.getAlpha());
-            paint.setStyle(Paint.Style.STROKE);
-            paint.setStrokeWidth(config.getThick());
+        public ItemView(Context context) {
+            super(context);
+            init(context);
+        }
+
+        public ItemView(Context context, AttributeSet attrs) {
+            super(context, attrs);
+            init(context);
+        }
+
+        public ItemView(Context context, AttributeSet attrs, int defStyleAttr) {
+            super(context, attrs, defStyleAttr);
+            init(context);
+        }
+
+        private void init(Context context) {
+            setOrientation(LinearLayout.HORIZONTAL);
+            int paddingTopBottom = ConvertUtils.toPx(context, ITEM_PADDING_TOP_BOTTOM);
+            int paddingLeftRight = ConvertUtils.toPx(context, ITEM_PADDING_LEFT_RIGHT);
+            setPadding(paddingLeftRight, paddingTopBottom, paddingLeftRight, paddingTopBottom);
+            setGravity(Gravity.CENTER);
+            setLayoutParams(new LayoutParams(MATCH_PARENT, ConvertUtils.toPx(context, ITEM_HEIGHT)));
+
+            imageView = new ImageView(getContext());
+            imageView.setTag(ITEM_TAG_IMAGE);
+            imageView.setVisibility(View.GONE);
+            LayoutParams imageParams = new LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+            imageParams.rightMargin = ConvertUtils.toPx(context, ITEM_MARGIN);
+            addView(imageView, imageParams);
+
+            textView = new TextView(getContext());
+            textView.setTag(ITEM_TAG_TEXT);
+            textView.setEllipsize(TextUtils.TruncateAt.END);
+            textView.setSingleLine(true);
+            textView.setIncludeFontPadding(false);
+            textView.setGravity(Gravity.CENTER);
+            textView.setTextColor(Color.BLACK);
+            LayoutParams textParams = new LayoutParams(MATCH_PARENT, WRAP_CONTENT);
+            addView(textView, textParams);
+        }
+
+        /**
+         * 设置文本
+         */
+        public void setText(CharSequence text) {
+            textView.setText(text);
+        }
+
+        /**
+         * 设置图片资源
+         */
+        public void setImage(@DrawableRes int resId) {
+            imageView.setVisibility(View.VISIBLE);
+            imageView.setImageResource(resId);
+        }
+
+    }
+
+    private static class WheelAdapter extends BaseAdapter {
+        protected List<String> data = new ArrayList<String>();
+        protected boolean isLoop = false;
+        protected int wheelSize = 5;
+
+        public final int getRealCount() {
+            return data.size();
+        }
+
+        public final int getCount() {
+            if (isLoop) {
+                return Integer.MAX_VALUE;
+            }
+            return data.size() > 0 ? (data.size() + wheelSize - 1) : 0;
         }
 
         @Override
-        public void draw(@NonNull Canvas canvas) {
-            int[] area = config.getArea();
-            int width = config.getWidth();
-            float ratio = config.getRatio();
-            canvas.drawLine(width * ratio, area[0], width * (1 - ratio), area[0], paint);
-            canvas.drawLine(width * ratio, area[1], width * (1 - ratio), area[1], paint);
+        public final long getItemId(int position) {
+            return data.size() > 0 ? position % data.size() : position;
+        }
+
+        @Override
+        public final String getItem(int position) {
+            return data.size() > 0 ? data.get(position % data.size()) : null;
+        }
+
+        @Override
+        public boolean areAllItemsEnabled() {
+            return false;
+        }
+
+        @Override
+        public boolean isEnabled(int position) {
+            return false;
+        }
+
+        @Override
+        public final View getView(int position, View convertView, ViewGroup parent) {
+            if (isLoop) {
+                position = position % data.size();
+            } else {
+                if (position < wheelSize / 2) {
+                    position = -1;
+                } else if (position >= wheelSize / 2 + data.size()) {
+                    position = -1;
+                } else {
+                    position = position - wheelSize / 2;
+                }
+            }
+            View view;
+            if (position == -1) {
+                view = bindView(0, convertView, parent);
+            } else {
+                view = bindView(position, convertView, parent);
+            }
+            if (!isLoop) {
+                if (position == -1) {
+                    view.setVisibility(View.INVISIBLE);
+                } else {
+                    view.setVisibility(View.VISIBLE);
+                }
+            }
+            return view;
+        }
+
+        public View bindView(int position, View convertView, ViewGroup parent) {
+            WheelView.ItemView itemView;
+            if (convertView == null) {
+                itemView = new WheelView.ItemView(parent.getContext());
+            } else {
+                itemView = (WheelView.ItemView) convertView;
+            }
+            itemView.setText(getItem(position));
+            //itemView.setImage(...);
+            return itemView;
+        }
+
+        public final WheelAdapter setLoop(boolean loop) {
+            if (loop != isLoop) {
+                isLoop = loop;
+                super.notifyDataSetChanged();
+            }
+            return this;
+        }
+
+        public final WheelAdapter setWheelSize(int wheelSize) {
+            if ((wheelSize & 1) == 0) {
+                throw new IllegalArgumentException("wheel size must be an odd number.");
+            }
+            this.wheelSize = wheelSize;
+            super.notifyDataSetChanged();
+            return this;
+        }
+
+        public final WheelAdapter setData(List<String> list) {
+            if (null == list) {
+                data.clear();
+                super.notifyDataSetChanged();
+                return this;
+            }
+            data = list;
+            super.notifyDataSetChanged();
+            return this;
+        }
+
+        public List<String> getData() {
+            return data;
+        }
+
+        public int getWheelSize() {
+            return wheelSize;
+        }
+
+        public boolean isLoop() {
+            return isLoop;
+        }
+
+        /**
+         * 数据已改变，重绘可见区域
+         */
+        @Override
+        @Deprecated
+        public final void notifyDataSetChanged() {
+            super.notifyDataSetChanged();
+        }
+
+        /**
+         * 数据失效，重绘控件
+         */
+        @Override
+        @Deprecated
+        public final void notifyDataSetInvalidated() {
+            super.notifyDataSetInvalidated();
+        }
+
+    }
+
+    private static class WheelDrawable extends Drawable {
+        protected int width;
+        protected int height;
+        private Paint bgPaint;
+
+        public WheelDrawable(LineConfig config) {
+            this.width = config.getWidth();
+            this.height = config.getHeight();
+            init();
+        }
+
+        private void init() {
+            bgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            bgPaint.setColor(Color.TRANSPARENT);
+        }
+
+        @Override
+        public void draw(Canvas canvas) {
+            canvas.drawRect(0, 0, width, height, bgPaint);
         }
 
         @Override
         public void setAlpha(int alpha) {
-
         }
 
         @Override
-        public void setColorFilter(ColorFilter cf) {
-
+        public void setColorFilter(ColorFilter colorFilter) {
         }
 
         @Override
         public int getOpacity() {
             return PixelFormat.UNKNOWN;
+        }
+
+    }
+
+    private static class HoloWheelDrawable extends WheelDrawable {
+        private Paint bgPaint, paint;
+        private int wheelSize, itemHeight;
+        private float ratio;
+
+        public HoloWheelDrawable(LineConfig config) {
+            super(config);
+            this.wheelSize = config.getWheelSize();
+            this.itemHeight = config.getItemHeight();
+            ratio = config.getRatio();
+            init(config);
+        }
+
+        private void init(LineConfig config) {
+            bgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            bgPaint.setColor(Color.TRANSPARENT);
+
+            paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            paint.setStrokeWidth(config.getThick());
+            paint.setColor(config.getColor());
+            paint.setAlpha(config.getAlpha());
+        }
+
+        @Override
+        public void draw(Canvas canvas) {
+            // draw background
+            canvas.drawRect(0, 0, width, height, bgPaint);
+
+            // draw select border
+            if (itemHeight != 0) {
+                canvas.drawLine(width * ratio, itemHeight * (wheelSize / 2), width * (1 - ratio),
+                        itemHeight * (wheelSize / 2), paint);
+                canvas.drawLine(width * ratio, itemHeight * (wheelSize / 2 + 1), width * (1 - ratio),
+                        itemHeight * (wheelSize / 2 + 1), paint);
+            }
+        }
+
+    }
+
+    private static class ShadowWheelDrawable extends WheelDrawable {
+        private static final int[] SHADOWS_COLORS =
+                {
+                        0xFF999999,
+                        0x00AAAAAA,
+                        0x00AAAAAA
+                }; // 阴影色值
+        private GradientDrawable topShadow = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
+                SHADOWS_COLORS); // 顶部阴影
+        private GradientDrawable bottomShadow = new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP,
+                SHADOWS_COLORS); // 底部阴影
+        private Paint bgPaint, paint, dividerPaint, borderPaint;
+        private int wheelSize, itemHeight;
+
+        public ShadowWheelDrawable(LineConfig config) {
+            super(config);
+            this.wheelSize = config.getWheelSize();
+            this.itemHeight = config.getItemHeight();
+            init();
+        }
+
+        private void init() {
+            bgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            bgPaint.setColor(Color.TRANSPARENT);
+
+            paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            paint.setColor(0XF0CFCFCF);
+
+            dividerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            dividerPaint.setColor(0XFFB5B5B5);
+            dividerPaint.setStrokeWidth(3);
+
+            borderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            borderPaint.setStrokeWidth(2);
+            borderPaint.setColor(0xFF999999);
+        }
+
+        @Override
+        public void draw(Canvas canvas) {
+            // draw background
+            canvas.drawRect(0, 0, width, height, bgPaint);
+
+            // draw select border
+            if (itemHeight != 0) {
+                canvas.drawRect(0, itemHeight * (wheelSize / 2), width, itemHeight
+                        * (wheelSize / 2 + 1), paint);
+                canvas.drawLine(0, itemHeight * (wheelSize / 2), width, itemHeight
+                        * (wheelSize / 2), dividerPaint);
+                canvas.drawLine(0, itemHeight * (wheelSize / 2 + 1), width, itemHeight
+                        * (wheelSize / 2 + 1), dividerPaint);
+
+                // top, bottom
+                topShadow.setBounds(0, 0, width, itemHeight);
+                topShadow.draw(canvas);
+
+                bottomShadow.setBounds(0, height - itemHeight, width, height);
+                bottomShadow.draw(canvas);
+
+                // left,right
+                canvas.drawLine(0, 0, 0, height, borderPaint);
+                canvas.drawLine(width, 0, width, height, borderPaint);
+            }
         }
 
     }
