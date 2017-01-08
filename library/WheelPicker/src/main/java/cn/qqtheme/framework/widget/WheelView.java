@@ -445,7 +445,7 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
         }
         float deltaY = itemView.getY();
         // fixed: 17-1-7  Equality tests should not be made with floating point values.
-        if ((int)deltaY == 0 || itemHeight == 0) {
+        if ((int) deltaY == 0 || itemHeight == 0) {
             return;
         }
         if (Math.abs(deltaY) < itemHeight / 2) {
@@ -661,7 +661,9 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
             int paddingLeftRight = ConvertUtils.toPx(context, ITEM_PADDING_LEFT_RIGHT);
             setPadding(paddingLeftRight, paddingTopBottom, paddingLeftRight, paddingTopBottom);
             setGravity(Gravity.CENTER);
-            setLayoutParams(new LayoutParams(MATCH_PARENT, ConvertUtils.toPx(context, ITEM_HEIGHT)));
+            int height = ConvertUtils.toPx(context, ITEM_HEIGHT);
+            // fixed: 17-1-8 #79 安卓4.x兼容问题，java.lang.ClassCastException……onMeasure……
+            setLayoutParams(new AbsListView.LayoutParams(MATCH_PARENT, height));
 
             imageView = new ImageView(getContext());
             imageView.setTag(ITEM_TAG_IMAGE);

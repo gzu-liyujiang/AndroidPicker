@@ -253,11 +253,11 @@ public class MainActivity extends BaseActivity {
         picker.setTopLineHeight(1);
         picker.setTitleText(isChinese ? "请选择" : "Please pick");
         picker.setTitleTextColor(0xFF999999);
-        picker.setTitleTextSize(24);
+        picker.setTitleTextSize(12);
         picker.setCancelTextColor(0xFF33B5E5);
-        picker.setCancelTextSize(22);
+        picker.setCancelTextSize(13);
         picker.setSubmitTextColor(0xFF33B5E5);
-        picker.setSubmitTextSize(22);
+        picker.setSubmitTextSize(13);
         picker.setTextColor(0xFFEE0000, 0xFF999999);
         WheelView.LineConfig config = new WheelView.LineConfig();
         config.setColor(0xFFEE0000);//线颜色

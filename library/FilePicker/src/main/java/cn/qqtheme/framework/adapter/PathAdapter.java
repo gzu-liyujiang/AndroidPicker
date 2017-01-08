@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -79,7 +80,12 @@ public class PathAdapter extends BaseAdapter {
             LinearLayout layout = new LinearLayout(context);
             layout.setOrientation(LinearLayout.HORIZONTAL);
             layout.setGravity(Gravity.CENTER_VERTICAL);
-            layout.setLayoutParams(new ViewGroup.LayoutParams(matchParent, matchParent));
+            // fixed: 17-1-8 #79 安卓4.x兼容问题，java.lang.ClassCastException……onMeasure……
+            if (parent instanceof AbsListView) {
+                layout.setLayoutParams(new AbsListView.LayoutParams(matchParent, matchParent));
+            } else {
+                layout.setLayoutParams(new ViewGroup.LayoutParams(matchParent, matchParent));
+            }
 
             TextView textView = new TextView(context);
             LinearLayout.LayoutParams tvParams = new LinearLayout.LayoutParams(wrapContent, matchParent);

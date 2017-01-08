@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -238,7 +239,12 @@ public class FileAdapter extends BaseAdapter {
             layout.setGravity(Gravity.CENTER_VERTICAL);
             int height = ConvertUtils.toPx(context, itemHeight);
             int matchParent = ViewGroup.LayoutParams.MATCH_PARENT;
-            layout.setLayoutParams(new ViewGroup.LayoutParams(matchParent, height));
+            // fixed: 17-1-8 #79 安卓4.x兼容问题，java.lang.ClassCastException……onMeasure……
+            if (parent instanceof AbsListView) {
+                layout.setLayoutParams(new AbsListView.LayoutParams(matchParent, height));
+            } else {
+                layout.setLayoutParams(new ViewGroup.LayoutParams(matchParent, height));
+            }
             int padding = ConvertUtils.toPx(context, 5);
             layout.setPadding(padding, padding, padding, padding);
 
