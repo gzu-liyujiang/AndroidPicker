@@ -43,7 +43,7 @@ public class ColorPicker extends ConfirmPopup<LinearLayout> {
     }
 
     private View createTitleView(Activity activity) {
-        hexValView = new StrokeTextView(activity);//文字描边，以便背景色和文字色一样时时仍然看得见
+        hexValView = new StrokeTextView(activity, true);//文字描边，以便背景色和文字色一样时时仍然看得见
         int height = ConvertUtils.toPx(activity, 28);
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(WRAP_CONTENT, height);
         int margin = ConvertUtils.toPx(activity, topPadding);

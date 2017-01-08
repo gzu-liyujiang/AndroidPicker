@@ -134,7 +134,7 @@ dependencies {
 ![星座选择器效果图](/screenshots/constellation.jpg)
 ![颜色选择器效果图](/screenshots/color.gif)
 ![文件选择器效果图](/screenshots/file.gif)
-![目录选择器效果图](/screenshots/dir.gif)
+![目录选择器效果图](/screenshots/dir.png)
 
 # Contact
 <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=1032694760&site=穿青人&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:1032694760:51" alt="点击这里给我发消息" title="点击这里给我发消息"/></a>

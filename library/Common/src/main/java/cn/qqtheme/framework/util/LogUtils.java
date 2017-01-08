@@ -24,6 +24,22 @@ public final class LogUtils {
     private static boolean isDebug = AppConfig.DEBUG_ENABLE;// 是否调试模式
     private static String debugTag = AppConfig.DEBUG_TAG;// LogCat的标记
 
+    public static void setIsDebug(boolean isDebug) {
+        LogUtils.isDebug = isDebug;
+    }
+
+    public static boolean isDebug() {
+        return isDebug;
+    }
+
+    public static void setDebugTag(String debugTag) {
+        LogUtils.debugTag = debugTag;
+    }
+
+    public static String getDebugTag() {
+        return debugTag;
+    }
+
     /**
      * Verbose.
      *
@@ -216,7 +232,7 @@ public final class LogUtils {
 
     /**
      * To stack trace string string.
-     * <p/>
+     * <p>
      * 此方法参见：https://github.com/Ereza/CustomActivityOnCrash
      *
      * @param throwable the throwable
@@ -276,6 +292,7 @@ public final class LogUtils {
             }
             return builder.toString();
         } catch (Exception e) {
+            Log.w(debugTag, e);
             return "";
         }
     }

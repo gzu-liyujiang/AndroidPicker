@@ -17,30 +17,31 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 import cn.qqtheme.framework.adapter.FileAdapter;
+import cn.qqtheme.framework.adapter.PathAdapter;
 import cn.qqtheme.framework.entity.FileItem;
 import cn.qqtheme.framework.popup.ConfirmPopup;
 import cn.qqtheme.framework.util.ConvertUtils;
 import cn.qqtheme.framework.util.LogUtils;
 import cn.qqtheme.framework.util.StorageUtils;
-import cn.qqtheme.framework.widget.MarqueeTextView;
+import cn.qqtheme.framework.widget.HorizontalListView;
 
 /**
  * 文件目录选择器
  *
  * @author 李玉江[QQ:1032694760]
- * @since 2015/9/29, 2017/01/01
+ * @since 2015/9/29, 2017/01/01, 2017/01/08
  */
 public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterView.OnItemClickListener {
     public static final int DIRECTORY = 0;
     public static final int FILE = 1;
 
     private String initPath;
-    private FileAdapter adapter;
+    private FileAdapter adapter = new FileAdapter();
+    private PathAdapter pathAdapter = new PathAdapter();
     private TextView emptyView;
-    private MarqueeTextView textView;
     private OnFilePickListener onFilePickListener;
     private int mode;
-    private CharSequence emptyHint;
+    private CharSequence emptyHint = "<空>";
 
     @IntDef(value = {DIRECTORY, FILE})
     @Retention(RetentionPolicy.SOURCE)
@@ -60,12 +61,10 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
             this.initPath = StorageUtils.getInternalRootPath(activity);
         }
         this.mode = mode;
-        this.emptyHint = (mode == DIRECTORY ? "没有所需目录" : "没有所需文件");
-        this.adapter = new FileAdapter(activity);
         adapter.setOnlyListDir(mode == DIRECTORY);
         adapter.setShowHideDir(false);
         adapter.setShowHomeDir(false);
-        adapter.setShowUpDir(true);
+        adapter.setShowUpDir(false);
     }
 
     @Override
@@ -87,7 +86,7 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
         rootLayout.addView(listView);
 
         emptyView = new TextView(activity);
-        LinearLayout.LayoutParams txtParams = new LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
+        LinearLayout.LayoutParams txtParams = new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
         txtParams.gravity = Gravity.CENTER;
         emptyView.setLayoutParams(txtParams);
         emptyView.setGravity(Gravity.CENTER);
@@ -101,13 +100,30 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
     @Nullable
     @Override
     protected View makeFooterView() {
-        textView = new MarqueeTextView(activity);
-        textView.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
-        textView.setTextColor(Color.BLACK);
-        textView.setGravity(Gravity.CENTER_VERTICAL);
-        int padding = ConvertUtils.toPx(activity, 10);
-        textView.setPadding(padding, padding, padding, padding);
-        return textView;
+        LinearLayout rootLayout = new LinearLayout(activity);
+        rootLayout.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
+        rootLayout.setOrientation(LinearLayout.VERTICAL);
+        rootLayout.setBackgroundColor(Color.WHITE);
+
+        View lineView = new View(activity);
+        lineView.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, 1));
+        lineView.setBackgroundColor(0xFFDDDDDD);
+        rootLayout.addView(lineView);
+
+        HorizontalListView pathView = new HorizontalListView(activity);
+        int height = ConvertUtils.toPx(activity, 30);
+        pathView.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, height));
+        pathView.setAdapter(pathAdapter);
+        pathView.setBackgroundColor(Color.WHITE);
+        pathView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                refreshCurrentDirPath(pathAdapter.getItem(position));
+            }
+        });
+        rootLayout.addView(pathView);
+
+        return rootLayout;
     }
 
     public void setRootPath(String initPath) {
@@ -171,6 +187,7 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
     public void dismiss() {
         super.dismiss();
         adapter.recycleData();
+        pathAdapter.recycleData();
     }
 
     public FileAdapter getAdapter() {
@@ -205,14 +222,19 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
 
     private void refreshCurrentDirPath(String currentPath) {
         if (currentPath.equals("/")) {
-            textView.setText("  /  ");
+            pathAdapter.updatePath("/");
         } else {
-            textView.setText(currentPath);
+            pathAdapter.updatePath(currentPath);
         }
         adapter.loadData(currentPath);
         int adapterCount = adapter.getCount();
-        if (adapterCount <= 1) {
-            //仅仅只有返回上一级目录？
+        if (adapter.isShowHomeDir()) {
+            adapterCount--;
+        }
+        if (adapter.isShowUpDir()) {
+            adapterCount--;
+        }
+        if (adapterCount < 1) {
             LogUtils.verbose(this, "no files, or dir is empty");
             emptyView.setVisibility(View.VISIBLE);
             emptyView.setText(emptyHint);

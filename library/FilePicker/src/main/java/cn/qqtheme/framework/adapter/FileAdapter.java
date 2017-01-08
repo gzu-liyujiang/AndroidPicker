@@ -28,12 +28,12 @@ import cn.qqtheme.framework.util.LogUtils;
  * 文件目录数据适配
  *
  * @author 李玉江[QQ:1032694760]
+ * @see cn.qqtheme.framework.picker.FilePicker
  * @since 2014-05-23 18:02
  */
 public class FileAdapter extends BaseAdapter {
-    public static final String DIR_ROOT = "..";
-    public static final String DIR_PARENT = "";
-    private Context context;
+    public static final String DIR_ROOT = ".";
+    public static final String DIR_PARENT = "..";
     private ArrayList<FileItem> data = new ArrayList<FileItem>();
     private String rootPath = null;
     private String currentPath = null;
@@ -48,8 +48,7 @@ public class FileAdapter extends BaseAdapter {
     private Drawable folderIcon = null;
     private Drawable fileIcon = null;
 
-    public FileAdapter(Context context) {
-        this.context = context;
+    public FileAdapter() {
         homeIcon = ConvertUtils.toDrawable(FilePickerIcon.getHOME());
         upIcon = ConvertUtils.toDrawable(FilePickerIcon.getUPDIR());
         folderIcon = ConvertUtils.toDrawable(FilePickerIcon.getFOLDER());
@@ -60,24 +59,55 @@ public class FileAdapter extends BaseAdapter {
         return currentPath;
     }
 
+    /**
+     * 允许的扩展名
+     */
     public void setAllowExtensions(String[] allowExtensions) {
         this.allowExtensions = allowExtensions;
     }
 
+    /**
+     * 是否仅仅读取目录
+     */
     public void setOnlyListDir(boolean onlyListDir) {
         this.onlyListDir = onlyListDir;
     }
 
+    public boolean isOnlyListDir() {
+        return onlyListDir;
+    }
+
+    /**
+     * 是否显示返回主目录
+     */
     public void setShowHomeDir(boolean showHomeDir) {
         this.showHomeDir = showHomeDir;
     }
 
+    public boolean isShowHomeDir() {
+        return showHomeDir;
+    }
+
+    /**
+     * 是否显示返回上一级
+     */
     public void setShowUpDir(boolean showUpDir) {
         this.showUpDir = showUpDir;
     }
 
+    public boolean isShowUpDir() {
+        return showUpDir;
+    }
+
+    /**
+     * 是否显示隐藏的目录（以“.”开头）
+     */
     public void setShowHideDir(boolean showHideDir) {
         this.showHideDir = showHideDir;
+    }
+
+    public boolean isShowHideDir() {
+        return showHideDir;
     }
 
     public void setItemHeight(int itemHeight) {
@@ -199,6 +229,7 @@ public class FileAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        Context context = parent.getContext();
         ViewHolder holder;
         if (convertView == null) {
             LinearLayout layout = new LinearLayout(context);
@@ -222,6 +253,7 @@ public class FileAdapter extends BaseAdapter {
             tvParams.leftMargin = ConvertUtils.toPx(context, 10);
             textView.setLayoutParams(tvParams);
             textView.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
+            textView.setSingleLine();
             layout.addView(textView);
 
             convertView = layout;
@@ -238,7 +270,7 @@ public class FileAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private class ViewHolder {
+    private static class ViewHolder {
         ImageView imageView;
         TextView textView;
     }
