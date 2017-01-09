@@ -15,12 +15,12 @@
         android:padding="10dp">
 
         <TextView
+            android:id="@+id/nest_back"
             style="?android:textAppearanceMedium"
             android:layout_width="80dp"
             android:layout_height="match_parent"
             android:drawableLeft="@android:drawable/ic_menu_revert"
             android:gravity="center_vertical"
-            android:onClick="onBack"
             android:text="返回"
             android:textColor="@android:color/white"/>
 
@@ -35,11 +35,11 @@
             android:textColor="@android:color/white"/>
 
         <TextView
+            android:id="@+id/nest_carnumber"
             style="?android:textAppearanceMedium"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:onClick="onCarNumber"
             android:text="车牌"
             android:textColor="@android:color/white"/>
 

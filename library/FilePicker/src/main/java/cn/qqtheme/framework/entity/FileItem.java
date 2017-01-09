@@ -8,7 +8,7 @@ import android.graphics.drawable.Drawable;
  * @author 李玉江[QQ:1032694760]
  * @since 2014-05-23 18:02
  */
-public class FileItem {
+public class FileItem extends JavaBean {
     private Drawable icon;
     private String name;
     private String path = "/";

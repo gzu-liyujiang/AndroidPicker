@@ -7,7 +7,7 @@ package cn.qqtheme.framework.entity;
  * DateTime:2016-10-15 19:06
  * Builder:Android Studio
  */
-public abstract class Area {
+public abstract class Area extends JavaBean {
     private String areaId;
     private String areaName;
 

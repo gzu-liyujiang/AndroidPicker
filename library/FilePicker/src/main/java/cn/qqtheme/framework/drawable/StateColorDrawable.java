@@ -2,7 +2,6 @@ package cn.qqtheme.framework.drawable;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.StateListDrawable;
 import android.support.annotation.ColorInt;
 
 /**
@@ -12,21 +11,14 @@ import android.support.annotation.ColorInt;
  * DateTime:2017/01/01 05:30
  * Builder:Android Studio
  */
-public class StateColorDrawable extends StateListDrawable {
+public class StateColorDrawable extends StateBaseDrawable {
 
     public StateColorDrawable(@ColorInt int pressedColor) {
         this(Color.TRANSPARENT, pressedColor);
     }
 
     public StateColorDrawable(@ColorInt int normalColor, @ColorInt int pressedColor) {
-        ColorDrawable normal = new ColorDrawable(normalColor);
-        ColorDrawable pressed = new ColorDrawable(pressedColor);
-        addState(new int[]{android.R.attr.state_pressed, android.R.attr.state_enabled}, pressed);
-        addState(new int[]{android.R.attr.state_enabled, android.R.attr.state_focused}, pressed);
-        addState(new int[]{android.R.attr.state_enabled}, normal);
-        addState(new int[]{android.R.attr.state_focused}, pressed);
-        addState(new int[]{android.R.attr.state_window_focused}, normal);
-        addState(new int[]{}, normal);
+        addState(new ColorDrawable(normalColor), new ColorDrawable(pressedColor));
     }
 
 }
