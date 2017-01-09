@@ -14,7 +14,6 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.FloatRange;
 import android.support.annotation.IntRange;
-import android.support.annotation.Size;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -57,14 +56,14 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
     public static final int SMOOTH_SCROLL_DURATION = 50;//ms
 
     public static final int TEXT_SIZE = 16;//sp
-    public static final float TEXT_ALPHA = 0.7f;
+    public static final float TEXT_ALPHA = 0.8f;
     public static final int TEXT_COLOR_FOCUS = 0XFF0288CE;
     public static final int TEXT_COLOR_NORMAL = 0XFFBBBBBB;
 
     public static final int ITEM_OFF_SET = 2;
-    public static final int ITEM_HEIGHT = 45;//dp
-    public static final int ITEM_PADDING_TOP_BOTTOM = 8;//dp
-    public static final int ITEM_PADDING_LEFT_RIGHT = 15;//dp
+    public static final int ITEM_HEIGHT = 40;//dp
+    public static final int ITEM_PADDING_TOP_BOTTOM = 5;//dp
+    public static final int ITEM_PADDING_LEFT_RIGHT = 10;//dp
     public static final int ITEM_MARGIN = 5;//dp
     public static final int ITEM_TAG_IMAGE = 100;
     public static final int ITEM_TAG_TEXT = 101;
@@ -76,7 +75,7 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
     private static final int MATCH_PARENT = ViewGroup.LayoutParams.MATCH_PARENT;
     private static final int WRAP_CONTENT = ViewGroup.LayoutParams.WRAP_CONTENT;
 
-    private int itemHeight = 0; // 每一项高度
+    private int itemHeightPixels = 0; // 每一项高度
     private int currentPosition = -1;    // 记录滚轮当前刻度
     private WheelAdapter adapter = new WheelAdapter();
     private OnWheelListener onWheelListener;
@@ -130,13 +129,13 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
                     getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 }
                 int childCount = getChildCount();
-                if (childCount > 0 && itemHeight == 0) {
-                    itemHeight = getChildAt(0).getHeight();
-                    LogUtils.verbose(this, "itemHeight=" + itemHeight);
-                    if (itemHeight != 0) {
+                if (childCount > 0 && itemHeightPixels == 0) {
+                    itemHeightPixels = getChildAt(0).getHeight();
+                    LogUtils.verbose(this, "itemHeightPixels=" + itemHeightPixels);
+                    if (itemHeightPixels != 0) {
                         int wheelSize = adapter.getWheelSize();
                         ViewGroup.LayoutParams params = getLayoutParams();
-                        params.height = itemHeight * wheelSize;
+                        params.height = itemHeightPixels * wheelSize;
                         refreshVisibleItems(getFirstVisiblePosition(),
                                 getCurrentPosition() + wheelSize / 2, wheelSize / 2);
                         changeBackground();
@@ -155,9 +154,9 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
             lineConfig = new LineConfig();
         }
         lineConfig.setWidth(getWidth());
-        lineConfig.setHeight(itemHeight * wheelSize);
+        lineConfig.setHeight(itemHeightPixels * wheelSize);
         lineConfig.setWheelSize(wheelSize);
-        lineConfig.setItemHeight(itemHeight);
+        lineConfig.setItemHeight(itemHeightPixels);
         Drawable drawable;
         WheelDrawable holoWheelDrawable = new HoloWheelDrawable(lineConfig);
         if (lineConfig.isShadowVisible()) {
@@ -175,16 +174,6 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
         } else {
             //noinspection deprecation
             super.setBackgroundDrawable(drawable);
-        }
-    }
-
-    /**
-     * 设置滚轮是否循环滚动
-     */
-    public void setLoop(boolean loop) {
-        if (loop != adapter.isLoop()) {
-            setSelection(0);
-            adapter.setLoop(loop);
         }
     }
 
@@ -259,6 +248,9 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
         adapter.setWheelSize(wheelSize);
     }
 
+    /**
+     * 设置滚轮是否禁用循环滚动
+     */
     public void setCycleDisable(boolean cycleDisable) {
         adapter.setLoop(!cycleDisable);
     }
@@ -353,7 +345,7 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
     }
 
     private void refreshCurrentPosition() {
-        if (getChildAt(0) == null || itemHeight == 0) {
+        if (getChildAt(0) == null || itemHeightPixels == 0) {
             return;
         }
         int firstPosition = getFirstVisiblePosition();
@@ -361,7 +353,7 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
             return;
         }
         int position;
-        if (Math.abs(getChildAt(0).getY()) <= itemHeight / 2) {
+        if (Math.abs(getChildAt(0).getY()) <= itemHeightPixels / 2) {
             position = firstPosition;
         } else {
             position = firstPosition + 1;
@@ -445,14 +437,14 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
         }
         float deltaY = itemView.getY();
         // fixed: 17-1-7  Equality tests should not be made with floating point values.
-        if ((int) deltaY == 0 || itemHeight == 0) {
+        if ((int) deltaY == 0 || itemHeightPixels == 0) {
             return;
         }
-        if (Math.abs(deltaY) < itemHeight / 2) {
+        if (Math.abs(deltaY) < itemHeightPixels / 2) {
             int d = getSmoothDistance(deltaY);
             smoothScrollBy(d, SMOOTH_SCROLL_DURATION);
         } else {
-            int d = getSmoothDistance(itemHeight + deltaY);
+            int d = getSmoothDistance(itemHeightPixels + deltaY);
             smoothScrollBy(d, SMOOTH_SCROLL_DURATION);
         }
     }
@@ -772,7 +764,7 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
             } else {
                 itemView = (WheelView.ItemView) convertView;
             }
-            itemView.setText(getItem(position));
+            itemView.setText(data.get(position));
             //itemView.setImage(...);
             return itemView;
         }

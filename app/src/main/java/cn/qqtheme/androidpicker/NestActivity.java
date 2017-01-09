@@ -43,7 +43,6 @@ public class NestActivity extends BaseActivity {
         });
 
         picker = new CarNumberPicker(this);
-        picker.setLineConfig(new WheelView.LineConfig(0));
         picker.setOffset(3);
         picker.setOnWheelListener(new CarNumberPicker.OnWheelListener() {
             @Override
@@ -58,14 +57,19 @@ public class NestActivity extends BaseActivity {
         });
         ViewGroup viewGroup = findView(R.id.wheelview_container);
         viewGroup.addView(picker.getContentView());
-    }
 
-    public void onBack(View view) {
-        finish();
-    }
-
-    public void onCarNumber(View view) {
-        picker.show();
+        findViewById(R.id.nest_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        findViewById(R.id.nest_carnumber).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                picker.show();
+            }
+        });
     }
 
 }

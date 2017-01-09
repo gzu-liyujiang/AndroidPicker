@@ -20,7 +20,7 @@ public abstract class WheelPicker extends ConfirmPopup<View> {
     protected int textColorNormal = WheelView.TEXT_COLOR_NORMAL;
     protected int textColorFocus = WheelView.TEXT_COLOR_FOCUS;
     protected int offset = WheelView.ITEM_OFF_SET;
-    protected boolean cycleDisable = false;
+    protected boolean cycleDisable = true;
     protected WheelView.LineConfig lineConfig;
     private View contentView;
 
