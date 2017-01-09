@@ -19,7 +19,7 @@ import cn.qqtheme.framework.widget.WheelView;
 
 /**
  * 两级、三级联动选择器。默认只初始化第一级数据，第二三级数据由联动获得。
- * <p>
+ * <p/>
  * Author:李玉江[QQ:1032694760]
  * DateTime:2016/5/6 20:34
  * Builder:Android Studio
@@ -97,7 +97,7 @@ public class LinkagePicker extends WheelPicker {
             String ft = firstData.get(i);
             if (ft.contains(firstText)) {
                 selectedFirstIndex = i;
-                LogUtils.debug("init select first text: " + ft + ", index:" + selectedFirstIndex);
+                LogUtils.verbose("init select first text: " + ft + ", index:" + selectedFirstIndex);
                 break;
             }
         }
@@ -106,7 +106,7 @@ public class LinkagePicker extends WheelPicker {
             String st = secondData.get(j);
             if (st.contains(secondText)) {
                 selectedSecondIndex = j;
-                LogUtils.debug("init select second text: " + st + ", index:" + selectedSecondIndex);
+                LogUtils.verbose("init select second text: " + st + ", index:" + selectedSecondIndex);
                 break;
             }
         }
@@ -118,7 +118,7 @@ public class LinkagePicker extends WheelPicker {
             String tt = thirdData.get(k);
             if (tt.contains(thirdText)) {
                 selectedThirdIndex = k;
-                LogUtils.debug("init select third text: " + tt + ", index:" + selectedThirdIndex);
+                LogUtils.verbose("init select third text: " + tt + ", index:" + selectedThirdIndex);
                 break;
             }
         }
@@ -298,20 +298,21 @@ public class LinkagePicker extends WheelPicker {
                 if (onWheelListener != null) {
                     onWheelListener.onFirstWheeled(selectedFirstIndex, selectedFirstItem);
                 }
-                LogUtils.verbose(this, "change second data after first wheeled");
-                List<String> secondData = provider.provideSecondData(selectedFirstIndex);
-                if (secondData.size() < selectedSecondIndex) {
-                    //上一次的第二级选择的项的索引超出了第二级的数据数
-                    selectedSecondIndex = secondData.size() - 1;
+                if (!isUserScroll) {
+                    return;
                 }
-                selectedThirdIndex = 0;
-                //根据第一级数据获取第二级数据。若不是用户手动滚动，说明联动需要指定默认项
+                LogUtils.verbose(this, "change second data after first wheeled");
+                selectedSecondIndex = 0;//重置第二级索引
+                selectedThirdIndex = 0;//重置第三级索引
+                //根据第一级数据获取第二级数据
+                List<String> secondData = provider.provideSecondData(selectedFirstIndex);
                 secondView.setItems(secondData, selectedSecondIndex);
                 if (provider.isOnlyTwo()) {
                     return;//仅仅二级联动
                 }
                 //根据第二级数据获取第三级数据
-                thirdView.setItems(provider.provideThirdData(selectedFirstIndex, selectedSecondIndex), selectedThirdIndex);
+                List<String> thirdData = provider.provideThirdData(selectedFirstIndex, selectedSecondIndex);
+                thirdView.setItems(thirdData, selectedThirdIndex);
             }
         });
 
@@ -324,15 +325,15 @@ public class LinkagePicker extends WheelPicker {
                 if (onWheelListener != null) {
                     onWheelListener.onSecondWheeled(selectedSecondIndex, selectedSecondItem);
                 }
+                if (!isUserScroll) {
+                    return;
+                }
                 if (provider.isOnlyTwo()) {
                     return;//仅仅二级联动
                 }
                 LogUtils.verbose(this, "change third data after second wheeled");
+                selectedThirdIndex = 0;//重置第三级索引
                 List<String> thirdData = provider.provideThirdData(selectedFirstIndex, selectedSecondIndex);
-                if (thirdData.size() < selectedThirdIndex) {
-                    //上一次的第三级选择的项的索引超出了第三级的数据数
-                    selectedThirdIndex = thirdData.size() - 1;
-                }
                 //根据第二级数据获取第三级数据
                 thirdView.setItems(thirdData, selectedThirdIndex);
             }
@@ -357,12 +358,13 @@ public class LinkagePicker extends WheelPicker {
 
     @Override
     public void onSubmit() {
-        if (onLinkageListener != null) {
-            if (provider.isOnlyTwo()) {
-                onLinkageListener.onPicked(selectedFirstItem, selectedSecondItem, null);
-            } else {
-                onLinkageListener.onPicked(selectedFirstItem, selectedSecondItem, selectedThirdItem);
-            }
+        if (onLinkageListener == null) {
+            return;
+        }
+        if (provider.isOnlyTwo()) {
+            onLinkageListener.onPicked(selectedFirstItem, selectedSecondItem, null);
+        } else {
+            onLinkageListener.onPicked(selectedFirstItem, selectedSecondItem, selectedThirdItem);
         }
     }
 

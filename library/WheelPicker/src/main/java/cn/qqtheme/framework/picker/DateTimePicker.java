@@ -412,13 +412,14 @@ public class DateTimePicker extends WheelPicker {
                     if (onWheelListener != null) {
                         onWheelListener.onYearWheeled(selectedYearIndex, item);
                     }
-                    if (isUserScroll) {
-                        LogUtils.verbose(this, "change months after year wheeled");
-                        //需要根据年份及月份动态计算天数
-                        int selectedYear = DateUtils.trimZero(item);
-                        changeMonthData(selectedYear);
-                        monthView.setItems(months, selectedMonthIndex);
+                    if (!isUserScroll) {
+                        return;
                     }
+                    LogUtils.verbose(this, "change months after year wheeled");
+                    //需要根据年份及月份动态计算天数
+                    int selectedYear = DateUtils.trimZero(item);
+                    changeMonthData(selectedYear);
+                    monthView.setItems(months, selectedMonthIndex);
                 }
             });
             layout.addView(yearView);
@@ -447,7 +448,10 @@ public class DateTimePicker extends WheelPicker {
                     if (onWheelListener != null) {
                         onWheelListener.onMonthWheeled(selectedMonthIndex, item);
                     }
-                    if (isUserScroll && (dateMode == YEAR_MONTH_DAY || dateMode == MONTH_DAY)) {
+                    if (!isUserScroll) {
+                        return;
+                    }
+                    if (dateMode == YEAR_MONTH_DAY || dateMode == MONTH_DAY) {
                         LogUtils.verbose(this, "change days after month wheeled");
                         int selectedYear;
                         if (dateMode == YEAR_MONTH_DAY) {
@@ -513,11 +517,12 @@ public class DateTimePicker extends WheelPicker {
                     if (onWheelListener != null) {
                         onWheelListener.onHourWheeled(index, item);
                     }
-                    if (isUserScroll) {
-                        LogUtils.verbose(this, "change minutes after hour wheeled");
-                        changeMinuteData(DateUtils.trimZero(item));
-                        minuteView.setItems(minutes, selectedMinute);
+                    if (!isUserScroll) {
+                        return;
                     }
+                    LogUtils.verbose(this, "change minutes after hour wheeled");
+                    changeMinuteData(DateUtils.trimZero(item));
+                    minuteView.setItems(minutes, selectedMinute);
                 }
             });
             layout.addView(hourView);
@@ -599,7 +604,7 @@ public class DateTimePicker extends WheelPicker {
             }
         });
         if (index < 0) {
-            index = 0;
+            throw new IllegalArgumentException("Item[" + item + "] out of range");
         }
         return index;
     }

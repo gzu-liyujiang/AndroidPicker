@@ -26,7 +26,8 @@ import cn.qqtheme.framework.util.ScreenUtils;
  * @author 李玉江[QQ:1023694760]
  * @since 2015/7/19
  */
-public abstract class BasicPopup<V extends View> implements DialogInterface.OnKeyListener {
+public abstract class BasicPopup<V extends View> implements DialogInterface.OnKeyListener,
+        DialogInterface.OnDismissListener {
     public static final int MATCH_PARENT = ViewGroup.LayoutParams.MATCH_PARENT;
     public static final int WRAP_CONTENT = ViewGroup.LayoutParams.WRAP_CONTENT;
     protected Activity activity;
@@ -54,6 +55,7 @@ public abstract class BasicPopup<V extends View> implements DialogInterface.OnKe
         dialog.setCanceledOnTouchOutside(true);//触摸屏幕取消窗体
         dialog.setCancelable(true);//按返回键取消窗体
         dialog.setOnKeyListener(this);
+        dialog.setOnDismissListener(this);
         Window window = dialog.getWindow();
         if (window != null) {
             window.setGravity(Gravity.BOTTOM);
@@ -248,6 +250,11 @@ public abstract class BasicPopup<V extends View> implements DialogInterface.OnKe
             return onKeyDown(keyCode, event);
         }
         return false;
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        dismiss();
     }
 
     public Context getContext() {

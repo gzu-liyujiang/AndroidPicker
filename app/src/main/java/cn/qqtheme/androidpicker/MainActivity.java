@@ -26,6 +26,7 @@ import cn.qqtheme.framework.picker.OptionPicker;
 import cn.qqtheme.framework.picker.TimePicker;
 import cn.qqtheme.framework.util.ConvertUtils;
 import cn.qqtheme.framework.util.DateUtils;
+import cn.qqtheme.framework.util.LogUtils;
 import cn.qqtheme.framework.util.StorageUtils;
 import cn.qqtheme.framework.widget.WheelView;
 
@@ -57,6 +58,7 @@ public class MainActivity extends BaseActivity {
     public void onAnimationStyle(View view) {
         NumberPicker picker = new NumberPicker(this);
         picker.setAnimationStyle(R.style.Animation_CustomPopup);
+        picker.setCycleDisable(false);
         picker.setOffset(2);//偏移量
         picker.setRange(10.5, 20, 1.5);//数字范围
         picker.setSelectedItem(18.0);
@@ -72,7 +74,7 @@ public class MainActivity extends BaseActivity {
 
     public void onAnimator(View view) {
         CustomHeaderAndFooterPicker picker = new CustomHeaderAndFooterPicker(this);
-        picker.setOffset(1);
+        picker.setOffset(1);//显示的条目的偏移量，条数为（offset*2+1）
         picker.setGravity(Gravity.CENTER);//居中
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
@@ -116,8 +118,11 @@ public class MainActivity extends BaseActivity {
 
 
     public void onYearMonthDayTimePicker(View view) {
-        DateTimePicker picker = new DateTimePicker(this, DateTimePicker.HOUR_OF_DAY);
-        picker.setRange(2000, 2030);
+        DateTimePicker picker = new DateTimePicker(this, DateTimePicker.HOUR_24);
+        picker.setDateRangeStart(2017, 1, 1);
+        picker.setDateRangeEnd(2025, 11, 11);
+        picker.setTimeRangeStart(9, 0);
+        picker.setTimeRangeEnd(20, 30);
         picker.setOnDateTimePickListener(new DateTimePicker.OnYearMonthDayTimePickListener() {
             @Override
             public void onDateTimePicked(String year, String month, String day, String hour, String minute) {
@@ -134,7 +139,7 @@ public class MainActivity extends BaseActivity {
         picker.setWidth((int) (picker.getScreenWidthPixels() * 0.6));
         picker.setRangeStart(2016, 10, 14);
         picker.setRangeEnd(2020, 11, 11);
-        picker.setSelectedItem(2019, 9);
+        picker.setSelectedItem(2012, 9);
         picker.setOnDatePickListener(new DatePicker.OnYearMonthPickListener() {
             @Override
             public void onDatePicked(String year, String month) {
@@ -164,6 +169,7 @@ public class MainActivity extends BaseActivity {
         picker.setRangeStart(9, 0);//09:00
         picker.setRangeEnd(18, 0);//18:30
         picker.setTopLineVisible(false);
+        picker.setLineVisible(false);
         picker.setOnTimePickListener(new TimePicker.OnTimePickListener() {
             @Override
             public void onTimePicked(String hour, String minute) {
@@ -177,10 +183,8 @@ public class MainActivity extends BaseActivity {
         OptionPicker picker = new OptionPicker(this, new String[]{
                 "第一项", "第二项", "这是一个很长很长很长很长很长很长很长很长很长的很长很长的很长很长的项"
         });
-        picker.setOffset(1);
-        picker.setSelectedIndex(0);
+        picker.setCycleDisable(false);
         picker.setTextSize(11);
-        picker.setLineConfig(new WheelView.LineConfig(0));//使用最长的线
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
             public void onOptionPicked(int index, String item) {
@@ -210,7 +214,13 @@ public class MainActivity extends BaseActivity {
             public List<String> provideSecondData(int firstIndex) {
                 ArrayList<String> secondList = new ArrayList<>();
                 for (int i = 1; i <= (firstIndex == 0 ? 12 : 24); i++) {
-                    secondList.add(DateUtils.fillZero(i));
+                    String str = DateUtils.fillZero(i);
+                    if (firstIndex == 0) {
+                        str += "￥";
+                    } else {
+                        str += "$";
+                    }
+                    secondList.add(str);
                 }
                 return secondList;
             }
@@ -226,7 +236,6 @@ public class MainActivity extends BaseActivity {
         picker.setLabel("小时制", "点");
         picker.setSelectedIndex(0, 8);
         //picker.setSelectedItem("12", "9");
-        picker.setLineConfig(new WheelView.LineConfig(0));//使用最长的线
         picker.setOnLinkageListener(new LinkagePicker.OnLinkageListener() {
 
             @Override
@@ -247,6 +256,7 @@ public class MainActivity extends BaseActivity {
                         "Aquarius", "Pisces", "Aries", "Taurus", "Gemini", "Cancer",
                         "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn"
                 });
+        picker.setCycleDisable(false);//不禁用循环
         picker.setTopBackgroundColor(0xFFEEEEEE);
         picker.setTopHeight(50);
         picker.setTopLineColor(0xFF33B5E5);
@@ -280,6 +290,7 @@ public class MainActivity extends BaseActivity {
     public void onNumberPicker(View view) {
         NumberPicker picker = new NumberPicker(this);
         picker.setWidth(picker.getScreenWidthPixels() / 2);
+        picker.setCycleDisable(false);
         picker.setLineVisible(false);
         picker.setOffset(2);//偏移量
         picker.setRange(145, 200, 1);//数字范围
@@ -335,7 +346,7 @@ public class MainActivity extends BaseActivity {
             });
             picker.show();
         } catch (Exception e) {
-            showToast(e.toString());
+            showToast(LogUtils.toStackTraceString(e));
         }
     }
 

@@ -16,7 +16,6 @@ import android.support.annotation.FloatRange;
 import android.support.annotation.IntRange;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -52,8 +51,10 @@ import cn.qqtheme.framework.util.LogUtils;
  * @see HoloWheelDrawable
  * @see ShadowWheelDrawable
  */
-public class WheelView extends ListView implements ListView.OnScrollListener, View.OnTouchListener {
+public class WheelView extends ListView implements ListView.OnScrollListener, View.OnTouchListener,
+        ViewTreeObserver.OnGlobalLayoutListener {
     public static final int SMOOTH_SCROLL_DURATION = 50;//ms
+    public static final int DELAY = 500;//ms
 
     public static final int TEXT_SIZE = 16;//sp
     public static final float TEXT_ALPHA = 0.8f;
@@ -114,35 +115,10 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setNestedScrollingEnabled(true);
         }
-        addOnGlobalLayoutListener();
+        if (!isInEditMode()) {
+            getViewTreeObserver().addOnGlobalLayoutListener(this);
+        }
         super.setAdapter(adapter);
-    }
-
-    private void addOnGlobalLayoutListener() {
-        getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver
-                .OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                } else {
-                    getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                }
-                int childCount = getChildCount();
-                if (childCount > 0 && itemHeightPixels == 0) {
-                    itemHeightPixels = getChildAt(0).getHeight();
-                    LogUtils.verbose(this, "itemHeightPixels=" + itemHeightPixels);
-                    if (itemHeightPixels != 0) {
-                        int wheelSize = adapter.getWheelSize();
-                        ViewGroup.LayoutParams params = getLayoutParams();
-                        params.height = itemHeightPixels * wheelSize;
-                        refreshVisibleItems(getFirstVisiblePosition(),
-                                getCurrentPosition() + wheelSize / 2, wheelSize / 2);
-                        changeBackground();
-                    }
-                }
-            }
-        });
     }
 
     /**
@@ -166,8 +142,10 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
             } else {
                 drawable = shadowWheelDrawable;
             }
-        } else {
+        } else if (lineConfig.isVisible()) {
             drawable = holoWheelDrawable;
+        } else {
+            drawable = new WheelDrawable(lineConfig);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             super.setBackground(drawable);
@@ -181,6 +159,8 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
         if (null == list || list.size() == 0) {
             throw new IllegalArgumentException("data are empty");
         }
+        isUserScroll = false;
+        currentPosition = -1;
         adapter.setData(list);
     }
 
@@ -212,16 +192,8 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
         setItems(Arrays.asList(list), item);
     }
 
-    public int getTextSize() {
-        return textSize;
-    }
-
     public void setTextSize(int textSize) {
         this.textSize = textSize;
-    }
-
-    public int getTextColor() {
-        return textColorFocus;
     }
 
     public void setTextColor(@ColorInt int textColorNormal, @ColorInt int textColorFocus) {
@@ -231,10 +203,6 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
 
     public void setTextColor(@ColorInt int textColor) {
         this.textColorFocus = textColor;
-    }
-
-    public int getOffset() {
-        return (adapter.getWheelSize() - 1) / 2;
     }
 
     /**
@@ -268,8 +236,7 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
      */
     @Override
     public String getSelectedItem() {
-        int position = getCurrentPosition();
-        return adapter.getData().get(position);
+        return adapter.getItem(getCurrentPosition());
     }
 
     public void setSelectedItem(String item) {
@@ -280,10 +247,19 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
      * 设置滚轮位置
      */
     @Override
-    public void setSelection(final int selection) {
-        isUserScroll = false;
-        super.setSelection(getRealPosition(selection));
-        refreshCurrentPosition();
+    public void setSelection(int position) {
+        setVisibility(INVISIBLE);
+        final int realPosition = getRealPosition(position);
+        //延时一下以保证数据初始化完成，才定位到选中项
+        postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //LogUtils.verbose("post delayed, set selection to " + realPosition);
+                setVisibility(VISIBLE);
+                WheelView.super.setSelection(realPosition);
+                refreshCurrentPosition();
+            }
+        }, DELAY);
     }
 
     /**
@@ -327,14 +303,16 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
         }
     }
 
-    /**
-     * 获得滚轮数据总数
-     */
-    public int getWheelCount() {
-        return adapter.getRealCount();
+    private void onSelectedCallback() {
+        int index = getSelectedIndex();
+        String item = getSelectedItem();
+        LogUtils.verbose("isUserScroll=" + isUserScroll + ", index=" + index + ", item=" + item);
+        if (null != onWheelListener) {
+            onWheelListener.onSelected(isUserScroll, index, item);
+        }
     }
 
-    private int getSmoothDistance(float scrollDistance) {
+    private int obtainSmoothDistance(float scrollDistance) {
         if (Math.abs(scrollDistance) <= 2) {
             return (int) scrollDistance;
         } else if (Math.abs(scrollDistance) < 12) {
@@ -350,6 +328,7 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
         }
         int firstPosition = getFirstVisiblePosition();
         if (adapter.isLoop() && firstPosition == 0) {
+            LogUtils.verbose("is loop and first visible position is 0");
             return;
         }
         int position;
@@ -358,28 +337,20 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
         } else {
             position = firstPosition + 1;
         }
-        int wheelSize = adapter.getWheelSize();
-        refreshVisibleItems(firstPosition, position + wheelSize / 2, wheelSize / 2);
+        //由这个逆推：int wheelSize = offset * 2 + 1;
+        int offset = (adapter.getWheelSize() - 1) / 2;
+        int curPosition = position + offset;
+        refreshVisibleItems(firstPosition, curPosition, offset);
         if (adapter.isLoop()) {
-            position = (position + wheelSize / 2) % getWheelCount();
+            position = curPosition % adapter.getRealCount();
         }
         if (position == currentPosition) {
-            LogUtils.verbose("scrolling position: " + position);
+            //LogUtils.verbose("scrolling position: " + position);
             return;
         }
         currentPosition = position;
-        LogUtils.verbose("refresh position as: " + position);
-        postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                int index = getSelectedIndex();
-                String item = getSelectedItem();
-                LogUtils.verbose("isUserScroll=" + isUserScroll + ", index=" + index + ", item=" + item);
-                if (null != onWheelListener) {
-                    onWheelListener.onSelected(isUserScroll, index, item);
-                }
-            }
-        }, 10);
+        //LogUtils.verbose("refresh position as: " + position);
+        onSelectedCallback();
     }
 
     private void refreshVisibleItems(int firstPosition, int curPosition, int offset) {
@@ -395,9 +366,9 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
 
     private void refreshTextView(int position, int curPosition, View
             itemView, TextView textView) {
+        //LogUtils.verbose("position=" + position + ", curPosition=" + curPosition);
         if (curPosition == position) { // 选中
-            float defTextZoom = 1.1f;
-            setTextView(itemView, textView, textColorFocus, textSize * defTextZoom, 1.0f);
+            setTextView(itemView, textView, textColorFocus, textSize, 1.0f);
         } else { // 未选中
             int delta = Math.abs(position - curPosition);
             float alpha = (float) Math.pow(TEXT_ALPHA, delta);
@@ -407,20 +378,43 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
 
     private void setTextView(View itemView, TextView textView, int textColor, float textSize, float textAlpha) {
         textView.setTextColor(textColor);
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSize);
+        textView.setTextSize(textSize);
         itemView.setAlpha(textAlpha);
     }
 
     @Override
+    public void onGlobalLayout() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            getViewTreeObserver().removeOnGlobalLayoutListener(this);
+        } else {
+            getViewTreeObserver().removeGlobalOnLayoutListener(this);
+        }
+        int childCount = getChildCount();
+        if (childCount > 0 && itemHeightPixels == 0) {
+            itemHeightPixels = getChildAt(0).getHeight();
+            LogUtils.verbose(this, "itemHeightPixels=" + itemHeightPixels);
+            if (itemHeightPixels == 0) {
+                return;
+            }
+            int wheelSize = adapter.getWheelSize();
+            ViewGroup.LayoutParams params = getLayoutParams();
+            params.height = itemHeightPixels * wheelSize;
+            refreshVisibleItems(getFirstVisiblePosition(),
+                    getCurrentPosition() + wheelSize / 2, wheelSize / 2);
+            changeBackground();
+        }
+    }
+
+    @Override
     public boolean onTouch(View v, MotionEvent event) {
-        v.getParent().requestDisallowInterceptTouchEvent(true);
         isUserScroll = true;//触发触摸事件，说明是用户在滚动
+        v.getParent().requestDisallowInterceptTouchEvent(true);
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                LogUtils.verbose(this, "press down");
+                LogUtils.verbose(this, "press down: currentPosition=" + currentPosition);
                 break;
             case MotionEvent.ACTION_UP:
-                LogUtils.verbose(this, "press up: currentPosition=" + getCurrentPosition());
+                LogUtils.verbose(this, "press up: currentItem=" + getSelectedItem());
                 break;
         }
         return false;
@@ -441,10 +435,10 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
             return;
         }
         if (Math.abs(deltaY) < itemHeightPixels / 2) {
-            int d = getSmoothDistance(deltaY);
+            int d = obtainSmoothDistance(deltaY);
             smoothScrollBy(d, SMOOTH_SCROLL_DURATION);
         } else {
-            int d = getSmoothDistance(itemHeightPixels + deltaY);
+            int d = obtainSmoothDistance(itemHeightPixels + deltaY);
             smoothScrollBy(d, SMOOTH_SCROLL_DURATION);
         }
     }
@@ -460,7 +454,7 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
     @Override
     protected void onMeasure(int widthSpec, int heightSpec) {
         int width = getLayoutParams().width;
-        LogUtils.verbose(this, "onMeasure: width is " + width);
+        //LogUtils.verbose(this, "onMeasure: width is " + width);
         if (width == WRAP_CONTENT) {
             //宽度自适应
             super.onMeasure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED), heightSpec);
@@ -693,9 +687,9 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
     }
 
     private static class WheelAdapter extends BaseAdapter {
-        protected List<String> data = new ArrayList<String>();
-        protected boolean isLoop = false;
-        protected int wheelSize = 5;
+        private List<String> data = new ArrayList<>();
+        private boolean isLoop = false;
+        private int wheelSize = 5;
 
         public final int getRealCount() {
             return data.size();
@@ -710,12 +704,18 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
 
         @Override
         public final long getItemId(int position) {
-            return data.size() > 0 ? position % data.size() : position;
+            if (isLoop) {
+                return data.size() > 0 ? position % data.size() : position;
+            }
+            return position;
         }
 
         @Override
         public final String getItem(int position) {
-            return data.size() > 0 ? data.get(position % data.size()) : null;
+            if (isLoop) {
+                return data.size() > 0 ? data.get(position % data.size()) : null;
+            }
+            return data.get(position);
         }
 
         @Override
@@ -741,32 +741,24 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
                     position = position - wheelSize / 2;
                 }
             }
-            View view;
-            if (position == -1) {
-                view = bindView(0, convertView, parent);
+            ViewHolder holder;
+            if (convertView == null) {
+                holder = new ViewHolder();
+                holder.itemView = new WheelView.ItemView(parent.getContext());
+                convertView = holder.itemView;
+                convertView.setTag(holder);
             } else {
-                view = bindView(position, convertView, parent);
+                holder = (ViewHolder) convertView.getTag();
             }
             if (!isLoop) {
-                if (position == -1) {
-                    view.setVisibility(View.INVISIBLE);
-                } else {
-                    view.setVisibility(View.VISIBLE);
-                }
+                holder.itemView.setVisibility(position == -1 ? View.INVISIBLE : View.VISIBLE);
             }
-            return view;
-        }
-
-        public View bindView(int position, View convertView, ViewGroup parent) {
-            WheelView.ItemView itemView;
-            if (convertView == null) {
-                itemView = new WheelView.ItemView(parent.getContext());
-            } else {
-                itemView = (WheelView.ItemView) convertView;
+            if (position == -1) {
+                position = 0;
             }
-            itemView.setText(data.get(position));
-            //itemView.setImage(...);
-            return itemView;
+            holder.itemView.setText(data.get(position));
+            //holder.wheelItem.setImage(...);
+            return convertView;
         }
 
         public final WheelAdapter setLoop(boolean loop) {
@@ -787,12 +779,10 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
         }
 
         public final WheelAdapter setData(List<String> list) {
-            if (null == list) {
-                data.clear();
-                super.notifyDataSetChanged();
-                return this;
+            data.clear();
+            if (null != list) {
+                data.addAll(list);
             }
-            data = list;
             super.notifyDataSetChanged();
             return this;
         }
@@ -827,6 +817,9 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
             super.notifyDataSetInvalidated();
         }
 
+        private static class ViewHolder {
+            WheelView.ItemView itemView;
+        }
     }
 
     private static class WheelDrawable extends Drawable {
@@ -915,7 +908,7 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
                 SHADOWS_COLORS); // 顶部阴影
         private GradientDrawable bottomShadow = new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP,
                 SHADOWS_COLORS); // 底部阴影
-        private Paint bgPaint, paint, dividerPaint, borderPaint;
+        private Paint bgPaint, paint, dividerPaint;
         private int wheelSize, itemHeight;
 
         public ShadowWheelDrawable(LineConfig config) {
@@ -934,11 +927,7 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
 
             dividerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
             dividerPaint.setColor(0XFFB5B5B5);
-            dividerPaint.setStrokeWidth(3);
-
-            borderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-            borderPaint.setStrokeWidth(2);
-            borderPaint.setColor(0xFF999999);
+            dividerPaint.setStrokeWidth(2);
         }
 
         @Override
@@ -961,10 +950,6 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
 
                 bottomShadow.setBounds(0, height - itemHeight, width, height);
                 bottomShadow.draw(canvas);
-
-                // left,right
-                canvas.drawLine(0, 0, 0, height, borderPaint);
-                canvas.drawLine(width, 0, width, height, borderPaint);
             }
         }
 

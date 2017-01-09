@@ -159,12 +159,15 @@ public class AddressPicker extends LinkagePicker {
             public void onSelected(boolean isUserScroll, int index, String item) {
                 selectedFirstItem = item;
                 selectedFirstIndex = index;
-                selectedSecondIndex = 0;//重置地级索引
-                selectedThirdIndex = 0;//重置县级索引
                 if (onWheelListener != null) {
                     onWheelListener.onProvinceWheeled(selectedFirstIndex, selectedFirstItem);
                 }
+                if (!isUserScroll) {
+                    return;
+                }
                 LogUtils.verbose(this, "change cities after province wheeled");
+                selectedSecondIndex = 0;//重置地级索引
+                selectedThirdIndex = 0;//重置县级索引
                 //根据省份获取地市
                 List<String> cities = provider.provideSecondData(selectedFirstIndex);
                 if (cities.size() > 0) {
@@ -188,11 +191,14 @@ public class AddressPicker extends LinkagePicker {
             public void onSelected(boolean isUserScroll, int index, String item) {
                 selectedSecondItem = item;
                 selectedSecondIndex = index;
-                selectedThirdIndex = 0;//重置县级索引
                 if (onWheelListener != null) {
                     onWheelListener.onCityWheeled(selectedSecondIndex, selectedSecondItem);
                 }
+                if (!isUserScroll) {
+                    return;
+                }
                 LogUtils.verbose(this, "change counties after city wheeled");
+                selectedThirdIndex = 0;//重置县级索引
                 //根据地市获取区县
                 List<String> counties = provider.provideThirdData(selectedFirstIndex, selectedSecondIndex);
                 if (counties.size() > 0) {
@@ -264,7 +270,6 @@ public class AddressPicker extends LinkagePicker {
      * 地址提供者
      */
     public static class AddressProvider implements DataProvider {
-        // fixed: 17-1-7 The diamond operator ("<>") should be used
         private List<String> firstList = new ArrayList<>();
         private List<List<String>> secondList = new ArrayList<>();
         private List<List<List<String>>> thirdList = new ArrayList<>();

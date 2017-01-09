@@ -72,31 +72,26 @@ public abstract class WheelPicker extends ConfirmPopup<View> {
 
     /**
      * 设置分隔线颜色
-     *
-     * @deprecated use {@link #setLineConfig(WheelView.LineConfig)} instead
      */
-    @Deprecated
     public void setLineColor(@ColorInt int lineColor) {
         if (null == lineConfig) {
             lineConfig = new WheelView.LineConfig();
         }
+        lineConfig.setVisible(true);
         lineConfig.setColor(lineColor);
     }
 
     /**
-     * 设置分隔线配置项，设置null将隐藏分割线
+     * 设置分隔线配置项，设置null将隐藏分割线及阴影
      */
     public void setLineConfig(@Nullable WheelView.LineConfig config) {
-        lineConfig = config;
-    }
-
-    /**
-     * 使用最长的分割线，多级选择器时可以实现连线效果
-     *
-     * @see #setLineConfig(WheelView.LineConfig)
-     */
-    public void useMaxRatioLine() {
-        lineConfig = new WheelView.LineConfig(0);
+        if (null == config) {
+            lineConfig = new WheelView.LineConfig();
+            lineConfig.setVisible(false);
+            lineConfig.setShadowVisible(false);
+        } else {
+            lineConfig = config;
+        }
     }
 
     /**
@@ -108,7 +103,7 @@ public abstract class WheelPicker extends ConfirmPopup<View> {
     }
 
     /**
-     * 设置是否禁用伪循环
+     * 设置是否禁用循环
      */
     public void setCycleDisable(boolean cycleDisable) {
         this.cycleDisable = cycleDisable;
