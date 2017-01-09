@@ -105,7 +105,11 @@ public class DateTimePicker extends WheelPicker {
             throw new IllegalArgumentException("The modes are NONE at the same time");
         }
         if (dateMode == YEAR_MONTH_DAY && timeMode != NONE) {
-            textSize = 16;//年月日时分，比较宽，设置字体小一点才能显示完整
+            if (screenWidthPixels < 720) {
+                textSize = 14;//年月日时分，比较宽，设置字体小一点才能显示完整
+            } else if (screenWidthPixels < 480) {
+                textSize = 12;
+            }
         }
         this.dateMode = dateMode;
         //根据时间模式初始化小时范围
