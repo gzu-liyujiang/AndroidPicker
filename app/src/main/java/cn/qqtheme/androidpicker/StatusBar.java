@@ -34,6 +34,11 @@ public class StatusBar {
      * @param color    颜色
      */
     public static void translucent(Activity activity, @ColorInt int color) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            //Android4.4以下不支持沉浸式状态栏
+            return;
+        }
+        LogUtils.verbose("let status bar immersion by color" + color);
         ViewGroup decorView = (ViewGroup) activity.getWindow().getDecorView();
         View immersionView = decorView.findViewById(IMMERSION_ID);
         if (null != immersionView) {
@@ -65,9 +70,7 @@ public class StatusBar {
      */
     @TargetApi(Build.VERSION_CODES.KITKAT)
     public static void translucent(Activity activity, View rootView) {
-        int sdkInt = Build.VERSION.SDK_INT;
-        LogUtils.verbose("api level is " + sdkInt);
-        if (sdkInt < Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
             //Android4.4以下不支持沉浸式状态栏
             return;
         }
