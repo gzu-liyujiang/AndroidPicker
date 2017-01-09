@@ -295,7 +295,25 @@ public class MainActivity extends BaseActivity {
     }
 
     public void onAddressPicker(View view) {
-        new AddressInitTask(this).execute("贵州", "毕节", "纳雍");
+        AddressPickTask task = new AddressPickTask(this);
+        task.setHideProvince(false);
+        task.setHideCounty(false);
+        task.setCallback(new AddressPickTask.Callback() {
+            @Override
+            public void onAddressInitFailed() {
+                showToast("数据初始化失败");
+            }
+
+            @Override
+            public void onAddressPicked(Province province, City city, County county) {
+                if (county == null) {
+                    showToast(province.getAreaName() + city.getAreaName());
+                } else {
+                    showToast(province.getAreaName() + city.getAreaName() + county.getAreaName());
+                }
+            }
+        });
+        task.execute("贵州", "毕节", "纳雍");
     }
 
     public void onAddress2Picker(View view) {
@@ -312,11 +330,7 @@ public class MainActivity extends BaseActivity {
             picker.setOnAddressPickListener(new AddressPicker.OnAddressPickListener() {
                 @Override
                 public void onAddressPicked(Province province, City city, County county) {
-                    if (county == null) {
-                        showToast("province : " + province + ", city: " + city);
-                    } else {
-                        showToast("province : " + province + ", city: " + city + ", county: " + county);
-                    }
+                    showToast("province : " + province + ", city: " + city + ", county: " + county);
                 }
             });
             picker.show();
@@ -327,7 +341,20 @@ public class MainActivity extends BaseActivity {
 
 
     public void onAddress3Picker(View view) {
-        new AddressInitTask(this, true).execute("四川", "阿坝");
+        AddressPickTask task = new AddressPickTask(this);
+        task.setHideCounty(true);
+        task.setCallback(new AddressPickTask.Callback() {
+            @Override
+            public void onAddressInitFailed() {
+                showToast("数据初始化失败");
+            }
+
+            @Override
+            public void onAddressPicked(Province province, City city, County county) {
+                showToast(province.getAreaName() + " " + city.getAreaName());
+            }
+        });
+        task.execute("四川", "阿坝");
     }
 
     public void onColorPicker(View view) {
