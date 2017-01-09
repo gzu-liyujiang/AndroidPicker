@@ -93,25 +93,26 @@ dependencies {
                         "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn"
                 });
         picker.setLabel(isChinese ? "座" : "");
-        picker.setTopBackgroundColor(0xFFEEEEEE);
-        picker.setTopHeight(50);
-        picker.setTopLineColor(0xFF33B5E5);
-        picker.setTopLineHeight(1);
+        picker.setCycleDisable(true);//禁用循环
+        picker.setLineConfig(config);
+        picker.setTopHeight(50);//顶部标题栏高度
+        picker.setTopLineColor(0xFF33B5E5);//顶部标题栏下划线颜色
+        picker.setTopLineHeight(1);//顶部标题栏下划线高度
         picker.setTitleText(isChinese ? "请选择" : "Please pick");
-        picker.setTitleTextColor(0xFF999999);
-        picker.setTitleTextSize(12);
-        picker.setCancelTextColor(0xFF33B5E5);
+        picker.setTitleTextColor(0xFF999999);//顶部标题颜色
+        picker.setTitleTextSize(12);//顶部标题文字大小
+        picker.setCancelTextColor(0xFF33B5E5);//顶部取消按钮文字颜色
         picker.setCancelTextSize(14);
-        picker.setSubmitTextColor(0xFF33B5E5);
+        picker.setSubmitTextColor(0xFF33B5E5);//顶部确定按钮文字颜色
         picker.setSubmitTextSize(14);
-        picker.setTextColor(0xFFEE0000, 0xFF999999);
+        picker.setTextColor(0xFFEE0000, 0xFF999999);//中间滚动项文字颜色
         WheelView.LineConfig config = new WheelView.LineConfig();
         config.setColor(0xFFEE0000);//线颜色
         config.setAlpha(140);//线透明度
         picker.setLineConfig(config);
         picker.setBackgroundColor(0xFFE1E1E1);
         //picker.setSelectedItem(isChinese ? "射手" : "Sagittarius");
-        picker.setSelectedIndex(10);
+        picker.setSelectedIndex(10);//默认选中项
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
             public void onOptionPicked(int index, String item) {
