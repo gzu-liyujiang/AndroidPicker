@@ -408,7 +408,7 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         isUserScroll = true;//触发触摸事件，说明是用户在滚动
-        v.getParent().requestDisallowInterceptTouchEvent(true);
+        //v.getParent().requestDisallowInterceptTouchEvent(true);
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 LogUtils.verbose(this, "press down: currentPosition=" + currentPosition);

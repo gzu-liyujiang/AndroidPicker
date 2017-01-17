@@ -186,8 +186,8 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
     @Override
     public void dismiss() {
         super.dismiss();
-        adapter.recycleData();
-        pathAdapter.recycleData();
+        //adapter.recycleData();
+        //pathAdapter.recycleData();
     }
 
     public FileAdapter getAdapter() {

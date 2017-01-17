@@ -14,7 +14,7 @@
 WheelPicker包括DatePicker、TimePicker、OptionPicker、LinkagePicker、AddressPicker、NumberPicker、CarNumberPicker等。
 #### ~~懒人建议直接远程加载jcenter里的~~
 WheelPicker、FilePicker及ColorPicker是独立的，需要用哪个就compile哪个。
-latest.release表示使用最新版，也可以[参照此处指定具体的版本号](https://github.com/gzu-liyujiang/AndroidPicker/releases)：
+latest.release表示使用最新版，也可以[参照此处指定具体的版本号](https://github.com/gzu-liyujiang/AndroidPicker/releases)，1.3.x之前的版本基于ScrollView，1.4.x之后的版本基于ListView：
 ```groovy
 dependencies {
     compile 'cn.qqtheme.framework:WheelPicker:版本号'

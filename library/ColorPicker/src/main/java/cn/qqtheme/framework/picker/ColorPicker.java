@@ -119,8 +119,8 @@ public class ColorPicker extends ConfirmPopup<LinearLayout> {
     @Override
     public void dismiss() {
         super.dismiss();
-        multiColorView.recycle();
-        blackColorView.recycle();
+        //multiColorView.recycle();
+        //blackColorView.recycle();
     }
 
     @ColorInt

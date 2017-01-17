@@ -139,7 +139,7 @@ public class MainActivity extends BaseActivity {
         picker.setWidth((int) (picker.getScreenWidthPixels() * 0.6));
         picker.setRangeStart(2016, 10, 14);
         picker.setRangeEnd(2020, 11, 11);
-        picker.setSelectedItem(2012, 9);
+        picker.setSelectedItem(2017, 9);
         picker.setOnDatePickListener(new DatePicker.OnYearMonthPickListener() {
             @Override
             public void onDatePicked(String year, String month) {
@@ -184,6 +184,8 @@ public class MainActivity extends BaseActivity {
                 "第一项", "第二项", "这是一个很长很长很长很长很长很长很长很长很长的很长很长的很长很长的项"
         });
         picker.setCycleDisable(false);
+        picker.setLineVisible(false);
+        picker.setShadowVisible(true);
         picker.setTextSize(11);
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
@@ -333,9 +335,6 @@ public class MainActivity extends BaseActivity {
             String json = ConvertUtils.toString(getAssets().open("city2.json"));
             data.addAll(JSON.parseArray(json, Province.class));
             AddressPicker picker = new AddressPicker(this, data);
-            picker.setCycleDisable(true);
-            picker.setLineVisible(false);
-            picker.setShadowVisible(true);
             picker.setHideProvince(true);
             picker.setSelectedItem("贵州", "贵阳", "花溪");
             picker.setOnAddressPickListener(new AddressPicker.OnAddressPickListener() {
