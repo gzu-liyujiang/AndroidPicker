@@ -86,7 +86,7 @@ public class DateTimePicker extends WheelPicker {
     public @interface DateMode {
     }
 
-    @IntDef(flag = false, value = {NONE, HOUR_24, HOUR_12, HOUR_OF_DAY, HOUR})
+    @IntDef(flag = false, value = {NONE, HOUR_24, HOUR_12})
     @Retention(RetentionPolicy.SOURCE)
     public @interface TimeMode {
     }
@@ -321,6 +321,9 @@ public class DateTimePicker extends WheelPicker {
 
     public String getSelectedYear() {
         if (dateMode == YEAR_MONTH_DAY || dateMode == YEAR_MONTH) {
+            if (years.size() <= selectedYearIndex) {
+                selectedYearIndex = years.size() - 1;
+            }
             return years.get(selectedYearIndex);
         }
         return "";
@@ -328,6 +331,9 @@ public class DateTimePicker extends WheelPicker {
 
     public String getSelectedMonth() {
         if (dateMode != NONE) {
+            if (months.size() <= selectedMonthIndex) {
+                selectedMonthIndex = months.size() - 1;
+            }
             return months.get(selectedMonthIndex);
         }
         return "";
@@ -335,6 +341,9 @@ public class DateTimePicker extends WheelPicker {
 
     public String getSelectedDay() {
         if (dateMode == YEAR_MONTH_DAY || dateMode == MONTH_DAY) {
+            if (days.size() <= selectedDayIndex) {
+                selectedDayIndex = days.size() - 1;
+            }
             return days.get(selectedDayIndex);
         }
         return "";
@@ -420,6 +429,11 @@ public class DateTimePicker extends WheelPicker {
                     int selectedYear = DateUtils.trimZero(item);
                     changeMonthData(selectedYear);
                     monthView.setItems(months, selectedMonthIndex);
+                    if (months.size() <= selectedMonthIndex) {
+                        selectedMonthIndex = months.size() - 1;
+                    }
+                    changeDayData(selectedYear, DateUtils.trimZero(months.get(selectedMonthIndex)));
+                    dayView.setItems(days, selectedDayIndex);
                 }
             });
             layout.addView(yearView);

@@ -54,7 +54,6 @@ import cn.qqtheme.framework.util.LogUtils;
 public class WheelView extends ListView implements ListView.OnScrollListener, View.OnTouchListener,
         ViewTreeObserver.OnGlobalLayoutListener {
     public static final int SMOOTH_SCROLL_DURATION = 50;//ms
-    public static final int DELAY = 500;//ms
 
     public static final int TEXT_SIZE = 16;//sp
     public static final float TEXT_ALPHA = 0.8f;
@@ -240,26 +239,25 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
     }
 
     public void setSelectedItem(String item) {
+        //noinspection deprecation
         setSelection(adapter.getData().indexOf(item));
     }
 
     /**
-     * 设置滚轮位置
+     * @deprecated use {@link #setSelectedIndex(int)} instead
      */
     @Override
+    @Deprecated
     public void setSelection(int position) {
-        setVisibility(INVISIBLE);
         final int realPosition = getRealPosition(position);
         //延时一下以保证数据初始化完成，才定位到选中项
         postDelayed(new Runnable() {
             @Override
             public void run() {
-                //LogUtils.verbose("post delayed, set selection to " + realPosition);
-                setVisibility(VISIBLE);
                 WheelView.super.setSelection(realPosition);
                 refreshCurrentPosition();
             }
-        }, DELAY);
+        }, 500);
     }
 
     /**
@@ -714,6 +712,9 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
         public final String getItem(int position) {
             if (isLoop) {
                 return data.size() > 0 ? data.get(position % data.size()) : null;
+            }
+            if (data.size() <= position) {
+                position = data.size() - 1;
             }
             return data.get(position);
         }
