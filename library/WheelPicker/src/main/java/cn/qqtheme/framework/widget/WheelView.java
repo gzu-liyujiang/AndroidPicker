@@ -663,7 +663,7 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
             textView.setIncludeFontPadding(false);
             textView.setGravity(Gravity.CENTER);
             textView.setTextColor(Color.BLACK);
-            LayoutParams textParams = new LayoutParams(MATCH_PARENT, WRAP_CONTENT);
+            LayoutParams textParams = new LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
             addView(textView, textParams);
         }
 
