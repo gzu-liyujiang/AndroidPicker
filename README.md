@@ -22,6 +22,12 @@ dependencies {
     compile 'cn.qqtheme.framework:ColorPicker:版本号'
 }
 ```
+如果出现“All com.android.support libraries must use the exact same version specification”这种错误，请将依赖改为：
+```
+compile('cn.qqtheme.framework:WheelPicker:版本号') {
+    exclude group: 'com.android.support'
+}
+```
 #### 若jcenter仓库里的无法下载的话，可换[JitPack](https://jitpack.io/#gzu-liyujiang/AndroidPicker)的仓库试试：
 第一步，在项目根目录下的build.gradle里加：
 ```
