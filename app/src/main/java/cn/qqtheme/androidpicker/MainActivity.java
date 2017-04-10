@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -166,8 +167,11 @@ public class MainActivity extends BaseActivity {
 
     public void onTimePicker(View view) {
         TimePicker picker = new TimePicker(this, TimePicker.HOUR_24);
-        picker.setRangeStart(9, 0);//09:00
-        picker.setRangeEnd(18, 0);//18:30
+        picker.setRangeStart(0, 0);//00:00
+        picker.setRangeEnd(23, 59);//23:59
+        int currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+        int currentMinute = Calendar.getInstance().get(Calendar.MINUTE);
+        picker.setSelectedItem(currentHour, currentMinute);
         picker.setTopLineVisible(false);
         picker.setLineVisible(false);
         picker.setOnTimePickListener(new TimePicker.OnTimePickListener() {

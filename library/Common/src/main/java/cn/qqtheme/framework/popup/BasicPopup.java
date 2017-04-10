@@ -52,8 +52,8 @@ public abstract class BasicPopup<V extends View> implements DialogInterface.OnKe
         contentLayout.setFocusableInTouchMode(true);
         //contentLayout.setFitsSystemWindows(true);
         dialog = new Dialog(activity);
-        dialog.setCanceledOnTouchOutside(true);//触摸屏幕取消窗体
-        dialog.setCancelable(true);//按返回键取消窗体
+        dialog.setCanceledOnTouchOutside(false);//触摸屏幕取消窗体
+        dialog.setCancelable(false);//按返回键取消窗体
         dialog.setOnKeyListener(this);
         dialog.setOnDismissListener(this);
         Window window = dialog.getWindow();
@@ -146,13 +146,14 @@ public abstract class BasicPopup<V extends View> implements DialogInterface.OnKe
         }
     }
 
-    public void setOnDismissListener(DialogInterface.OnDismissListener onDismissListener) {
-        dialog.setOnDismissListener(onDismissListener);
-        LogUtils.verbose(this, "popup setOnDismissListener");
-    }
-
-    public void setOnKeyListener(DialogInterface.OnKeyListener onKeyListener) {
-        dialog.setOnKeyListener(onKeyListener);
+    public void setOnKeyListener(final DialogInterface.OnKeyListener onKeyListener) {
+        dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                BasicPopup.this.onKey(dialog, keyCode, event);
+                return onKeyListener.onKey(dialog, keyCode, event);
+            }
+        });
         LogUtils.verbose(this, "popup setOnKeyListener");
     }
 
@@ -217,11 +218,10 @@ public abstract class BasicPopup<V extends View> implements DialogInterface.OnKe
         return dialog.isShowing();
     }
 
-    @CallSuper
-    public void show() {
+    public final void show() {
         if (isPrepared) {
             dialog.show();
-            LogUtils.verbose(this, "popup show");
+            showAfter();
             return;
         }
         LogUtils.verbose(this, "do something before popup show");
@@ -231,23 +231,31 @@ public abstract class BasicPopup<V extends View> implements DialogInterface.OnKe
         setContentViewAfter(view);
         isPrepared = true;
         dialog.show();
+        showAfter();
+    }
+
+    protected void showAfter() {
         LogUtils.verbose(this, "popup show");
     }
 
     public void dismiss() {
+        dismissImmediately();
+    }
+
+    protected final void dismissImmediately() {
         dialog.dismiss();
         LogUtils.verbose(this, "popup dismiss");
     }
 
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
+    public boolean onBackPress() {
+        dismiss();
         return false;
     }
 
     @Override
     public final boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-        //noinspection SimplifiableIfStatement
-        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            return onKeyDown(keyCode, event);
+        if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_BACK) {
+            onBackPress();
         }
         return false;
     }

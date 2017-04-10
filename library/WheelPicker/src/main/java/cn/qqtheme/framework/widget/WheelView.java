@@ -54,6 +54,7 @@ import cn.qqtheme.framework.util.LogUtils;
 public class WheelView extends ListView implements ListView.OnScrollListener, View.OnTouchListener,
         ViewTreeObserver.OnGlobalLayoutListener {
     public static final int SMOOTH_SCROLL_DURATION = 50;//ms
+    public static final int SECTION_DELAY = 600;//ms
 
     public static final int TEXT_SIZE = 16;//sp
     public static final float TEXT_ALPHA = 0.8f;
@@ -226,8 +227,16 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
         return getCurrentPosition();
     }
 
-    public void setSelectedIndex(int index) {
-        setSelection(index);
+    public void setSelectedIndex(final int index) {
+        final int realPosition = getRealPosition(index);
+        //延时一下以保证数据初始化完成，才定位到选中项
+        postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                WheelView.super.setSelection(realPosition);
+                refreshCurrentPosition();
+            }
+        }, SECTION_DELAY);
     }
 
     /**
@@ -239,8 +248,7 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
     }
 
     public void setSelectedItem(String item) {
-        //noinspection deprecation
-        setSelection(adapter.getData().indexOf(item));
+        setSelectedIndex(adapter.getData().indexOf(item));
     }
 
     /**
@@ -249,15 +257,7 @@ public class WheelView extends ListView implements ListView.OnScrollListener, Vi
     @Override
     @Deprecated
     public void setSelection(int position) {
-        final int realPosition = getRealPosition(position);
-        //延时一下以保证数据初始化完成，才定位到选中项
-        postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                WheelView.super.setSelection(realPosition);
-                refreshCurrentPosition();
-            }
-        }, 500);
+        setSelectedIndex(position);
     }
 
     /**
