@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Locale;
 
+import cn.qqtheme.framework.entity.WheelItem;
 import cn.qqtheme.framework.util.DateUtils;
 import cn.qqtheme.framework.util.LogUtils;
 import cn.qqtheme.framework.widget.WheelView;
@@ -410,16 +411,16 @@ public class DateTimePicker extends WheelPicker {
             yearView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
             yearView.setTextSize(textSize);
             yearView.setTextColor(textColorNormal, textColorFocus);
-            yearView.setLineConfig(lineConfig);
+            yearView.setDividerConfig(dividerConfig);
             yearView.setOffset(offset);
             yearView.setCycleDisable(cycleDisable);
             yearView.setItems(years, selectedYearIndex);
-            yearView.setOnWheelListener(new WheelView.OnWheelListener() {
+            yearView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
                 @Override
-                public void onSelected(boolean isUserScroll, int index, String item) {
+                public void onSelected(boolean isUserScroll, int index, WheelItem item) {
                     selectedYearIndex = index;
                     if (onWheelListener != null) {
-                        onWheelListener.onYearWheeled(selectedYearIndex, item);
+                        onWheelListener.onYearWheeled(selectedYearIndex, item.getName());
                     }
                     if (!isUserScroll) {
                         return;
@@ -428,7 +429,7 @@ public class DateTimePicker extends WheelPicker {
                     selectedMonthIndex = 0;//重置月份索引
                     selectedDayIndex = 0;//重置日子索引
                     //需要根据年份及月份动态计算天数
-                    int selectedYear = DateUtils.trimZero(item);
+                    int selectedYear = DateUtils.trimZero(item.getName());
                     changeMonthData(selectedYear);
                     monthView.setItems(months, selectedMonthIndex);
                     changeDayData(selectedYear, DateUtils.trimZero(months.get(selectedMonthIndex)));
@@ -450,16 +451,16 @@ public class DateTimePicker extends WheelPicker {
             monthView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
             monthView.setTextSize(textSize);
             monthView.setTextColor(textColorNormal, textColorFocus);
-            monthView.setLineConfig(lineConfig);
+            monthView.setDividerConfig(dividerConfig);
             monthView.setOffset(offset);
             monthView.setCycleDisable(cycleDisable);
             monthView.setItems(months, selectedMonthIndex);
-            monthView.setOnWheelListener(new WheelView.OnWheelListener() {
+            monthView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
                 @Override
-                public void onSelected(boolean isUserScroll, int index, String item) {
+                public void onSelected(boolean isUserScroll, int index, WheelItem item) {
                     selectedMonthIndex = index;
                     if (onWheelListener != null) {
-                        onWheelListener.onMonthWheeled(selectedMonthIndex, item);
+                        onWheelListener.onMonthWheeled(selectedMonthIndex, item.getName());
                     }
                     if (!isUserScroll) {
                         return;
@@ -473,7 +474,7 @@ public class DateTimePicker extends WheelPicker {
                         } else {
                             selectedYear = Calendar.getInstance(Locale.CHINA).get(Calendar.YEAR);
                         }
-                        changeDayData(selectedYear, DateUtils.trimZero(item));
+                        changeDayData(selectedYear, DateUtils.trimZero(item.getName()));
                         dayView.setItems(days, selectedDayIndex);
                     }
                 }
@@ -493,16 +494,16 @@ public class DateTimePicker extends WheelPicker {
             dayView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
             dayView.setTextSize(textSize);
             dayView.setTextColor(textColorNormal, textColorFocus);
-            dayView.setLineConfig(lineConfig);
+            dayView.setDividerConfig(dividerConfig);
             dayView.setOffset(offset);
             dayView.setCycleDisable(cycleDisable);
             dayView.setItems(days, selectedDayIndex);
-            dayView.setOnWheelListener(new WheelView.OnWheelListener() {
+            dayView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
                 @Override
-                public void onSelected(boolean isUserScroll, int index, String item) {
+                public void onSelected(boolean isUserScroll, int index, WheelItem item) {
                     selectedDayIndex = index;
                     if (onWheelListener != null) {
-                        onWheelListener.onDayWheeled(selectedDayIndex, item);
+                        onWheelListener.onDayWheeled(selectedDayIndex, item.getName());
                     }
                 }
             });
@@ -521,21 +522,21 @@ public class DateTimePicker extends WheelPicker {
             hourView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
             hourView.setTextSize(textSize);
             hourView.setTextColor(textColorNormal, textColorFocus);
-            hourView.setLineConfig(lineConfig);
+            hourView.setDividerConfig(dividerConfig);
             hourView.setCycleDisable(cycleDisable);
             hourView.setItems(hours, selectedHour);
-            hourView.setOnWheelListener(new WheelView.OnWheelListener() {
+            hourView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
                 @Override
-                public void onSelected(boolean isUserScroll, int index, String item) {
-                    selectedHour = item;
+                public void onSelected(boolean isUserScroll, int index, WheelItem item) {
+                    selectedHour = item.getName();
                     if (onWheelListener != null) {
-                        onWheelListener.onHourWheeled(index, item);
+                        onWheelListener.onHourWheeled(index, item.getName());
                     }
                     if (!isUserScroll) {
                         return;
                     }
                     LogUtils.verbose(this, "change minutes after hour wheeled");
-                    changeMinuteData(DateUtils.trimZero(item));
+                    changeMinuteData(DateUtils.trimZero(item.getName()));
                     minuteView.setItems(minutes, selectedMinute);
                 }
             });
@@ -552,16 +553,16 @@ public class DateTimePicker extends WheelPicker {
             minuteView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
             minuteView.setTextSize(textSize);
             minuteView.setTextColor(textColorNormal, textColorFocus);
-            minuteView.setLineConfig(lineConfig);
+            minuteView.setDividerConfig(dividerConfig);
             minuteView.setOffset(offset);
             minuteView.setCycleDisable(cycleDisable);
             minuteView.setItems(minutes, selectedMinute);
-            minuteView.setOnWheelListener(new WheelView.OnWheelListener() {
+            minuteView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
                 @Override
-                public void onSelected(boolean isUserScroll, int index, String item) {
-                    selectedMinute = item;
+                public void onSelected(boolean isUserScroll, int index, WheelItem item) {
+                    selectedMinute = item.getName();
                     if (onWheelListener != null) {
-                        onWheelListener.onMinuteWheeled(index, item);
+                        onWheelListener.onMinuteWheeled(index, item.getName());
                     }
                 }
             });

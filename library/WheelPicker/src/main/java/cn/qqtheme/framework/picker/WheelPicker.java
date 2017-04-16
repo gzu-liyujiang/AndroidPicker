@@ -25,7 +25,7 @@ public abstract class WheelPicker extends ConfirmPopup<View> {
     protected int textColorFocus = WheelView.TEXT_COLOR_FOCUS;
     protected int offset = WheelView.ITEM_OFF_SET;
     protected boolean cycleDisable = true;
-    protected WheelView.LineConfig lineConfig;
+    protected WheelView.DividerConfig dividerConfig;
     private View contentView;
 
     public WheelPicker(Activity activity) {
@@ -55,47 +55,71 @@ public abstract class WheelPicker extends ConfirmPopup<View> {
     }
 
     /**
-     * 设置分隔线是否可见
-     */
-    public void setLineVisible(boolean lineVisible) {
-        if (null == lineConfig) {
-            lineConfig = new WheelView.LineConfig();
-        }
-        lineConfig.setVisible(lineVisible);
-    }
-
-    /**
      * 设置分隔阴影是否可见
      */
     public void setShadowVisible(boolean shadowVisible) {
-        if (null == lineConfig) {
-            lineConfig = new WheelView.LineConfig();
+        if (null == dividerConfig) {
+            dividerConfig = new WheelView.DividerConfig();
         }
-        lineConfig.setShadowVisible(shadowVisible);
+        dividerConfig.setShadowVisible(shadowVisible);
+    }
+
+    /**
+     * 设置分隔线是否可见
+     */
+    public void setDividerVisible(boolean visible) {
+        if (null == dividerConfig) {
+            dividerConfig = new WheelView.DividerConfig();
+        }
+        dividerConfig.setVisible(visible);
+    }
+
+    /**
+     * @deprecated use {@link #setDividerVisible(boolean)} instead
+     */
+    @Deprecated
+    public void setLineVisible(boolean visible) {
+        setDividerVisible(visible);
+    }
+
+    /**
+     * @deprecated use {@link #setDividerColor(int)} instead
+     */
+    @Deprecated
+    public void setLineColor(@ColorInt int color) {
+        setDividerColor(color);
     }
 
     /**
      * 设置分隔线颜色
      */
-    public void setLineColor(@ColorInt int lineColor) {
-        if (null == lineConfig) {
-            lineConfig = new WheelView.LineConfig();
+    public void setDividerColor(@ColorInt int lineColor) {
+        if (null == dividerConfig) {
+            dividerConfig = new WheelView.DividerConfig();
         }
-        lineConfig.setVisible(true);
-        lineConfig.setColor(lineColor);
+        dividerConfig.setVisible(true);
+        dividerConfig.setColor(lineColor);
     }
 
     /**
      * 设置分隔线配置项，设置null将隐藏分割线及阴影
      */
-    public void setLineConfig(@Nullable WheelView.LineConfig config) {
+    public void setDividerConfig(@Nullable WheelView.DividerConfig config) {
         if (null == config) {
-            lineConfig = new WheelView.LineConfig();
-            lineConfig.setVisible(false);
-            lineConfig.setShadowVisible(false);
+            dividerConfig = new WheelView.DividerConfig();
+            dividerConfig.setVisible(false);
+            dividerConfig.setShadowVisible(false);
         } else {
-            lineConfig = config;
+            dividerConfig = config;
         }
+    }
+
+    /**
+     * @deprecated use {@link #setDividerConfig(WheelView.DividerConfig)} instead
+     */
+    @Deprecated
+    public void setLineConfig(WheelView.DividerConfig config) {
+        setDividerConfig(config);
     }
 
     /**

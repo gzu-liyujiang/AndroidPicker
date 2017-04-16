@@ -24,6 +24,14 @@ public class OptionPicker extends SinglePicker<String> {
         super.setOnItemPickListener(listener);
     }
 
+    public void setOnWheelListener(OnWheelListener onWheelListener) {
+        super.setOnWheelListener(onWheelListener);
+    }
+
+    public interface OnWheelListener extends SinglePicker.OnWheelListener<String> {
+
+    }
+
     public static abstract class OnOptionPickListener implements OnItemPickListener<String> {
 
         public abstract void onOptionPicked(int index, String item);

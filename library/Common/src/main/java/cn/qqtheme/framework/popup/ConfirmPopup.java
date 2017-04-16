@@ -25,7 +25,7 @@ import cn.qqtheme.framework.util.ConvertUtils;
 public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
     protected boolean topLineVisible = true;
     protected int topLineColor = 0xFFDDDDDD;
-    protected int topLineHeight = 1;//dp
+    protected int topLineHeightPixels = 1;//px
     protected int topBackgroundColor = Color.WHITE;
     protected int topHeight = 40;//dp
     protected int topPadding = 15;//dp
@@ -43,6 +43,7 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
     protected int backgroundColor = Color.WHITE;
     private TextView cancelButton, submitButton;
     private View titleView;
+    private View headerView,footerView;
 
     public ConfirmPopup(Activity activity) {
         super(activity);
@@ -58,10 +59,10 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
     }
 
     /**
-     * 设置顶部标题栏下划线高度，单位为dp
+     * 设置顶部标题栏下划线高度，单位为px
      */
-    public void setTopLineHeight(int topLineHeight) {
-        this.topLineHeight = topLineHeight;
+    public void setTopLineHeight(int topLineHeightPixels) {
+        this.topLineHeightPixels = topLineHeightPixels;
     }
 
     /**
@@ -250,6 +251,14 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
         return submitButton;
     }
 
+    public void setHeaderView(View headerView) {
+        this.headerView = headerView;
+    }
+
+    public void setFooterView(View footerView) {
+        this.footerView = footerView;
+    }
+
     /**
      * @see #makeHeaderView()
      * @see #makeCenterView()
@@ -270,8 +279,7 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
         }
         if (topLineVisible) {
             View lineView = new View(activity);
-            int height = ConvertUtils.toPx(activity, topLineHeight);
-            lineView.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, height));
+            lineView.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, topLineHeightPixels));
             lineView.setBackgroundColor(topLineColor);
             rootLayout.addView(lineView);
         }
@@ -285,6 +293,9 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
 
     @Nullable
     protected View makeHeaderView() {
+        if (null != headerView) {
+            return headerView;
+        }
         RelativeLayout topButtonLayout = new RelativeLayout(activity);
         int height = ConvertUtils.toPx(activity, topHeight);
         topButtonLayout.setLayoutParams(new RelativeLayout.LayoutParams(MATCH_PARENT, height));
@@ -370,6 +381,9 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
 
     @Nullable
     protected View makeFooterView() {
+        if (null != footerView) {
+            return footerView;
+        }
         return null;
     }
 

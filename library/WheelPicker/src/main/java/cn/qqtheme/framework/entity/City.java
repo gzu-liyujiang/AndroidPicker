@@ -10,9 +10,21 @@ import java.util.List;
  * DateTime:2016-10-15 19:07
  * Builder:Android Studio
  */
-public class City extends Area {
+public class City extends Area implements LinkageSecond<County> {
     private String provinceId;
-    private List<County> counties = new ArrayList<County>();
+    private List<County> counties = new ArrayList<>();
+
+    public City() {
+        super();
+    }
+
+    public City(String areaName) {
+        super(areaName);
+    }
+
+    public City(String areaId, String areaName) {
+        super(areaId, areaName);
+    }
 
     public String getProvinceId() {
         return provinceId;
@@ -28,6 +40,11 @@ public class City extends Area {
 
     public void setCounties(List<County> counties) {
         this.counties = counties;
+    }
+
+    @Override
+    public List<County> getThirds() {
+        return counties;
     }
 
 }

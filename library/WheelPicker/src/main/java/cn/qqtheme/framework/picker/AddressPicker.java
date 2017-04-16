@@ -12,6 +12,7 @@ import java.util.List;
 import cn.qqtheme.framework.entity.City;
 import cn.qqtheme.framework.entity.County;
 import cn.qqtheme.framework.entity.Province;
+import cn.qqtheme.framework.entity.WheelItem;
 import cn.qqtheme.framework.util.LogUtils;
 import cn.qqtheme.framework.widget.WheelView;
 
@@ -26,7 +27,7 @@ import cn.qqtheme.framework.widget.WheelView;
  * @see County
  * @since 2015/12/15, 2016/12/18
  */
-public class AddressPicker extends LinkagePicker {
+public class AddressPicker extends LinkagePicker<Province, City, County> {
     private OnAddressPickListener onAddressPickListener;
     private OnWheelListener onWheelListener;
     //只显示地市及区县
@@ -34,7 +35,7 @@ public class AddressPicker extends LinkagePicker {
     //只显示省份及地市
     private boolean hideCounty = false;
     //省市区数据
-    private ArrayList<Province> provinces = new ArrayList<Province>();
+    private ArrayList<Province> provinces = new ArrayList<>();
 
     public AddressPicker(Activity activity, ArrayList<Province> provinces) {
         super(activity, new AddressProvider(provinces));
@@ -44,8 +45,12 @@ public class AddressPicker extends LinkagePicker {
     /**
      * 设置默认选中的省市县
      */
-    public void setSelectedItem(String province, String city, String county) {
+    public void setSelectedItem(Province province, City city, County county) {
         super.setSelectedItem(province, city, county);
+    }
+
+    public void setSelectedItem(String province, String city, String county) {
+        setSelectedItem(new Province(province), new City(city), new County(county));
     }
 
     public Province getSelectedProvince() {
@@ -124,7 +129,7 @@ public class AddressPicker extends LinkagePicker {
         provinceView.setLayoutParams(new LinearLayout.LayoutParams(provinceWidth, WRAP_CONTENT));
         provinceView.setTextSize(textSize);
         provinceView.setTextColor(textColorNormal, textColorFocus);
-        provinceView.setLineConfig(lineConfig);
+        provinceView.setDividerConfig(dividerConfig);
         provinceView.setOffset(offset);
         provinceView.setCycleDisable(cycleDisable);
         layout.addView(provinceView);
@@ -136,7 +141,7 @@ public class AddressPicker extends LinkagePicker {
         cityView.setLayoutParams(new LinearLayout.LayoutParams(cityWidth, WRAP_CONTENT));
         cityView.setTextSize(textSize);
         cityView.setTextColor(textColorNormal, textColorFocus);
-        cityView.setLineConfig(lineConfig);
+        cityView.setDividerConfig(dividerConfig);
         cityView.setOffset(offset);
         cityView.setCycleDisable(cycleDisable);
         layout.addView(cityView);
@@ -145,7 +150,7 @@ public class AddressPicker extends LinkagePicker {
         countyView.setLayoutParams(new LinearLayout.LayoutParams(countyWidth, WRAP_CONTENT));
         countyView.setTextSize(textSize);
         countyView.setTextColor(textColorNormal, textColorFocus);
-        countyView.setLineConfig(lineConfig);
+        countyView.setDividerConfig(dividerConfig);
         countyView.setOffset(offset);
         countyView.setCycleDisable(cycleDisable);
         layout.addView(countyView);
@@ -153,11 +158,12 @@ public class AddressPicker extends LinkagePicker {
             countyView.setVisibility(View.GONE);
         }
 
-        provinceView.setItems(provider.provideFirstData(), selectedFirstIndex);
-        provinceView.setOnWheelListener(new WheelView.OnWheelListener() {
+        provinceView.setItems(provider.initFirstData(), selectedFirstIndex);
+        provinceView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
             @Override
-            public void onSelected(boolean isUserScroll, int index, String item) {
-                selectedFirstItem = item;
+            public void onSelected(boolean isUserScroll, int index, WheelItem item) {
+                //noinspection ConstantConditions
+                selectedFirstItem = (Province) item;
                 selectedFirstIndex = index;
                 if (onWheelListener != null) {
                     onWheelListener.onProvinceWheeled(selectedFirstIndex, selectedFirstItem);
@@ -169,14 +175,14 @@ public class AddressPicker extends LinkagePicker {
                 selectedSecondIndex = 0;//重置地级索引
                 selectedThirdIndex = 0;//重置县级索引
                 //根据省份获取地市
-                List<String> cities = provider.provideSecondData(selectedFirstIndex);
+                List<City> cities = provider.linkageSecondData(selectedFirstIndex);
                 if (cities.size() > 0) {
                     cityView.setItems(cities, selectedSecondIndex);
                 } else {
                     cityView.setItems(new ArrayList<String>());
                 }
                 //根据地市获取区县
-                List<String> counties = provider.provideThirdData(selectedFirstIndex, selectedSecondIndex);
+                List<County> counties = provider.linkageThirdData(selectedFirstIndex, selectedSecondIndex);
                 if (counties.size() > 0) {
                     countyView.setItems(counties, selectedThirdIndex);
                 } else {
@@ -185,11 +191,11 @@ public class AddressPicker extends LinkagePicker {
             }
         });
 
-        cityView.setItems(provider.provideSecondData(selectedFirstIndex), selectedSecondIndex);
-        cityView.setOnWheelListener(new WheelView.OnWheelListener() {
+        cityView.setItems(provider.linkageSecondData(selectedFirstIndex), selectedSecondIndex);
+        cityView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
             @Override
-            public void onSelected(boolean isUserScroll, int index, String item) {
-                selectedSecondItem = item;
+            public void onSelected(boolean isUserScroll, int index, WheelItem item) {
+                selectedSecondItem = (City) item;
                 selectedSecondIndex = index;
                 if (onWheelListener != null) {
                     onWheelListener.onCityWheeled(selectedSecondIndex, selectedSecondItem);
@@ -200,7 +206,7 @@ public class AddressPicker extends LinkagePicker {
                 LogUtils.verbose(this, "change counties after city wheeled");
                 selectedThirdIndex = 0;//重置县级索引
                 //根据地市获取区县
-                List<String> counties = provider.provideThirdData(selectedFirstIndex, selectedSecondIndex);
+                List<County> counties = provider.linkageThirdData(selectedFirstIndex, selectedSecondIndex);
                 if (counties.size() > 0) {
                     //若不是用户手动滚动，说明联动需要指定默认项
                     countyView.setItems(counties, selectedThirdIndex);
@@ -210,11 +216,11 @@ public class AddressPicker extends LinkagePicker {
             }
         });
 
-        countyView.setItems(provider.provideThirdData(selectedFirstIndex, selectedSecondIndex), selectedThirdIndex);
-        countyView.setOnWheelListener(new WheelView.OnWheelListener() {
+        countyView.setItems(provider.linkageThirdData(selectedFirstIndex, selectedSecondIndex), selectedThirdIndex);
+        countyView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
             @Override
-            public void onSelected(boolean isUserScroll, int index, String item) {
-                selectedThirdItem = item;
+            public void onSelected(boolean isUserScroll, int index, WheelItem item) {
+                selectedThirdItem = (County) item;
                 selectedThirdIndex = index;
                 if (onWheelListener != null) {
                     onWheelListener.onCountyWheeled(selectedThirdIndex, selectedThirdItem);
@@ -242,13 +248,6 @@ public class AddressPicker extends LinkagePicker {
      */
     public interface OnAddressPickListener {
 
-        /**
-         * 选择地址
-         *
-         * @param province the province
-         * @param city     the city
-         * @param county   the county ，if {@code hideCounty} is true，this is null
-         */
         void onAddressPicked(Province province, City city, County county);
 
     }
@@ -258,21 +257,21 @@ public class AddressPicker extends LinkagePicker {
      */
     public interface OnWheelListener {
 
-        void onProvinceWheeled(int index, String province);
+        void onProvinceWheeled(int index, Province province);
 
-        void onCityWheeled(int index, String city);
+        void onCityWheeled(int index, City city);
 
-        void onCountyWheeled(int index, String county);
+        void onCountyWheeled(int index, County county);
 
     }
 
     /**
      * 地址提供者
      */
-    public static class AddressProvider implements DataProvider {
-        private List<String> firstList = new ArrayList<>();
-        private List<List<String>> secondList = new ArrayList<>();
-        private List<List<List<String>>> thirdList = new ArrayList<>();
+    private static class AddressProvider implements Provider<Province, City, County> {
+        private List<Province> firstList = new ArrayList<>();
+        private List<List<City>> secondList = new ArrayList<>();
+        private List<List<List<County>>> thirdList = new ArrayList<>();
 
         public AddressProvider(List<Province> provinces) {
             parseData(provinces);
@@ -284,17 +283,20 @@ public class AddressPicker extends LinkagePicker {
         }
 
         @Override
-        public List<String> provideFirstData() {
+        @NonNull
+        public List<Province> initFirstData() {
             return firstList;
         }
 
         @Override
-        public List<String> provideSecondData(int firstIndex) {
+        @NonNull
+        public List<City> linkageSecondData(int firstIndex) {
             return secondList.get(firstIndex);
         }
 
         @Override
-        public List<String> provideThirdData(int firstIndex, int secondIndex) {
+        @NonNull
+        public List<County> linkageThirdData(int firstIndex, int secondIndex) {
             return thirdList.get(firstIndex).get(secondIndex);
         }
 
@@ -303,28 +305,24 @@ public class AddressPicker extends LinkagePicker {
             //添加省
             for (int x = 0; x < provinceSize; x++) {
                 Province pro = data.get(x);
-                firstList.add(pro.getAreaName());
+                firstList.add(pro);
                 List<City> cities = pro.getCities();
-                List<String> xCities = new ArrayList<>();
-                List<List<String>> xCounties = new ArrayList<>();
+                List<City> xCities = new ArrayList<>();
+                List<List<County>> xCounties = new ArrayList<>();
                 int citySize = cities.size();
                 //添加地市
                 for (int y = 0; y < citySize; y++) {
                     City cit = cities.get(y);
                     cit.setProvinceId(pro.getAreaId());
-                    xCities.add(cit.getAreaName());
+                    xCities.add(cit);
                     List<County> counties = cit.getCounties();
-                    ArrayList<String> yCounties = new ArrayList<>();
+                    ArrayList<County> yCounties = new ArrayList<>();
                     int countySize = counties.size();
                     //添加区县
-                    if (countySize == 0) {
-                        yCounties.add(cit.getAreaName());
-                    } else {
-                        for (int z = 0; z < countySize; z++) {
-                            County cou = counties.get(z);
-                            cou.setCityId(cit.getAreaId());
-                            yCounties.add(cou.getAreaName());
-                        }
+                    for (int z = 0; z < countySize; z++) {
+                        County cou = counties.get(z);
+                        cou.setCityId(cit.getAreaId());
+                        yCounties.add(cou);
                     }
                     xCounties.add(yCounties);
                 }

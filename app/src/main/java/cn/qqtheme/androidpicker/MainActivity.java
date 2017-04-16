@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -57,7 +58,17 @@ public class MainActivity extends BaseActivity {
     }
 
     public void onAnimationStyle(View view) {
-        NumberPicker picker = new NumberPicker(this);
+        final NumberPicker picker = new NumberPicker(this);
+        View headerView = View.inflate(activity, R.layout.picker_header, null);
+        TextView titleView = (TextView) headerView.findViewById(R.id.picker_title);
+        titleView.setText("自定义顶部视图");
+        headerView.findViewById(R.id.picker_close).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                picker.dismiss();
+            }
+        });
+        picker.setHeaderView(headerView);
         picker.setAnimationStyle(R.style.Animation_CustomPopup);
         picker.setCycleDisable(false);
         picker.setOffset(2);//偏移量

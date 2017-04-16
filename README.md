@@ -58,6 +58,11 @@ dependencies {
 ```
 
 # Sample （更多用法详见示例项目）
+自定义顶部及底部视图：   
+```java
+picker.setHeaderView(...);
+picker.setFooterView(...);
+```
 继承自定义扩展选择器：
 ```java
         CustomHeaderAndFooterPicker picker = new CustomHeaderAndFooterPicker(this);

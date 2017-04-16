@@ -70,6 +70,14 @@ public class NumberPicker extends SinglePicker<Number> {
         });
     }
 
+    public void setOnWheelListener(OnWheelListener onWheelListener) {
+        super.setOnWheelListener(onWheelListener);
+    }
+
+    public interface OnWheelListener extends SinglePicker.OnWheelListener<Number> {
+
+    }
+
     public static abstract class OnNumberPickListener implements OnItemPickListener<Number> {
 
         public abstract void onNumberPicked(int index, Number item);

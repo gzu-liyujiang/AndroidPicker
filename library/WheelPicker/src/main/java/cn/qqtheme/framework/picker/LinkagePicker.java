@@ -10,10 +10,13 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.qqtheme.framework.entity.LinkageFirst;
+import cn.qqtheme.framework.entity.LinkageSecond;
+import cn.qqtheme.framework.entity.LinkageThird;
+import cn.qqtheme.framework.entity.WheelItem;
 import cn.qqtheme.framework.util.LogUtils;
 import cn.qqtheme.framework.widget.WheelView;
 
@@ -24,18 +27,23 @@ import cn.qqtheme.framework.widget.WheelView;
  * DateTime:2016/5/6 20:34
  * Builder:Android Studio
  *
+ * @see Provider
  * @see DataProvider
  */
-public class LinkagePicker extends WheelPicker {
-    protected String selectedFirstItem = "", selectedSecondItem = "", selectedThirdItem = "";
+public class LinkagePicker<Fst extends LinkageFirst<Snd>, Snd extends LinkageSecond<Trd>, Trd> extends WheelPicker {
+    protected Fst selectedFirstItem;
+    protected Snd selectedSecondItem;
+    protected Trd selectedThirdItem;
     protected String firstLabel = "", secondLabel = "", thirdLabel = "";
     protected int selectedFirstIndex = 0, selectedSecondIndex = 0, selectedThirdIndex = 0;
-    protected DataProvider provider;
+    protected Provider provider;
+    private OnPickListener onPickListener;
     private OnLinkageListener onLinkageListener;
     private double firstColumnWeight = 0;//第一级显示的宽度比
     private double secondColumnWeight = 0;//第二级显示的宽度比
     private double thirdColumnWeight = 0;//第三级显示的宽度比
     private OnWheelListener onWheelListener;
+    private OnWheelLinkageListener onWheelLinkageListener;
 
     public LinkagePicker(Activity activity) {
         super(activity);
@@ -46,31 +54,37 @@ public class LinkagePicker extends WheelPicker {
         this.provider = provider;
     }
 
+    public LinkagePicker(Activity activity, Provider<Fst, Snd, Trd> provider) {
+        super(activity);
+        this.provider = provider;
+    }
+
     /**
      * 二级联动选择器构造函数
      *
-     * @deprecated use {@link #LinkagePicker(Activity, DataProvider)} instead
+     * @deprecated use {@link #LinkagePicker(Activity, Provider)} instead
      */
     @Deprecated
-    public LinkagePicker(Activity activity, ArrayList<String> firstList,
-                         ArrayList<ArrayList<String>> secondList) {
+    public LinkagePicker(Activity activity, List<Fst> firstList, List<List<Snd>> secondList) {
         this(activity, firstList, secondList, null);
     }
 
     /**
      * 三级联动选择器构造函数
      *
-     * @deprecated use {@link #LinkagePicker(Activity, DataProvider)} instead
+     * @deprecated use {@link #LinkagePicker(Activity, Provider)} instead
      */
     @Deprecated
-    public LinkagePicker(Activity activity, final ArrayList<String> firstList,
-                         final ArrayList<ArrayList<String>> secondList,
-                         final ArrayList<ArrayList<ArrayList<String>>> thirdList) {
+    public LinkagePicker(Activity activity, List<Fst> f, List<List<Snd>> s, List<List<List<Trd>>> t) {
         super(activity);
-        this.provider = new DefaultDataProvider(firstList, secondList, thirdList);
+        this.provider = new DefaultDataProvider<>(f, s, t);
     }
 
     protected void setProvider(DataProvider provider) {
+        this.provider = provider;
+    }
+
+    protected void setProvider(Provider<Fst, Snd, Trd> provider) {
         this.provider = provider;
     }
 
@@ -84,44 +98,60 @@ public class LinkagePicker extends WheelPicker {
         selectedThirdIndex = thirdIndex;
     }
 
-    public void setSelectedItem(String firstText, String secondText) {
-        setSelectedItem(firstText, secondText, "");
+    public void setSelectedItem(Fst fst, Snd snd) {
+        setSelectedItem(fst, snd, null);
     }
 
-    public void setSelectedItem(String firstText, String secondText, String thirdText) {
+    public void setSelectedItem(Fst fst, Snd snd, Trd trd) {
         if (null == provider) {
             throw new IllegalArgumentException("please set data provider at first");
         }
-        List<String> firstData = provider.provideFirstData();
-        for (int i = 0; i < firstData.size(); i++) {
-            String ft = firstData.get(i);
-            if (ft.contains(firstText)) {
+        List<Fst> fsts = provider.initFirstData();
+        int i = 0;
+        for (Fst f : fsts) {
+            if (f.equals(fst)) {
                 selectedFirstIndex = i;
-                LogUtils.verbose("init select first text: " + ft + ", index:" + selectedFirstIndex);
+                break;
+            } else if (f.getId().equals(fst.getId()) || f.getName().equals(fst.getName())) {
+                selectedFirstIndex = i;
                 break;
             }
+            i++;
         }
-        List<String> secondData = provider.provideSecondData(selectedFirstIndex);
-        for (int j = 0; j < secondData.size(); j++) {
-            String st = secondData.get(j);
-            if (st.contains(secondText)) {
+        LogUtils.verbose("init select first: " + fst.getName() + ", index:" + selectedFirstIndex);
+        List<Snd> snds = provider.linkageSecondData(selectedFirstIndex);
+        int j = 0;
+        for (Snd s : snds) {
+            if (s.equals(snd)) {
+                selectedFirstIndex = i;
+                break;
+            } else if (s.getId().equals(snd.getId()) || s.getName().equals(snd.getName())) {
                 selectedSecondIndex = j;
-                LogUtils.verbose("init select second text: " + st + ", index:" + selectedSecondIndex);
                 break;
             }
+            j++;
         }
+        LogUtils.verbose("init select second: " + snd.getName() + ", index:" + selectedSecondIndex);
         if (provider.isOnlyTwo()) {
             return;//仅仅二级联动
         }
-        List<String> thirdData = provider.provideThirdData(selectedFirstIndex, selectedSecondIndex);
-        for (int k = 0; k < thirdData.size(); k++) {
-            String tt = thirdData.get(k);
-            if (tt.contains(thirdText)) {
+        List<Trd> trds = provider.linkageThirdData(selectedFirstIndex, selectedSecondIndex);
+        int k = 0;
+        for (Trd t : trds) {
+            if (t.equals(trd)) {
                 selectedThirdIndex = k;
-                LogUtils.verbose("init select third text: " + tt + ", index:" + selectedThirdIndex);
                 break;
+            } else if (t instanceof LinkageThird) {
+                LinkageThird ltrd = (LinkageThird) trd;
+                LinkageThird lt = (LinkageThird) t;
+                if (lt.getId().equals(ltrd.getId()) || lt.getName().equals(ltrd.getName())) {
+                    selectedThirdIndex = k;
+                    break;
+                }
             }
+            k++;
         }
+        LogUtils.verbose("init select third: " + trd + ", index:" + selectedThirdIndex);
     }
 
     public void setLabel(String firstLabel, String secondLabel) {
@@ -134,15 +164,15 @@ public class LinkagePicker extends WheelPicker {
         this.thirdLabel = thirdLabel;
     }
 
-    public String getSelectedFirstItem() {
+    public Fst getSelectedFirstItem() {
         return selectedFirstItem;
     }
 
-    public String getSelectedSecondItem() {
+    public Snd getSelectedSecondItem() {
         return selectedSecondItem;
     }
 
-    public String getSelectedThirdItem() {
+    public Trd getSelectedThirdItem() {
         return selectedThirdItem;
     }
 
@@ -180,12 +210,31 @@ public class LinkagePicker extends WheelPicker {
     }
 
     /**
-     * 设置滑动监听器
+     * 设置滑动过程数据联动监听器
      */
+    public void setOnWheelLinkageListener(OnWheelLinkageListener onWheelLinkageListener) {
+        this.onWheelLinkageListener = onWheelLinkageListener;
+    }
+
+    /**
+     * @deprecated use {@link #setOnWheelLinkageListener} instead
+     */
+    @Deprecated
     public void setOnWheelListener(OnWheelListener onWheelListener) {
         this.onWheelListener = onWheelListener;
     }
 
+    /**
+     * 设置完成选泽监听器
+     */
+    public void setOnPickListener(OnPickListener<Fst, Snd, Trd> onPickListener) {
+        this.onPickListener = onPickListener;
+    }
+
+    /**
+     * @deprecated use {@link #setOnPickListener} instead
+     */
+    @Deprecated
     public void setOnLinkageListener(OnLinkageListener onLinkageListener) {
         this.onLinkageListener = onLinkageListener;
     }
@@ -233,7 +282,7 @@ public class LinkagePicker extends WheelPicker {
         final WheelView firstView = new WheelView(activity);
         firstView.setTextSize(textSize);
         firstView.setTextColor(textColorNormal, textColorFocus);
-        firstView.setLineConfig(lineConfig);
+        firstView.setDividerConfig(dividerConfig);
         firstView.setOffset(offset);
         firstView.setCycleDisable(cycleDisable);
         layout.addView(firstView);
@@ -252,7 +301,7 @@ public class LinkagePicker extends WheelPicker {
         final WheelView secondView = new WheelView(activity);
         secondView.setTextSize(textSize);
         secondView.setTextColor(textColorNormal, textColorFocus);
-        secondView.setLineConfig(lineConfig);
+        secondView.setDividerConfig(dividerConfig);
         secondView.setOffset(offset);
         secondView.setCycleDisable(cycleDisable);
         layout.addView(secondView);
@@ -272,7 +321,7 @@ public class LinkagePicker extends WheelPicker {
         if (!provider.isOnlyTwo()) {
             thirdView.setTextSize(textSize);
             thirdView.setTextColor(textColorNormal, textColorFocus);
-            thirdView.setLineConfig(lineConfig);
+            thirdView.setDividerConfig(dividerConfig);
             thirdView.setOffset(offset);
             thirdView.setCycleDisable(cycleDisable);
             layout.addView(thirdView);
@@ -289,14 +338,18 @@ public class LinkagePicker extends WheelPicker {
             }
         }
 
-        firstView.setItems(provider.provideFirstData(), selectedFirstIndex);
-        firstView.setOnWheelListener(new WheelView.OnWheelListener() {
+        firstView.setItems(provider.initFirstData(), selectedFirstIndex);
+        firstView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
             @Override
-            public void onSelected(boolean isUserScroll, int index, String item) {
-                selectedFirstItem = item;
+            public void onSelected(boolean isUserScroll, int index, WheelItem item) {
+                //noinspection unchecked
+                selectedFirstItem = (Fst) item;
                 selectedFirstIndex = index;
+                if (onWheelLinkageListener != null) {
+                    onWheelLinkageListener.onLinkage(selectedFirstIndex, 0, 0);
+                }
                 if (onWheelListener != null) {
-                    onWheelListener.onFirstWheeled(selectedFirstIndex, selectedFirstItem);
+                    onWheelListener.onFirstWheeled(selectedFirstIndex, selectedFirstItem.getName());
                 }
                 if (!isUserScroll) {
                     return;
@@ -305,25 +358,29 @@ public class LinkagePicker extends WheelPicker {
                 selectedSecondIndex = 0;//重置第二级索引
                 selectedThirdIndex = 0;//重置第三级索引
                 //根据第一级数据获取第二级数据
-                List<String> secondData = provider.provideSecondData(selectedFirstIndex);
-                secondView.setItems(secondData, selectedSecondIndex);
+                List<Snd> snds = provider.linkageSecondData(selectedFirstIndex);
+                secondView.setItems(snds, selectedSecondIndex);
                 if (provider.isOnlyTwo()) {
                     return;//仅仅二级联动
                 }
                 //根据第二级数据获取第三级数据
-                List<String> thirdData = provider.provideThirdData(selectedFirstIndex, selectedSecondIndex);
-                thirdView.setItems(thirdData, selectedThirdIndex);
+                List<Trd> trds = provider.linkageThirdData(selectedFirstIndex, selectedSecondIndex);
+                thirdView.setItems(trds, selectedThirdIndex);
             }
         });
 
-        secondView.setItems(provider.provideSecondData(selectedFirstIndex), selectedSecondIndex);
-        secondView.setOnWheelListener(new WheelView.OnWheelListener() {
+        secondView.setItems(provider.linkageSecondData(selectedFirstIndex), selectedSecondIndex);
+        secondView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
             @Override
-            public void onSelected(boolean isUserScroll, int index, String item) {
-                selectedSecondItem = item;
+            public void onSelected(boolean isUserScroll, int index, WheelItem item) {
+                //noinspection unchecked
+                selectedSecondItem = (Snd) item;
                 selectedSecondIndex = index;
+                if (onWheelLinkageListener != null) {
+                    onWheelLinkageListener.onLinkage(selectedFirstIndex, selectedSecondIndex, 0);
+                }
                 if (onWheelListener != null) {
-                    onWheelListener.onSecondWheeled(selectedSecondIndex, selectedSecondItem);
+                    onWheelListener.onSecondWheeled(selectedSecondIndex, selectedSecondItem.getName());
                 }
                 if (!isUserScroll) {
                     return;
@@ -333,23 +390,33 @@ public class LinkagePicker extends WheelPicker {
                 }
                 LogUtils.verbose(this, "change third data after second wheeled");
                 selectedThirdIndex = 0;//重置第三级索引
-                List<String> thirdData = provider.provideThirdData(selectedFirstIndex, selectedSecondIndex);
+                List<Trd> trds = provider.linkageThirdData(selectedFirstIndex, selectedSecondIndex);
                 //根据第二级数据获取第三级数据
-                thirdView.setItems(thirdData, selectedThirdIndex);
+                thirdView.setItems(trds, selectedThirdIndex);
             }
         });
         if (provider.isOnlyTwo()) {
             return layout;//仅仅二级联动
         }
 
-        thirdView.setItems(provider.provideThirdData(selectedFirstIndex, selectedSecondIndex), selectedThirdIndex);
-        thirdView.setOnWheelListener(new WheelView.OnWheelListener() {
+        thirdView.setItems(provider.linkageThirdData(selectedFirstIndex, selectedSecondIndex), selectedThirdIndex);
+        thirdView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
             @Override
-            public void onSelected(boolean isUserScroll, int index, String item) {
-                selectedThirdItem = item;
+            public void onSelected(boolean isUserScroll, int index, WheelItem item) {
+                //noinspection unchecked
+                selectedThirdItem = (Trd) item;
                 selectedThirdIndex = index;
+                if (onWheelLinkageListener != null) {
+                    onWheelLinkageListener.onLinkage(selectedFirstIndex, selectedSecondIndex, selectedThirdIndex);
+                }
                 if (onWheelListener != null) {
-                    onWheelListener.onThirdWheeled(selectedThirdIndex, selectedThirdItem);
+                    String thirdName;
+                    if (selectedThirdItem instanceof LinkageThird) {
+                        thirdName = ((LinkageThird) selectedThirdItem).getName();
+                    } else {
+                        thirdName = selectedThirdItem.toString();
+                    }
+                    onWheelListener.onThirdWheeled(selectedThirdIndex, thirdName);
                 }
             }
         });
@@ -358,22 +425,65 @@ public class LinkagePicker extends WheelPicker {
 
     @Override
     public void onSubmit() {
-        if (onLinkageListener == null) {
-            return;
-        }
         if (provider.isOnlyTwo()) {
-            onLinkageListener.onPicked(selectedFirstItem, selectedSecondItem, null);
+            if (onPickListener != null) {
+                onPickListener.onPicked(selectedFirstItem, selectedSecondItem, null);
+            }
+            if (onLinkageListener != null) {
+                onLinkageListener.onPicked(selectedFirstItem.getName(), selectedSecondItem.getName(), null);
+            }
         } else {
-            onLinkageListener.onPicked(selectedFirstItem, selectedSecondItem, selectedThirdItem);
+            if (onPickListener != null) {
+                onPickListener.onPicked(selectedFirstItem, selectedSecondItem, selectedThirdItem);
+            }
+            if (onLinkageListener != null) {
+                String thirdName;
+                if (selectedThirdItem instanceof LinkageThird) {
+                    thirdName = ((LinkageThird) selectedThirdItem).getName();
+                } else {
+                    thirdName = selectedThirdItem.toString();
+                }
+                onLinkageListener.onPicked(selectedFirstItem.getName(), selectedSecondItem.getName(), thirdName);
+            }
         }
     }
 
+    /**
+     * 数据选择完成监听器
+     */
+    public interface OnPickListener<Fst, Snd, Trd> {
+
+        void onPicked(Fst first, Snd second, Trd third);
+
+    }
+
+    /**
+     * 兼容旧版API
+     *
+     * @deprecated use {@link OnPickListener} instead
+     */
+    @Deprecated
     public interface OnLinkageListener {
 
         void onPicked(String first, String second, String third);
 
     }
 
+    /**
+     * 滑动过程数据联动监听器
+     */
+    public interface OnWheelLinkageListener {
+
+        void onLinkage(int firstIndex, int secondIndex, int thirdIndex);
+
+    }
+
+    /**
+     * 兼容旧版API
+     *
+     * @deprecated use {@link OnWheelLinkageListener} instead
+     */
+    @Deprecated
     public static abstract class OnWheelListener {
 
         public abstract void onFirstWheeled(int index, String item);
@@ -389,7 +499,7 @@ public class LinkagePicker extends WheelPicker {
     /**
      * 数据提供接口
      */
-    public interface DataProvider {
+    public interface Provider<Fst extends LinkageFirst<Snd>, Snd extends LinkageSecond<Trd>, Trd> {
 
         /**
          * 是否只是二级联动
@@ -397,39 +507,137 @@ public class LinkagePicker extends WheelPicker {
         boolean isOnlyTwo();
 
         /**
-         * 提供第一级数据
+         * 初始化第一级数据
          */
-        List<String> provideFirstData();
+        @NonNull
+        List<Fst> initFirstData();
 
         /**
-         * 提供第二级数据
+         * 根据第一级数据联动第二级数据
          */
-        List<String> provideSecondData(int firstIndex);
+        @NonNull
+        List<Snd> linkageSecondData(int firstIndex);
 
         /**
-         * 提供第三级数据
+         * 根据第一二级数据联动第三级数据
          */
-        List<String> provideThirdData(int firstIndex, int secondIndex);
+        @NonNull
+        List<Trd> linkageThirdData(int firstIndex, int secondIndex);
+
+    }
+
+    private static class StringLinkageFirst implements LinkageFirst<StringLinkageSecond> {
+        private String name;
+        private List<StringLinkageSecond> seconds = new ArrayList<>();
+
+        private StringLinkageFirst(String name, List<StringLinkageSecond> seconds) {
+            this.name = name;
+            this.seconds = seconds;
+        }
+
+        @Override
+        public String getName() {
+            return name;
+        }
+
+        @Override
+        public Object getId() {
+            return name;
+        }
+
+        @Override
+        public List<StringLinkageSecond> getSeconds() {
+            return seconds;
+        }
+    }
+
+    private static class StringLinkageSecond implements LinkageSecond<String> {
+        private String name;
+        private List<String> thirds = new ArrayList<>();
+
+        private StringLinkageSecond(String name, List<String> thirds) {
+            this.name = name;
+            this.thirds = thirds;
+        }
+
+        @Override
+        public String getName() {
+            return name;
+        }
+
+        @Override
+        public Object getId() {
+            return name;
+        }
+
+        @Override
+        public List<String> getThirds() {
+            return thirds;
+        }
+
+    }
+
+    /**
+     * 兼容旧版API
+     */
+    public static abstract class DataProvider implements Provider<StringLinkageFirst, StringLinkageSecond, String> {
+
+        public abstract List<String> provideFirstData();
+
+        public abstract List<String> provideSecondData(int firstIndex);
+
+        public abstract List<String> provideThirdData(int firstIndex, int secondIndex);
+
+        @NonNull
+        @Override
+        public List<StringLinkageFirst> initFirstData() {
+            List<StringLinkageFirst> firsts = new ArrayList<>();
+            List<String> data = provideFirstData();
+            int i = 0;
+            for (String str : data) {
+                firsts.add(new StringLinkageFirst(str, linkageSecondData(i)));
+                i++;
+            }
+            return firsts;
+        }
+
+        @NonNull
+        @Override
+        public List<StringLinkageSecond> linkageSecondData(int firstIndex) {
+            List<StringLinkageSecond> seconds = new ArrayList<>();
+            List<String> data = provideSecondData(firstIndex);
+            int i = 0;
+            for (String str : data) {
+                seconds.add(new StringLinkageSecond(str, linkageThirdData(firstIndex, i)));
+                i++;
+            }
+            return seconds;
+        }
+
+        @NonNull
+        @Override
+        public List<String> linkageThirdData(int firstIndex, int secondIndex) {
+            return provideThirdData(firstIndex, secondIndex);
+        }
 
     }
 
     /**
      * 默认的数据提供者
      */
-    public static class DefaultDataProvider implements DataProvider {
-        private ArrayList<String> firstList = new ArrayList<>();
-        private ArrayList<ArrayList<String>> secondList = new ArrayList<>();
-        private ArrayList<ArrayList<ArrayList<String>>> thirdList = new ArrayList<>();
+    private static class DefaultDataProvider<Fst extends LinkageFirst<Snd>, Snd extends LinkageSecond<Trd>, Trd> implements Provider<Fst, Snd, Trd> {
+        private List<Fst> firstList = new ArrayList<>();
+        private List<List<Snd>> secondList = new ArrayList<>();
+        private List<List<List<Trd>>> thirdList = new ArrayList<>();
         private boolean onlyTwo = false;
 
-        public DefaultDataProvider(ArrayList<String> firstList, ArrayList<ArrayList<String>> secondList,
-                                   ArrayList<ArrayList<ArrayList<String>>> thirdList) {
-            this.firstList = firstList;
-            this.secondList = secondList;
-            if (thirdList == null || thirdList.size() == 0) {
+        public DefaultDataProvider(List<Fst> f, List<List<Snd>> s, List<List<List<Trd>>> t) {
+            this.firstList = f;
+            this.secondList = s;
+            if (t == null || t.size() == 0) {
                 this.onlyTwo = true;
             } else {
-                this.thirdList = thirdList;
+                this.thirdList = t;
             }
         }
 
@@ -438,17 +646,20 @@ public class LinkagePicker extends WheelPicker {
         }
 
         @Override
-        public List<String> provideFirstData() {
+        @NonNull
+        public List<Fst> initFirstData() {
             return firstList;
         }
 
         @Override
-        public List<String> provideSecondData(int firstIndex) {
+        @NonNull
+        public List<Snd> linkageSecondData(int firstIndex) {
             return secondList.get(firstIndex);
         }
 
         @Override
-        public List<String> provideThirdData(int firstIndex, int secondIndex) {
+        @NonNull
+        public List<Trd> linkageThirdData(int firstIndex, int secondIndex) {
             if (onlyTwo) {
                 return new ArrayList<>();
             } else {

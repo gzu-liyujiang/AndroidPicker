@@ -23,7 +23,7 @@ import cn.qqtheme.framework.widget.WheelView;
  * DateTime:2016/1/29 14:47
  * Builder:Android Studio
  */
-public class CustomHeaderAndFooterPicker extends OptionPicker implements SinglePicker.OnWheelListener {
+public class CustomHeaderAndFooterPicker extends OptionPicker implements OptionPicker.OnWheelListener {
     private TextView titleView;
 
     public CustomHeaderAndFooterPicker(Activity activity) {
@@ -31,7 +31,7 @@ public class CustomHeaderAndFooterPicker extends OptionPicker implements SingleP
                 "Java/Android", "PHP/MySQL", "HTML/CSS/JS", "C/C++"
         });
         setSelectedIndex(1);
-        setLineConfig(new WheelView.LineConfig(0.06f));
+        setDividerConfig(new WheelView.DividerConfig(0.06f));
         setOnWheelListener(this);
     }
 
