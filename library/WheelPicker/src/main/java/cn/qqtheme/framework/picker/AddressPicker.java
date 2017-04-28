@@ -158,18 +158,15 @@ public class AddressPicker extends LinkagePicker<Province, City, County> {
             countyView.setVisibility(View.GONE);
         }
 
-        provinceView.setItems(provider.initFirstData(), selectedFirstIndex);
+        final List<Province> firstData = provider.initFirstData();
+        provinceView.setItems(firstData, selectedFirstIndex);
         provinceView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
             @Override
-            public void onSelected(boolean isUserScroll, int index, WheelItem item) {
-                //noinspection ConstantConditions
-                selectedFirstItem = (Province) item;
+            public void onSelected(int index) {
+                selectedFirstItem = firstData.get(index);
                 selectedFirstIndex = index;
                 if (onWheelListener != null) {
                     onWheelListener.onProvinceWheeled(selectedFirstIndex, selectedFirstItem);
-                }
-                if (!isUserScroll) {
-                    return;
                 }
                 LogUtils.verbose(this, "change cities after province wheeled");
                 selectedSecondIndex = 0;//重置地级索引
@@ -191,17 +188,15 @@ public class AddressPicker extends LinkagePicker<Province, City, County> {
             }
         });
 
-        cityView.setItems(provider.linkageSecondData(selectedFirstIndex), selectedSecondIndex);
+        final List<City> secondData = provider.linkageSecondData(selectedFirstIndex);
+        cityView.setItems(secondData, selectedSecondIndex);
         cityView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
             @Override
-            public void onSelected(boolean isUserScroll, int index, WheelItem item) {
-                selectedSecondItem = (City) item;
+            public void onSelected(int index) {
+                selectedSecondItem = secondData.get(index);
                 selectedSecondIndex = index;
                 if (onWheelListener != null) {
                     onWheelListener.onCityWheeled(selectedSecondIndex, selectedSecondItem);
-                }
-                if (!isUserScroll) {
-                    return;
                 }
                 LogUtils.verbose(this, "change counties after city wheeled");
                 selectedThirdIndex = 0;//重置县级索引
@@ -216,11 +211,12 @@ public class AddressPicker extends LinkagePicker<Province, City, County> {
             }
         });
 
-        countyView.setItems(provider.linkageThirdData(selectedFirstIndex, selectedSecondIndex), selectedThirdIndex);
+        final List<County> thirdData = provider.linkageThirdData(selectedFirstIndex, selectedSecondIndex);
+        countyView.setItems(thirdData, selectedThirdIndex);
         countyView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
             @Override
-            public void onSelected(boolean isUserScroll, int index, WheelItem item) {
-                selectedThirdItem = (County) item;
+            public void onSelected(int index) {
+                selectedThirdItem = thirdData.get(index);
                 selectedThirdIndex = index;
                 if (onWheelListener != null) {
                     onWheelListener.onCountyWheeled(selectedThirdIndex, selectedThirdItem);

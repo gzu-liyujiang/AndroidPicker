@@ -55,8 +55,8 @@
 
     <cn.qqtheme.framework.widget.WheelView
         android:id="@+id/wheelview_single"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_width="400dp"
+        android:layout_height="300dp"/>
 
     <LinearLayout
         android:id="@+id/wheelview_container"

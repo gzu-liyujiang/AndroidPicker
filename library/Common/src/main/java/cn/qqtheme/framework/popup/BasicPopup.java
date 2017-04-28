@@ -50,7 +50,6 @@ public abstract class BasicPopup<V extends View> implements DialogInterface.OnKe
         contentLayout.setLayoutParams(new ViewGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
         contentLayout.setFocusable(true);
         contentLayout.setFocusableInTouchMode(true);
-        //contentLayout.setFitsSystemWindows(true);
         dialog = new Dialog(activity);
         dialog.setCanceledOnTouchOutside(false);//触摸屏幕取消窗体
         dialog.setCancelable(false);//按返回键取消窗体
@@ -139,11 +138,23 @@ public abstract class BasicPopup<V extends View> implements DialogInterface.OnKe
         contentLayout.addView(view);
     }
 
+    public void setFitsSystemWindows(boolean flag) {
+        contentLayout.setFitsSystemWindows(flag);
+    }
+
     public void setAnimationStyle(@StyleRes int animRes) {
         Window window = dialog.getWindow();
         if (window != null) {
             window.setWindowAnimations(animRes);
         }
+    }
+
+    public void setCanceledOnTouchOutside(boolean flag) {
+        dialog.setCanceledOnTouchOutside(flag);
+    }
+
+    public void setCancelable(boolean flag) {
+        dialog.setCancelable(flag);
     }
 
     public void setOnDismissListener(final DialogInterface.OnDismissListener onDismissListener) {

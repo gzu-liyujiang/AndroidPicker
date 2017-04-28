@@ -3,11 +3,9 @@ package cn.qqtheme.framework.picker;
 import android.app.Activity;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -17,14 +15,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Locale;
 
-import cn.qqtheme.framework.entity.WheelItem;
 import cn.qqtheme.framework.util.DateUtils;
 import cn.qqtheme.framework.util.LogUtils;
 import cn.qqtheme.framework.widget.WheelView;
 
 /**
  * 日期时间选择器，可同时选中日期及时间，另见{@link DatePicker}和{@link TimePicker}
- * <p/>
+ * <p>
  * Created by Dong on 2016/5/13.
  * Refactored by 李玉江 on 2016/12/31.
  */
@@ -408,28 +405,27 @@ public class DateTimePicker extends WheelPicker {
         final WheelView minuteView = new WheelView(activity);
 
         if (dateMode == YEAR_MONTH_DAY || dateMode == YEAR_MONTH) {
-            yearView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+            yearView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, 1.0f));
             yearView.setTextSize(textSize);
             yearView.setTextColor(textColorNormal, textColorFocus);
             yearView.setDividerConfig(dividerConfig);
             yearView.setOffset(offset);
             yearView.setCycleDisable(cycleDisable);
             yearView.setItems(years, selectedYearIndex);
+            yearView.setLabel(yearLabel);
             yearView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
                 @Override
-                public void onSelected(boolean isUserScroll, int index, WheelItem item) {
+                public void onSelected(int index) {
                     selectedYearIndex = index;
+                    String selectedYearStr = years.get(index);
                     if (onWheelListener != null) {
-                        onWheelListener.onYearWheeled(selectedYearIndex, item.getName());
-                    }
-                    if (!isUserScroll) {
-                        return;
+                        onWheelListener.onYearWheeled(selectedYearIndex, selectedYearStr);
                     }
                     LogUtils.verbose(this, "change months after year wheeled");
                     selectedMonthIndex = 0;//重置月份索引
                     selectedDayIndex = 0;//重置日子索引
                     //需要根据年份及月份动态计算天数
-                    int selectedYear = DateUtils.trimZero(item.getName());
+                    int selectedYear = DateUtils.trimZero(selectedYearStr);
                     changeMonthData(selectedYear);
                     monthView.setItems(months, selectedMonthIndex);
                     changeDayData(selectedYear, DateUtils.trimZero(months.get(selectedMonthIndex)));
@@ -437,33 +433,24 @@ public class DateTimePicker extends WheelPicker {
                 }
             });
             layout.addView(yearView);
-            if (!TextUtils.isEmpty(yearLabel)) {
-                TextView labelView = new TextView(activity);
-                labelView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
-                labelView.setTextSize(textSize);
-                labelView.setTextColor(textColorFocus);
-                labelView.setText(yearLabel);
-                layout.addView(labelView);
-            }
         }
 
         if (dateMode != NONE) {
-            monthView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+            monthView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT,1.0f));
             monthView.setTextSize(textSize);
             monthView.setTextColor(textColorNormal, textColorFocus);
             monthView.setDividerConfig(dividerConfig);
             monthView.setOffset(offset);
             monthView.setCycleDisable(cycleDisable);
             monthView.setItems(months, selectedMonthIndex);
+            monthView.setLabel(monthLabel);
             monthView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
                 @Override
-                public void onSelected(boolean isUserScroll, int index, WheelItem item) {
+                public void onSelected(int index) {
                     selectedMonthIndex = index;
+                    String selectedMonthStr = months.get(index);
                     if (onWheelListener != null) {
-                        onWheelListener.onMonthWheeled(selectedMonthIndex, item.getName());
-                    }
-                    if (!isUserScroll) {
-                        return;
+                        onWheelListener.onMonthWheeled(selectedMonthIndex, selectedMonthStr);
                     }
                     if (dateMode == YEAR_MONTH_DAY || dateMode == MONTH_DAY) {
                         LogUtils.verbose(this, "change days after month wheeled");
@@ -474,107 +461,75 @@ public class DateTimePicker extends WheelPicker {
                         } else {
                             selectedYear = Calendar.getInstance(Locale.CHINA).get(Calendar.YEAR);
                         }
-                        changeDayData(selectedYear, DateUtils.trimZero(item.getName()));
+                        changeDayData(selectedYear, DateUtils.trimZero(selectedMonthStr));
                         dayView.setItems(days, selectedDayIndex);
                     }
                 }
             });
             layout.addView(monthView);
-            if (!TextUtils.isEmpty(monthLabel)) {
-                TextView labelView = new TextView(activity);
-                labelView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
-                labelView.setTextSize(textSize);
-                labelView.setTextColor(textColorFocus);
-                labelView.setText(monthLabel);
-                layout.addView(labelView);
-            }
         }
 
         if (dateMode == YEAR_MONTH_DAY || dateMode == MONTH_DAY) {
-            dayView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+            dayView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT,1.0f));
             dayView.setTextSize(textSize);
             dayView.setTextColor(textColorNormal, textColorFocus);
             dayView.setDividerConfig(dividerConfig);
             dayView.setOffset(offset);
             dayView.setCycleDisable(cycleDisable);
             dayView.setItems(days, selectedDayIndex);
+            dayView.setLabel(dayLabel);
             dayView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
                 @Override
-                public void onSelected(boolean isUserScroll, int index, WheelItem item) {
+                public void onSelected(int index) {
                     selectedDayIndex = index;
                     if (onWheelListener != null) {
-                        onWheelListener.onDayWheeled(selectedDayIndex, item.getName());
+                        onWheelListener.onDayWheeled(selectedDayIndex, days.get(index));
                     }
                 }
             });
             layout.addView(dayView);
-            if (!TextUtils.isEmpty(dayLabel)) {
-                TextView labelView = new TextView(activity);
-                labelView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
-                labelView.setTextSize(textSize);
-                labelView.setTextColor(textColorFocus);
-                labelView.setText(dayLabel);
-                layout.addView(labelView);
-            }
         }
 
         if (timeMode != NONE) {
-            hourView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+            hourView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT,1.0f));
             hourView.setTextSize(textSize);
             hourView.setTextColor(textColorNormal, textColorFocus);
             hourView.setDividerConfig(dividerConfig);
             hourView.setCycleDisable(cycleDisable);
             hourView.setItems(hours, selectedHour);
+            hourView.setLabel(hourLabel);
             hourView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
                 @Override
-                public void onSelected(boolean isUserScroll, int index, WheelItem item) {
-                    selectedHour = item.getName();
+                public void onSelected(int index) {
+                    selectedHour = hours.get(index);
                     if (onWheelListener != null) {
-                        onWheelListener.onHourWheeled(index, item.getName());
-                    }
-                    if (!isUserScroll) {
-                        return;
+                        onWheelListener.onHourWheeled(index, selectedHour);
                     }
                     LogUtils.verbose(this, "change minutes after hour wheeled");
-                    changeMinuteData(DateUtils.trimZero(item.getName()));
+                    changeMinuteData(DateUtils.trimZero(selectedHour));
                     minuteView.setItems(minutes, selectedMinute);
                 }
             });
             layout.addView(hourView);
-            if (!TextUtils.isEmpty(hourLabel)) {
-                TextView labelView = new TextView(activity);
-                labelView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
-                labelView.setTextSize(textSize);
-                labelView.setTextColor(textColorFocus);
-                labelView.setText(hourLabel);
-                layout.addView(labelView);
-            }
 
-            minuteView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+            minuteView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT,1.0f));
             minuteView.setTextSize(textSize);
             minuteView.setTextColor(textColorNormal, textColorFocus);
             minuteView.setDividerConfig(dividerConfig);
             minuteView.setOffset(offset);
             minuteView.setCycleDisable(cycleDisable);
             minuteView.setItems(minutes, selectedMinute);
+            minuteView.setLabel(minuteLabel);
             minuteView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
                 @Override
-                public void onSelected(boolean isUserScroll, int index, WheelItem item) {
-                    selectedMinute = item.getName();
+                public void onSelected(int index) {
+                    selectedMinute = minutes.get(index);
                     if (onWheelListener != null) {
-                        onWheelListener.onMinuteWheeled(index, item.getName());
+                        onWheelListener.onMinuteWheeled(index, selectedMinute);
                     }
                 }
             });
             layout.addView(minuteView);
-            if (!TextUtils.isEmpty(minuteLabel)) {
-                TextView labelView = new TextView(activity);
-                labelView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
-                labelView.setTextSize(textSize);
-                labelView.setTextColor(textColorFocus);
-                labelView.setText(minuteLabel);
-                layout.addView(labelView);
-            }
         }
 
         return layout;

@@ -123,10 +123,10 @@ public abstract class WheelPicker extends ConfirmPopup<View> {
     }
 
     /**
-     * 设置选项偏移量，可用来要设置显示的条目数，范围为1-3。
-     * 1显示3条、2显示5条、3显示7条
+     * 设置选项偏移量，可用来要设置显示的条目数，范围为1-5。
+     * 1显示3条、2显示5条、3显示7条……
      */
-    public void setOffset(@IntRange(from = 1, to = 3) int offset) {
+    public void setOffset(@IntRange(from = 1, to = 5) int offset) {
         this.offset = offset;
     }
 
@@ -157,7 +157,7 @@ public abstract class WheelPicker extends ConfirmPopup<View> {
         ObjectAnimator translation = ObjectAnimator.ofFloat(view, "translationY", 300, 0);
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(alpha, translation);
-        animatorSet.setDuration(WheelView.SECTION_DELAY);
+        animatorSet.setDuration(200);
         animatorSet.setInterpolator(new AccelerateInterpolator());
         animatorSet.start();
     }
@@ -170,7 +170,7 @@ public abstract class WheelPicker extends ConfirmPopup<View> {
         ObjectAnimator alpha = ObjectAnimator.ofFloat(view, "alpha", 1, 0);
         ObjectAnimator translation = ObjectAnimator.ofFloat(view, "translationY", 0, 300);
         animatorSet.playTogether(alpha, translation);
-        animatorSet.setDuration(WheelView.SECTION_DELAY);
+        animatorSet.setDuration(200);
         animatorSet.setInterpolator(new AccelerateInterpolator());
         animatorSet.addListener(new Animator.AnimatorListener() {
             @Override

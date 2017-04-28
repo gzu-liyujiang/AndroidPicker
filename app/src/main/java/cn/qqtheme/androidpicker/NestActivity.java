@@ -4,7 +4,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import cn.qqtheme.framework.entity.WheelItem;
 import cn.qqtheme.framework.picker.CarNumberPicker;
 import cn.qqtheme.framework.picker.LinkagePicker;
 import cn.qqtheme.framework.util.ConvertUtils;
@@ -29,18 +28,20 @@ public class NestActivity extends BaseActivity {
     protected void setContentViewAfter(View contentView) {
         final TextView textView = findView(R.id.wheelview_tips);
         WheelView wheelView = findView(R.id.wheelview_single);
-        wheelView.setItems(new String[]{"少数民族", "贵州穿青人", "不在56个少数民族之列", "第57个民族"}, 1);
+        final String[] strings = {"少数民族", "贵州穿青人", "不在56个少数民族之列", "第57个民族"};
+        wheelView.setItems(strings, 2);
         wheelView.setTextColor(0xFFFF00FF);
+        wheelView.setTextSize(18);
         WheelView.DividerConfig config = new WheelView.DividerConfig();
-        config.setColor(0xFFFF00FF);//线颜色
+        config.setColor(0xFFFF0000);//线颜色
         config.setAlpha(100);//线透明度
         config.setRatio((float) (1.0 / 10.0));//线比率
-        config.setThick(ConvertUtils.toPx(this, 10));//线粗
+        config.setThick(ConvertUtils.toPx(this, 5));//线粗
         wheelView.setDividerConfig(config);
         wheelView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
             @Override
-            public void onSelected(boolean isUserScroll, int index, WheelItem item) {
-                textView.setText("index=" + index + ",item=" + item.getName());
+            public void onSelected(int index) {
+                textView.setText("index=" + index + ",item=" + strings[index]);
             }
         });
 

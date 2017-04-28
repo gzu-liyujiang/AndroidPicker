@@ -71,7 +71,7 @@ public class MainActivity extends BaseActivity {
         picker.setHeaderView(headerView);
         picker.setAnimationStyle(R.style.Animation_CustomPopup);
         picker.setCycleDisable(false);
-        picker.setOffset(2);//偏移量
+        picker.setOffset(5);//偏移量
         picker.setRange(10.5, 20, 1.5);//数字范围
         picker.setSelectedItem(18.0);
         picker.setLabel("℃");
@@ -86,7 +86,7 @@ public class MainActivity extends BaseActivity {
 
     public void onAnimator(View view) {
         CustomHeaderAndFooterPicker picker = new CustomHeaderAndFooterPicker(this);
-        picker.setOffset(1);//显示的条目的偏移量，条数为（offset*2+1）
+        picker.setOffset(3);//显示的条目的偏移量，条数为（offset*2+1）
         picker.setGravity(Gravity.CENTER);//居中
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
@@ -198,8 +198,9 @@ public class MainActivity extends BaseActivity {
         OptionPicker picker = new OptionPicker(this, new String[]{
                 "第一项", "第二项", "这是一个很长很长很长很长很长很长很长很长很长的很长很长的很长很长的项"
         });
+        picker.setSelectedIndex(1);
         picker.setCycleDisable(false);
-        picker.setLineVisible(false);
+        picker.setDividerVisible(false);
         picker.setShadowVisible(true);
         picker.setTextSize(11);
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
@@ -286,15 +287,16 @@ public class MainActivity extends BaseActivity {
         picker.setSubmitTextColor(0xFF33B5E5);
         picker.setSubmitTextSize(13);
         picker.setTextColor(0xFFEE0000, 0xFF999999);
-        WheelView.LineConfig config = new WheelView.LineConfig();
+        WheelView.DividerConfig config = new WheelView.DividerConfig();
         config.setColor(0xFFEE0000);//线颜色
         config.setAlpha(140);//线透明度
         config.setRatio((float) (1.0 / 8.0));//线比率
-        picker.setLineConfig(config);
+        picker.setDividerConfig(config);
         picker.setItemWidth(200);
         picker.setBackgroundColor(0xFFE1E1E1);
         //picker.setSelectedItem(isChinese ? "处女座" : "Virgo");
         picker.setSelectedIndex(7);
+        picker.setCanceledOnTouchOutside(true);
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
             public void onOptionPicked(int index, String item) {
@@ -308,7 +310,7 @@ public class MainActivity extends BaseActivity {
         NumberPicker picker = new NumberPicker(this);
         picker.setWidth(picker.getScreenWidthPixels() / 2);
         picker.setCycleDisable(false);
-        picker.setLineVisible(false);
+        picker.setDividerVisible(false);
         picker.setOffset(2);//偏移量
         picker.setRange(145, 200, 1);//数字范围
         picker.setSelectedItem(172);
