@@ -25,7 +25,7 @@ public abstract class WheelPicker extends ConfirmPopup<View> {
     protected int textColorFocus = WheelView.TEXT_COLOR_FOCUS;
     protected int offset = WheelView.ITEM_OFF_SET;
     protected boolean cycleDisable = true;
-    protected WheelView.DividerConfig dividerConfig;
+    protected WheelView.DividerConfig dividerConfig = new WheelView.DividerConfig();
     private View contentView;
 
     public WheelPicker(Activity activity) {

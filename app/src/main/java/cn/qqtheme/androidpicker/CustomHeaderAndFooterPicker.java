@@ -31,7 +31,7 @@ public class CustomHeaderAndFooterPicker extends OptionPicker implements OptionP
                 "Java/Android", "PHP/MySQL", "HTML/CSS/JS", "C/C++"
         });
         setSelectedIndex(1);
-        setDividerConfig(new WheelView.DividerConfig(0.06f));
+        setDividerConfig(new WheelView.DividerConfig(WheelView.DividerConfig.FILL));
         setOnWheelListener(this);
     }
 

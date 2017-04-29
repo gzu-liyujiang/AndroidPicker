@@ -22,7 +22,6 @@ import android.provider.MediaStore;
 import android.support.annotation.ColorInt;
 import android.support.annotation.FloatRange;
 import android.text.TextUtils;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ScrollView;
@@ -492,12 +491,6 @@ public class ConvertUtils {
         int pxValue = (int) (dpValue * scale + 0.5f);
         LogUtils.verbose(dpValue + " dp == " + pxValue + " px");
         return pxValue;
-    }
-
-    public static int toPx(float dpValue) {
-        Resources resources = Resources.getSystem();
-        float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, resources.getDisplayMetrics());
-        return (int) px;
     }
 
     /**

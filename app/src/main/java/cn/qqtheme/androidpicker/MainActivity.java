@@ -99,7 +99,8 @@ public class MainActivity extends BaseActivity {
 
     public void onYearMonthDayPicker(View view) {
         final DatePicker picker = new DatePicker(this);
-        picker.setTopPadding(2);
+        picker.setCanceledOnTouchOutside(true);
+        picker.setTopPadding(ConvertUtils.toPx(this, 20));
         picker.setRangeStart(2016, 8, 29);
         picker.setRangeEnd(2111, 1, 11);
         picker.setSelectedItem(2050, 10, 14);
@@ -198,6 +199,7 @@ public class MainActivity extends BaseActivity {
         OptionPicker picker = new OptionPicker(this, new String[]{
                 "第一项", "第二项", "这是一个很长很长很长很长很长很长很长很长很长的很长很长的很长很长的项"
         });
+        picker.setCanceledOnTouchOutside(true);
         picker.setSelectedIndex(1);
         picker.setCycleDisable(false);
         picker.setDividerVisible(false);
@@ -290,9 +292,8 @@ public class MainActivity extends BaseActivity {
         WheelView.DividerConfig config = new WheelView.DividerConfig();
         config.setColor(0xFFEE0000);//线颜色
         config.setAlpha(140);//线透明度
-        config.setRatio((float) (1.0 / 8.0));//线比率
+        config.setType(WheelView.DividerConfig.WRAP);//线类型
         picker.setDividerConfig(config);
-        picker.setItemWidth(200);
         picker.setBackgroundColor(0xFFE1E1E1);
         //picker.setSelectedItem(isChinese ? "处女座" : "Virgo");
         picker.setSelectedIndex(7);

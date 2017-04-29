@@ -52,7 +52,7 @@ public class WheelView extends View {
     public static final int DIVIDER_COLOR = 0XFF83CDE6;
     public static final int DIVIDER_ALPHA = 220;
     public static final float DIVIDER_THICK = 2f;//px
-    public static final int ITEM_OFF_SET = 4;
+    public static final int ITEM_OFF_SET = 3;
     private static final int ACTION_CLICK = 1;//点击
     private static final int ACTION_FLING = 2;//滑翔
     private static final int ACTION_DRAG = 3;//拖拽
@@ -82,7 +82,6 @@ public class WheelView extends View {
     private boolean isLoop = true;//循环滚动
     private float firstLineY;//第一条线Y坐标值
     private float secondLineY;//第二条线Y坐标
-    private float centerY;//中间文字绘制的Y坐标
     private float totalScrollY = 0;//滚动总高度y值
     private int initPosition = -1;//初始化默认选中项
     private int selectedIndex;//选中项的索引
@@ -150,6 +149,11 @@ public class WheelView extends View {
             throw new IllegalArgumentException("must between 1 and 5");
         }
         int count = offset * 2 + 1;
+        if (offset % 2 == 0) {
+            count += offset;
+        } else {
+            count += offset - 1;
+        }
         setVisibleItemCount(count);
     }
 
@@ -288,9 +292,9 @@ public class WheelView extends View {
             return;
         }
         this.dividerConfig = config;
-        paintIndicator.setColor(config.getColor());
-        paintIndicator.setStrokeWidth(config.getThick());
-        paintIndicator.setAlpha(config.getAlpha());
+        paintIndicator.setColor(config.color);
+        paintIndicator.setStrokeWidth(config.thick);
+        paintIndicator.setAlpha(config.alpha);
     }
 
     public final void setLineSpaceMultiplier(@FloatRange(from = 2, to = 4) float multiplier) {
@@ -337,9 +341,9 @@ public class WheelView extends View {
         paintCenterText.setTextSize(textSize);
         paintIndicator = new Paint();
         paintIndicator.setAntiAlias(true);
-        paintIndicator.setColor(dividerConfig.getColor());
-        paintIndicator.setStrokeWidth(dividerConfig.getThick());
-        paintIndicator.setAlpha(dividerConfig.getAlpha());
+        paintIndicator.setColor(dividerConfig.color);
+        paintIndicator.setStrokeWidth(dividerConfig.thick);
+        paintIndicator.setAlpha(dividerConfig.alpha);
         setLayerType(LAYER_TYPE_SOFTWARE, null);
     }
 
@@ -357,7 +361,6 @@ public class WheelView extends View {
             return;
         }
         measureTextWidthHeight();
-
         //半圆的周长
         int halfCircumference = (int) (itemHeight * (visibleItemCount - 1));
         //整个圆的周长除以PI得到直径，这个直径用作控件的总高度
@@ -369,8 +372,6 @@ public class WheelView extends View {
         //计算两条横线 和 选中项画笔的基线Y位置
         firstLineY = (measuredHeight - itemHeight) / 2.0F;
         secondLineY = (measuredHeight + itemHeight) / 2.0F;
-        centerY = secondLineY - (itemHeight - maxTextHeight) / 2.0f - centerContentOffset;
-
         //初始化显示的item的position
         if (initPosition == -1) {
             if (isLoop) {
@@ -499,14 +500,25 @@ public class WheelView extends View {
             counter++;
         }
         //绘制中间两条横线
-        float ratio = dividerConfig.getRatio();
-        canvas.drawLine(measuredWidth * ratio, firstLineY, measuredWidth * (1 - ratio), firstLineY, paintIndicator);
-        canvas.drawLine(measuredWidth * ratio, secondLineY, measuredWidth * (1 - ratio), secondLineY, paintIndicator);
-        //只显示选中项Label文字的模式，并且Label文字不为空，则进行绘制
-        if (!TextUtils.isEmpty(label) && onlyShowCenterLabel) {
-            //绘制文字，靠右并留出空隙
-            int drawRightContentStart = measuredWidth - obtainTextWidth(paintCenterText, label);
-            canvas.drawText(label, drawRightContentStart - centerContentOffset, centerY, paintCenterText);
+        if (dividerConfig.visible) {
+            if (dividerConfig.type == DividerConfig.WRAP) {//横线长度仅包裹内容
+                float startX;
+                float endX;
+                if (TextUtils.isEmpty(label)) {//隐藏Label的情况
+                    startX = (measuredWidth - maxTextWidth) / 2 - 12;
+                } else {
+                    startX = (measuredWidth - maxTextWidth) / 4 - 12;
+                }
+                if (startX <= 0) {//如果超过了边缘
+                    startX = 10;
+                }
+                endX = measuredWidth - startX;
+                canvas.drawLine(startX, firstLineY, endX, firstLineY, paintIndicator);
+                canvas.drawLine(startX, secondLineY, endX, secondLineY, paintIndicator);
+            } else {
+                canvas.drawLine(0.0F, firstLineY, measuredWidth, firstLineY, paintIndicator);
+                canvas.drawLine(0.0F, secondLineY, measuredWidth, secondLineY, paintIndicator);
+            }
         }
         counter = 0;
         while (counter < visibleItemCount) {
@@ -523,7 +535,7 @@ public class WheelView extends View {
             } else {
                 //获取内容文字
                 String contentText;
-                //如果是label每项都显示的模式，并且item内容不为空、label 也不为空
+                //如果是label每项都显示的模式，并且item内容不为空、label也不为空
                 String tempStr = obtainContentText(visibleItemStrings[counter]);
                 if (!onlyShowCenterLabel && !TextUtils.isEmpty(label) && !TextUtils.isEmpty(tempStr)) {
                     contentText = tempStr + label;
@@ -564,10 +576,9 @@ public class WheelView extends View {
                     canvas.restore();
                 } else if (translateY >= firstLineY && maxTextHeight + translateY <= secondLineY) {
                     // 中间条目
-                    //canvas.clipRect(0, 0, measuredWidth, maxTextHeight);
+                    canvas.clipRect(0, 0, measuredWidth, maxTextHeight);
                     //让文字居中
                     float Y = maxTextHeight - centerContentOffset;//因为圆弧角换算的向下取值，导致角度稍微有点偏差，加上画笔的基线会偏上，因此需要偏移量修正一下
-                    canvas.drawText(contentText, drawCenterContentStart, Y, paintCenterText);
                     int i = 0;
                     for (WheelItem item : items) {
                         if (item.getName().equals(tempStr)) {
@@ -576,6 +587,10 @@ public class WheelView extends View {
                         }
                         i++;
                     }
+                    if (onlyShowCenterLabel && !TextUtils.isEmpty(label)) {
+                        contentText += label;
+                    }
+                    canvas.drawText(contentText, drawCenterContentStart, Y, paintCenterText);
                 } else {
                     // 其他条目
                     canvas.save();
@@ -648,11 +663,7 @@ public class WheelView extends View {
         paintCenterText.getTextBounds(content, 0, content.length(), rect);
         switch (gravity) {
             case Gravity.CENTER://显示内容居中
-                if (label == null || label.equals("") || !onlyShowCenterLabel) {
-                    drawCenterContentStart = (int) ((measuredWidth - rect.width()) * 0.5);
-                } else {//只显示中间label时，时间选择器内容偏左一点，留出空间绘制单位标签
-                    drawCenterContentStart = (int) ((measuredWidth - rect.width()) * 0.25);
-                }
+                drawCenterContentStart = (int) ((measuredWidth - rect.width()) * 0.5);
                 break;
             case Gravity.LEFT:
                 drawCenterContentStart = 0;
@@ -668,11 +679,7 @@ public class WheelView extends View {
         paintOuterText.getTextBounds(content, 0, content.length(), rect);
         switch (gravity) {
             case Gravity.CENTER:
-                if (label == null || label.equals("") || !onlyShowCenterLabel) {
-                    drawOutContentStart = (int) ((measuredWidth - rect.width()) * 0.5);
-                } else {//只显示中间label时，时间选择器内容偏左一点，留出空间绘制单位标签
-                    drawOutContentStart = (int) ((measuredWidth - rect.width()) * 0.25);
-                }
+                drawOutContentStart = (int) ((measuredWidth - rect.width()) * 0.5);
                 break;
             case Gravity.LEFT:
                 drawOutContentStart = 0;
@@ -748,7 +755,6 @@ public class WheelView extends View {
                     float extraOffset = (totalScrollY % itemHeight + itemHeight) % itemHeight;
                     //已滑动的弧长值
                     offset = (int) ((circlePosition - visibleItemCount / 2) * itemHeight - extraOffset);
-
                     if ((System.currentTimeMillis() - startTime) > 120) {
                         // 处理拖拽事件
                         smoothScroll(ACTION_DRAG);
@@ -790,88 +796,104 @@ public class WheelView extends View {
      * 选中项的分割线
      */
     public static class DividerConfig {
-        private boolean visible = true;
-        private boolean shadowVisible = false;
-        private int color = DIVIDER_COLOR;
-        private int alpha = DIVIDER_ALPHA;
-        private float ratio = (float) (1.0 / 6.0);
-        private float thick = DIVIDER_THICK;
+        public static final int FILL = 0;
+        public static final int WRAP = 1;
+        protected boolean visible = true;
+        protected boolean shadowVisible = false;
+        protected int color = DIVIDER_COLOR;
+        protected int alpha = DIVIDER_ALPHA;
+        protected int type = WRAP;
+        protected float thick = DIVIDER_THICK;
+
+        @IntDef(value = {FILL, WRAP})
+        @Retention(RetentionPolicy.SOURCE)
+        public @interface DividerType {
+            //选中项的分割线类型：填充宽度、包裹内容
+        }
 
         public DividerConfig() {
             super();
         }
 
+        /**
+         * @deprecated use {@link #DividerConfig(int)} instead
+         */
+        @Deprecated
         public DividerConfig(@FloatRange(from = 0, to = 1) float ratio) {
-            this.ratio = ratio;
+            int round = Math.round(ratio);
+            if (round == 0) {
+                setType(FILL);
+            } else {
+                setType(WRAP);
+            }
+        }
+
+        public DividerConfig(@DividerType int type) {
+            this.type = type;
         }
 
         /**
          * 线是否可见
          */
-        public void setVisible(boolean visible) {
+        public DividerConfig setVisible(boolean visible) {
             this.visible = visible;
-        }
-
-        public boolean isVisible() {
-            return visible;
+            return this;
         }
 
         /**
          * 阴影是否可见
          */
-        public void setShadowVisible(boolean shadowVisible) {
+        public DividerConfig setShadowVisible(boolean shadowVisible) {
             this.shadowVisible = shadowVisible;
-        }
-
-        public boolean isShadowVisible() {
-            return shadowVisible;
-        }
-
-        @ColorInt
-        public int getColor() {
-            return color;
+            return this;
         }
 
         /**
          * 线颜色
          */
-        public void setColor(@ColorInt int color) {
+        public DividerConfig setColor(@ColorInt int color) {
             this.color = color;
-        }
-
-        @IntRange(from = 1, to = 255)
-        public int getAlpha() {
-            return alpha;
+            return this;
         }
 
         /**
          * 线透明度
          */
-        public void setAlpha(@IntRange(from = 1, to = 255) int alpha) {
+        public DividerConfig setAlpha(@IntRange(from = 1, to = 255) int alpha) {
             this.alpha = alpha;
+            return this;
         }
 
-        @FloatRange(from = 0, to = 1)
-        public float getRatio() {
-            return ratio;
+        /**
+         * 线类型
+         */
+        public DividerConfig setType(@DividerType int type) {
+            this.type = type;
+            return this;
         }
 
         /**
          * 线比例，范围为0-1,0表示最长，1表示最短
+         *
+         * @deprecated use {@link #setType(int)} instead
          */
-        public void setRatio(@FloatRange(from = 0, to = 1) float ratio) {
-            this.ratio = ratio;
-        }
-
-        public float getThick() {
-            return thick;
+        @Deprecated
+        public DividerConfig setRatio(@FloatRange(from = 0, to = 1) float ratio) {
+            int round = Math.round(ratio);
+            if (round == 0) {
+                setType(FILL);
+            } else {
+                setType(WRAP);
+            }
+            return this;
         }
 
         /**
          * 线粗
          */
-        public void setThick(float thick) {
+        public DividerConfig setThick(float thick) {
             this.thick = thick;
+            return this;
         }
 
         @Override
