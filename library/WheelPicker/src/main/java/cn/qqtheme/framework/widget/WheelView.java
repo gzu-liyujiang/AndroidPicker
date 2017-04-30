@@ -2,6 +2,7 @@ package cn.qqtheme.framework.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
@@ -17,6 +18,7 @@ import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import java.lang.annotation.Retention;
@@ -31,10 +33,12 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import cn.qqtheme.framework.entity.WheelItem;
+import cn.qqtheme.framework.util.ConvertUtils;
+import cn.qqtheme.framework.util.LogUtils;
 
 /**
  * 3D滚轮控件，参阅：http://blog.csdn.net/qq_22393017/article/details/59488906
- * <p>
+ * <p/>
  * Author:李玉江[QQ:1032694760]
  * DateTime:2015/12/15 09:45 基于ScrollView，参见https://github.com/wangjiegulu/WheelView
  * DateTime:2017/01/07 21:37 基于ListView，参见https://github.com/venshine/WheelView
@@ -53,6 +57,7 @@ public class WheelView extends View {
     public static final int DIVIDER_ALPHA = 220;
     public static final float DIVIDER_THICK = 2f;//px
     public static final int ITEM_OFF_SET = 3;
+    private static final float ITEM_PADDING = 15f;//px
     private static final int ACTION_CLICK = 1;//点击
     private static final int ACTION_FLING = 2;//滑翔
     private static final int ACTION_DRAG = 3;//拖拽
@@ -68,6 +73,7 @@ public class WheelView extends View {
     private Paint paintOuterText;//未选项画笔
     private Paint paintCenterText;//选中项画笔
     private Paint paintIndicator;//分割线画笔
+    private Paint paintShadow;//阴影画笔
     private List<WheelItem> items = new ArrayList<>();//所有选项
     private String label;//附加单位
     private int maxTextWidth;//最大的文字宽
@@ -78,7 +84,8 @@ public class WheelView extends View {
     private int textColorOuter = TEXT_COLOR_NORMAL;//未选项文字颜色
     private int textColorCenter = TEXT_COLOR_FOCUS;//选中项文字颜色
     private DividerConfig dividerConfig = new DividerConfig();
-    private float lineSpaceMultiplier = 2.5F;//条目间距倍数
+    private float lineSpaceMultiplier = 2.5F;//条目间距倍数，可用来设置上下间距
+    private int padding = -1;//文字的左右边距,单位为px
     private boolean isLoop = true;//循环滚动
     private float firstLineY;//第一条线Y坐标值
     private float secondLineY;//第二条线Y坐标
@@ -98,6 +105,7 @@ public class WheelView extends View {
     private int drawCenterContentStart = 0;//中间选中文字开始绘制位置
     private int drawOutContentStart = 0;//非中间文字开始绘制位置
     private float centerContentOffset;//偏移量
+    private boolean useWeight = false;//使用比重还是包裹内容？
 
     public WheelView(Context context) {
         this(context, null);
@@ -302,6 +310,14 @@ public class WheelView extends View {
         judgeLineSpace();
     }
 
+    public void setPadding(int padding) {
+        this.padding = ConvertUtils.toPx(getContext(), padding);
+    }
+
+    public void setUseWeight(boolean useWeight) {
+        this.useWeight = useWeight;
+    }
+
     /**
      * 判断间距是否在有效范围内
      */
@@ -344,6 +360,9 @@ public class WheelView extends View {
         paintIndicator.setColor(dividerConfig.color);
         paintIndicator.setStrokeWidth(dividerConfig.thick);
         paintIndicator.setAlpha(dividerConfig.alpha);
+        paintShadow = new Paint();
+        paintShadow.setAntiAlias(true);
+        paintShadow.setColor(dividerConfig.shadowColor);
         setLayerType(LAYER_TYPE_SOFTWARE, null);
     }
 
@@ -367,8 +386,23 @@ public class WheelView extends View {
         measuredHeight = (int) ((halfCircumference * 2) / Math.PI);
         //求出半径
         radius = (int) (halfCircumference / Math.PI);
-        //控件宽度，这里支持weight
-        measuredWidth = MeasureSpec.getSize(widthMeasureSpec);
+        ViewGroup.LayoutParams params = getLayoutParams();
+        //控件宽度
+        if (useWeight) {
+            measuredWidth = MeasureSpec.getSize(widthMeasureSpec);
+        } else if (params != null && params.width > 0) {
+            measuredWidth = params.width;
+        } else {
+            measuredWidth = maxTextWidth;
+            if (padding < 0) {
+                padding = ConvertUtils.toPx(getContext(), ITEM_PADDING);
+            }
+            measuredWidth += padding * 2;
+            if (!TextUtils.isEmpty(label)) {
+                measuredWidth += obtainTextWidth(paintCenterText, label);
+            }
+        }
+        LogUtils.debug("measuredWidth=" + measuredWidth + ",measuredHeight=" + measuredHeight);
         //计算两条横线 和 选中项画笔的基线Y位置
         firstLineY = (measuredHeight - itemHeight) / 2.0F;
         secondLineY = (measuredHeight + itemHeight) / 2.0F;
@@ -456,7 +490,7 @@ public class WheelView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if (items == null) {
+        if (items == null || items.size() == 0) {
             return;
         }
         //可见项的数组
@@ -501,24 +535,13 @@ public class WheelView extends View {
         }
         //绘制中间两条横线
         if (dividerConfig.visible) {
-            if (dividerConfig.type == DividerConfig.WRAP) {//横线长度仅包裹内容
-                float startX;
-                float endX;
-                if (TextUtils.isEmpty(label)) {//隐藏Label的情况
-                    startX = (measuredWidth - maxTextWidth) / 2 - 12;
-                } else {
-                    startX = (measuredWidth - maxTextWidth) / 4 - 12;
-                }
-                if (startX <= 0) {//如果超过了边缘
-                    startX = 10;
-                }
-                endX = measuredWidth - startX;
-                canvas.drawLine(startX, firstLineY, endX, firstLineY, paintIndicator);
-                canvas.drawLine(startX, secondLineY, endX, secondLineY, paintIndicator);
-            } else {
-                canvas.drawLine(0.0F, firstLineY, measuredWidth, firstLineY, paintIndicator);
-                canvas.drawLine(0.0F, secondLineY, measuredWidth, secondLineY, paintIndicator);
-            }
+            float ratio = dividerConfig.ratio;
+            canvas.drawLine(measuredWidth * ratio, firstLineY, measuredWidth * (1 - ratio), firstLineY, paintIndicator);
+            canvas.drawLine(measuredWidth * ratio, secondLineY, measuredWidth * (1 - ratio), secondLineY, paintIndicator);
+        }
+        if (dividerConfig.shadowVisible) {
+            paintShadow.setColor(dividerConfig.shadowColor);
+            canvas.drawRect(0.0F, firstLineY, measuredWidth, secondLineY, paintShadow);
         }
         counter = 0;
         while (counter < visibleItemCount) {
@@ -796,40 +819,22 @@ public class WheelView extends View {
      * 选中项的分割线
      */
     public static class DividerConfig {
-        public static final int FILL = 0;
-        public static final int WRAP = 1;
+        public static final float FILL = 0f;
+        public static final float WRAP = 1f;
         protected boolean visible = true;
         protected boolean shadowVisible = false;
         protected int color = DIVIDER_COLOR;
+        protected int shadowColor = TEXT_COLOR_NORMAL;
         protected int alpha = DIVIDER_ALPHA;
-        protected int type = FILL;
+        protected float ratio = 0.1f;
         protected float thick = DIVIDER_THICK;
-
-        @IntDef(value = {FILL, WRAP})
-        @Retention(RetentionPolicy.SOURCE)
-        public @interface DividerType {
-            //选中项的分割线类型：填充宽度、包裹内容
-        }
 
         public DividerConfig() {
             super();
         }
 
-        /**
-         * @deprecated use {@link #DividerConfig(int)} instead
-         */
-        @Deprecated
         public DividerConfig(@FloatRange(from = 0, to = 1) float ratio) {
-            int round = Math.round(ratio);
-            if (round == 0) {
-                setType(FILL);
-            } else {
-                setType(WRAP);
-            }
-        }
-
-        public DividerConfig(@DividerType int type) {
-            this.type = type;
+            this.ratio = ratio;
         }
 
         /**
@@ -845,6 +850,22 @@ public class WheelView extends View {
          */
         public DividerConfig setShadowVisible(boolean shadowVisible) {
             this.shadowVisible = shadowVisible;
+            if (shadowVisible && color == DIVIDER_COLOR) {
+                color = shadowColor;
+                alpha = 255;
+                int red = Color.red(shadowColor);
+                int green = Color.green(shadowColor);
+                int blue = Color.blue(shadowColor);
+                shadowColor = Color.argb(100, red, green, blue);
+            }
+            return this;
+        }
+
+        /**
+         * 阴影颜色
+         */
+        public DividerConfig setShadowColor(@ColorInt int color) {
+            this.shadowColor = color;
             return this;
         }
 
@@ -865,26 +886,10 @@ public class WheelView extends View {
         }
 
         /**
-         * 线类型
-         */
-        public DividerConfig setType(@DividerType int type) {
-            this.type = type;
-            return this;
-        }
-
-        /**
          * 线比例，范围为0-1,0表示最长，1表示最短
-         *
-         * @deprecated use {@link #setType(int)} instead
          */
-        @Deprecated
         public DividerConfig setRatio(@FloatRange(from = 0, to = 1) float ratio) {
-            int round = Math.round(ratio);
-            if (round == 0) {
-                setType(FILL);
-            } else {
-                setType(WRAP);
-            }
+            this.ratio = ratio;
             return this;
         }
 

@@ -59,6 +59,7 @@ public class MainActivity extends BaseActivity {
 
     public void onAnimationStyle(View view) {
         final NumberPicker picker = new NumberPicker(this);
+        picker.setItemWidth(300);
         View headerView = View.inflate(activity, R.layout.picker_header, null);
         TextView titleView = (TextView) headerView.findViewById(R.id.picker_title);
         titleView.setText("自定义顶部视图");
@@ -198,11 +199,10 @@ public class MainActivity extends BaseActivity {
         OptionPicker picker = new OptionPicker(this, new String[]{
                 "第一项", "第二项", "这是一个很长很长很长很长很长很长很长很长很长的很长很长的很长很长的项"
         });
-        picker.setCanceledOnTouchOutside(true);
+        picker.setCanceledOnTouchOutside(false);
+        picker.setDividerRatio(WheelView.DividerConfig.FILL);
         picker.setSelectedIndex(1);
-        picker.setCycleDisable(false);
-        picker.setDividerVisible(false);
-        picker.setShadowVisible(true);
+        picker.setCycleDisable(true);
         picker.setTextSize(11);
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
@@ -290,7 +290,7 @@ public class MainActivity extends BaseActivity {
         WheelView.DividerConfig config = new WheelView.DividerConfig();
         config.setColor(0xFFEE0000);//线颜色
         config.setAlpha(140);//线透明度
-        config.setType(WheelView.DividerConfig.WRAP);//线类型
+        config.setRatio((float) (1.0 / 8.0));//线比率
         picker.setDividerConfig(config);
         picker.setBackgroundColor(0xFFE1E1E1);
         //picker.setSelectedItem(isChinese ? "处女座" : "Virgo");
@@ -351,6 +351,7 @@ public class MainActivity extends BaseActivity {
             String json = ConvertUtils.toString(getAssets().open("city2.json"));
             data.addAll(JSON.parseArray(json, Province.class));
             AddressPicker picker = new AddressPicker(this, data);
+            picker.setShadowVisible(true);
             picker.setHideProvince(true);
             picker.setSelectedItem("贵州", "贵阳", "花溪");
             picker.setOnAddressPickListener(new AddressPicker.OnAddressPickListener() {

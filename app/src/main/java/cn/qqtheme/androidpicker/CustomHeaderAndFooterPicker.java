@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import cn.qqtheme.framework.picker.OptionPicker;
-import cn.qqtheme.framework.picker.SinglePicker;
 import cn.qqtheme.framework.widget.WheelView;
 
 /**
@@ -31,7 +30,7 @@ public class CustomHeaderAndFooterPicker extends OptionPicker implements OptionP
                 "Java/Android", "PHP/MySQL", "HTML/CSS/JS", "C/C++"
         });
         setSelectedIndex(1);
-        setDividerConfig(new WheelView.DividerConfig(WheelView.DividerConfig.FILL));
+        setDividerRatio(WheelView.DividerConfig.FILL);
         setOnWheelListener(this);
     }
 

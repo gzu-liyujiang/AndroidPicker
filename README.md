@@ -58,15 +58,18 @@ dependencies {
 ```
 
 # Sample （更多用法详见示例项目）
-自定义顶部及底部视图：   
+各种设置方法：
+```java
+picker.setXXX(...);
+```
+自定义顶部及底部视图：
 ```java
 picker.setHeaderView(...);
 picker.setFooterView(...);
 ```
-继承自定义扩展选择器：
+自定义选择器示例：
 ```java
         CustomHeaderAndFooterPicker picker = new CustomHeaderAndFooterPicker(this);
-        picker.setGravity(Gravity.CENTER);//居中
         picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
             @Override
             public void onOptionPicked(int position, String option) {
@@ -94,5 +97,3 @@ picker.setFooterView(...);
 # Contact
 <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=1032694760&site=穿青人&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:1032694760:51" alt="点击这里给我发消息" title="点击这里给我发消息"/></a>
 <a target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=q8fC0t7BwsrFzIXfwOva2oXIxMY" style="text-decoration:none;"><img src="http://rescdn.qqmail.com/zh_CN/htmledition/images/function/qm_open/ico_mailme_02.png"/></a>
-
-# Contact

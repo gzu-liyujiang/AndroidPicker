@@ -3,9 +3,11 @@ package cn.qqtheme.framework.picker;
 import android.app.Activity;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -412,7 +414,7 @@ public class DateTimePicker extends WheelPicker {
             yearView.setOffset(offset);
             yearView.setCycleDisable(cycleDisable);
             yearView.setItems(years, selectedYearIndex);
-            yearView.setLabel(yearLabel);
+            //yearView.setLabel(yearLabel);
             yearView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
                 @Override
                 public void onSelected(int index) {
@@ -433,6 +435,14 @@ public class DateTimePicker extends WheelPicker {
                 }
             });
             layout.addView(yearView);
+            if (!TextUtils.isEmpty(yearLabel)) {
+                TextView labelView = new TextView(activity);
+                labelView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+                labelView.setTextSize(textSize);
+                labelView.setTextColor(textColorFocus);
+                labelView.setText(yearLabel);
+                layout.addView(labelView);
+            }
         }
 
         if (dateMode != NONE) {
@@ -443,7 +453,7 @@ public class DateTimePicker extends WheelPicker {
             monthView.setOffset(offset);
             monthView.setCycleDisable(cycleDisable);
             monthView.setItems(months, selectedMonthIndex);
-            monthView.setLabel(monthLabel);
+            //monthView.setLabel(monthLabel);
             monthView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
                 @Override
                 public void onSelected(int index) {
@@ -467,6 +477,14 @@ public class DateTimePicker extends WheelPicker {
                 }
             });
             layout.addView(monthView);
+            if (!TextUtils.isEmpty(monthLabel)) {
+                TextView labelView = new TextView(activity);
+                labelView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+                labelView.setTextSize(textSize);
+                labelView.setTextColor(textColorFocus);
+                labelView.setText(monthLabel);
+                layout.addView(labelView);
+            }
         }
 
         if (dateMode == YEAR_MONTH_DAY || dateMode == MONTH_DAY) {
@@ -477,7 +495,7 @@ public class DateTimePicker extends WheelPicker {
             dayView.setOffset(offset);
             dayView.setCycleDisable(cycleDisable);
             dayView.setItems(days, selectedDayIndex);
-            dayView.setLabel(dayLabel);
+            //dayView.setLabel(dayLabel);
             dayView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
                 @Override
                 public void onSelected(int index) {
@@ -488,6 +506,14 @@ public class DateTimePicker extends WheelPicker {
                 }
             });
             layout.addView(dayView);
+            if (!TextUtils.isEmpty(dayLabel)) {
+                TextView labelView = new TextView(activity);
+                labelView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+                labelView.setTextSize(textSize);
+                labelView.setTextColor(textColorFocus);
+                labelView.setText(dayLabel);
+                layout.addView(labelView);
+            }
         }
 
         if (timeMode != NONE) {
@@ -497,7 +523,7 @@ public class DateTimePicker extends WheelPicker {
             hourView.setDividerConfig(dividerConfig);
             hourView.setCycleDisable(cycleDisable);
             hourView.setItems(hours, selectedHour);
-            hourView.setLabel(hourLabel);
+            //hourView.setLabel(hourLabel);
             hourView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
                 @Override
                 public void onSelected(int index) {
@@ -511,6 +537,14 @@ public class DateTimePicker extends WheelPicker {
                 }
             });
             layout.addView(hourView);
+            if (!TextUtils.isEmpty(hourLabel)) {
+                TextView labelView = new TextView(activity);
+                labelView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+                labelView.setTextSize(textSize);
+                labelView.setTextColor(textColorFocus);
+                labelView.setText(hourLabel);
+                layout.addView(labelView);
+            }
 
             minuteView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT,1.0f));
             minuteView.setTextSize(textSize);
@@ -519,7 +553,7 @@ public class DateTimePicker extends WheelPicker {
             minuteView.setOffset(offset);
             minuteView.setCycleDisable(cycleDisable);
             minuteView.setItems(minutes, selectedMinute);
-            minuteView.setLabel(minuteLabel);
+            //minuteView.setLabel(minuteLabel);
             minuteView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
                 @Override
                 public void onSelected(int index) {
@@ -530,6 +564,14 @@ public class DateTimePicker extends WheelPicker {
                 }
             });
             layout.addView(minuteView);
+            if (!TextUtils.isEmpty(minuteLabel)) {
+                TextView labelView = new TextView(activity);
+                labelView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+                labelView.setTextSize(textSize);
+                labelView.setTextColor(textColorFocus);
+                labelView.setText(minuteLabel);
+                layout.addView(labelView);
+            }
         }
 
         return layout;

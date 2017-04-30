@@ -85,9 +85,11 @@ public class AddressPickTask extends AsyncTask<String, Void, ArrayList<Province>
             picker.setHideProvince(hideProvince);
             picker.setHideCounty(hideCounty);
             if (hideCounty) {
-                picker.setColumnWeight(1 / 3.0, 2 / 3.0);//将屏幕分为3份，省级和地级的比例为1:2
+                picker.setColumnWeight(0.8f, 1.0f);
+            } else if (hideProvince) {
+                picker.setColumnWeight(1.0f, 0.8f);
             } else {
-                picker.setColumnWeight(2 / 8.0, 3 / 8.0, 3 / 8.0);//省级、地级和县级的比例为2:3:3
+                picker.setColumnWeight(0.8f, 1.0f, 1.0f);
             }
             picker.setSelectedItem(selectedProvince, selectedCity, selectedCounty);
             picker.setOnAddressPickListener(callback);

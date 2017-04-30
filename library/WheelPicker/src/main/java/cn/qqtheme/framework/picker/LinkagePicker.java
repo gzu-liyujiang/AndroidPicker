@@ -3,7 +3,6 @@ package cn.qqtheme.framework.picker;
 import android.app.Activity;
 import android.support.annotation.FloatRange;
 import android.support.annotation.NonNull;
-import android.support.annotation.Size;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -16,13 +15,12 @@ import java.util.List;
 import cn.qqtheme.framework.entity.LinkageFirst;
 import cn.qqtheme.framework.entity.LinkageSecond;
 import cn.qqtheme.framework.entity.LinkageThird;
-import cn.qqtheme.framework.entity.WheelItem;
 import cn.qqtheme.framework.util.LogUtils;
 import cn.qqtheme.framework.widget.WheelView;
 
 /**
  * 两级、三级联动选择器。默认只初始化第一级数据，第二三级数据由联动获得。
- * <p>
+ * <p/>
  * Author:李玉江[QQ:1032694760]
  * DateTime:2016/5/6 20:34
  * Builder:Android Studio
@@ -37,11 +35,11 @@ public class LinkagePicker<Fst extends LinkageFirst<Snd>, Snd extends LinkageSec
     protected String firstLabel = "", secondLabel = "", thirdLabel = "";
     protected int selectedFirstIndex = 0, selectedSecondIndex = 0, selectedThirdIndex = 0;
     protected Provider provider;
+    protected float firstColumnWeight = 1.0f;//第一级显示的宽度比重
+    protected float secondColumnWeight = 1.0f;//第二级显示的宽度比重
+    protected float thirdColumnWeight = 1.0f;//第三级显示的宽度比重
     private OnPickListener onPickListener;
     private OnLinkageListener onLinkageListener;
-    private double firstColumnWeight = 0;//第一级显示的宽度比
-    private double secondColumnWeight = 0;//第二级显示的宽度比
-    private double thirdColumnWeight = 0;//第三级显示的宽度比
     private OnWheelListener onWheelListener;
     private OnWheelLinkageListener onWheelLinkageListener;
 
@@ -192,21 +190,21 @@ public class LinkagePicker<Fst extends LinkageFirst<Snd>, Snd extends LinkageSec
     }
 
     /**
-     * 设置每列的宽度比例，将屏幕分为三列，每列范围为0.0～1.0，如0.3333表示约占屏幕的三分之一。
+     * 设置每列的宽度比例，将屏幕分为三列，每列范围为0.0～1.0，如0.3333表示约占宽度的三分之一。
      */
-    public void setColumnWeight(@FloatRange(from = 0, to = 1) double firstColumnWeight,
-                                @FloatRange(from = 0, to = 1) double secondColumnWeight,
-                                @FloatRange(from = 0, to = 1) double thirdColumnWeight) {
+    public void setColumnWeight(@FloatRange(from = 0, to = 1) float firstColumnWeight,
+                                @FloatRange(from = 0, to = 1) float secondColumnWeight,
+                                @FloatRange(from = 0, to = 1) float thirdColumnWeight) {
         this.firstColumnWeight = firstColumnWeight;
         this.secondColumnWeight = secondColumnWeight;
         this.thirdColumnWeight = thirdColumnWeight;
     }
 
     /**
-     * 设置每列的宽度比例，将屏幕分为两列，每列范围为0.0～1.0，如0.5表示占屏幕的一半。
+     * 设置每列的宽度比例，将屏幕分为两列，每列范围为0.0～1.0，如0.5表示占宽度的一半。
      */
-    public void setColumnWeight(@FloatRange(from = 0, to = 1) double firstColumnWeight,
-                                @FloatRange(from = 0, to = 1) double secondColumnWeight) {
+    public void setColumnWeight(@FloatRange(from = 0, to = 1) float firstColumnWeight,
+                                @FloatRange(from = 0, to = 1) float secondColumnWeight) {
         this.firstColumnWeight = firstColumnWeight;
         this.secondColumnWeight = secondColumnWeight;
         this.thirdColumnWeight = 0;
@@ -249,90 +247,69 @@ public class LinkagePicker<Fst extends LinkageFirst<Snd>, Snd extends LinkageSec
         this.onLinkageListener = onLinkageListener;
     }
 
-    /**
-     * 根据比例计算，获取每列的实际宽度。
-     * 三级联动默认每列宽度为屏幕宽度的三分之一，两级联动默认每列宽度为屏幕宽度的一半。
-     */
-    @Size(3)
-    protected int[] getColumnWidths(boolean onlyTwoColumn) {
-        LogUtils.verbose(this, String.format(java.util.Locale.CHINA, "column weight is: %f-%f-%f"
-                , firstColumnWeight, secondColumnWeight, thirdColumnWeight));
-        int[] widths = new int[3];
-        // fixed: 17-1-7 Equality tests should not be made with floating point values.
-        if ((int) firstColumnWeight == 0 && (int) secondColumnWeight == 0
-                && (int) thirdColumnWeight == 0) {
-            if (onlyTwoColumn) {
-                widths[0] = screenWidthPixels / 2;
-                widths[1] = widths[0];
-                widths[2] = 0;
-            } else {
-                widths[0] = screenWidthPixels / 3;
-                widths[1] = widths[0];
-                widths[2] = widths[0];
-            }
-        } else {
-            if (firstColumnWeight + secondColumnWeight + thirdColumnWeight > 1) {
-                throw new IllegalArgumentException("column weight must <=1.0");
-            }
-            widths[0] = (int) (screenWidthPixels * firstColumnWeight);
-            widths[1] = (int) (screenWidthPixels * secondColumnWeight);
-            widths[2] = (int) (screenWidthPixels * thirdColumnWeight);
-        }
-        return widths;
-    }
-
     @NonNull
     @Override
     protected View makeCenterView() {
         if (null == provider) {
             throw new IllegalArgumentException("please set data provider before make view");
         }
-        int[] widths = getColumnWidths(provider.isOnlyTwo());
         LinearLayout layout = new LinearLayout(activity);
         layout.setOrientation(LinearLayout.HORIZONTAL);
         layout.setGravity(Gravity.CENTER);
 
         final WheelView firstView = new WheelView(activity);
+        firstView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, firstColumnWeight));
         firstView.setTextSize(textSize);
         firstView.setTextColor(textColorNormal, textColorFocus);
         firstView.setDividerConfig(dividerConfig);
         firstView.setOffset(offset);
         firstView.setCycleDisable(cycleDisable);
-        firstView.setLabel(firstLabel);
+        //firstView.setLabel(firstLabel);
         layout.addView(firstView);
-        if (TextUtils.isEmpty(firstLabel)) {
-            firstView.setLayoutParams(new LinearLayout.LayoutParams(widths[0], WRAP_CONTENT));
-        } else {
-            firstView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, 1.0f));
+        if (!TextUtils.isEmpty(firstLabel)) {
+            TextView labelView = new TextView(activity);
+            labelView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+            labelView.setTextSize(textSize);
+            labelView.setTextColor(textColorFocus);
+            labelView.setText(firstLabel);
+            layout.addView(labelView);
         }
 
         final WheelView secondView = new WheelView(activity);
+        secondView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, secondColumnWeight));
         secondView.setTextSize(textSize);
         secondView.setTextColor(textColorNormal, textColorFocus);
         secondView.setDividerConfig(dividerConfig);
         secondView.setOffset(offset);
         secondView.setCycleDisable(cycleDisable);
-        secondView.setLabel(secondLabel);
+        //secondView.setLabel(secondLabel);
         layout.addView(secondView);
-        if (TextUtils.isEmpty(secondLabel)) {
-            secondView.setLayoutParams(new LinearLayout.LayoutParams(widths[1], WRAP_CONTENT));
-        } else {
-            secondView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, 1.0f));
+        if (!TextUtils.isEmpty(secondLabel)) {
+            TextView labelView = new TextView(activity);
+            labelView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+            labelView.setTextSize(textSize);
+            labelView.setTextColor(textColorFocus);
+            labelView.setText(secondLabel);
+            layout.addView(labelView);
         }
 
         final WheelView thirdView = new WheelView(activity);
         if (!provider.isOnlyTwo()) {
+            thirdView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, thirdColumnWeight));
             thirdView.setTextSize(textSize);
             thirdView.setTextColor(textColorNormal, textColorFocus);
             thirdView.setDividerConfig(dividerConfig);
             thirdView.setOffset(offset);
             thirdView.setCycleDisable(cycleDisable);
-            thirdView.setLabel(thirdLabel);
+            //thirdView.setLabel(thirdLabel);
             layout.addView(thirdView);
-            if (TextUtils.isEmpty(thirdLabel)) {
-                thirdView.setLayoutParams(new LinearLayout.LayoutParams(widths[2], WRAP_CONTENT));
-            } else {
-                thirdView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, 1.0f));
+            if (!TextUtils.isEmpty(thirdLabel)) {
+                TextView labelView = new TextView(activity);
+                labelView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+                labelView.setTextSize(textSize);
+                labelView.setTextColor(textColorFocus);
+                labelView.setText(thirdLabel);
+                layout.addView(labelView);
             }
         }
 

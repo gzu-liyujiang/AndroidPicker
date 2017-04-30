@@ -12,7 +12,6 @@ import java.util.List;
 import cn.qqtheme.framework.entity.City;
 import cn.qqtheme.framework.entity.County;
 import cn.qqtheme.framework.entity.Province;
-import cn.qqtheme.framework.entity.WheelItem;
 import cn.qqtheme.framework.util.LogUtils;
 import cn.qqtheme.framework.widget.WheelView;
 
@@ -58,11 +57,19 @@ public class AddressPicker extends LinkagePicker<Province, City, County> {
     }
 
     public City getSelectedCity() {
-        return getSelectedProvince().getCities().get(selectedSecondIndex);
+        List<City> cities = getSelectedProvince().getCities();
+        if (cities.size() == 0) {
+            return null;//可能没有第二级数据
+        }
+        return cities.get(selectedSecondIndex);
     }
 
     public County getSelectedCounty() {
-        return getSelectedCity().getCounties().get(selectedThirdIndex);
+        List<County> counties = getSelectedCity().getCounties();
+        if (counties.size() == 0) {
+            return null;//可能没有第三级数据
+        }
+        return counties.get(selectedThirdIndex);
     }
 
     /**
@@ -109,25 +116,26 @@ public class AddressPicker extends LinkagePicker<Province, City, County> {
         if (null == provider) {
             throw new IllegalArgumentException("please set address provider before make view");
         }
+        float provinceWeight = firstColumnWeight;
+        float cityWeight = secondColumnWeight;
+        float countyWeight = thirdColumnWeight;
         if (hideCounty) {
             hideProvince = false;
         }
-        int[] widths = getColumnWidths(hideProvince || hideCounty);
-        int provinceWidth = widths[0];
-        int cityWidth = widths[1];
-        int countyWidth = widths[2];
         if (hideProvince) {
-            provinceWidth = 0;
-            cityWidth = widths[0];
-            countyWidth = widths[1];
+            provinceWeight = 0;
+            cityWeight = firstColumnWeight;
+            countyWeight = secondColumnWeight;
         }
+        dividerConfig.setRatio(WheelView.DividerConfig.FILL);
+
         LinearLayout layout = new LinearLayout(activity);
         layout.setOrientation(LinearLayout.HORIZONTAL);
         layout.setGravity(Gravity.CENTER);
 
-        dividerConfig.setType(WheelView.DividerConfig.FILL);
         final WheelView provinceView = new WheelView(activity);
-        provinceView.setLayoutParams(new LinearLayout.LayoutParams(provinceWidth, WRAP_CONTENT));
+        provinceView.setUseWeight(true);
+        provinceView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, provinceWeight));
         provinceView.setTextSize(textSize);
         provinceView.setTextColor(textColorNormal, textColorFocus);
         provinceView.setDividerConfig(dividerConfig);
@@ -139,7 +147,8 @@ public class AddressPicker extends LinkagePicker<Province, City, County> {
         }
 
         final WheelView cityView = new WheelView(activity);
-        cityView.setLayoutParams(new LinearLayout.LayoutParams(cityWidth, WRAP_CONTENT));
+        cityView.setUseWeight(true);
+        cityView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, cityWeight));
         cityView.setTextSize(textSize);
         cityView.setTextColor(textColorNormal, textColorFocus);
         cityView.setDividerConfig(dividerConfig);
@@ -148,7 +157,8 @@ public class AddressPicker extends LinkagePicker<Province, City, County> {
         layout.addView(cityView);
 
         final WheelView countyView = new WheelView(activity);
-        countyView.setLayoutParams(new LinearLayout.LayoutParams(countyWidth, WRAP_CONTENT));
+        countyView.setUseWeight(true);
+        countyView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, countyWeight));
         countyView.setTextSize(textSize);
         countyView.setTextColor(textColorNormal, textColorFocus);
         countyView.setDividerConfig(dividerConfig);
@@ -163,8 +173,8 @@ public class AddressPicker extends LinkagePicker<Province, City, County> {
         provinceView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
             @Override
             public void onSelected(int index) {
-                selectedFirstItem = (Province) provider.initFirstData().get(index);
                 selectedFirstIndex = index;
+                selectedFirstItem = getSelectedProvince();
                 if (onWheelListener != null) {
                     onWheelListener.onProvinceWheeled(selectedFirstIndex, selectedFirstItem);
                 }
@@ -198,8 +208,8 @@ public class AddressPicker extends LinkagePicker<Province, City, County> {
         cityView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
             @Override
             public void onSelected(int index) {
-                selectedSecondItem = (City) provider.linkageSecondData(selectedFirstIndex).get(index);
                 selectedSecondIndex = index;
+                selectedSecondItem = getSelectedCity();
                 if (onWheelListener != null) {
                     onWheelListener.onCityWheeled(selectedSecondIndex, selectedSecondItem);
                 }
@@ -223,8 +233,8 @@ public class AddressPicker extends LinkagePicker<Province, City, County> {
         countyView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
             @Override
             public void onSelected(int index) {
-                selectedThirdItem = (County) provider.linkageThirdData(selectedFirstIndex, selectedSecondIndex).get(index);
                 selectedThirdIndex = index;
+                selectedThirdItem = getSelectedCounty();
                 if (onWheelListener != null) {
                     onWheelListener.onCountyWheeled(selectedThirdIndex, selectedThirdItem);
                 }

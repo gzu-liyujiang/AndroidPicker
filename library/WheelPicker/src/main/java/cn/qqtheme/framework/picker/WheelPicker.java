@@ -66,6 +66,17 @@ public abstract class WheelPicker extends ConfirmPopup<View> {
     }
 
     /**
+     * 设置分隔阴影颜色
+     */
+    public void setShadowColor(@ColorInt int color) {
+        if (null == dividerConfig) {
+            dividerConfig = new WheelView.DividerConfig();
+        }
+        dividerConfig.setShadowVisible(true);
+        dividerConfig.setShadowColor(color);
+    }
+
+    /**
      * 设置分隔线是否可见
      */
     public void setDividerVisible(boolean visible) {
@@ -100,6 +111,16 @@ public abstract class WheelPicker extends ConfirmPopup<View> {
         }
         dividerConfig.setVisible(true);
         dividerConfig.setColor(lineColor);
+    }
+
+    /**
+     * 设置分隔线长度比例
+     */
+    public void setDividerRatio(float ratio) {
+        if (null == dividerConfig) {
+            dividerConfig = new WheelView.DividerConfig();
+        }
+        dividerConfig.setRatio(ratio);
     }
 
     /**

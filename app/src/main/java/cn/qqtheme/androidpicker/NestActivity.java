@@ -35,7 +35,7 @@ public class NestActivity extends BaseActivity {
         wheelView.setTextColor(0xFFFF00FF);
         wheelView.setTextSize(18);
         WheelView.DividerConfig config = new WheelView.DividerConfig();
-        config.setType(WheelView.DividerConfig.WRAP);//线类型
+        config.setRatio((float) (1.0 / 10.0));//线比率
         config.setColor(0xFFFF0000);//线颜色
         config.setAlpha(100);//线透明度
         config.setThick(ConvertUtils.toPx(this, 5));//线粗
