@@ -14046,22 +14046,10 @@
           {
             "areaId": "700004",
             "areaName": "海外"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "areaId": "800000",
-    "areaName": "钓鱼岛",
-    "cities": [
-      {
-        "areaId": "800001",
-        "areaName": "是",
-        "counties": [
+          },
           {
-            "areaId": "800002",
-            "areaName": "中国的"
+            "areaId": "700005",
+            "areaName": "钓鱼岛"
           }
         ]
       }

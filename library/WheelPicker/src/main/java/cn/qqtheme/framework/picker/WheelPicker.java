@@ -20,6 +20,7 @@ import cn.qqtheme.framework.widget.WheelView;
  * @since 2015/12/22
  */
 public abstract class WheelPicker extends ConfirmPopup<View> {
+    protected static final int DURATION = 500;//动画延时，单位为毫秒
     protected int textSize = WheelView.TEXT_SIZE;
     protected int textColorNormal = WheelView.TEXT_COLOR_NORMAL;
     protected int textColorFocus = WheelView.TEXT_COLOR_FOCUS;
@@ -157,7 +158,7 @@ public abstract class WheelPicker extends ConfirmPopup<View> {
         ObjectAnimator translation = ObjectAnimator.ofFloat(view, "translationY", 300, 0);
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(alpha, translation);
-        animatorSet.setDuration(200);
+        animatorSet.setDuration(DURATION);
         animatorSet.setInterpolator(new AccelerateInterpolator());
         animatorSet.start();
     }
@@ -170,7 +171,7 @@ public abstract class WheelPicker extends ConfirmPopup<View> {
         ObjectAnimator alpha = ObjectAnimator.ofFloat(view, "alpha", 1, 0);
         ObjectAnimator translation = ObjectAnimator.ofFloat(view, "translationY", 0, 300);
         animatorSet.playTogether(alpha, translation);
-        animatorSet.setDuration(200);
+        animatorSet.setDuration(DURATION);
         animatorSet.setInterpolator(new AccelerateInterpolator());
         animatorSet.addListener(new Animator.AnimatorListener() {
             @Override

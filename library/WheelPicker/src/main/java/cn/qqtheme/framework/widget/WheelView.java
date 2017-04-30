@@ -802,7 +802,7 @@ public class WheelView extends View {
         protected boolean shadowVisible = false;
         protected int color = DIVIDER_COLOR;
         protected int alpha = DIVIDER_ALPHA;
-        protected int type = WRAP;
+        protected int type = FILL;
         protected float thick = DIVIDER_THICK;
 
         @IntDef(value = {FILL, WRAP})

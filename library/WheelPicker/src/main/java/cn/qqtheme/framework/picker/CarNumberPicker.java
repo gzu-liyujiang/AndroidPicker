@@ -27,11 +27,6 @@ public class CarNumberPicker extends LinkagePicker<CarNumberProvince, CarNumberC
         super(activity, new CarNumberDataProvider());
     }
 
-    @Override
-    protected int[] getColumnWidths(boolean onlyTwoColumn) {
-        return new int[]{WRAP_CONTENT, WRAP_CONTENT, 0};
-    }
-
     private static class CarNumberDataProvider implements Provider<CarNumberProvince, CarNumberCity, Void> {
         private List<CarNumberProvince> provinces = new ArrayList<>();
 

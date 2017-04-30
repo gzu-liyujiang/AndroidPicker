@@ -185,7 +185,6 @@ public class MainActivity extends BaseActivity {
         int currentMinute = Calendar.getInstance().get(Calendar.MINUTE);
         picker.setSelectedItem(currentHour, currentMinute);
         picker.setTopLineVisible(false);
-        picker.setLineVisible(false);
         picker.setOnTimePickListener(new TimePicker.OnTimePickListener() {
             @Override
             public void onTimePicked(String hour, String minute) {
@@ -256,8 +255,7 @@ public class MainActivity extends BaseActivity {
         picker.setLabel("小时制", "点");
         picker.setSelectedIndex(0, 8);
         //picker.setSelectedItem("12", "9");
-        picker.setOnLinkageListener(new LinkagePicker.OnLinkageListener() {
-
+        picker.setOnStringPickListener(new LinkagePicker.OnStringPickListener() {
             @Override
             public void onPicked(String first, String second, String third) {
                 showToast(first + "-" + second + "-" + third);

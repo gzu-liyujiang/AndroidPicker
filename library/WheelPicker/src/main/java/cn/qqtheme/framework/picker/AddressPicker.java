@@ -125,6 +125,7 @@ public class AddressPicker extends LinkagePicker<Province, City, County> {
         layout.setOrientation(LinearLayout.HORIZONTAL);
         layout.setGravity(Gravity.CENTER);
 
+        dividerConfig.setType(WheelView.DividerConfig.FILL);
         final WheelView provinceView = new WheelView(activity);
         provinceView.setLayoutParams(new LinearLayout.LayoutParams(provinceWidth, WRAP_CONTENT));
         provinceView.setTextSize(textSize);
@@ -158,65 +159,71 @@ public class AddressPicker extends LinkagePicker<Province, City, County> {
             countyView.setVisibility(View.GONE);
         }
 
-        final List<Province> firstData = provider.initFirstData();
-        provinceView.setItems(firstData, selectedFirstIndex);
+        provinceView.setItems(provider.initFirstData(), selectedFirstIndex);
         provinceView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
             @Override
             public void onSelected(int index) {
-                selectedFirstItem = firstData.get(index);
+                selectedFirstItem = (Province) provider.initFirstData().get(index);
                 selectedFirstIndex = index;
                 if (onWheelListener != null) {
                     onWheelListener.onProvinceWheeled(selectedFirstIndex, selectedFirstItem);
                 }
-                LogUtils.verbose(this, "change cities after province wheeled");
+                LogUtils.verbose(this, "change cities after province wheeled: index=" + index);
                 selectedSecondIndex = 0;//重置地级索引
                 selectedThirdIndex = 0;//重置县级索引
                 //根据省份获取地市
+                //noinspection unchecked
                 List<City> cities = provider.linkageSecondData(selectedFirstIndex);
                 if (cities.size() > 0) {
+                    selectedSecondItem = cities.get(selectedSecondIndex);
                     cityView.setItems(cities, selectedSecondIndex);
                 } else {
+                    selectedSecondItem = null;
                     cityView.setItems(new ArrayList<String>());
                 }
                 //根据地市获取区县
+                //noinspection unchecked
                 List<County> counties = provider.linkageThirdData(selectedFirstIndex, selectedSecondIndex);
                 if (counties.size() > 0) {
+                    selectedThirdItem = counties.get(selectedThirdIndex);
                     countyView.setItems(counties, selectedThirdIndex);
                 } else {
+                    selectedThirdItem = null;
                     countyView.setItems(new ArrayList<String>());
                 }
             }
         });
 
-        final List<City> secondData = provider.linkageSecondData(selectedFirstIndex);
-        cityView.setItems(secondData, selectedSecondIndex);
+        cityView.setItems(provider.linkageSecondData(selectedFirstIndex), selectedSecondIndex);
         cityView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
             @Override
             public void onSelected(int index) {
-                selectedSecondItem = secondData.get(index);
+                selectedSecondItem = (City) provider.linkageSecondData(selectedFirstIndex).get(index);
                 selectedSecondIndex = index;
                 if (onWheelListener != null) {
                     onWheelListener.onCityWheeled(selectedSecondIndex, selectedSecondItem);
                 }
-                LogUtils.verbose(this, "change counties after city wheeled");
+                LogUtils.verbose(this, "change counties after city wheeled: index=" + index);
                 selectedThirdIndex = 0;//重置县级索引
                 //根据地市获取区县
+                //noinspection unchecked
                 List<County> counties = provider.linkageThirdData(selectedFirstIndex, selectedSecondIndex);
                 if (counties.size() > 0) {
+                    selectedThirdItem = counties.get(selectedThirdIndex);
                     //若不是用户手动滚动，说明联动需要指定默认项
                     countyView.setItems(counties, selectedThirdIndex);
                 } else {
+                    selectedThirdItem = null;
                     countyView.setItems(new ArrayList<String>());
                 }
             }
         });
 
-        final List<County> thirdData = provider.linkageThirdData(selectedFirstIndex, selectedSecondIndex);
-        countyView.setItems(thirdData, selectedThirdIndex);
+        countyView.setItems(provider.linkageThirdData(selectedFirstIndex, selectedSecondIndex), selectedThirdIndex);
         countyView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
             @Override
             public void onSelected(int index) {
-                selectedThirdItem = thirdData.get(index);
+                selectedThirdItem = (County) provider.linkageThirdData(selectedFirstIndex, selectedSecondIndex).get(index);
                 selectedThirdIndex = index;
                 if (onWheelListener != null) {
                     onWheelListener.onCountyWheeled(selectedThirdIndex, selectedThirdItem);

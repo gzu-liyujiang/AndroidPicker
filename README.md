@@ -75,63 +75,7 @@ picker.setFooterView(...);
         });
         picker.show();
 ```
-选择器内嵌到其他视图容器：
-```java
-        final CarNumberPicker picker = new CarNumberPicker(this);
-        picker.setOnWheelListener(new CarNumberPicker.OnWheelListener() {
-            @Override
-            public void onFirstWheeled(int index, String item) {
-                textView.setText(item + ":" + picker.getSelectedSecondItem());
-            }
-
-            @Override
-            public void onSecondWheeled(int index, String item) {
-                textView.setText(picker.getSelectedFirstItem() + ":" + item);
-            }
-        });
-        ViewGroup viewGroup = (ViewGroup) findViewById(R.id.wheelview_container);
-        viewGroup.addView(picker.getContentView());
-```
-选择器各个设置项：
-```java
-        boolean isChinese = Locale.getDefault().getDisplayLanguage().contains("中文");
-        OptionPicker picker = new OptionPicker(this,
-                isChinese ? new String[]{
-                        "水瓶", "双鱼", "白羊", "金牛", "双子", "巨蟹",
-                        "狮子", "处女", "天秤", "天蝎", "射手", "摩羯"
-                } : new String[]{
-                        "Aquarius", "Pisces", "Aries", "Taurus", "Gemini", "Cancer",
-                        "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn"
-                });
-        picker.setLabel(isChinese ? "座" : "");
-        picker.setCycleDisable(true);//禁用循环
-        picker.setLineConfig(config);
-        picker.setTopHeight(50);//顶部标题栏高度
-        picker.setTopLineColor(0xFF33B5E5);//顶部标题栏下划线颜色
-        picker.setTopLineHeight(1);//顶部标题栏下划线高度
-        picker.setTitleText(isChinese ? "请选择" : "Please pick");
-        picker.setTitleTextColor(0xFF999999);//顶部标题颜色
-        picker.setTitleTextSize(12);//顶部标题文字大小
-        picker.setCancelTextColor(0xFF33B5E5);//顶部取消按钮文字颜色
-        picker.setCancelTextSize(14);
-        picker.setSubmitTextColor(0xFF33B5E5);//顶部确定按钮文字颜色
-        picker.setSubmitTextSize(14);
-        picker.setTextColor(0xFFEE0000, 0xFF999999);//中间滚动项文字颜色
-        WheelView.LineConfig config = new WheelView.LineConfig();
-        config.setColor(0xFFEE0000);//线颜色
-        config.setAlpha(140);//线透明度
-        picker.setLineConfig(config);
-        picker.setBackgroundColor(0xFFE1E1E1);
-        //picker.setSelectedItem(isChinese ? "射手" : "Sagittarius");
-        picker.setSelectedIndex(10);//默认选中项
-        picker.setOnOptionPickListener(new OptionPicker.OnOptionPickListener() {
-            @Override
-            public void onOptionPicked(int index, String item) {
-                showToast("index=" + index + ", item=" + item);
-            }
-        });
-        picker.show();
-```
+核心滚轮控件为WheelView，可以参照SinglePicker、DateTimePicker及LinkagePicker自行扩展。
 
 # Screenshots
 ![滑轮选择器内嵌效果图](/screenshots/nestwheelview.jpg)
@@ -141,7 +85,6 @@ picker.setFooterView(...);
 ![时间选择器效果图](/screenshots/time.gif)
 ![单项选择器效果图](/screenshots/option.gif)
 ![地址选择器效果图](/screenshots/address.gif)
-![城市选择器效果图](/screenshots/city.png)
 ![数字选择器效果图](/screenshots/number.gif)
 ![星座选择器效果图](/screenshots/constellation.jpg)
 ![颜色选择器效果图](/screenshots/color.gif)
@@ -152,3 +95,4 @@ picker.setFooterView(...);
 <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=1032694760&site=穿青人&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:1032694760:51" alt="点击这里给我发消息" title="点击这里给我发消息"/></a>
 <a target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=q8fC0t7BwsrFzIXfwOva2oXIxMY" style="text-decoration:none;"><img src="http://rescdn.qqmail.com/zh_CN/htmledition/images/function/qm_open/ico_mailme_02.png"/></a>
 
+# Contact

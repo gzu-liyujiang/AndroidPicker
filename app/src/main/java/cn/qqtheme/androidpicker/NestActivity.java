@@ -4,6 +4,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Locale;
+
 import cn.qqtheme.framework.picker.CarNumberPicker;
 import cn.qqtheme.framework.picker.LinkagePicker;
 import cn.qqtheme.framework.util.ConvertUtils;
@@ -33,15 +35,15 @@ public class NestActivity extends BaseActivity {
         wheelView.setTextColor(0xFFFF00FF);
         wheelView.setTextSize(18);
         WheelView.DividerConfig config = new WheelView.DividerConfig();
+        config.setType(WheelView.DividerConfig.WRAP);//线类型
         config.setColor(0xFFFF0000);//线颜色
         config.setAlpha(100);//线透明度
-        config.setRatio((float) (1.0 / 10.0));//线比率
         config.setThick(ConvertUtils.toPx(this, 5));//线粗
         wheelView.setDividerConfig(config);
         wheelView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
             @Override
             public void onSelected(int index) {
-                textView.setText("index=" + index + ",item=" + strings[index]);
+                textView.setText(String.format(Locale.PRC, "index=%d,item=%s", index, strings[index]));
             }
         });
 
@@ -50,7 +52,7 @@ public class NestActivity extends BaseActivity {
         picker.setOnWheelLinkageListener(new LinkagePicker.OnWheelLinkageListener() {
             @Override
             public void onLinkage(int firstIndex, int secondIndex, int thirdIndex) {
-                textView.setText(picker.getSelectedFirstItem() + ":" + picker.getSelectedSecondItem());
+                textView.setText(String.format(Locale.PRC, "%s:%s", picker.getSelectedFirstItem(), picker.getSelectedSecondItem()));
             }
         });
         ViewGroup viewGroup = findView(R.id.wheelview_container);
