@@ -22,15 +22,15 @@ android {
 }
 
 dependencies {
-//    compile fileTree(dir: 'libs', include: ['AndroidPicker-1.4.6.jar'])
     compile 'com.alibaba:fastjson:1.1.55.android'
     compile project(':library:WheelPicker')
     compile project(':library:FilePicker')
     compile project(':library:ColorPicker')
+//    compile files('libs/AndroidPicker-1.5.0.jar')
 //    compile 'cn.qqtheme.framework:WheelPicker:latest.release'
 //    compile 'cn.qqtheme.framework:FilePicker:latest.release'
 //    compile 'cn.qqtheme.framework:ColorPicker:latest.release'
-//    compile 'com.github.gzu-liyujiang.AndroidPicker:WheelPicker:1.4.6'
-//    compile 'com.github.gzu-liyujiang.AndroidPicker:FilePicker:1.4.6'
-//    compile 'com.github.gzu-liyujiang.AndroidPicker:ColorPicker:1.4.6'
+//    compile 'com.github.gzu-liyujiang.AndroidPicker:WheelPicker:1.5.0'
+//    compile 'com.github.gzu-liyujiang.AndroidPicker:FilePicker:1.5.0'
+//    compile 'com.github.gzu-liyujiang.AndroidPicker:ColorPicker:1.5.0'
 }
