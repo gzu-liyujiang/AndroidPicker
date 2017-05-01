@@ -3,13 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/immersion"
     android:orientation="vertical">
 
     <TextView
         style="?android:textAppearanceMedium"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/immersion"
         android:gravity="center"
         android:text="选择器示例"
         android:textColor="@android:color/white"/>

@@ -79,7 +79,7 @@ public abstract class BaseActivity extends FragmentActivity {
         setContentViewBefore();
         setContentView(contentView);
         if (isTranslucentStatusBar()) {
-            StatusBar.translucent(activity, getResources().getColor(R.color.immersion));
+            StatusBarUtil.setTransparent(activity);
         }
         setContentViewAfter(contentView);
         LogUtils.verbose(className + " setContentView after");
