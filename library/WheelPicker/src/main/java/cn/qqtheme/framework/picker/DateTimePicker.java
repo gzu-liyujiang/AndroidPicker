@@ -23,7 +23,7 @@ import cn.qqtheme.framework.widget.WheelView;
 
 /**
  * 日期时间选择器，可同时选中日期及时间，另见{@link DatePicker}和{@link TimePicker}
- * <p>
+ * <p/>
  * Created by Dong on 2016/5/13.
  * Refactored by 李玉江 on 2016/12/31.
  */
@@ -80,6 +80,7 @@ public class DateTimePicker extends WheelPicker {
     private int endYear = 2020, endMonth = 12, endDay = 31;
     private int startHour, startMinute = 0;
     private int endHour, endMinute = 59;
+    private boolean useWeight = false;
 
     @IntDef(value = {NONE, YEAR_MONTH_DAY, YEAR_MONTH, MONTH_DAY})
     @Retention(RetentionPolicy.SOURCE)
@@ -121,6 +122,13 @@ public class DateTimePicker extends WheelPicker {
             endHour = 23;
         }
         this.timeMode = timeMode;
+    }
+
+    /**
+     * 是否使用比重来平分布局
+     */
+    public void setUseWeight(boolean useWeight) {
+        this.useWeight = useWeight;
     }
 
     /**
@@ -405,6 +413,11 @@ public class DateTimePicker extends WheelPicker {
         final WheelView dayView = new WheelView(activity);
         final WheelView hourView = new WheelView(activity);
         final WheelView minuteView = new WheelView(activity);
+        yearView.setUseWeight(useWeight);
+        monthView.setUseWeight(useWeight);
+        dayView.setUseWeight(useWeight);
+        hourView.setUseWeight(useWeight);
+        minuteView.setUseWeight(useWeight);
 
         if (dateMode == YEAR_MONTH_DAY || dateMode == YEAR_MONTH) {
             yearView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, 1.0f));
@@ -419,7 +432,7 @@ public class DateTimePicker extends WheelPicker {
                 @Override
                 public void onSelected(int index) {
                     selectedYearIndex = index;
-                    String selectedYearStr = years.get(index);
+                    String selectedYearStr = years.get(selectedYearIndex);
                     if (onWheelListener != null) {
                         onWheelListener.onYearWheeled(selectedYearIndex, selectedYearStr);
                     }
@@ -430,8 +443,14 @@ public class DateTimePicker extends WheelPicker {
                     int selectedYear = DateUtils.trimZero(selectedYearStr);
                     changeMonthData(selectedYear);
                     monthView.setItems(months, selectedMonthIndex);
+                    if (onWheelListener != null) {
+                        onWheelListener.onMonthWheeled(selectedMonthIndex, months.get(selectedMonthIndex));
+                    }
                     changeDayData(selectedYear, DateUtils.trimZero(months.get(selectedMonthIndex)));
                     dayView.setItems(days, selectedDayIndex);
+                    if (onWheelListener != null) {
+                        onWheelListener.onDayWheeled(selectedDayIndex, days.get(selectedDayIndex));
+                    }
                 }
             });
             layout.addView(yearView);
@@ -446,7 +465,7 @@ public class DateTimePicker extends WheelPicker {
         }
 
         if (dateMode != NONE) {
-            monthView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT,1.0f));
+            monthView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, 1.0f));
             monthView.setTextSize(textSize);
             monthView.setTextColor(textColorNormal, textColorFocus);
             monthView.setDividerConfig(dividerConfig);
@@ -458,7 +477,7 @@ public class DateTimePicker extends WheelPicker {
                 @Override
                 public void onSelected(int index) {
                     selectedMonthIndex = index;
-                    String selectedMonthStr = months.get(index);
+                    String selectedMonthStr = months.get(selectedMonthIndex);
                     if (onWheelListener != null) {
                         onWheelListener.onMonthWheeled(selectedMonthIndex, selectedMonthStr);
                     }
@@ -473,6 +492,9 @@ public class DateTimePicker extends WheelPicker {
                         }
                         changeDayData(selectedYear, DateUtils.trimZero(selectedMonthStr));
                         dayView.setItems(days, selectedDayIndex);
+                        if (onWheelListener != null) {
+                            onWheelListener.onDayWheeled(selectedDayIndex, days.get(selectedDayIndex));
+                        }
                     }
                 }
             });
@@ -488,7 +510,7 @@ public class DateTimePicker extends WheelPicker {
         }
 
         if (dateMode == YEAR_MONTH_DAY || dateMode == MONTH_DAY) {
-            dayView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT,1.0f));
+            dayView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, 1.0f));
             dayView.setTextSize(textSize);
             dayView.setTextColor(textColorNormal, textColorFocus);
             dayView.setDividerConfig(dividerConfig);
@@ -501,7 +523,7 @@ public class DateTimePicker extends WheelPicker {
                 public void onSelected(int index) {
                     selectedDayIndex = index;
                     if (onWheelListener != null) {
-                        onWheelListener.onDayWheeled(selectedDayIndex, days.get(index));
+                        onWheelListener.onDayWheeled(selectedDayIndex, days.get(selectedDayIndex));
                     }
                 }
             });
@@ -517,7 +539,7 @@ public class DateTimePicker extends WheelPicker {
         }
 
         if (timeMode != NONE) {
-            hourView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT,1.0f));
+            hourView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, 1.0f));
             hourView.setTextSize(textSize);
             hourView.setTextColor(textColorNormal, textColorFocus);
             hourView.setDividerConfig(dividerConfig);
@@ -546,7 +568,7 @@ public class DateTimePicker extends WheelPicker {
                 layout.addView(labelView);
             }
 
-            minuteView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT,1.0f));
+            minuteView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, 1.0f));
             minuteView.setTextSize(textSize);
             minuteView.setTextColor(textColorNormal, textColorFocus);
             minuteView.setDividerConfig(dividerConfig);
