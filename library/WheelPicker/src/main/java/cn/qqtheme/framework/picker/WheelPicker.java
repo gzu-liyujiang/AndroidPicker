@@ -5,10 +5,13 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.support.annotation.ColorInt;
+import android.support.annotation.FloatRange;
 import android.support.annotation.IntRange;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
+import android.widget.TextView;
 
 import cn.qqtheme.framework.popup.ConfirmPopup;
 import cn.qqtheme.framework.widget.WheelView;
@@ -21,16 +24,32 @@ import cn.qqtheme.framework.widget.WheelView;
  */
 public abstract class WheelPicker extends ConfirmPopup<View> {
     protected static final int DURATION = 500;//动画延时，单位为毫秒
+    protected float lineSpaceMultiplier = WheelView.LINE_SPACE_MULTIPLIER;
+    protected int padding = WheelView.TEXT_PADDING;
     protected int textSize = WheelView.TEXT_SIZE;
     protected int textColorNormal = WheelView.TEXT_COLOR_NORMAL;
     protected int textColorFocus = WheelView.TEXT_COLOR_FOCUS;
     protected int offset = WheelView.ITEM_OFF_SET;
     protected boolean cycleDisable = true;
     protected WheelView.DividerConfig dividerConfig = new WheelView.DividerConfig();
-    private View contentView;
+    protected View contentView;
 
     public WheelPicker(Activity activity) {
         super(activity);
+    }
+
+    /**
+     * 可用于设置每项的高度，范围为2-4
+     */
+    public final void setLineSpaceMultiplier(@FloatRange(from = 2, to = 4) float multiplier) {
+        lineSpaceMultiplier = multiplier;
+    }
+
+    /**
+     * 可用于设置每项的宽度，单位为dp
+     */
+    public void setPadding(int padding) {
+        this.padding = padding;
     }
 
     /**
@@ -66,14 +85,21 @@ public abstract class WheelPicker extends ConfirmPopup<View> {
     }
 
     /**
-     * 设置分隔阴影颜色
+     * 设置分隔阴影颜色及透明度
      */
     public void setShadowColor(@ColorInt int color) {
+        setShadowColor(color, 100);
+    }
+
+    /**
+     * 设置分隔阴影颜色及透明度
+     */
+    public void setShadowColor(@ColorInt int color, @IntRange(from = 1, to = 255) int alpha) {
         if (null == dividerConfig) {
             dividerConfig = new WheelView.DividerConfig();
         }
-        dividerConfig.setShadowVisible(true);
         dividerConfig.setShadowColor(color);
+        dividerConfig.setShadowAlpha(alpha);
     }
 
     /**
@@ -168,6 +194,26 @@ public abstract class WheelPicker extends ConfirmPopup<View> {
             contentView = makeCenterView();
         }
         return contentView;
+    }
+
+    protected WheelView createWheelView() {
+        WheelView wheelView = new WheelView(activity);
+        wheelView.setLineSpaceMultiplier(lineSpaceMultiplier);
+        wheelView.setPadding(padding);
+        wheelView.setTextSize(textSize);
+        wheelView.setTextColor(textColorNormal, textColorFocus);
+        wheelView.setDividerConfig(dividerConfig);
+        wheelView.setOffset(offset);
+        wheelView.setCycleDisable(cycleDisable);
+        return wheelView;
+    }
+
+    protected TextView createLabelView() {
+        TextView labelView = new TextView(activity);
+        labelView.setLayoutParams(new ViewGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+        labelView.setTextColor(textColorFocus);
+        labelView.setTextSize(textSize);
+        return labelView;
     }
 
     @Override

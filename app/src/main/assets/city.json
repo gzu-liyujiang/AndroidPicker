@@ -14028,24 +14028,236 @@
     "areaName": "其他",
     "cities": [
       {
-        "areaId": "700001",
-        "areaName": "香港"
+        "areaId": "800000",
+        "areaName": "台湾",
+        "counties": [
+          {
+            "areaId": "800001",
+            "areaName": "台北市"
+          },
+          {
+            "areaId": "800002",
+            "areaName": "高雄市"
+          },
+          {
+            "areaId": "800003",
+            "areaName": "台北县"
+          },
+          {
+            "areaId": "800004",
+            "areaName": "桃园县"
+          },
+          {
+            "areaId": "800005",
+            "areaName": "新竹县"
+          },
+          {
+            "areaId": "800006",
+            "areaName": "苗栗县"
+          },
+          {
+            "areaId": "800007",
+            "areaName": "台中县"
+          },
+          {
+            "areaId": "800008",
+            "areaName": "彰化县"
+          },
+          {
+            "areaId": "800009",
+            "areaName": "南投县"
+          },
+          {
+            "areaId": "800010",
+            "areaName": "云林县"
+          },
+          {
+            "areaId": "800011",
+            "areaName": "嘉义县"
+          },
+          {
+            "areaId": "800012",
+            "areaName": "台南县"
+          },
+          {
+            "areaId": "800013",
+            "areaName": "高雄县"
+          },
+          {
+            "areaId": "800014",
+            "areaName": "屏东县"
+          },
+          {
+            "areaId": "800015",
+            "areaName": "宜兰县"
+          },
+          {
+            "areaId": "800016",
+            "areaName": "花莲县"
+          },
+          {
+            "areaId": "800017",
+            "areaName": "台东县"
+          },
+          {
+            "areaId": "800018",
+            "areaName": "澎湖县"
+          },
+          {
+            "areaId": "800019",
+            "areaName": "基隆市"
+          },
+          {
+            "areaId": "800020",
+            "areaName": "新竹市"
+          },
+          {
+            "areaId": "800021",
+            "areaName": "台中市"
+          },
+          {
+            "areaId": "800022",
+            "areaName": "嘉义市"
+          },
+          {
+            "areaId": "800023",
+            "areaName": "台南市"
+          },
+          {
+            "areaId": "800024",
+            "areaName": "其他"
+          }
+        ]
       },
       {
-        "areaId": "700002",
-        "areaName": "澳门"
+        "areaId": "810000",
+        "areaName": "香港",
+        "counties": [
+          {
+            "areaId": "810001",
+            "areaName": "中西区"
+          },
+          {
+            "areaId": "810002",
+            "areaName": "湾仔区"
+          },
+          {
+            "areaId": "810003",
+            "areaName": "东区"
+          },
+          {
+            "areaId": "810004",
+            "areaName": "南区"
+          },
+          {
+            "areaId": "810005",
+            "areaName": "油尖旺区"
+          },
+          {
+            "areaId": "810006",
+            "areaName": "深水埗区"
+          },
+          {
+            "areaId": "810007",
+            "areaName": "九龙城区"
+          },
+          {
+            "areaId": "810008",
+            "areaName": "黄大仙区"
+          },
+          {
+            "areaId": "810009",
+            "areaName": "观塘区"
+          },
+          {
+            "areaId": "810010",
+            "areaName": "荃湾区"
+          },
+          {
+            "areaId": "810011",
+            "areaName": "屯门区"
+          },
+          {
+            "areaId": "810012",
+            "areaName": "元朗区"
+          },
+          {
+            "areaId": "810013",
+            "areaName": "北区"
+          },
+          {
+            "areaId": "810014",
+            "areaName": "大埔区"
+          },
+          {
+            "areaId": "810015",
+            "areaName": "西贡区"
+          },
+          {
+            "areaId": "810016",
+            "areaName": "沙田区"
+          },
+          {
+            "areaId": "810017",
+            "areaName": "葵青区"
+          },
+          {
+            "areaId": "810018",
+            "areaName": "离岛区"
+          }
+        ]
       },
       {
-        "areaId": "700003",
-        "areaName": "台湾"
+        "areaId": "820000",
+        "areaName": "澳门",
+        "counties": [
+          {
+            "areaId": "820001",
+            "areaName": "花地玛堂区"
+          },
+          {
+            "areaId": "820002",
+            "areaName": "花王堂区"
+          },
+          {
+            "areaId": "820003",
+            "areaName": "望德堂区"
+          },
+          {
+            "areaId": "820004",
+            "areaName": "大堂区"
+          },
+          {
+            "areaId": "820005",
+            "areaName": "风顺堂区"
+          },
+          {
+            "areaId": "820006",
+            "areaName": "嘉模堂区"
+          },
+          {
+            "areaId": "820007",
+            "areaName": "路凼填海区"
+          },
+          {
+            "areaId": "820008",
+            "areaName": "圣方济各堂区"
+          }
+        ]
       },
       {
-        "areaId": "700004",
-        "areaName": "海外"
-      },
-      {
-        "areaId": "700005",
-        "areaName": "钓鱼岛"
+        "areaId": "830000",
+        "areaName": "海外",
+        "counties": [
+          {
+            "areaId": "830001",
+            "areaName": "海外"
+          },
+          {
+            "areaId": "830002",
+            "areaName": "钓鱼岛是中国的"
+          }
+        ]
       }
     ]
   }

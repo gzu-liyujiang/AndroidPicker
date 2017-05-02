@@ -133,37 +133,22 @@ public class AddressPicker extends LinkagePicker<Province, City, County> {
         layout.setOrientation(LinearLayout.HORIZONTAL);
         layout.setGravity(Gravity.CENTER);
 
-        final WheelView provinceView = new WheelView(activity);
+        final WheelView provinceView = createWheelView();
         provinceView.setUseWeight(true);
         provinceView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, provinceWeight));
-        provinceView.setTextSize(textSize);
-        provinceView.setTextColor(textColorNormal, textColorFocus);
-        provinceView.setDividerConfig(dividerConfig);
-        provinceView.setOffset(offset);
-        provinceView.setCycleDisable(cycleDisable);
         layout.addView(provinceView);
         if (hideProvince) {
             provinceView.setVisibility(View.GONE);
         }
 
-        final WheelView cityView = new WheelView(activity);
+        final WheelView cityView = createWheelView();
         cityView.setUseWeight(true);
         cityView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, cityWeight));
-        cityView.setTextSize(textSize);
-        cityView.setTextColor(textColorNormal, textColorFocus);
-        cityView.setDividerConfig(dividerConfig);
-        cityView.setOffset(offset);
-        cityView.setCycleDisable(cycleDisable);
         layout.addView(cityView);
 
-        final WheelView countyView = new WheelView(activity);
+        final WheelView countyView = createWheelView();
         countyView.setUseWeight(true);
         countyView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, countyWeight));
-        countyView.setTextSize(textSize);
-        countyView.setTextColor(textColorNormal, textColorFocus);
-        countyView.setDividerConfig(dividerConfig);
-        countyView.setOffset(offset);
-        countyView.setCycleDisable(cycleDisable);
         layout.addView(countyView);
         if (hideCounty) {
             countyView.setVisibility(View.GONE);

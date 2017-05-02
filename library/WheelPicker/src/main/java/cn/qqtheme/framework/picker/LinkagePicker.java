@@ -257,57 +257,33 @@ public class LinkagePicker<Fst extends LinkageFirst<Snd>, Snd extends LinkageSec
         layout.setOrientation(LinearLayout.HORIZONTAL);
         layout.setGravity(Gravity.CENTER);
 
-        final WheelView firstView = new WheelView(activity);
+        final WheelView firstView = createWheelView();
         firstView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, firstColumnWeight));
-        firstView.setTextSize(textSize);
-        firstView.setTextColor(textColorNormal, textColorFocus);
-        firstView.setDividerConfig(dividerConfig);
-        firstView.setOffset(offset);
-        firstView.setCycleDisable(cycleDisable);
         //firstView.setLabel(firstLabel);
         layout.addView(firstView);
         if (!TextUtils.isEmpty(firstLabel)) {
-            TextView labelView = new TextView(activity);
-            labelView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
-            labelView.setTextSize(textSize);
-            labelView.setTextColor(textColorFocus);
+            TextView labelView = createLabelView();
             labelView.setText(firstLabel);
             layout.addView(labelView);
         }
 
-        final WheelView secondView = new WheelView(activity);
+        final WheelView secondView = createWheelView();
         secondView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, secondColumnWeight));
-        secondView.setTextSize(textSize);
-        secondView.setTextColor(textColorNormal, textColorFocus);
-        secondView.setDividerConfig(dividerConfig);
-        secondView.setOffset(offset);
-        secondView.setCycleDisable(cycleDisable);
         //secondView.setLabel(secondLabel);
         layout.addView(secondView);
         if (!TextUtils.isEmpty(secondLabel)) {
-            TextView labelView = new TextView(activity);
-            labelView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
-            labelView.setTextSize(textSize);
-            labelView.setTextColor(textColorFocus);
+            TextView labelView = createLabelView();
             labelView.setText(secondLabel);
             layout.addView(labelView);
         }
 
-        final WheelView thirdView = new WheelView(activity);
+        final WheelView thirdView = createWheelView();
         if (!provider.isOnlyTwo()) {
             thirdView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, thirdColumnWeight));
-            thirdView.setTextSize(textSize);
-            thirdView.setTextColor(textColorNormal, textColorFocus);
-            thirdView.setDividerConfig(dividerConfig);
-            thirdView.setOffset(offset);
-            thirdView.setCycleDisable(cycleDisable);
             //thirdView.setLabel(thirdLabel);
             layout.addView(thirdView);
             if (!TextUtils.isEmpty(thirdLabel)) {
-                TextView labelView = new TextView(activity);
-                labelView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
-                labelView.setTextSize(textSize);
-                labelView.setTextColor(textColorFocus);
+                TextView labelView = createLabelView();
                 labelView.setText(thirdLabel);
                 layout.addView(labelView);
             }

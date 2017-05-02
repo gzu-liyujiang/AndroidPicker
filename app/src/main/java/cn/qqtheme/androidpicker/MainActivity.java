@@ -1,6 +1,7 @@
 package cn.qqtheme.androidpicker;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.view.Gravity;
 import android.view.View;
@@ -59,9 +60,9 @@ public class MainActivity extends BaseActivity {
 
     public void onAnimationStyle(View view) {
         final NumberPicker picker = new NumberPicker(this);
-        picker.setItemWidth(300);
+        picker.setItemWidth(200);
         View headerView = View.inflate(activity, R.layout.picker_header, null);
-        TextView titleView = (TextView) headerView.findViewById(R.id.picker_title);
+        final TextView titleView = (TextView) headerView.findViewById(R.id.picker_title);
         titleView.setText("自定义顶部视图");
         headerView.findViewById(R.id.picker_close).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,10 +77,10 @@ public class MainActivity extends BaseActivity {
         picker.setRange(10.5, 20, 1.5);//数字范围
         picker.setSelectedItem(18.0);
         picker.setLabel("℃");
-        picker.setOnNumberPickListener(new NumberPicker.OnNumberPickListener() {
+        picker.setOnWheelListener(new NumberPicker.OnWheelListener() {
             @Override
-            public void onNumberPicked(int index, Number item) {
-                showToast("index=" + index + ", item=" + item.doubleValue());
+            public void onWheeled(int index, Number item) {
+                titleView.setText(String.valueOf(item.floatValue()));
             }
         });
         picker.show();
@@ -101,6 +102,7 @@ public class MainActivity extends BaseActivity {
     public void onYearMonthDayPicker(View view) {
         final DatePicker picker = new DatePicker(this);
         picker.setCanceledOnTouchOutside(true);
+        picker.setUseWeight(true);
         picker.setTopPadding(ConvertUtils.toPx(this, 20));
         picker.setRangeStart(2016, 8, 29);
         picker.setRangeEnd(2111, 1, 11);
@@ -201,6 +203,7 @@ public class MainActivity extends BaseActivity {
         });
         picker.setCanceledOnTouchOutside(false);
         picker.setDividerRatio(WheelView.DividerConfig.FILL);
+        picker.setShadowColor(Color.RED, 40);
         picker.setSelectedIndex(1);
         picker.setCycleDisable(true);
         picker.setTextSize(11);
@@ -276,15 +279,15 @@ public class MainActivity extends BaseActivity {
                 });
         picker.setCycleDisable(false);//不禁用循环
         picker.setTopBackgroundColor(0xFFEEEEEE);
-        picker.setTopHeight(50);
-        picker.setTopLineColor(0xFF33B5E5);
+        picker.setTopHeight(30);
+        picker.setTopLineColor(0xFFEE0000);
         picker.setTopLineHeight(1);
         picker.setTitleText(isChinese ? "请选择" : "Please pick");
         picker.setTitleTextColor(0xFF999999);
         picker.setTitleTextSize(12);
-        picker.setCancelTextColor(0xFF33B5E5);
+        picker.setCancelTextColor(0xFFEE0000);
         picker.setCancelTextSize(13);
-        picker.setSubmitTextColor(0xFF33B5E5);
+        picker.setSubmitTextColor(0xFFEE0000);
         picker.setSubmitTextSize(13);
         picker.setTextColor(0xFFEE0000, 0xFF999999);
         WheelView.DividerConfig config = new WheelView.DividerConfig();

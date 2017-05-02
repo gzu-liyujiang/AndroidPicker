@@ -143,12 +143,7 @@ public class SinglePicker<T> extends WheelPicker {
         layout.setOrientation(LinearLayout.HORIZONTAL);
         layout.setGravity(Gravity.CENTER);
 
-        wheelView = new WheelView(activity);
-        wheelView.setTextSize(textSize);
-        wheelView.setTextColor(textColorNormal, textColorFocus);
-        wheelView.setDividerConfig(dividerConfig);
-        wheelView.setOffset(offset);
-        wheelView.setCycleDisable(cycleDisable);
+        wheelView = createWheelView();
         //wheelView.setLabel(label);
         layout.addView(wheelView);
 
@@ -156,10 +151,7 @@ public class SinglePicker<T> extends WheelPicker {
             wheelView.setLayoutParams(new LinearLayout.LayoutParams(screenWidthPixels, WRAP_CONTENT));
         } else {
             wheelView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
-            TextView labelView = new TextView(activity);
-            labelView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
-            labelView.setTextColor(textColorFocus);
-            labelView.setTextSize(textSize);
+            TextView labelView = createLabelView();
             labelView.setText(label);
             layout.addView(labelView);
         }

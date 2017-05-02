@@ -80,6 +80,7 @@ public class DateTimePicker extends WheelPicker {
     private int endYear = 2020, endMonth = 12, endDay = 31;
     private int startHour, startMinute = 0;
     private int endHour, endMinute = 59;
+    private int textSize = WheelView.TEXT_SIZE;
     private boolean useWeight = false;
 
     @IntDef(value = {NONE, YEAR_MONTH_DAY, YEAR_MONTH, MONTH_DAY})
@@ -408,11 +409,16 @@ public class DateTimePicker extends WheelPicker {
         layout.setOrientation(LinearLayout.HORIZONTAL);
         layout.setGravity(Gravity.CENTER);
 
-        final WheelView yearView = new WheelView(activity);
-        final WheelView monthView = new WheelView(activity);
-        final WheelView dayView = new WheelView(activity);
-        final WheelView hourView = new WheelView(activity);
-        final WheelView minuteView = new WheelView(activity);
+        final WheelView yearView = createWheelView();
+        final WheelView monthView = createWheelView();
+        final WheelView dayView = createWheelView();
+        final WheelView hourView = createWheelView();
+        final WheelView minuteView = createWheelView();
+        yearView.setTextSize(textSize);
+        monthView.setTextSize(textSize);
+        dayView.setTextSize(textSize);
+        hourView.setTextSize(textSize);
+        minuteView.setTextSize(textSize);
         yearView.setUseWeight(useWeight);
         monthView.setUseWeight(useWeight);
         dayView.setUseWeight(useWeight);
@@ -421,11 +427,6 @@ public class DateTimePicker extends WheelPicker {
 
         if (dateMode == YEAR_MONTH_DAY || dateMode == YEAR_MONTH) {
             yearView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, 1.0f));
-            yearView.setTextSize(textSize);
-            yearView.setTextColor(textColorNormal, textColorFocus);
-            yearView.setDividerConfig(dividerConfig);
-            yearView.setOffset(offset);
-            yearView.setCycleDisable(cycleDisable);
             yearView.setItems(years, selectedYearIndex);
             //yearView.setLabel(yearLabel);
             yearView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
@@ -455,10 +456,8 @@ public class DateTimePicker extends WheelPicker {
             });
             layout.addView(yearView);
             if (!TextUtils.isEmpty(yearLabel)) {
-                TextView labelView = new TextView(activity);
-                labelView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+                TextView labelView = createLabelView();
                 labelView.setTextSize(textSize);
-                labelView.setTextColor(textColorFocus);
                 labelView.setText(yearLabel);
                 layout.addView(labelView);
             }
@@ -466,11 +465,6 @@ public class DateTimePicker extends WheelPicker {
 
         if (dateMode != NONE) {
             monthView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, 1.0f));
-            monthView.setTextSize(textSize);
-            monthView.setTextColor(textColorNormal, textColorFocus);
-            monthView.setDividerConfig(dividerConfig);
-            monthView.setOffset(offset);
-            monthView.setCycleDisable(cycleDisable);
             monthView.setItems(months, selectedMonthIndex);
             //monthView.setLabel(monthLabel);
             monthView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
@@ -500,10 +494,8 @@ public class DateTimePicker extends WheelPicker {
             });
             layout.addView(monthView);
             if (!TextUtils.isEmpty(monthLabel)) {
-                TextView labelView = new TextView(activity);
-                labelView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+                TextView labelView = createLabelView();
                 labelView.setTextSize(textSize);
-                labelView.setTextColor(textColorFocus);
                 labelView.setText(monthLabel);
                 layout.addView(labelView);
             }
@@ -511,11 +503,6 @@ public class DateTimePicker extends WheelPicker {
 
         if (dateMode == YEAR_MONTH_DAY || dateMode == MONTH_DAY) {
             dayView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, 1.0f));
-            dayView.setTextSize(textSize);
-            dayView.setTextColor(textColorNormal, textColorFocus);
-            dayView.setDividerConfig(dividerConfig);
-            dayView.setOffset(offset);
-            dayView.setCycleDisable(cycleDisable);
             dayView.setItems(days, selectedDayIndex);
             //dayView.setLabel(dayLabel);
             dayView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
@@ -529,10 +516,8 @@ public class DateTimePicker extends WheelPicker {
             });
             layout.addView(dayView);
             if (!TextUtils.isEmpty(dayLabel)) {
-                TextView labelView = new TextView(activity);
-                labelView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+                TextView labelView = createLabelView();
                 labelView.setTextSize(textSize);
-                labelView.setTextColor(textColorFocus);
                 labelView.setText(dayLabel);
                 layout.addView(labelView);
             }
@@ -540,10 +525,6 @@ public class DateTimePicker extends WheelPicker {
 
         if (timeMode != NONE) {
             hourView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, 1.0f));
-            hourView.setTextSize(textSize);
-            hourView.setTextColor(textColorNormal, textColorFocus);
-            hourView.setDividerConfig(dividerConfig);
-            hourView.setCycleDisable(cycleDisable);
             hourView.setItems(hours, selectedHour);
             //hourView.setLabel(hourLabel);
             hourView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
@@ -560,20 +541,13 @@ public class DateTimePicker extends WheelPicker {
             });
             layout.addView(hourView);
             if (!TextUtils.isEmpty(hourLabel)) {
-                TextView labelView = new TextView(activity);
-                labelView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+                TextView labelView = createLabelView();
                 labelView.setTextSize(textSize);
-                labelView.setTextColor(textColorFocus);
                 labelView.setText(hourLabel);
                 layout.addView(labelView);
             }
 
             minuteView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, 1.0f));
-            minuteView.setTextSize(textSize);
-            minuteView.setTextColor(textColorNormal, textColorFocus);
-            minuteView.setDividerConfig(dividerConfig);
-            minuteView.setOffset(offset);
-            minuteView.setCycleDisable(cycleDisable);
             minuteView.setItems(minutes, selectedMinute);
             //minuteView.setLabel(minuteLabel);
             minuteView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
@@ -587,10 +561,8 @@ public class DateTimePicker extends WheelPicker {
             });
             layout.addView(minuteView);
             if (!TextUtils.isEmpty(minuteLabel)) {
-                TextView labelView = new TextView(activity);
-                labelView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+                TextView labelView = createLabelView();
                 labelView.setTextSize(textSize);
-                labelView.setTextColor(textColorFocus);
                 labelView.setText(minuteLabel);
                 layout.addView(labelView);
             }

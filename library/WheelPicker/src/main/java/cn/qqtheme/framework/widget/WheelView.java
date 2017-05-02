@@ -2,7 +2,6 @@ package cn.qqtheme.framework.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
@@ -10,7 +9,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.ColorInt;
 import android.support.annotation.FloatRange;
-import android.support.annotation.IntDef;
 import android.support.annotation.IntRange;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -21,8 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -38,7 +34,7 @@ import cn.qqtheme.framework.util.LogUtils;
 
 /**
  * 3D滚轮控件，参阅：http://blog.csdn.net/qq_22393017/article/details/59488906
- * <p>
+ * <p/>
  * Author:李玉江[QQ:1032694760]
  * DateTime:2015/12/15 09:45 基于ScrollView，参见https://github.com/wangjiegulu/WheelView
  * DateTime:2017/01/07 21:37 基于ListView，参见https://github.com/venshine/WheelView
@@ -50,6 +46,8 @@ import cn.qqtheme.framework.util.LogUtils;
  * @see OnItemSelectListener
  */
 public class WheelView extends View {
+    public static final float LINE_SPACE_MULTIPLIER = 2.5F;
+    public static final int TEXT_PADDING = -1;
     public static final int TEXT_SIZE = 16;//sp
     public static final int TEXT_COLOR_FOCUS = 0XFF0288CE;
     public static final int TEXT_COLOR_NORMAL = 0XFFBBBBBB;
@@ -84,8 +82,8 @@ public class WheelView extends View {
     private int textColorOuter = TEXT_COLOR_NORMAL;//未选项文字颜色
     private int textColorCenter = TEXT_COLOR_FOCUS;//选中项文字颜色
     private DividerConfig dividerConfig = new DividerConfig();
-    private float lineSpaceMultiplier = 2.5F;//条目间距倍数，可用来设置上下间距
-    private int padding = -1;//文字的左右边距,单位为px
+    private float lineSpaceMultiplier = LINE_SPACE_MULTIPLIER;//条目间距倍数，可用来设置上下间距
+    private int padding = TEXT_PADDING;//文字的左右边距,单位为px
     private boolean isLoop = true;//循环滚动
     private float firstLineY;//第一条线Y坐标值
     private float secondLineY;//第二条线Y坐标
@@ -302,6 +300,8 @@ public class WheelView extends View {
         paintIndicator.setColor(config.color);
         paintIndicator.setStrokeWidth(config.thick);
         paintIndicator.setAlpha(config.alpha);
+        paintShadow.setColor(config.shadowColor);
+        paintShadow.setAlpha(config.shadowAlpha);
     }
 
     public final void setLineSpaceMultiplier(@FloatRange(from = 2, to = 4) float multiplier) {
@@ -362,6 +362,7 @@ public class WheelView extends View {
         paintShadow = new Paint();
         paintShadow.setAntiAlias(true);
         paintShadow.setColor(dividerConfig.shadowColor);
+        paintShadow.setAlpha(dividerConfig.shadowAlpha);
         setLayerType(LAYER_TYPE_SOFTWARE, null);
     }
 
@@ -540,6 +541,7 @@ public class WheelView extends View {
         }
         if (dividerConfig.shadowVisible) {
             paintShadow.setColor(dividerConfig.shadowColor);
+            paintShadow.setAlpha(dividerConfig.shadowAlpha);
             canvas.drawRect(0.0F, firstLineY, measuredWidth, secondLineY, paintShadow);
         }
         counter = 0;
@@ -824,6 +826,7 @@ public class WheelView extends View {
         protected boolean shadowVisible = false;
         protected int color = DIVIDER_COLOR;
         protected int shadowColor = TEXT_COLOR_NORMAL;
+        protected int shadowAlpha = 100;
         protected int alpha = DIVIDER_ALPHA;
         protected float ratio = 0.1f;
         protected float thick = DIVIDER_THICK;
@@ -852,10 +855,6 @@ public class WheelView extends View {
             if (shadowVisible && color == DIVIDER_COLOR) {
                 color = shadowColor;
                 alpha = 255;
-                int red = Color.red(shadowColor);
-                int green = Color.green(shadowColor);
-                int blue = Color.blue(shadowColor);
-                shadowColor = Color.argb(100, red, green, blue);
             }
             return this;
         }
@@ -864,7 +863,16 @@ public class WheelView extends View {
          * 阴影颜色
          */
         public DividerConfig setShadowColor(@ColorInt int color) {
-            this.shadowColor = color;
+            shadowVisible = true;
+            shadowColor = color;
+            return this;
+        }
+
+        /**
+         * 阴影透明度
+         */
+        public DividerConfig setShadowAlpha(@IntRange(from = 1, to = 255) int alpha) {
+            this.shadowAlpha = alpha;
             return this;
         }
 
