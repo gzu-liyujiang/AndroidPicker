@@ -38,7 +38,7 @@ import cn.qqtheme.framework.util.LogUtils;
 
 /**
  * 3D滚轮控件，参阅：http://blog.csdn.net/qq_22393017/article/details/59488906
- * <p/>
+ * <p>
  * Author:李玉江[QQ:1032694760]
  * DateTime:2015/12/15 09:45 基于ScrollView，参见https://github.com/wangjiegulu/WheelView
  * DateTime:2017/01/07 21:37 基于ListView，参见https://github.com/venshine/WheelView
@@ -250,7 +250,6 @@ public class WheelView extends View {
     public final void setGravity(int gravity) {
         this.gravity = gravity;
     }
-
 
     public void setTextColor(@ColorInt int colorNormal, @ColorInt int colorFocus) {
         this.textColorOuter = colorNormal;

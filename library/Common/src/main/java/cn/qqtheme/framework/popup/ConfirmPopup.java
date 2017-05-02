@@ -24,7 +24,7 @@ import cn.qqtheme.framework.util.ConvertUtils;
  */
 public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
     protected boolean topLineVisible = true;
-    protected int topLineColor = 0xFFDDDDDD;
+    protected int topLineColor = 0xFF33B5E5;
     protected int topLineHeightPixels = 1;//px
     protected int topBackgroundColor = Color.WHITE;
     protected int topHeight = 40;//dp
@@ -33,8 +33,8 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
     protected CharSequence cancelText = "";
     protected CharSequence submitText = "";
     protected CharSequence titleText = "";
-    protected int cancelTextColor = Color.BLACK;
-    protected int submitTextColor = Color.BLACK;
+    protected int cancelTextColor = 0xFF33B5E5;
+    protected int submitTextColor = 0xFF33B5E5;
     protected int titleTextColor = Color.BLACK;
     protected int pressedTextColor = 0XFF0288CE;
     protected int cancelTextSize = 0;
