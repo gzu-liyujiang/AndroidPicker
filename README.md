@@ -4,14 +4,14 @@
 [![JitPack](https://jitpack.io/v/gzu-liyujiang/AndroidPicker.svg)](https://jitpack.io/#gzu-liyujiang/AndroidPicker)
 [![Build Status](https://travis-ci.org/gzu-liyujiang/AndroidPicker.svg?branch=master)](https://travis-ci.org/gzu-liyujiang/AndroidPicker)
 
-安卓选择器类库，包括日期及时间选择器（可设置范围）、单项选择器（可用于性别、职业、学历、星座等）、城市地址选择器（分省级、地级及县级）、数字选择器（可用于年龄、身高、体重、温度等）、颜色选择器、文件及目录选择器等……
+安卓选择器类库，包括日期及时间选择器（可设置范围）、单项选择器（可用于性别、职业、学历、星座等）、城市地址选择器（分省级、地级及县级）、数字选择器（可用于年龄、身高、体重、温度等）、双项选择器、颜色选择器、文件及目录选择器等……
 欢迎大伙儿在[Issues](https://github.com/gzu-liyujiang/AndroidPicker/issues)提交你的意见或建议。    
 欢迎Fork & Pull requests贡献您的代码，大家共同学习【[AndroidPicker交流群 604235437](https://jq.qq.com/?_wv=1027&k=42bKOeD)】。
 [查看更新日志](https://github.com/gzu-liyujiang/AndroidPicker/blob/master/ChangeLog.md)，新版本可能未对旧版API作兼容处理，升级后若编译报错请根据错误提示更改。
 
 # Install
 “app”是测试用例；“library”包括WheelPicker、ColorPicker、FilePicker，
-WheelPicker包括DatePicker、TimePicker、OptionPicker、LinkagePicker、AddressPicker、NumberPicker、CarNumberPicker等。
+WheelPicker包括DatePicker、TimePicker、OptionPicker、LinkagePicker、AddressPicker、NumberPicker、DoublePicker等。
 #### ~~懒人建议直接远程加载jcenter里的~~
 WheelPicker、FilePicker及ColorPicker是独立的，需要用哪个就compile哪个。
 latest.release表示使用最新版，也可以[参照此处指定具体的版本号](https://github.com/gzu-liyujiang/AndroidPicker/releases)，1.3.x之前的版本基于ScrollView，1.4.x版本基于ListView，1.5.x之后的版本基于View：
@@ -78,7 +78,7 @@ picker.setFooterView(...);
         });
         picker.show();
 ```
-核心滚轮控件为WheelView，可以参照SinglePicker、DateTimePicker及LinkagePicker自行扩展。
+<font color="#FF0000">核心滚轮控件为WheelView，可以参照SinglePicker、DateTimePicker及LinkagePicker自行扩展。</font>
 
 # Screenshots
 ![滑轮选择器内嵌效果图](/screenshots/nestwheelview.jpg)
@@ -95,9 +95,9 @@ picker.setFooterView(...);
 ![目录选择器效果图](/screenshots/dir.png)
 
 # Thanks
-[基于View的WheelView](https://github.com/weidongjian/androidWheelView)
-[基于ListView的WheelView](https://github.com/venshine/WheelView)
-[基于ScrollView的WheelView](https://github.com/wangjiegulu/WheelView)
+[基于View的WheelView](https://github.com/weidongjian/androidWheelView)<br />
+[基于ListView的WheelView](https://github.com/venshine/WheelView)<br />
+[基于ScrollView的WheelView](https://github.com/wangjiegulu/WheelView)<br />
 
 
 # Contact

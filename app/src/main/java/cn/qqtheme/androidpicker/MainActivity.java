@@ -22,6 +22,7 @@ import cn.qqtheme.framework.picker.AddressPicker;
 import cn.qqtheme.framework.picker.ColorPicker;
 import cn.qqtheme.framework.picker.DatePicker;
 import cn.qqtheme.framework.picker.DateTimePicker;
+import cn.qqtheme.framework.picker.DoublePicker;
 import cn.qqtheme.framework.picker.FilePicker;
 import cn.qqtheme.framework.picker.LinkagePicker;
 import cn.qqtheme.framework.picker.NumberPicker;
@@ -211,6 +212,31 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onOptionPicked(int index, String item) {
                 showToast("index=" + index + ", item=" + item);
+            }
+        });
+        picker.show();
+    }
+
+    public void onDoublePicker(View view) {
+        final ArrayList<String> firstData = new ArrayList<>();
+        firstData.add("2017年5月2日星期二");
+        firstData.add("2017年5月3日星期三");
+        firstData.add("2017年5月4日星期四");
+        firstData.add("2017年5月5日星期五");
+        firstData.add("2017年5月6日星期六");
+        final ArrayList<String> secondData = new ArrayList<>();
+        secondData.add("电动自行车");
+        secondData.add("二轮摩托车");
+        secondData.add("私家小汽车");
+        secondData.add("公共交通汽车");
+        final DoublePicker picker = new DoublePicker(this, firstData, secondData);
+        picker.setDividerVisible(false);
+        picker.setShadowColor(Color.DKGRAY, 80);
+        picker.setSelectedIndex(2, 1);
+        picker.setOnPickListener(new DoublePicker.OnPickListener() {
+            @Override
+            public void onPicked(int selectedFirstIndex, int selectedSecondIndex) {
+                showToast(firstData.get(selectedFirstIndex) + " " + secondData.get(selectedSecondIndex));
             }
         });
         picker.show();
