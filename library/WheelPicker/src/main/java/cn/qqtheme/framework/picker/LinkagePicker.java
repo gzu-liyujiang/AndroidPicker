@@ -3,6 +3,7 @@ package cn.qqtheme.framework.picker;
 import android.app.Activity;
 import android.support.annotation.FloatRange;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -560,10 +561,13 @@ public class LinkagePicker<Fst extends LinkageFirst<Snd>, Snd extends LinkageSec
      */
     public static abstract class DataProvider implements Provider<StringLinkageFirst, StringLinkageSecond, String> {
 
+        @NonNull
         public abstract List<String> provideFirstData();
 
+        @NonNull
         public abstract List<String> provideSecondData(int firstIndex);
 
+        @Nullable
         public abstract List<String> provideThirdData(int firstIndex, int secondIndex);
 
         @NonNull
@@ -595,7 +599,11 @@ public class LinkagePicker<Fst extends LinkageFirst<Snd>, Snd extends LinkageSec
         @NonNull
         @Override
         public List<String> linkageThirdData(int firstIndex, int secondIndex) {
-            return provideThirdData(firstIndex, secondIndex);
+            List<String> thirdData = provideThirdData(firstIndex, secondIndex);
+            if (thirdData == null) {
+                thirdData = new ArrayList<>();
+            }
+            return thirdData;
         }
 
     }
