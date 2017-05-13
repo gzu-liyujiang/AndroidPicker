@@ -6,4 +6,8 @@
         <item name="android:windowExitAnimation">@anim/popup_out</item>
     </style>
 
+    <style name="AppTheme" parent="android:Theme.Holo.Light">
+        <item name="android:windowBackground">@color/immersion</item>
+    </style>
+
 </resources>

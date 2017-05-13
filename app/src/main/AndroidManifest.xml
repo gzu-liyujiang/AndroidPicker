@@ -11,7 +11,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.Holo.Light"
+        android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning,NewApi">
         <activity android:name=".MainActivity">
             <intent-filter>
