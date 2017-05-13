@@ -2,9 +2,11 @@ package cn.qqtheme.framework.picker;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,8 @@ public class DoublePicker extends WheelPicker {
     private int selectedSecondIndex = 0;
     private OnWheelListener onWheelListener;
     private OnPickListener onPickListener;
+    private CharSequence firstPrefixLabel, firstSuffixLabel;
+    private CharSequence secondPrefixLabel, secondSuffixLabel;
 
     public DoublePicker(Activity activity, List<String> firstData, List<String> secondData) {
         super(activity);
@@ -39,6 +43,16 @@ public class DoublePicker extends WheelPicker {
         if (secondIndex >= 0 && secondIndex < secondData.size()) {
             selectedSecondIndex = secondIndex;
         }
+    }
+
+    public void setFirstLabel(CharSequence firstPrefixLabel, CharSequence firstSuffixLabel) {
+        this.firstPrefixLabel = firstPrefixLabel;
+        this.firstSuffixLabel = firstSuffixLabel;
+    }
+
+    public void setSecondLabel(CharSequence secondPrefixLabel, CharSequence secondSuffixLabel) {
+        this.secondPrefixLabel = secondPrefixLabel;
+        this.secondSuffixLabel = secondSuffixLabel;
     }
 
     public String getSelectedFirstItem() {
@@ -61,12 +75,36 @@ public class DoublePicker extends WheelPicker {
         LinearLayout layout = new LinearLayout(activity);
         layout.setOrientation(LinearLayout.HORIZONTAL);
         layout.setGravity(Gravity.CENTER);
+        if (!TextUtils.isEmpty(firstPrefixLabel)) {
+            TextView firstPrefixLabelView = createLabelView();
+            firstPrefixLabelView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+            firstPrefixLabelView.setText(firstPrefixLabel);
+            layout.addView(firstPrefixLabelView);
+        }
         final WheelView firstView = createWheelView();
         firstView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, 1.0f));
         layout.addView(firstView);
+        if (!TextUtils.isEmpty(firstSuffixLabel)) {
+            TextView firstSuffixLabelView = createLabelView();
+            firstSuffixLabelView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+            firstSuffixLabelView.setText(firstSuffixLabel);
+            layout.addView(firstSuffixLabelView);
+        }
+        if (!TextUtils.isEmpty(secondPrefixLabel)) {
+            TextView secondPrefixLabelView = createLabelView();
+            secondPrefixLabelView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+            secondPrefixLabelView.setText(secondPrefixLabel);
+            layout.addView(secondPrefixLabelView);
+        }
         final WheelView secondView = createWheelView();
         secondView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, 1.0f));
         layout.addView(secondView);
+        if (!TextUtils.isEmpty(secondSuffixLabel)) {
+            TextView secondSuffixLabelView = createLabelView();
+            secondSuffixLabelView.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+            secondSuffixLabelView.setText(secondSuffixLabel);
+            layout.addView(secondSuffixLabelView);
+        }
         firstView.setItems(firstData, selectedFirstIndex);
         firstView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
             @Override
