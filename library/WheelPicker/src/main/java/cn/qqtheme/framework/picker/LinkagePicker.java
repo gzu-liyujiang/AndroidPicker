@@ -166,14 +166,26 @@ public class LinkagePicker<Fst extends LinkageFirst<Snd>, Snd extends LinkageSec
     }
 
     public Fst getSelectedFirstItem() {
+        if (selectedFirstItem == null) {
+            //noinspection unchecked
+            selectedFirstItem = (Fst) provider.initFirstData().get(selectedFirstIndex);
+        }
         return selectedFirstItem;
     }
 
     public Snd getSelectedSecondItem() {
+        if (selectedSecondItem == null) {
+            //noinspection unchecked
+            selectedSecondItem = (Snd) provider.linkageSecondData(selectedFirstIndex).get(selectedSecondIndex);
+        }
         return selectedSecondItem;
     }
 
     public Trd getSelectedThirdItem() {
+        if (selectedThirdItem == null) {
+            //noinspection unchecked
+            selectedThirdItem = (Trd) provider.linkageThirdData(selectedFirstIndex, selectedSecondIndex).get(selectedThirdIndex);
+        }
         return selectedThirdItem;
     }
 
