@@ -158,6 +158,7 @@ public class DateTimePicker extends WheelPicker {
         this.startYear = startYear;
         this.startMonth = startMonth;
         this.startDay = startDay;
+        initYearData();
     }
 
     /**
@@ -192,6 +193,7 @@ public class DateTimePicker extends WheelPicker {
             this.startMonth = startYearOrMonth;
             this.startDay = startMonthOrDay;
         }
+        initYearData();
     }
 
     /**
@@ -236,6 +238,7 @@ public class DateTimePicker extends WheelPicker {
         }
         this.startHour = startHour;
         this.startMinute = startMinute;
+        initHourData();
     }
 
     /**
