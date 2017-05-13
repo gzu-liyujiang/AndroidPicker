@@ -386,27 +386,30 @@ public class LinkagePicker<Fst extends LinkageFirst<Snd>, Snd extends LinkageSec
 
     @Override
     public void onSubmit() {
+        Fst fst = getSelectedFirstItem();
+        Snd snd = getSelectedSecondItem();
+        Trd trd = getSelectedThirdItem();
         if (provider.isOnlyTwo()) {
             if (onPickListener != null) {
                 //noinspection unchecked
-                onPickListener.onPicked(selectedFirstItem, selectedSecondItem, null);
+                onPickListener.onPicked(fst, snd, null);
             }
             if (onLinkageListener != null) {
-                onLinkageListener.onPicked(selectedFirstItem.getName(), selectedSecondItem.getName(), null);
+                onLinkageListener.onPicked(fst.getName(), snd.getName(), null);
             }
         } else {
             if (onPickListener != null) {
                 //noinspection unchecked
-                onPickListener.onPicked(selectedFirstItem, selectedSecondItem, selectedThirdItem);
+                onPickListener.onPicked(fst, snd, trd);
             }
             if (onLinkageListener != null) {
                 String thirdName;
-                if (selectedThirdItem instanceof LinkageThird) {
-                    thirdName = ((LinkageThird) selectedThirdItem).getName();
+                if (trd instanceof LinkageThird) {
+                    thirdName = ((LinkageThird) trd).getName();
                 } else {
-                    thirdName = selectedThirdItem.toString();
+                    thirdName = trd.toString();
                 }
-                onLinkageListener.onPicked(selectedFirstItem.getName(), selectedSecondItem.getName(), thirdName);
+                onLinkageListener.onPicked(fst.getName(), snd.getName(), thirdName);
             }
         }
     }
