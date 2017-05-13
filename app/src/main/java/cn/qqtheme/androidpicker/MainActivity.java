@@ -3,6 +3,8 @@ package cn.qqtheme.androidpicker;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
@@ -105,8 +107,8 @@ public class MainActivity extends BaseActivity {
         picker.setCanceledOnTouchOutside(true);
         picker.setUseWeight(true);
         picker.setTopPadding(ConvertUtils.toPx(this, 20));
-        picker.setRangeStart(2016, 8, 29);
         picker.setRangeEnd(2111, 1, 11);
+        picker.setRangeStart(2016, 8, 29);
         picker.setSelectedItem(2050, 10, 14);
         picker.setOnDatePickListener(new DatePicker.OnYearMonthDayPickListener() {
             @Override
@@ -230,9 +232,11 @@ public class MainActivity extends BaseActivity {
         secondData.add("私家小汽车");
         secondData.add("公共交通汽车");
         final DoublePicker picker = new DoublePicker(this, firstData, secondData);
-        picker.setDividerVisible(false);
-        picker.setShadowColor(Color.DKGRAY, 80);
+        picker.setDividerVisible(true);
+        picker.setCycleDisable(false);
         picker.setSelectedIndex(2, 1);
+        picker.setFirstLabel("于", null);
+        picker.setSecondLabel("骑/乘", "出发");
         picker.setOnPickListener(new DoublePicker.OnPickListener() {
             @Override
             public void onPicked(int selectedFirstIndex, int selectedSecondIndex) {
@@ -243,6 +247,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public void onLinkagePicker(View view) {
+        //联动选择器的更多用法，可参见AddressPicker和CarNumberPicker
         LinkagePicker.DataProvider provider = new LinkagePicker.DataProvider() {
 
             @Override
@@ -250,6 +255,7 @@ public class MainActivity extends BaseActivity {
                 return true;
             }
 
+            @NonNull
             @Override
             public List<String> provideFirstData() {
                 ArrayList<String> firstList = new ArrayList<>();
@@ -258,6 +264,7 @@ public class MainActivity extends BaseActivity {
                 return firstList;
             }
 
+            @NonNull
             @Override
             public List<String> provideSecondData(int firstIndex) {
                 ArrayList<String> secondList = new ArrayList<>();
@@ -273,6 +280,7 @@ public class MainActivity extends BaseActivity {
                 return secondList;
             }
 
+            @Nullable
             @Override
             public List<String> provideThirdData(int firstIndex, int secondIndex) {
                 return null;
