@@ -184,8 +184,10 @@ public class LinkagePicker<Fst extends LinkageFirst<Snd>, Snd extends LinkageSec
 
     public Trd getSelectedThirdItem() {
         if (selectedThirdItem == null) {
-            //noinspection unchecked
-            selectedThirdItem = (Trd) provider.linkageThirdData(selectedFirstIndex, selectedSecondIndex).get(selectedThirdIndex);
+            List<Trd> thirdData = provider.linkageThirdData(selectedFirstIndex, selectedSecondIndex);
+            if (thirdData.size() > 0) {
+                selectedThirdItem = thirdData.get(selectedThirdIndex);
+            }
         }
         return selectedThirdItem;
     }
