@@ -1,8 +1,5 @@
 package cn.qqtheme.framework.picker;
 
-import android.animation.Animator;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.support.annotation.ColorInt;
 import android.support.annotation.FloatRange;
@@ -10,7 +7,6 @@ import android.support.annotation.IntRange;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
 import android.widget.TextView;
 
 import cn.qqtheme.framework.popup.ConfirmPopup;
@@ -23,7 +19,6 @@ import cn.qqtheme.framework.widget.WheelView;
  * @since 2015/12/22
  */
 public abstract class WheelPicker extends ConfirmPopup<View> {
-    protected static final int DURATION = 500;//动画延时，单位为毫秒
     protected float lineSpaceMultiplier = WheelView.LINE_SPACE_MULTIPLIER;
     protected int padding = WheelView.TEXT_PADDING;
     protected int textSize = WheelView.TEXT_SIZE;
@@ -214,54 +209,6 @@ public abstract class WheelPicker extends ConfirmPopup<View> {
         labelView.setTextColor(textColorFocus);
         labelView.setTextSize(textSize);
         return labelView;
-    }
-
-    @Override
-    protected void showAfter() {
-        super.showAfter();
-        View view = getRootView();
-        //使用透明渐变位移动画，缓解选中项显示跳动问题
-        ObjectAnimator alpha = ObjectAnimator.ofFloat(view, "alpha", 0, 1);
-        ObjectAnimator translation = ObjectAnimator.ofFloat(view, "translationY", 300, 0);
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(alpha, translation);
-        animatorSet.setDuration(DURATION);
-        animatorSet.setInterpolator(new AccelerateInterpolator());
-        animatorSet.start();
-    }
-
-
-    @Override
-    public void dismiss() {
-        View view = getRootView();
-        AnimatorSet animatorSet = new AnimatorSet();
-        ObjectAnimator alpha = ObjectAnimator.ofFloat(view, "alpha", 1, 0);
-        ObjectAnimator translation = ObjectAnimator.ofFloat(view, "translationY", 0, 300);
-        animatorSet.playTogether(alpha, translation);
-        animatorSet.setDuration(DURATION);
-        animatorSet.setInterpolator(new AccelerateInterpolator());
-        animatorSet.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                dismissImmediately();
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        });
-        animatorSet.start();
     }
 
 }
