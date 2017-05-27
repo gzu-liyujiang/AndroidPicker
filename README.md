@@ -17,17 +17,17 @@ WheelPicker、FilePicker及ColorPicker是独立的，需要用哪个就compile�
 latest.release表示使用最新版，也可以[参照此处指定具体的版本号](https://github.com/gzu-liyujiang/AndroidPicker/releases)，~~1.3.x之前的版本基于ScrollView，1.4.x版本基于ListView~~，1.5.x之后的版本基于View：
 ```groovy
 dependencies {
-    compile 'cn.qqtheme.framework:WheelPicker:版本号'
-    compile 'cn.qqtheme.framework:FilePicker:版本号'
-    compile 'cn.qqtheme.framework:ColorPicker:版本号'
+    compile('cn.qqtheme.framework:WheelPicker:版本号') {
+        exclude group: 'com.android.support'
+    }
+    compile('cn.qqtheme.framework:FilePicker:版本号') {
+        exclude group: 'com.android.support'
+    }
+    compile('cn.qqtheme.framework:ColorPicker:版本号') {
+        exclude group: 'com.android.support'
+    }
 }
-```
-如果出现“All com.android.support libraries must use the exact same version specification”这种错误，请将依赖改为：
-```
-compile('cn.qqtheme.framework:WheelPicker:版本号') {
-    exclude group: 'com.android.support'
-}
-```
+
 #### 若jcenter仓库里的无法下载的话，可换[JitPack](https://jitpack.io/#gzu-liyujiang/AndroidPicker)的仓库试试：
 第一步，在项目根目录下的build.gradle里加：
 ```
@@ -40,9 +40,15 @@ repositories {
 第二步，在项目的app模块下的build.gradle里加：
 ```
 dependencies {
-    compile 'com.github.gzu-liyujiang.AndroidPicker:WheelPicker:版本号'
-    compile 'com.github.gzu-liyujiang.AndroidPicker:FilePicker:版本号'
-    compile 'com.github.gzu-liyujiang.AndroidPicker:ColorPicker:版本号'
+    compile('com.github.gzu-liyujiang.AndroidPicker:WheelPicker:版本号') {
+        exclude group: 'com.android.support'
+    }
+    compile('com.github.gzu-liyujiang.AndroidPicker:FilePicker:版本号') {
+        exclude group: 'com.android.support'
+    }
+    compile('com.github.gzu-liyujiang.AndroidPicker:ColorPicker:版本号') {
+        exclude group: 'com.android.support'
+    }
 }
 ```
 #### 使用Eclipse的话如何集成？
