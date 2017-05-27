@@ -27,7 +27,7 @@ dependencies {
         exclude group: 'com.android.support'
     }
 }
-
+```
 #### 若jcenter仓库里的无法下载的话，可换[JitPack](https://jitpack.io/#gzu-liyujiang/AndroidPicker)的仓库试试：
 第一步，在项目根目录下的build.gradle里加：
 ```
