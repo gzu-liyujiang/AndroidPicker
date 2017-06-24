@@ -160,6 +160,7 @@ public class MainActivity extends BaseActivity {
         picker.setRangeStart(2016, 10, 14);
         picker.setRangeEnd(2020, 11, 11);
         picker.setSelectedItem(2017, 9);
+        picker.setResetWhileWheel(false);
         picker.setOnDatePickListener(new DatePicker.OnYearMonthPickListener() {
             @Override
             public void onDatePicked(String year, String month) {
