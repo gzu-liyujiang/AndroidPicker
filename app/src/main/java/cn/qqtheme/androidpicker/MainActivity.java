@@ -27,6 +27,7 @@ import cn.qqtheme.framework.picker.DateTimePicker;
 import cn.qqtheme.framework.picker.DoublePicker;
 import cn.qqtheme.framework.picker.FilePicker;
 import cn.qqtheme.framework.picker.LinkagePicker;
+import cn.qqtheme.framework.picker.MultiplePicker;
 import cn.qqtheme.framework.picker.NumberPicker;
 import cn.qqtheme.framework.picker.OptionPicker;
 import cn.qqtheme.framework.picker.TimePicker;
@@ -237,10 +238,22 @@ public class MainActivity extends BaseActivity {
         picker.setSelectedIndex(0, 0);
         picker.setFirstLabel("于", null);
         picker.setSecondLabel("骑/乘", "出发");
+        picker.setTextSize(12);
         picker.setOnPickListener(new DoublePicker.OnPickListener() {
             @Override
             public void onPicked(int selectedFirstIndex, int selectedSecondIndex) {
                 showToast(firstData.get(selectedFirstIndex) + " " + secondData.get(selectedSecondIndex));
+            }
+        });
+        picker.show();
+    }
+
+    public void onMultiplePicker(View view) {
+        MultiplePicker picker = new MultiplePicker(this, new String[]{"穿青人", "少数民族", "已识别民族", "未定民族"});
+        picker.setOnItemPickListener(new MultiplePicker.OnItemPickListener() {
+            @Override
+            public void onItemPicked(int count, List<String> items) {
+                showToast("已选" + count + "项：" + items);
             }
         });
         picker.show();

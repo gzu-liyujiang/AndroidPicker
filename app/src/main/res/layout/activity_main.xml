@@ -87,6 +87,18 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="onMultiplePicker"
+                android:text="多项选择"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onDoublePicker"
+                android:text="双项选择"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:onClick="onLinkagePicker"
                 android:text="二三级联动选择"/>
 
