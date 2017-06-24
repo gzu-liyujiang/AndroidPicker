@@ -172,7 +172,7 @@ public class WheelView extends View {
             return;
         }
         int size = items.size();
-        if (index >= 0 && index < size && index != selectedIndex) {
+        if (index == 0 || (index > 0 && index < size && index != selectedIndex)) {
             initPosition = index;
             totalScrollY = 0;//回归顶部，不然重设索引的话位置会偏移，就会显示出不对位置的数据
             offset = 0;

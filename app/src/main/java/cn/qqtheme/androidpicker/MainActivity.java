@@ -234,7 +234,7 @@ public class MainActivity extends BaseActivity {
         final DoublePicker picker = new DoublePicker(this, firstData, secondData);
         picker.setDividerVisible(true);
         picker.setCycleDisable(false);
-        picker.setSelectedIndex(2, 1);
+        picker.setSelectedIndex(0, 0);
         picker.setFirstLabel("于", null);
         picker.setSecondLabel("骑/乘", "出发");
         picker.setOnPickListener(new DoublePicker.OnPickListener() {
