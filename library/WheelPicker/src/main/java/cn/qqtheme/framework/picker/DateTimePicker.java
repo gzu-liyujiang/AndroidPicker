@@ -82,6 +82,7 @@ public class DateTimePicker extends WheelPicker {
     private int endHour, endMinute = 59;
     private int textSize = WheelView.TEXT_SIZE;
     private boolean useWeight = false;
+    private boolean resetWhileWheel = false;
 
     @IntDef(value = {NONE, YEAR_MONTH_DAY, YEAR_MONTH, MONTH_DAY})
     @Retention(RetentionPolicy.SOURCE)
@@ -130,6 +131,13 @@ public class DateTimePicker extends WheelPicker {
      */
     public void setUseWeight(boolean useWeight) {
         this.useWeight = useWeight;
+    }
+
+    /**
+     * 滚动时是否重置下一级的索引
+     */
+    public void setResetWhileWheel(boolean resetWhileWheel) {
+        this.resetWhileWheel = resetWhileWheel;
     }
 
     /**
@@ -441,8 +449,10 @@ public class DateTimePicker extends WheelPicker {
                         onWheelListener.onYearWheeled(selectedYearIndex, selectedYearStr);
                     }
                     LogUtils.verbose(this, "change months after year wheeled");
-                    selectedMonthIndex = 0;//重置月份索引
-                    selectedDayIndex = 0;//重置日子索引
+                    if (resetWhileWheel) {
+                        selectedMonthIndex = 0;//重置月份索引
+                        selectedDayIndex = 0;//重置日子索引
+                    }
                     //需要根据年份及月份动态计算天数
                     int selectedYear = DateUtils.trimZero(selectedYearStr);
                     changeMonthData(selectedYear);
@@ -480,7 +490,9 @@ public class DateTimePicker extends WheelPicker {
                     }
                     if (dateMode == YEAR_MONTH_DAY || dateMode == MONTH_DAY) {
                         LogUtils.verbose(this, "change days after month wheeled");
-                        selectedDayIndex = 0;//重置日子索引
+                        if (resetWhileWheel) {
+                            selectedDayIndex = 0;//重置日子索引
+                        }
                         int selectedYear;
                         if (dateMode == YEAR_MONTH_DAY) {
                             selectedYear = DateUtils.trimZero(getSelectedYear());
@@ -633,25 +645,29 @@ public class DateTimePicker extends WheelPicker {
                 years.add(String.valueOf(i));
             }
         }
-//        if (dateMode == YEAR_MONTH_DAY || dateMode == YEAR_MONTH) {
-//            int index = years.indexOf(DateUtils.fillZero(Calendar.getInstance().get(Calendar.YEAR)));
-//            if (index == -1) {
-//                //当前设置的年份不在指定范围，则默认选中范围开始的年
-//                selectedYearIndex = 0;
-//            } else {
-//                selectedYearIndex = index;
-//            }
-//        }
+        if (!resetWhileWheel) {
+            if (dateMode == YEAR_MONTH_DAY || dateMode == YEAR_MONTH) {
+                int index = years.indexOf(DateUtils.fillZero(Calendar.getInstance().get(Calendar.YEAR)));
+                if (index == -1) {
+                    //当前设置的年份不在指定范围，则默认选中范围开始的年
+                    selectedYearIndex = 0;
+                } else {
+                    selectedYearIndex = index;
+                }
+            }
+        }
     }
 
     private void changeMonthData(int selectedYear) {
-//        String preSelectMonth;
-//        if (months.size() > selectedMonthIndex) {
-//            preSelectMonth = months.get(selectedMonthIndex);
-//        } else {
-//            preSelectMonth = DateUtils.fillZero(Calendar.getInstance().get(Calendar.MONTH) + 1);
-//        }
-//        LogUtils.verbose(this, "preSelectMonth=" + preSelectMonth);
+        String preSelectMonth = "";
+        if (!resetWhileWheel) {
+            if (months.size() > selectedMonthIndex) {
+                preSelectMonth = months.get(selectedMonthIndex);
+            } else {
+                preSelectMonth = DateUtils.fillZero(Calendar.getInstance().get(Calendar.MONTH) + 1);
+            }
+            LogUtils.verbose(this, "preSelectMonth=" + preSelectMonth);
+        }
         months.clear();
         if (startMonth < 1 || endMonth < 1 || startMonth > 12 || endMonth > 12) {
             throw new IllegalArgumentException("Month out of range [1-12]");
@@ -679,25 +695,29 @@ public class DateTimePicker extends WheelPicker {
                 months.add(DateUtils.fillZero(i));
             }
         }
-//        //当前设置的月份不在指定范围，则默认选中范围开始的月份
-//        int preSelectMonthIndex = months.indexOf(preSelectMonth);
-//        selectedMonthIndex = preSelectMonthIndex == -1 ? 0 : preSelectMonthIndex;
+        if (!resetWhileWheel) {
+            //当前设置的月份不在指定范围，则默认选中范围开始的月份
+            int preSelectMonthIndex = months.indexOf(preSelectMonth);
+            selectedMonthIndex = preSelectMonthIndex == -1 ? 0 : preSelectMonthIndex;
+        }
     }
 
     private void changeDayData(int selectedYear, int selectedMonth) {
         int maxDays = DateUtils.calculateDaysInMonth(selectedYear, selectedMonth);
-//        if (selectedDayIndex >= maxDays) {
-//            //如果之前选择的日是之前年月的最大日，则日自动为该年月的最大日
-//            selectedDayIndex = maxDays - 1;
-//        }
-//        String preSelectDay;
-//        if (days.size() > selectedDayIndex) {
-//            //年或月变动时，保持之前选择的日不动
-//            preSelectDay = days.get(selectedDayIndex);
-//        } else {
-//            preSelectDay = DateUtils.fillZero(Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
-//        }
-//        LogUtils.verbose(this, "maxDays=" + maxDays + ", preSelectDay=" + preSelectDay);
+        String preSelectDay = "";
+        if (!resetWhileWheel) {
+            if (selectedDayIndex >= maxDays) {
+                //如果之前选择的日是之前年月的最大日，则日自动为该年月的最大日
+                selectedDayIndex = maxDays - 1;
+            }
+            if (days.size() > selectedDayIndex) {
+                //年或月变动时，保持之前选择的日不动
+                preSelectDay = days.get(selectedDayIndex);
+            } else {
+                preSelectDay = DateUtils.fillZero(Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+            }
+            LogUtils.verbose(this, "maxDays=" + maxDays + ", preSelectDay=" + preSelectDay);
+        }
         days.clear();
         if (selectedYear == startYear && selectedMonth == startMonth
                 && selectedYear == endYear && selectedMonth == endMonth) {
@@ -720,30 +740,38 @@ public class DateTimePicker extends WheelPicker {
                 days.add(DateUtils.fillZero(i));
             }
         }
-//        //当前设置的日子不在指定范围，则默认选中范围开始的日子
-//        int preSelectDayIndex = days.indexOf(preSelectDay);
-//        selectedDayIndex = preSelectDayIndex == -1 ? 0 : preSelectDayIndex;
+        if (!resetWhileWheel) {
+            //当前设置的日子不在指定范围，则默认选中范围开始的日子
+            int preSelectDayIndex = days.indexOf(preSelectDay);
+            selectedDayIndex = preSelectDayIndex == -1 ? 0 : preSelectDayIndex;
+        }
     }
 
     private void initHourData() {
-//        int currentHour;
-//        if (timeMode == HOUR_24) {
-//            currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-//        } else {
-//            currentHour = Calendar.getInstance().get(Calendar.HOUR);
-//        }
+        int currentHour = 0;
+        if (!resetWhileWheel) {
+            if (timeMode == HOUR_24) {
+                currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+            } else {
+                currentHour = Calendar.getInstance().get(Calendar.HOUR);
+            }
+        }
         for (int i = startHour; i <= endHour; i++) {
             String hour = DateUtils.fillZero(i);
-//            if (i == currentHour) {
-//                selectedHour = hour;
-//            }
+            if (!resetWhileWheel) {
+                if (i == currentHour) {
+                    selectedHour = hour;
+                }
+            }
             hours.add(hour);
         }
         if (hours.indexOf(selectedHour) == -1) {
             //当前设置的小时不在指定范围，则默认选中范围开始的小时
             selectedHour = hours.get(0);
         }
-//        selectedMinute = DateUtils.fillZero(Calendar.getInstance().get(Calendar.MINUTE));
+        if (!resetWhileWheel) {
+            selectedMinute = DateUtils.fillZero(Calendar.getInstance().get(Calendar.MINUTE));
+        }
     }
 
     private void changeMinuteData(int selectedHour) {
