@@ -107,7 +107,7 @@ public class MainActivity extends BaseActivity {
         final DatePicker picker = new DatePicker(this);
         picker.setCanceledOnTouchOutside(true);
         picker.setUseWeight(true);
-        picker.setTopPadding(ConvertUtils.toPx(this, 20));
+        picker.setTopPadding(ConvertUtils.toPx(this, 10));
         picker.setRangeEnd(2111, 1, 11);
         picker.setRangeStart(2016, 8, 29);
         picker.setSelectedItem(2050, 10, 14);
