@@ -621,7 +621,12 @@ public class DateTimePicker extends WheelPicker {
                 String rhsStr = rhs.toString();
                 lhsStr = lhsStr.startsWith("0") ? lhsStr.substring(1) : lhsStr;
                 rhsStr = rhsStr.startsWith("0") ? rhsStr.substring(1) : rhsStr;
-                return Integer.parseInt(lhsStr) - Integer.parseInt(rhsStr);
+                try {
+                    return Integer.parseInt(lhsStr) - Integer.parseInt(rhsStr);
+                } catch (java.lang.NumberFormatException e) {
+                    e.printStackTrace();
+                    return 0;
+                }
             }
         });
         if (index < 0) {
