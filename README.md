@@ -10,9 +10,9 @@
 [查看更新日志](https://github.com/gzu-liyujiang/AndroidPicker/blob/master/ChangeLog.md)，新版本可能未对旧版API作兼容处理，升级后若编译报错请根据错误提示更改。
 
 # Install
-“app”是测试用例；“library”包括WheelPicker、ColorPicker、FilePicker，
+“app”是测试用例；“library”包括WheelPicker、ColorPicker、FilePicker、MultiplePicker，
 WheelPicker包括DatePicker、TimePicker、OptionPicker、LinkagePicker、AddressPicker、NumberPicker、DoublePicker等。
-#### ~~懒人建议直接远程加载jcenter里的~~
+#### 懒人建议直接远程加载jcenter里的
 WheelPicker、FilePicker及ColorPicker是独立的，需要用哪个就compile哪个。
 latest.release表示使用最新版，也可以[参照此处指定具体的版本号](https://github.com/gzu-liyujiang/AndroidPicker/releases)，~~1.3.x之前的版本基于ScrollView，1.4.x版本基于ListView~~，1.5.x之后的版本基于View：
 ```groovy
@@ -67,12 +67,33 @@ dependencies {
 各种设置方法：
 ```java
 picker.setXXX(...);
-```
-自定义顶部及底部视图：
+```   
+如：    
+设置选项偏移量，可用来要设置显示的条目数，范围为1-5，1显示3行、2显示5行、3显示7行……
+```java
+picker.setOffset(...);
+```   
+设置是否禁用循环
+```java
+picker.setCycleDisable(...);
+```   
+设置每项的高度，范围为2-4
+```java
+picker.setLineSpaceMultiplier(...);
+```   
+设置文字颜色
+```java
+picker.setTextColor(...);
+```   
+设置分隔线配置项，设置null将隐藏分割线及阴影
+```java
+picker.setDividerConfig(...);
+```   
+自定义顶部及底部视图
 ```java
 picker.setHeaderView(...);
 picker.setFooterView(...);
-```
+```   
 自定义选择器示例：
 ```java
         CustomHeaderAndFooterPicker picker = new CustomHeaderAndFooterPicker(this);
@@ -87,6 +108,7 @@ picker.setFooterView(...);
 <font color="#FF0000">核心滚轮控件为WheelView，可以参照SinglePicker、DateTimePicker及LinkagePicker自行扩展。</font>
 
 # Screenshots
+以下图片显示的效果可能已修改过，实际效果请运行demo查看。   
 ![滑轮选择器内嵌效果图](/screenshots/nestwheelview.jpg)
 ![自定义选择器效果图](/screenshots/custom.gif)
 ![日期选择器效果图](/screenshots/date.gif)
