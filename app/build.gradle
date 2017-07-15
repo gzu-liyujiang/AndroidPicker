@@ -26,11 +26,12 @@ dependencies {
     compile project(':library:WheelPicker')
     compile project(':library:FilePicker')
     compile project(':library:ColorPicker')
-//    compile files('libs/AndroidPicker-1.5.2.jar')
+    compile project(':library:MultiplePicker')
+//    compile files('libs/AndroidPicker-1.5.3.jar')
 //    compile 'cn.qqtheme.framework:WheelPicker:latest.release'
 //    compile 'cn.qqtheme.framework:FilePicker:latest.release'
 //    compile 'cn.qqtheme.framework:ColorPicker:latest.release'
-//    compile 'com.github.gzu-liyujiang.AndroidPicker:WheelPicker:1.5.2'
-//    compile 'com.github.gzu-liyujiang.AndroidPicker:FilePicker:1.5.2'
-//    compile 'com.github.gzu-liyujiang.AndroidPicker:ColorPicker:1.5.2'
+//    compile 'com.github.gzu-liyujiang.AndroidPicker:WheelPicker:1.5.3'
+//    compile 'com.github.gzu-liyujiang.AndroidPicker:FilePicker:1.5.3'
+//    compile 'com.github.gzu-liyujiang.AndroidPicker:ColorPicker:1.5.3'
 }
