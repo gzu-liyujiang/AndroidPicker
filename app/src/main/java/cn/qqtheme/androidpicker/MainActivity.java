@@ -305,7 +305,7 @@ public class MainActivity extends BaseActivity {
         };
         LinkagePicker picker = new LinkagePicker(this, provider);
         picker.setCycleDisable(true);
-        picker.setUseWeight(false);
+        picker.setUseWeight(true);
         picker.setLabel("小时制", "点");
         picker.setSelectedIndex(0, 8);
         //picker.setSelectedItem("12", "9");
