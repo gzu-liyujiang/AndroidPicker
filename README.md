@@ -73,9 +73,9 @@ picker.setXXX(...);
 ```java
 picker.setOffset(...);
 ```   
-设置是否禁用循环
+设置启用循环
 ```java
-picker.setCycleDisable(...);
+picker.setCycleDisable(false);
 ```   
 设置每项的高度，范围为2-4
 ```java
@@ -84,6 +84,10 @@ picker.setLineSpaceMultiplier(...);
 设置文字颜色
 ```java
 picker.setTextColor(...);
+```   
+设置滚轮项填充宽度
+```java
+picker.setUseWeight(true);
 ```   
 设置分隔线配置项，设置null将隐藏分割线及阴影
 ```java

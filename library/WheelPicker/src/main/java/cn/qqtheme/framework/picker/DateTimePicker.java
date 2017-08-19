@@ -753,6 +753,7 @@ public class DateTimePicker extends WheelPicker {
     }
 
     private void initHourData() {
+        hours.clear();
         int currentHour = 0;
         if (!resetWhileWheel) {
             if (timeMode == HOUR_24) {
@@ -780,6 +781,7 @@ public class DateTimePicker extends WheelPicker {
     }
 
     private void changeMinuteData(int selectedHour) {
+        minutes.clear();
         if (startHour == endHour) {
             if (startMinute > endMinute) {
                 int temp = startMinute;
