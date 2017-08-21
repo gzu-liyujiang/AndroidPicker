@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 
 ext {
-    isLibrary = true
+    isLibrary = false
     pomArtifactId = "MultiplePicker"
     pomDescription = "multiple picker for android"
 }
