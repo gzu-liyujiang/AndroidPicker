@@ -187,6 +187,8 @@ public class MainActivity extends BaseActivity {
 
     public void onTimePicker(View view) {
         TimePicker picker = new TimePicker(this, TimePicker.HOUR_24);
+        picker.setUseWeight(true);
+        picker.setCycleDisable(false);
         picker.setRangeStart(0, 0);//00:00
         picker.setRangeEnd(23, 59);//23:59
         int currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
@@ -303,6 +305,7 @@ public class MainActivity extends BaseActivity {
         };
         LinkagePicker picker = new LinkagePicker(this, provider);
         picker.setCycleDisable(true);
+        picker.setUseWeight(true);
         picker.setLabel("小时制", "点");
         picker.setSelectedIndex(0, 8);
         //picker.setSelectedItem("12", "9");

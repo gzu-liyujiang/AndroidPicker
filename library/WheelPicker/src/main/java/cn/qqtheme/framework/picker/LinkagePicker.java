@@ -39,6 +39,7 @@ public class LinkagePicker<Fst extends LinkageFirst<Snd>, Snd extends LinkageSec
     protected float firstColumnWeight = 1.0f;//第一级显示的宽度比重
     protected float secondColumnWeight = 1.0f;//第二级显示的宽度比重
     protected float thirdColumnWeight = 1.0f;//第三级显示的宽度比重
+    protected boolean useWeight = true;
     private OnPickListener onPickListener;
     private OnLinkageListener onLinkageListener;
     private OnWheelListener onWheelListener;
@@ -166,6 +167,10 @@ public class LinkagePicker<Fst extends LinkageFirst<Snd>, Snd extends LinkageSec
         this.thirdLabel = thirdLabel;
     }
 
+    public void setUseWeight(boolean useWeight) {
+        this.useWeight = useWeight;
+    }
+
     public Fst getSelectedFirstItem() {
         if (selectedFirstItem == null) {
             //noinspection unchecked
@@ -273,6 +278,7 @@ public class LinkagePicker<Fst extends LinkageFirst<Snd>, Snd extends LinkageSec
         layout.setGravity(Gravity.CENTER);
 
         final WheelView firstView = createWheelView();
+        firstView.setUseWeight(useWeight);
         firstView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, firstColumnWeight));
         //firstView.setLabel(firstLabel);
         layout.addView(firstView);
@@ -283,6 +289,7 @@ public class LinkagePicker<Fst extends LinkageFirst<Snd>, Snd extends LinkageSec
         }
 
         final WheelView secondView = createWheelView();
+        secondView.setUseWeight(useWeight);
         secondView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, secondColumnWeight));
         //secondView.setLabel(secondLabel);
         layout.addView(secondView);
@@ -293,6 +300,7 @@ public class LinkagePicker<Fst extends LinkageFirst<Snd>, Snd extends LinkageSec
         }
 
         final WheelView thirdView = createWheelView();
+        thirdView.setUseWeight(useWeight);
         if (!provider.isOnlyTwo()) {
             thirdView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, thirdColumnWeight));
             //thirdView.setLabel(thirdLabel);
