@@ -1,8 +1,6 @@
 /*.iml
-/gradlew
 /*/*.iml
 /.idea
-/gradlew.bat
 bin/
 gen/
 .gradle/
@@ -12,5 +10,4 @@ local.properties
 proguard/
 *.log
 *.apk
-/*.sh
-/*.cmd
+
