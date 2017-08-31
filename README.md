@@ -98,6 +98,15 @@ picker.setDividerConfig(...);
 picker.setHeaderView(...);
 picker.setFooterView(...);
 ```   
+获得内容视图（不要调用picker.show()方法），可以将其加入到其他容器视图（如自定义的Dialog的视图）中
+```java
+picker.getContentView();
+```   
+获得按钮视图（需要先调用picker.show()方法），可以调用该视图相关方法，如setVisibility()
+```java
+picker.getCancelButton();
+picker.getSubmitButton();
+```   
 自定义选择器示例：
 ```java
         CustomHeaderAndFooterPicker picker = new CustomHeaderAndFooterPicker(this);
