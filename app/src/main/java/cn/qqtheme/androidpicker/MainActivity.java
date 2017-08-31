@@ -454,6 +454,9 @@ public class MainActivity extends BaseActivity {
         FilePicker picker = new FilePicker(this, FilePicker.FILE);
         picker.setShowHideDir(false);
         //picker.setAllowExtensions(new String[]{".apk"});
+        picker.setFileIcon(getResources().getDrawable(android.R.drawable.ic_menu_agenda));
+        picker.setFolderIcon(getResources().getDrawable(android.R.drawable.ic_menu_upload_you_tube));
+        picker.setArrowIcon(getResources().getDrawable(android.R.drawable.arrow_down_float));
         picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {
             @Override
             public void onFilePicked(String currentPath) {

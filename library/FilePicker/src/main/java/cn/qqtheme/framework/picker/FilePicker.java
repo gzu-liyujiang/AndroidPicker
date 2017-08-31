@@ -3,6 +3,7 @@ package cn.qqtheme.framework.picker;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -41,7 +42,7 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
     private TextView emptyView;
     private OnFilePickListener onFilePickListener;
     private int mode;
-    private CharSequence emptyHint = "<空>";
+    private CharSequence emptyHint = java.util.Locale.getDefault().getDisplayLanguage().contains("中文") ? "<空>" : "<Empty>";
 
     @IntDef(value = {DIRECTORY, FILE})
     @Retention(RetentionPolicy.SOURCE)
@@ -146,6 +147,26 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
         adapter.setShowHideDir(showHideDir);
     }
 
+    public void setFileIcon(Drawable fileIcon) {
+        adapter.setFileIcon(fileIcon);
+    }
+
+    public void setFolderIcon(Drawable folderIcon) {
+        adapter.setFolderIcon(folderIcon);
+    }
+
+    public void setHomeIcon(Drawable homeIcon) {
+        adapter.setHomeIcon(homeIcon);
+    }
+
+    public void setUpIcon(Drawable upIcon) {
+        adapter.setUpIcon(upIcon);
+    }
+
+    public void setArrowIcon(Drawable arrowIcon) {
+        pathAdapter.setArrowIcon(arrowIcon);
+    }
+
     public void setItemHeight(int itemHeight) {
         adapter.setItemHeight(itemHeight);
     }
@@ -192,6 +213,10 @@ public class FilePicker extends ConfirmPopup<LinearLayout> implements AdapterVie
 
     public FileAdapter getAdapter() {
         return adapter;
+    }
+
+    public PathAdapter getPathAdapter() {
+        return pathAdapter;
     }
 
     public String getCurrentPath() {

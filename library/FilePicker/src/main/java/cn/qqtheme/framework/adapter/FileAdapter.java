@@ -50,14 +50,27 @@ public class FileAdapter extends BaseAdapter {
     private Drawable fileIcon = null;
 
     public FileAdapter() {
-        homeIcon = ConvertUtils.toDrawable(FilePickerIcon.getHOME());
-        upIcon = ConvertUtils.toDrawable(FilePickerIcon.getUPDIR());
-        folderIcon = ConvertUtils.toDrawable(FilePickerIcon.getFOLDER());
-        fileIcon = ConvertUtils.toDrawable(FilePickerIcon.getFILE());
+        super();
     }
 
     public String getCurrentPath() {
         return currentPath;
+    }
+
+    public void setFileIcon(Drawable fileIcon) {
+        this.fileIcon = fileIcon;
+    }
+
+    public void setFolderIcon(Drawable folderIcon) {
+        this.folderIcon = folderIcon;
+    }
+
+    public void setHomeIcon(Drawable homeIcon) {
+        this.homeIcon = homeIcon;
+    }
+
+    public void setUpIcon(Drawable upIcon) {
+        this.upIcon = upIcon;
     }
 
     /**
@@ -119,6 +132,18 @@ public class FileAdapter extends BaseAdapter {
         if (path == null) {
             LogUtils.warn("current directory is null");
             return;
+        }
+        if (homeIcon == null) {
+            homeIcon = ConvertUtils.toDrawable(FilePickerIcon.getHOME());
+        }
+        if (upIcon == null) {
+            upIcon = ConvertUtils.toDrawable(FilePickerIcon.getUPDIR());
+        }
+        if (folderIcon == null) {
+            folderIcon = ConvertUtils.toDrawable(FilePickerIcon.getFOLDER());
+        }
+        if (fileIcon == null) {
+            fileIcon = ConvertUtils.toDrawable(FilePickerIcon.getFILE());
         }
         ArrayList<FileItem> datas = new ArrayList<FileItem>();
         if (rootPath == null) {

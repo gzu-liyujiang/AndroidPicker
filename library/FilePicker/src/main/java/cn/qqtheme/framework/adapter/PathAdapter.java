@@ -34,10 +34,17 @@ public class PathAdapter extends BaseAdapter {
     private Drawable arrowIcon = null;
 
     public PathAdapter() {
-        arrowIcon = ConvertUtils.toDrawable(FilePickerIcon.getARROW());
+        super();
+    }
+
+    public void setArrowIcon(Drawable arrowIcon) {
+        this.arrowIcon = arrowIcon;
     }
 
     public void updatePath(String path) {
+        if (arrowIcon == null) {
+            arrowIcon = ConvertUtils.toDrawable(FilePickerIcon.getARROW());
+        }
         paths.clear();
         if (!path.equals("/")) {
             String[] tmps = path.substring(path.indexOf("/") + 1).split("/");
@@ -98,7 +105,6 @@ public class PathAdapter extends BaseAdapter {
             ImageView imageView = new ImageView(context);
             int width = ConvertUtils.toPx(context, 20);
             imageView.setLayoutParams(new LinearLayout.LayoutParams(width, matchParent));
-            imageView.setImageResource(android.R.drawable.ic_menu_report_image);
             layout.addView(imageView);
 
             convertView = layout;
