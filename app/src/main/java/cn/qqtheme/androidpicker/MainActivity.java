@@ -244,6 +244,7 @@ public class MainActivity extends BaseActivity {
         picker.setFirstLabel("于", null);
         picker.setSecondLabel("骑/乘", "出发");
         picker.setTextSize(12);
+        picker.setContentPadding(15, 10);
         picker.setOnPickListener(new DoublePicker.OnPickListener() {
             @Override
             public void onPicked(int selectedFirstIndex, int selectedSecondIndex) {
@@ -311,6 +312,7 @@ public class MainActivity extends BaseActivity {
         picker.setLabel("小时制", "点");
         picker.setSelectedIndex(0, 8);
         //picker.setSelectedItem("12", "9");
+        picker.setContentPadding(10, 0);
         picker.setOnStringPickListener(new LinkagePicker.OnStringPickListener() {
             @Override
             public void onPicked(String first, String second, String third) {

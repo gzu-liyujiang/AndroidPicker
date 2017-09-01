@@ -111,6 +111,10 @@ picker.setDividerColor(...);
 picker.setDividerRatio(...);
 picker.setDividerVisible(...);
 ```   
+设置内容边距
+```java
+picker.setContentPadding(...);
+```   
 自定义顶部及底部视图
 ```java
 picker.setHeaderView(...);

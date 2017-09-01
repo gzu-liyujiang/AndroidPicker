@@ -33,7 +33,6 @@ public abstract class WheelPicker extends ConfirmPopup<View> {
     protected boolean useWeight = true;
     protected boolean textSizeAutoFit = true;
     protected WheelView.DividerConfig dividerConfig = new WheelView.DividerConfig();
-    protected View contentView;
 
     public WheelPicker(Activity activity) {
         super(activity);
@@ -51,7 +50,7 @@ public abstract class WheelPicker extends ConfirmPopup<View> {
      */
     @Deprecated
     public void setPadding(int textPadding) {
-        setTextPadding(textPadding);
+        this.textPadding = textPadding;
     }
 
     /**
@@ -217,10 +216,10 @@ public abstract class WheelPicker extends ConfirmPopup<View> {
      */
     @Override
     public View getContentView() {
-        if (null == contentView) {
-            contentView = makeCenterView();
+        if (centerView == null) {
+            centerView = makeCenterView();
         }
-        return contentView;
+        return centerView;
     }
 
     protected WheelView createWheelView() {

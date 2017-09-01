@@ -22,6 +22,7 @@ import cn.qqtheme.framework.util.ConvertUtils;
  * @author 李玉江[QQ:1032694760]
  * @since 2015/10/21
  */
+@SuppressWarnings("WeakerAccess")
 public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
     protected boolean topLineVisible = true;
     protected int topLineColor = 0xFF33B5E5;
@@ -29,6 +30,8 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
     protected int topBackgroundColor = Color.WHITE;
     protected int topHeight = 40;//dp
     protected int topPadding = 15;//dp
+    protected int contentLeftAndRightPadding = 0;//dp
+    protected int contentTopAndBottomPadding = 0;//dp
     protected boolean cancelVisible = true;
     protected CharSequence cancelText = "";
     protected CharSequence submitText = "";
@@ -41,9 +44,9 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
     protected int submitTextSize = 0;
     protected int titleTextSize = 0;
     protected int backgroundColor = Color.WHITE;
-    private TextView cancelButton, submitButton;
-    private View titleView;
-    private View headerView,footerView;
+    protected TextView cancelButton, submitButton;
+    protected View titleView;
+    protected View headerView, centerView, footerView;
 
     public ConfirmPopup(Activity activity) {
         super(activity);
@@ -91,6 +94,14 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
      */
     public void setTopLineVisible(boolean topLineVisible) {
         this.topLineVisible = topLineVisible;
+    }
+
+    /**
+     * 设置内容上下左右边距（单位为dp）
+     */
+    public void setContentPadding(int leftAndRight, int topAndBottom) {
+        this.contentLeftAndRightPadding = leftAndRight;
+        this.contentTopAndBottomPadding = topAndBottom;
     }
 
     /**
@@ -283,7 +294,19 @@ public abstract class ConfirmPopup<V extends View> extends BasicPopup<View> {
             lineView.setBackgroundColor(topLineColor);
             rootLayout.addView(lineView);
         }
-        rootLayout.addView(makeCenterView(), new LinearLayout.LayoutParams(MATCH_PARENT, 0, 1.0f));
+        if (centerView == null) {
+            centerView = makeCenterView();
+        }
+        int lr = 0;
+        int tb = 0;
+        if (contentLeftAndRightPadding > 0) {
+            lr = ConvertUtils.toPx(activity, contentLeftAndRightPadding);
+        }
+        if (contentTopAndBottomPadding > 0) {
+            tb = ConvertUtils.toPx(activity, contentTopAndBottomPadding);
+        }
+        centerView.setPadding(lr, tb, lr, tb);
+        rootLayout.addView(centerView, new LinearLayout.LayoutParams(MATCH_PARENT, 0, 1.0f));
         View footerView = makeFooterView();
         if (footerView != null) {
             rootLayout.addView(footerView);
