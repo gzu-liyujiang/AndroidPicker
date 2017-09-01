@@ -46,7 +46,7 @@ import cn.qqtheme.framework.util.LogUtils;
  * @see OnItemSelectListener
  */
 public class WheelView extends View {
-    public static final float LINE_SPACE_MULTIPLIER = 2.5F;
+    public static final float LINE_SPACE_MULTIPLIER = 2.0F;
     public static final int TEXT_PADDING = -1;
     public static final int TEXT_SIZE = 16;//sp
     public static final int TEXT_COLOR_FOCUS = 0XFF0288CE;
@@ -83,7 +83,7 @@ public class WheelView extends View {
     private int textColorCenter = TEXT_COLOR_FOCUS;//选中项文字颜色
     private DividerConfig dividerConfig = new DividerConfig();
     private float lineSpaceMultiplier = LINE_SPACE_MULTIPLIER;//条目间距倍数，可用来设置上下间距
-    private int padding = TEXT_PADDING;//文字的左右边距,单位为px
+    private int textPadding = TEXT_PADDING;//文字的左右边距,单位为px
     private boolean isLoop = true;//循环滚动
     private float firstLineY;//第一条线Y坐标值
     private float secondLineY;//第二条线Y坐标
@@ -104,6 +104,7 @@ public class WheelView extends View {
     private int drawOutContentStart = 0;//非中间文字开始绘制位置
     private float centerContentOffset;//偏移量
     private boolean useWeight = false;//使用比重还是包裹内容？
+    private boolean textSizeAutoFit = true;//条目内容过长时是否自动减少字号来适配
 
     public WheelView(Context context) {
         this(context, null);
@@ -309,12 +310,24 @@ public class WheelView extends View {
         judgeLineSpace();
     }
 
+    /**
+     * Use {@link #setTextPadding(int)} instead
+     */
+    @Deprecated
     public void setPadding(int padding) {
-        this.padding = ConvertUtils.toPx(getContext(), padding);
+        setTextPadding(padding);
+    }
+
+    public void setTextPadding(int textPadding) {
+        this.textPadding = ConvertUtils.toPx(getContext(), textPadding);
     }
 
     public void setUseWeight(boolean useWeight) {
         this.useWeight = useWeight;
+    }
+
+    public void setTextSizeAutoFit(boolean textSizeAutoFit) {
+        this.textSizeAutoFit = textSizeAutoFit;
     }
 
     /**
@@ -394,10 +407,10 @@ public class WheelView extends View {
             measuredWidth = params.width;
         } else {
             measuredWidth = maxTextWidth;
-            if (padding < 0) {
-                padding = ConvertUtils.toPx(getContext(), ITEM_PADDING);
+            if (textPadding < 0) {
+                textPadding = ConvertUtils.toPx(getContext(), ITEM_PADDING);
             }
-            measuredWidth += padding * 2;
+            measuredWidth += textPadding * 2;
             if (!TextUtils.isEmpty(label)) {
                 measuredWidth += obtainTextWidth(paintCenterText, label);
             }
@@ -566,7 +579,12 @@ public class WheelView extends View {
                 } else {
                     contentText = tempStr;
                 }
-                remeasureTextSize(contentText);
+                if (textSizeAutoFit) {
+                    remeasureTextSize(contentText);
+                    gravity = Gravity.CENTER;
+                } else {
+                    gravity = Gravity.LEFT;
+                }
                 //计算开始绘制的位置
                 measuredCenterContentStart(contentText);
                 measuredOutContentStart(contentText);
@@ -618,7 +636,7 @@ public class WheelView extends View {
                 } else {
                     // 其他条目
                     canvas.save();
-                    canvas.clipRect(0, 0, measuredWidth, (int) (itemHeight));
+                    canvas.clipRect(0, 0, measuredWidth, itemHeight);
                     canvas.scale(1.0F, (float) Math.sin(radian) * SCALE_CONTENT);
                     canvas.drawText(contentText, drawOutContentStart, maxTextHeight, paintOuterText);
                     canvas.restore();
@@ -690,7 +708,7 @@ public class WheelView extends View {
                 drawCenterContentStart = (int) ((measuredWidth - rect.width()) * 0.5);
                 break;
             case Gravity.LEFT:
-                drawCenterContentStart = 0;
+                drawCenterContentStart = ConvertUtils.toPx(getContext(), 8);
                 break;
             case Gravity.RIGHT://添加偏移量
                 drawCenterContentStart = measuredWidth - rect.width() - (int) centerContentOffset;
@@ -706,7 +724,7 @@ public class WheelView extends View {
                 drawOutContentStart = (int) ((measuredWidth - rect.width()) * 0.5);
                 break;
             case Gravity.LEFT:
-                drawOutContentStart = 0;
+                drawOutContentStart = ConvertUtils.toPx(getContext(), 8);
                 break;
             case Gravity.RIGHT:
                 drawOutContentStart = measuredWidth - rect.width() - (int) centerContentOffset;

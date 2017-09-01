@@ -1,6 +1,7 @@
 package cn.qqtheme.framework.picker;
 
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.support.annotation.ColorInt;
 import android.support.annotation.FloatRange;
 import android.support.annotation.IntRange;
@@ -18,14 +19,19 @@ import cn.qqtheme.framework.widget.WheelView;
  * @author 李玉江[QQ:1032694760]
  * @since 2015/12/22
  */
+@SuppressWarnings("WeakerAccess")
 public abstract class WheelPicker extends ConfirmPopup<View> {
     protected float lineSpaceMultiplier = WheelView.LINE_SPACE_MULTIPLIER;
-    protected int padding = WheelView.TEXT_PADDING;
+    protected int textPadding = WheelView.TEXT_PADDING;
     protected int textSize = WheelView.TEXT_SIZE;
+    protected Typeface typeface = Typeface.DEFAULT;
     protected int textColorNormal = WheelView.TEXT_COLOR_NORMAL;
     protected int textColorFocus = WheelView.TEXT_COLOR_FOCUS;
+    protected int labelTextColor = WheelView.TEXT_COLOR_FOCUS;
     protected int offset = WheelView.ITEM_OFF_SET;
     protected boolean cycleDisable = true;
+    protected boolean useWeight = true;
+    protected boolean textSizeAutoFit = true;
     protected WheelView.DividerConfig dividerConfig = new WheelView.DividerConfig();
     protected View contentView;
 
@@ -41,10 +47,18 @@ public abstract class WheelPicker extends ConfirmPopup<View> {
     }
 
     /**
+     * Use {@link #setTextPadding(int)} instead
+     */
+    @Deprecated
+    public void setPadding(int textPadding) {
+        setTextPadding(textPadding);
+    }
+
+    /**
      * 可用于设置每项的宽度，单位为dp
      */
-    public void setPadding(int padding) {
-        this.padding = padding;
+    public void setTextPadding(int textPadding) {
+        this.textPadding = textPadding;
     }
 
     /**
@@ -67,6 +81,10 @@ public abstract class WheelPicker extends ConfirmPopup<View> {
      */
     public void setTextColor(@ColorInt int textColor) {
         this.textColorFocus = textColor;
+    }
+
+    public void setLabelTextColor(int labelTextColor) {
+        this.labelTextColor = labelTextColor;
     }
 
     /**
@@ -181,6 +199,20 @@ public abstract class WheelPicker extends ConfirmPopup<View> {
     }
 
     /**
+     * 是否使用比重来平分布局
+     */
+    public void setUseWeight(boolean useWeight) {
+        this.useWeight = useWeight;
+    }
+
+    /**
+     * 条目内容过长时是否自动减少字号来适配
+     */
+    public void setTextSizeAutoFit(boolean textSizeAutoFit) {
+        this.textSizeAutoFit = textSizeAutoFit;
+    }
+
+    /**
      * 得到选择器视图，可内嵌到其他视图容器
      */
     @Override
@@ -194,19 +226,22 @@ public abstract class WheelPicker extends ConfirmPopup<View> {
     protected WheelView createWheelView() {
         WheelView wheelView = new WheelView(activity);
         wheelView.setLineSpaceMultiplier(lineSpaceMultiplier);
-        wheelView.setPadding(padding);
+        wheelView.setTextPadding(textPadding);
         wheelView.setTextSize(textSize);
+        wheelView.setTypeface(typeface);
         wheelView.setTextColor(textColorNormal, textColorFocus);
         wheelView.setDividerConfig(dividerConfig);
         wheelView.setOffset(offset);
         wheelView.setCycleDisable(cycleDisable);
+        wheelView.setUseWeight(useWeight);
+        wheelView.setTextSizeAutoFit(textSizeAutoFit);
         return wheelView;
     }
 
     protected TextView createLabelView() {
         TextView labelView = new TextView(activity);
         labelView.setLayoutParams(new ViewGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
-        labelView.setTextColor(textColorFocus);
+        labelView.setTextColor(labelTextColor);
         labelView.setTextSize(textSize);
         return labelView;
     }

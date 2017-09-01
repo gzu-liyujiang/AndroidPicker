@@ -144,7 +144,6 @@ public class SinglePicker<T> extends WheelPicker {
         layout.setGravity(Gravity.CENTER);
 
         wheelView = createWheelView();
-        //wheelView.setLabel(label);
         layout.addView(wheelView);
 
         if (TextUtils.isEmpty(label)) {

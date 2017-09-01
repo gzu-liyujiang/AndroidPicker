@@ -144,6 +144,8 @@ public class MainActivity extends BaseActivity {
         picker.setDateRangeEnd(2025, 11, 11);
         picker.setTimeRangeStart(9, 0);
         picker.setTimeRangeEnd(20, 30);
+        picker.setLabelTextColor(0xFFFF0000);
+        picker.setDividerColor(0xFFFF0000);
         picker.setOnDateTimePickListener(new DateTimePicker.OnYearMonthDayTimePickListener() {
             @Override
             public void onDateTimePicked(String year, String month, String day, String hour, String minute) {
@@ -406,6 +408,7 @@ public class MainActivity extends BaseActivity {
             data.addAll(JSON.parseArray(json, Province.class));
             AddressPicker picker = new AddressPicker(this, data);
             picker.setShadowVisible(true);
+            picker.setTextSizeAutoFit(false);
             picker.setHideProvince(true);
             picker.setSelectedItem("贵州", "贵阳", "花溪");
             picker.setOnAddressPickListener(new AddressPicker.OnAddressPickListener() {
@@ -456,7 +459,7 @@ public class MainActivity extends BaseActivity {
         //picker.setAllowExtensions(new String[]{".apk"});
         picker.setFileIcon(getResources().getDrawable(android.R.drawable.ic_menu_agenda));
         picker.setFolderIcon(getResources().getDrawable(android.R.drawable.ic_menu_upload_you_tube));
-        picker.setArrowIcon(getResources().getDrawable(android.R.drawable.arrow_down_float));
+        //picker.setArrowIcon(getResources().getDrawable(android.R.drawable.arrow_down_float));
         picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {
             @Override
             public void onFilePicked(String currentPath) {

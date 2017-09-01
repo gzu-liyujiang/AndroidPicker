@@ -134,7 +134,6 @@ public class AddressPicker extends LinkagePicker<Province, City, County> {
         layout.setGravity(Gravity.CENTER);
 
         final WheelView provinceView = createWheelView();
-        provinceView.setUseWeight(useWeight);
         provinceView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, provinceWeight));
         layout.addView(provinceView);
         if (hideProvince) {
@@ -142,12 +141,10 @@ public class AddressPicker extends LinkagePicker<Province, City, County> {
         }
 
         final WheelView cityView = createWheelView();
-        cityView.setUseWeight(useWeight);
         cityView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, cityWeight));
         layout.addView(cityView);
 
         final WheelView countyView = createWheelView();
-        countyView.setUseWeight(useWeight);
         countyView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, countyWeight));
         layout.addView(countyView);
         if (hideCounty) {

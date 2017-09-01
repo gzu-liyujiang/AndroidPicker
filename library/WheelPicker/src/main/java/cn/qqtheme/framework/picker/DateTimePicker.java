@@ -81,7 +81,6 @@ public class DateTimePicker extends WheelPicker {
     private int startHour, startMinute = 0;
     private int endHour, endMinute = 59;
     private int textSize = WheelView.TEXT_SIZE;
-    private boolean useWeight = false;
     private boolean resetWhileWheel = true;
 
     @IntDef(value = {NONE, YEAR_MONTH_DAY, YEAR_MONTH, MONTH_DAY})
@@ -124,13 +123,6 @@ public class DateTimePicker extends WheelPicker {
             endHour = 23;
         }
         this.timeMode = timeMode;
-    }
-
-    /**
-     * 是否使用比重来平分布局
-     */
-    public void setUseWeight(boolean useWeight) {
-        this.useWeight = useWeight;
     }
 
     /**
@@ -425,21 +417,10 @@ public class DateTimePicker extends WheelPicker {
         final WheelView dayView = createWheelView();
         final WheelView hourView = createWheelView();
         final WheelView minuteView = createWheelView();
-        yearView.setTextSize(textSize);
-        monthView.setTextSize(textSize);
-        dayView.setTextSize(textSize);
-        hourView.setTextSize(textSize);
-        minuteView.setTextSize(textSize);
-        yearView.setUseWeight(useWeight);
-        monthView.setUseWeight(useWeight);
-        dayView.setUseWeight(useWeight);
-        hourView.setUseWeight(useWeight);
-        minuteView.setUseWeight(useWeight);
 
         if (dateMode == YEAR_MONTH_DAY || dateMode == YEAR_MONTH) {
             yearView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, 1.0f));
             yearView.setItems(years, selectedYearIndex);
-            //yearView.setLabel(yearLabel);
             yearView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
                 @Override
                 public void onSelected(int index) {
@@ -479,7 +460,6 @@ public class DateTimePicker extends WheelPicker {
         if (dateMode != NONE) {
             monthView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, 1.0f));
             monthView.setItems(months, selectedMonthIndex);
-            //monthView.setLabel(monthLabel);
             monthView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
                 @Override
                 public void onSelected(int index) {
@@ -519,7 +499,6 @@ public class DateTimePicker extends WheelPicker {
         if (dateMode == YEAR_MONTH_DAY || dateMode == MONTH_DAY) {
             dayView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, 1.0f));
             dayView.setItems(days, selectedDayIndex);
-            //dayView.setLabel(dayLabel);
             dayView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
                 @Override
                 public void onSelected(int index) {
@@ -541,7 +520,6 @@ public class DateTimePicker extends WheelPicker {
         if (timeMode != NONE) {
             hourView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, 1.0f));
             hourView.setItems(hours, selectedHour);
-            //hourView.setLabel(hourLabel);
             hourView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
                 @Override
                 public void onSelected(int index) {
@@ -564,7 +542,6 @@ public class DateTimePicker extends WheelPicker {
 
             minuteView.setLayoutParams(new LinearLayout.LayoutParams(0, WRAP_CONTENT, 1.0f));
             minuteView.setItems(minutes, selectedMinute);
-            //minuteView.setLabel(minuteLabel);
             minuteView.setOnItemSelectListener(new WheelView.OnItemSelectListener() {
                 @Override
                 public void onSelected(int index) {
