@@ -104,6 +104,10 @@ picker.setSelectedIndex(...);
 ```java
 picker.setUseWeight(true);
 ```   
+设置触摸弹窗外面是否自动关闭
+```java
+picker.setCanceledOnTouchOutside(...);
+```   
 设置分隔线配置项，设置null将隐藏分割线及阴影
 ```java
 picker.setDividerConfig(...);

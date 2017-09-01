@@ -32,15 +32,6 @@
             android:text="内嵌选择器"
             android:textColor="@android:color/white" />
 
-        <TextView
-            android:id="@+id/nest_carnumber"
-            style="?android:textAppearanceMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:text="车牌"
-            android:textColor="@android:color/white" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -65,9 +56,11 @@
 
         <LinearLayout
             android:id="@+id/wheelview_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="180dp"
+            android:layout_height="200dp"
             android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="#FFF3F3F3"
             android:gravity="center"
             android:orientation="horizontal" />
 

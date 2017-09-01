@@ -19,7 +19,6 @@ import cn.qqtheme.framework.widget.WheelView;
  * Builder:Android Studio
  */
 public class NestActivity extends BaseActivity {
-    private CarNumberPicker picker;
 
     @Override
     protected View getContentView() {
@@ -28,6 +27,13 @@ public class NestActivity extends BaseActivity {
 
     @Override
     protected void setContentViewAfter(View contentView) {
+        findViewById(R.id.nest_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         final TextView textView = findView(R.id.wheelview_tips);
         WheelView wheelView = findView(R.id.wheelview_single);
         final String[] strings = {"少数民族", "贵州穿青人", "不在56个少数民族之列", "第57个民族"};
@@ -47,7 +53,7 @@ public class NestActivity extends BaseActivity {
             }
         });
 
-        picker = new CarNumberPicker(this);
+        final CarNumberPicker picker = new CarNumberPicker(this);
         picker.setOffset(3);
         picker.setOnWheelLinkageListener(new LinkagePicker.OnWheelLinkageListener() {
             @Override
@@ -56,20 +62,9 @@ public class NestActivity extends BaseActivity {
             }
         });
         ViewGroup viewGroup = findView(R.id.wheelview_container);
-        viewGroup.addView(picker.getContentView());
-
-        findViewById(R.id.nest_back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        findViewById(R.id.nest_carnumber).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                picker.show();
-            }
-        });
+        //得到选择器视图，可内嵌到其他视图容器，不需要调用show方法
+        View pickerContentView = picker.getContentView();
+        viewGroup.addView(pickerContentView);
     }
 
 }
