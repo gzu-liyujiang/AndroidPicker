@@ -18,6 +18,7 @@ public abstract class Area extends JavaBean implements LinkageItem {
     }
 
     public Area(String areaName) {
+        this.areaId = "";
         this.areaName = areaName;
     }
 
