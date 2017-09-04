@@ -22,6 +22,7 @@ import cn.qqtheme.framework.widget.WheelView;
  *
  * @author 李玉江[QQ:1032694760]
  * @since 2015/9/29
+ * @param 需要重写泛型T的toString方法作为显示的名称
  */
 public class SinglePicker<T> extends WheelPicker {
     private static final int ITEM_WIDTH_UNKNOWN = -99;
@@ -74,6 +75,7 @@ public class SinglePicker<T> extends WheelPicker {
             return;
         }
         this.items = items;
+        itemStrings.clear();
         for (T item : items) {
             itemStrings.add(formatToString(item));
         }
