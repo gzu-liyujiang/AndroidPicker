@@ -30,6 +30,7 @@ import cn.qqtheme.framework.picker.LinkagePicker;
 import cn.qqtheme.framework.picker.MultiplePicker;
 import cn.qqtheme.framework.picker.NumberPicker;
 import cn.qqtheme.framework.picker.OptionPicker;
+import cn.qqtheme.framework.picker.SinglePicker;
 import cn.qqtheme.framework.picker.TimePicker;
 import cn.qqtheme.framework.util.ConvertUtils;
 import cn.qqtheme.framework.util.DateUtils;
@@ -220,6 +221,27 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onOptionPicked(int index, String item) {
                 showToast("index=" + index + ", item=" + item);
+            }
+        });
+        picker.show();
+    }
+
+    public void onSinglePicker(View view) {
+        List<GoodsCategory> data = new ArrayList<>();
+        data.add(new GoodsCategory(1, "食品生鲜"));
+        data.add(new GoodsCategory(2, "家用电器"));
+        data.add(new GoodsCategory(3, "家居生活"));
+        data.add(new GoodsCategory(4, "医疗保健"));
+        data.add(new GoodsCategory(5, "酒水饮料"));
+        data.add(new GoodsCategory(6, "图书音像"));
+        SinglePicker<GoodsCategory> picker = new SinglePicker<>(this, data);
+        picker.setCanceledOnTouchOutside(false);
+        picker.setSelectedIndex(1);
+        picker.setCycleDisable(false);
+        picker.setOnItemPickListener(new SinglePicker.OnItemPickListener<GoodsCategory>() {
+            @Override
+            public void onItemPicked(int index, GoodsCategory item) {
+                showToast("index=" + index + ", id=" + item.getId() + ", name=" + item.getName());
             }
         });
         picker.show();
