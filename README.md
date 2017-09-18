@@ -119,6 +119,10 @@ picker.setDividerVisible(...);
 ```java
 picker.setContentPadding(...);
 ```   
+设置选中项背景色
+```java
+picker.setShadowColor(...)
+```   
 自定义顶部及底部视图
 ```java
 picker.setHeaderView(...);

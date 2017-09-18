@@ -1,5 +1,6 @@
 package cn.qqtheme.androidpicker;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -97,6 +98,12 @@ public abstract class BaseActivity extends FragmentActivity {
     public void onBackPressed() {
         super.onBackPressed();
         LogUtils.verbose(className + " onBackPressed");
+        List<Activity> activityList = AppManager.getInstance().getActivities();
+        for (Activity activity : activityList) {
+            if (activity.getClass().getName().equals(getClass().getName())) {
+                activity.finish();
+            }
+        }
     }
 
     @CallSuper
