@@ -100,9 +100,10 @@ picker.setOnlyShowCenterLabel(...))
 picker.setSelectedItem(...);
 picker.setSelectedIndex(...);
 ```   
-设置滚轮项填充宽度
+设置滚轮项填充宽度，分割线最长
 ```java
 picker.setUseWeight(true);
+picker.setDividerRatio(WheelView.DividerConfig.FILL);
 ```   
 设置触摸弹窗外面是否自动关闭
 ```java
