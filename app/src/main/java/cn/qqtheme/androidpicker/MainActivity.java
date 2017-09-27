@@ -276,6 +276,36 @@ public class MainActivity extends BaseActivity {
         picker.show();
     }
 
+    public void onBusinessTimePicker(View view) {
+        final ArrayList<String> hours = new ArrayList<>();
+        for (int i = 0; i <= 23; i++) {
+            hours.add(DateUtils.fillZero(i));
+        }
+        final ArrayList<String> minutes = new ArrayList<>();
+        minutes.add("00");
+        minutes.add("15");
+        minutes.add("30");
+        DoublePicker picker = new DoublePicker(this, hours, minutes);
+        picker.setCanceledOnTouchOutside(true);
+        picker.setTopLineColor(0xFFFB2C3C);
+        picker.setSubmitTextColor(0xFFFB2C3C);
+        picker.setCancelTextColor(0xFFFB2C3C);
+        picker.setLineSpaceMultiplier(2.2f);
+        picker.setTextSize(15);
+        picker.setTitleText("营业时间");
+        picker.setContentPadding(10, 8);
+        picker.setUseWeight(true);
+        picker.setFirstLabel("", ":");
+        picker.setSecondLabel("", "");
+        picker.setOnPickListener(new DoublePicker.OnPickListener() {
+            @Override
+            public void onPicked(int selectedFirstIndex, int selectedSecondIndex) {
+                showToast(hours.get(selectedFirstIndex) + ":" + minutes.get(selectedSecondIndex));
+            }
+        });
+        picker.show();
+    }
+
     public void onMultiplePicker(View view) {
         MultiplePicker picker = new MultiplePicker(this, new String[]{"穿青人", "少数民族", "已识别民族", "未定民族"});
         picker.setOnItemPickListener(new MultiplePicker.OnItemPickListener() {
