@@ -177,6 +177,7 @@ public class MainActivity extends BaseActivity {
     public void onMonthDayPicker(View view) {
         DatePicker picker = new DatePicker(this, DatePicker.MONTH_DAY);
         picker.setUseWeight(false);
+        picker.setTextPadding(ConvertUtils.toPx(this, 15));//加宽显示项
         picker.setGravity(Gravity.CENTER);//弹框居中
         picker.setRangeStart(5, 1);
         picker.setRangeEnd(12, 31);
@@ -200,6 +201,7 @@ public class MainActivity extends BaseActivity {
         int currentMinute = Calendar.getInstance().get(Calendar.MINUTE);
         picker.setSelectedItem(currentHour, currentMinute);
         picker.setTopLineVisible(false);
+        picker.setTextPadding(ConvertUtils.toPx(this, 15));
         picker.setOnTimePickListener(new TimePicker.OnTimePickListener() {
             @Override
             public void onTimePicked(String hour, String minute) {
