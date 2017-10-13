@@ -2,6 +2,7 @@ package cn.qqtheme.framework.picker;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -16,9 +17,8 @@ import cn.qqtheme.framework.util.LogUtils;
 import cn.qqtheme.framework.widget.WheelView;
 
 /**
- * 地址选择器（包括省级、地级、县级），地址数据见示例项目assets目录下。
+ * 地址选择器（包括省级、地级、县级），地址数据见demo项目assets目录下。
  * “assets/city.json”转换自国家统计局（http://www.stats.gov.cn/tjsj/tjbz/xzqhdm）
- * “assets/area.db”来源于开源项目（https://github.com/chihane/JDAddressSelector）
  *
  * @author 李玉江[QQ:1032694760]
  * @see Province
@@ -52,10 +52,12 @@ public class AddressPicker extends LinkagePicker<Province, City, County> {
         setSelectedItem(new Province(province), new City(city), new County(county));
     }
 
+    @NonNull
     public Province getSelectedProvince() {
         return provinces.get(selectedFirstIndex);
     }
 
+    @Nullable
     public City getSelectedCity() {
         List<City> cities = getSelectedProvince().getCities();
         if (cities.size() == 0) {
@@ -64,8 +66,13 @@ public class AddressPicker extends LinkagePicker<Province, City, County> {
         return cities.get(selectedSecondIndex);
     }
 
+    @Nullable
     public County getSelectedCounty() {
-        List<County> counties = getSelectedCity().getCounties();
+        City selectedCity = getSelectedCity();
+        if (selectedCity == null) {
+            return null;
+        }
+        List<County> counties = selectedCity.getCounties();
         if (counties.size() == 0) {
             return null;//可能没有第三级数据
         }
@@ -75,7 +82,7 @@ public class AddressPicker extends LinkagePicker<Province, City, County> {
     /**
      * 隐藏省级行政区，只显示地市级和区县级。
      * 设置为true的话，地址数据中只需要某个省份的即可
-     * 参见示例中的“assets/city2.json”
+     * 参见demo中的“assets/city2.json”
      */
     public void setHideProvince(boolean hideProvince) {
         this.hideProvince = hideProvince;
@@ -84,7 +91,7 @@ public class AddressPicker extends LinkagePicker<Province, City, County> {
     /**
      * 隐藏县级行政区，只显示省级和市级。
      * 设置为true的话，hideProvince将强制为false
-     * 数据源依然使用“assets/city.json” 仅在逻辑上隐藏县级选择框，实际项目中应该去掉县级数据。
+     * 数据源依然使用demo中的“assets/city.json” 仅在逻辑上隐藏县级选择框，实际项目中应该去掉县级数据。
      */
     public void setHideCounty(boolean hideCounty) {
         this.hideCounty = hideCounty;
@@ -268,13 +275,13 @@ public class AddressPicker extends LinkagePicker<Province, City, County> {
         private List<List<City>> secondList = new ArrayList<>();
         private List<List<List<County>>> thirdList = new ArrayList<>();
 
-        public AddressProvider(List<Province> provinces) {
+        AddressProvider(List<Province> provinces) {
             parseData(provinces);
         }
 
         @Override
         public boolean isOnlyTwo() {
-            return thirdList.size() == 0;
+            return false;
         }
 
         @Override
@@ -286,13 +293,23 @@ public class AddressPicker extends LinkagePicker<Province, City, County> {
         @Override
         @NonNull
         public List<City> linkageSecondData(int firstIndex) {
+            if (secondList.size() <= firstIndex) {
+                return new ArrayList<>();
+            }
             return secondList.get(firstIndex);
         }
 
         @Override
         @NonNull
         public List<County> linkageThirdData(int firstIndex, int secondIndex) {
-            return thirdList.get(firstIndex).get(secondIndex);
+            if (thirdList.size() <= firstIndex) {
+                return new ArrayList<>();
+            }
+            List<List<County>> lists = thirdList.get(firstIndex);
+            if (lists.size() <= secondIndex) {
+                return new ArrayList<>();
+            }
+            return lists.get(secondIndex);
         }
 
         private void parseData(List<Province> data) {
