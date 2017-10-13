@@ -128,6 +128,12 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="onAddress4Picker"
+                android:text="地址选择（使用不同的数据源解析）" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:onClick="onAddress2Picker"
                 android:text="地址选择（只包括地级、县级）" />
 

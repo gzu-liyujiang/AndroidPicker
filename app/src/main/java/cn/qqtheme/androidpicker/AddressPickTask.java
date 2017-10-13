@@ -71,7 +71,7 @@ public class AddressPickTask extends AsyncTask<String, Void, ArrayList<Province>
         try {
             String json = ConvertUtils.toString(activity.getAssets().open("city.json"));
             data.addAll(JSON.parseArray(json, Province.class));
-        } catch (Exception e) {
+        } catch (java.io.IOException e) {
             e.printStackTrace();
         }
         return data;
@@ -85,11 +85,9 @@ public class AddressPickTask extends AsyncTask<String, Void, ArrayList<Province>
             picker.setHideProvince(hideProvince);
             picker.setHideCounty(hideCounty);
             if (hideCounty) {
-                picker.setColumnWeight(0.8f, 1.0f);
-            } else if (hideProvince) {
-                picker.setColumnWeight(1.0f, 0.8f);
+                picker.setColumnWeight(1 / 3.0f, 2 / 3.0f);//将屏幕分为3份，省级和地级的比例为1:2
             } else {
-                picker.setColumnWeight(0.8f, 1.0f, 1.0f);
+                picker.setColumnWeight(2 / 8.0f, 3 / 8.0f, 3 / 8.0f);//省级、地级和县级的比例为2:3:3
             }
             picker.setSelectedItem(selectedProvince, selectedCity, selectedCounty);
             picker.setOnAddressPickListener(callback);

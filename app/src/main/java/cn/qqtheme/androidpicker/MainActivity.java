@@ -145,6 +145,7 @@ public class MainActivity extends BaseActivity {
         picker.setDateRangeEnd(2025, 11, 11);
         picker.setTimeRangeStart(9, 0);
         picker.setTimeRangeEnd(20, 30);
+        picker.setTopLineColor(0x99FF0000);
         picker.setLabelTextColor(0xFFFF0000);
         picker.setDividerColor(0xFFFF0000);
         picker.setOnDateTimePickListener(new DateTimePicker.OnYearMonthDayTimePickListener() {
@@ -175,6 +176,7 @@ public class MainActivity extends BaseActivity {
 
     public void onMonthDayPicker(View view) {
         DatePicker picker = new DatePicker(this, DatePicker.MONTH_DAY);
+        picker.setUseWeight(false);
         picker.setGravity(Gravity.CENTER);//弹框居中
         picker.setRangeStart(5, 1);
         picker.setRangeEnd(12, 31);
@@ -190,7 +192,7 @@ public class MainActivity extends BaseActivity {
 
     public void onTimePicker(View view) {
         TimePicker picker = new TimePicker(this, TimePicker.HOUR_24);
-        picker.setUseWeight(true);
+        picker.setUseWeight(false);
         picker.setCycleDisable(false);
         picker.setRangeStart(0, 0);//00:00
         picker.setRangeEnd(23, 59);//23:59
@@ -477,7 +479,6 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-
     public void onAddress3Picker(View view) {
         AddressPickTask task = new AddressPickTask(this);
         task.setHideCounty(true);
@@ -493,6 +494,40 @@ public class MainActivity extends BaseActivity {
             }
         });
         task.execute("四川", "阿坝");
+    }
+
+    public void onAddress4Picker(View view) {
+        new AddressInitTask(this, new AddressInitTask.InitCallback() {
+            @Override
+            public void onDataInitFailure() {
+                showToast("数据初始化失败");
+            }
+
+            @Override
+            public void onDataInitSuccess(ArrayList<Province> provinces) {
+                AddressPicker picker = new AddressPicker(activity, provinces);
+                picker.setOnAddressPickListener(new AddressPicker.OnAddressPickListener() {
+                    @Override
+                    public void onAddressPicked(Province province, City city, County county) {
+                        String provinceName = province.getName();
+                        String cityName = "";
+                        if (city != null) {
+                            cityName = city.getName();
+                            //忽略直辖市的二级名称
+                            if (cityName.equals("市辖区") || cityName.equals("市") || cityName.equals("县")) {
+                                cityName = "";
+                            }
+                        }
+                        String countyName = "";
+                        if (county != null) {
+                            countyName = county.getName();
+                        }
+                        showToast(provinceName + " " + cityName + " " + countyName);
+                    }
+                });
+                picker.show();
+            }
+        }).execute();
     }
 
     public void onColorPicker(View view) {
