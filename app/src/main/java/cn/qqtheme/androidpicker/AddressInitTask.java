@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.support.annotation.WorkerThread;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,23 +21,30 @@ import cn.qqtheme.framework.util.ConvertUtils;
  * @since 2017/10/13
  */
 public class AddressInitTask extends AsyncTask<Void, Void, ArrayList<Province>> {
-    private Activity activity;// TODO: 2018/2/1 StaticFieldLeak
+    private WeakReference<Activity> activityReference;// 2018/2/1 StaticFieldLeak
     private ProgressDialog dialog;
     private InitCallback callback;
     private ArrayList<Province> provinces;
 
     public AddressInitTask(Activity activity, InitCallback callback) {
-        this.activity = activity;
+        this.activityReference = new WeakReference<>(activity);
         this.callback = callback;
     }
 
     @Override
     protected void onPreExecute() {
-        dialog = ProgressDialog.show(activity, null, "正在初始化数据...", true, true);
+        Activity activity = activityReference.get();
+        if (activity != null) {
+            dialog = ProgressDialog.show(activity, null, "正在初始化数据...", true, true);
+        }
     }
 
     @Override
     protected ArrayList<Province> doInBackground(Void... params) {
+        Activity activity = activityReference.get();
+        if (activity == null) {
+            return null;
+        }
         try {
             String data = ConvertUtils.toString(activity.getAssets().open("city.txt"));
             return parseData(data);
@@ -48,7 +56,9 @@ public class AddressInitTask extends AsyncTask<Void, Void, ArrayList<Province>> 
 
     @Override
     protected void onPostExecute(ArrayList<Province> result) {
-        dialog.dismiss();
+        if (dialog != null) {
+            dialog.dismiss();
+        }
         if (result == null || result.size() == 0) {
             callback.onDataInitFailure();
         } else {
