@@ -19,7 +19,7 @@ import cn.qqtheme.framework.util.ConvertUtils;
  * @since 2015/12/15
  */
 public class AddressPickTask extends AsyncTask<String, Void, ArrayList<Province>> {
-    private Activity activity;
+    private Activity activity;// TODO: 2018/2/1 StaticFieldLeak
     private ProgressDialog dialog;
     private Callback callback;
     private String selectedProvince = "", selectedCity = "", selectedCounty = "";

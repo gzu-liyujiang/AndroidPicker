@@ -20,7 +20,7 @@ import cn.qqtheme.framework.util.ConvertUtils;
  * @since 2017/10/13
  */
 public class AddressInitTask extends AsyncTask<Void, Void, ArrayList<Province>> {
-    private Activity activity;
+    private Activity activity;// TODO: 2018/2/1 StaticFieldLeak
     private ProgressDialog dialog;
     private InitCallback callback;
     private ArrayList<Province> provinces;

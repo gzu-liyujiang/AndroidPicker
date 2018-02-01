@@ -22,6 +22,8 @@ android {
 }
 
 dependencies {
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3'
     compile 'com.alibaba:fastjson:1.1.55.android'
     compile project(':library:WheelPicker')
     compile project(':library:FilePicker')
