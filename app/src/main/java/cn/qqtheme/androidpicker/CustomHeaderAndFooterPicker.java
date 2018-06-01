@@ -41,7 +41,7 @@ public class CustomHeaderAndFooterPicker extends OptionPicker implements OptionP
         ObjectAnimator alpha = ObjectAnimator.ofFloat(rootView, "alpha", 0, 1);
         ObjectAnimator translation = ObjectAnimator.ofFloat(rootView, "translationY", 300, 0);
         animatorSet.playTogether(alpha, translation);
-        animatorSet.setDuration(2000);
+        animatorSet.setDuration(1000);
         animatorSet.setInterpolator(new AccelerateInterpolator());
         animatorSet.start();
     }
@@ -54,7 +54,7 @@ public class CustomHeaderAndFooterPicker extends OptionPicker implements OptionP
         ObjectAnimator translation = ObjectAnimator.ofFloat(rootView, "translationX", 0, rootView.getWidth());
         ObjectAnimator rotation = ObjectAnimator.ofFloat(rootView, "rotation", 0, 120);
         animatorSet.playTogether(alpha, translation, rotation);
-        animatorSet.setDuration(2000);
+        animatorSet.setDuration(1000);
         animatorSet.setInterpolator(new AccelerateInterpolator());
         animatorSet.addListener(new Animator.AnimatorListener() {
             @Override

@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 
 import com.alibaba.fastjson.JSON;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import cn.qqtheme.framework.entity.Province;
@@ -19,7 +20,7 @@ import cn.qqtheme.framework.util.ConvertUtils;
  * @since 2015/12/15
  */
 public class AddressPickTask extends AsyncTask<String, Void, ArrayList<Province>> {
-    private Activity activity;// TODO: 2018/2/1 StaticFieldLeak
+    private WeakReference<Activity> activityReference;// 2018/6/1 StaticFieldLeak
     private ProgressDialog dialog;
     private Callback callback;
     private String selectedProvince = "", selectedCity = "", selectedCounty = "";
@@ -27,7 +28,7 @@ public class AddressPickTask extends AsyncTask<String, Void, ArrayList<Province>
     private boolean hideCounty = false;
 
     public AddressPickTask(Activity activity) {
-        this.activity = activity;
+        this.activityReference = new WeakReference<>(activity);
     }
 
     public void setHideProvince(boolean hideProvince) {
@@ -44,6 +45,10 @@ public class AddressPickTask extends AsyncTask<String, Void, ArrayList<Province>
 
     @Override
     protected void onPreExecute() {
+        Activity activity = activityReference.get();
+        if (activity == null) {
+            return;
+        }
         dialog = ProgressDialog.show(activity, null, "正在初始化数据...", true, true);
     }
 
@@ -69,8 +74,11 @@ public class AddressPickTask extends AsyncTask<String, Void, ArrayList<Province>
         }
         ArrayList<Province> data = new ArrayList<>();
         try {
-            String json = ConvertUtils.toString(activity.getAssets().open("city.json"));
-            data.addAll(JSON.parseArray(json, Province.class));
+            Activity activity = activityReference.get();
+            if (activity != null) {
+                String json = ConvertUtils.toString(activity.getAssets().open("city.json"));
+                data.addAll(JSON.parseArray(json, Province.class));
+            }
         } catch (java.io.IOException e) {
             e.printStackTrace();
         }
@@ -79,8 +87,14 @@ public class AddressPickTask extends AsyncTask<String, Void, ArrayList<Province>
 
     @Override
     protected void onPostExecute(ArrayList<Province> result) {
-        dialog.dismiss();
+        if (dialog != null) {
+            dialog.dismiss();
+        }
         if (result.size() > 0) {
+            Activity activity = activityReference.get();
+            if (activity == null) {
+                return;
+            }
             AddressPicker picker = new AddressPicker(activity, result);
             picker.setHideProvince(hideProvince);
             picker.setHideCounty(hideCounty);

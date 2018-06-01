@@ -1,5 +1,6 @@
 package cn.qqtheme.framework.widget;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -48,14 +49,14 @@ import cn.qqtheme.framework.util.LogUtils;
 public class WheelView extends View {
     public static final float LINE_SPACE_MULTIPLIER = 2.0F;
     public static final int TEXT_PADDING = -1;
-    public static final int TEXT_SIZE = 16;//sp
+    public static final int TEXT_SIZE = 16;//单位为sp
     public static final int TEXT_COLOR_FOCUS = 0XFF0288CE;
     public static final int TEXT_COLOR_NORMAL = 0XFFBBBBBB;
     public static final int DIVIDER_COLOR = 0XFF83CDE6;
     public static final int DIVIDER_ALPHA = 220;
-    public static final float DIVIDER_THICK = 2f;//px
+    public static final float DIVIDER_THICK = 2f;//单位为px
     public static final int ITEM_OFF_SET = 3;
-    private static final float ITEM_PADDING = 13f;//px,480X800的手机边距不能太大
+    private static final float ITEM_PADDING = 13f;//单位为px,480X800的手机边距不能太大
     private static final int ACTION_CLICK = 1;//点击
     private static final int ACTION_FLING = 2;//滑翔
     private static final int ACTION_DRAG = 3;//拖拽
@@ -76,6 +77,7 @@ public class WheelView extends View {
     private String label;//附加单位
     private int maxTextWidth;//最大的文字宽
     private int maxTextHeight;//最大的文字高
+    private int textSkewXOffset = 0;//文字倾斜度
     private int textSize = TEXT_SIZE;//文字大小，单位为sp
     private float itemHeight;//每行高度
     private Typeface typeface = Typeface.DEFAULT;//字体样式
@@ -278,6 +280,13 @@ public class WheelView extends View {
         }
     }
 
+    public void setTextSkewXOffset(int textSkewXOffset) {
+        this.textSkewXOffset = textSkewXOffset;
+        if (textSkewXOffset != 0) {
+            paintCenterText.setTextScaleX(1.0F);
+        }
+    }
+
     public void setDividerColor(@ColorInt int color) {
         dividerConfig.setColor(color);
         paintIndicator.setColor(color);
@@ -364,7 +373,7 @@ public class WheelView extends View {
         paintCenterText = new Paint();
         paintCenterText.setAntiAlias(true);
         paintCenterText.setColor(textColorCenter);
-        paintCenterText.setTextScaleX(1.1F);
+        paintCenterText.setTextScaleX(1.0F);
         paintCenterText.setTypeface(typeface);
         paintCenterText.setTextSize(textSize);
         paintIndicator = new Paint();
@@ -507,6 +516,7 @@ public class WheelView extends View {
             return;
         }
         //可见项的数组
+        @SuppressLint("DrawAllocation")
         String[] visibleItemStrings = new String[visibleItemCount];
         //滚动的Y值高度除去每行的高度，得到滚动了多少个项，即change数
         int change = (int) (totalScrollY / itemHeight);
@@ -583,15 +593,13 @@ public class WheelView extends View {
                     remeasureTextSize(contentText);
                     gravity = Gravity.CENTER;
                 } else {
-                    gravity = Gravity.LEFT;
+                    gravity = Gravity.START;
                 }
                 //计算开始绘制的位置
                 measuredCenterContentStart(contentText);
                 measuredOutContentStart(contentText);
                 float translateY = (float) (radius - Math.cos(radian) * radius - (Math.sin(radian) * maxTextHeight) / 2D);
-                //根据Math.sin(radian)来更改canvas坐标系原点，然后缩放画布，使得文字高度进行缩放，形成弧形3d视觉差
                 canvas.translate(0.0F, translateY);
-                canvas.scale(1.0F, (float) Math.sin(radian));
                 if (translateY <= firstLineY && maxTextHeight + translateY >= firstLineY) {
                     // 条目经过第一条线
                     canvas.save();
@@ -620,7 +628,7 @@ public class WheelView extends View {
                     // 中间条目
                     canvas.clipRect(0, 0, measuredWidth, maxTextHeight);
                     //让文字居中
-                    float Y = maxTextHeight - centerContentOffset;//因为圆弧角换算的向下取值，导致角度稍微有点偏差，加上画笔的基线会偏上，因此需要偏移量修正一下
+                    float y = maxTextHeight - centerContentOffset;//因为圆弧角换算的向下取值，导致角度稍微有点偏差，加上画笔的基线会偏上，因此需要偏移量修正一下
                     int i = 0;
                     for (WheelItem item : items) {
                         if (item.getName().equals(tempStr)) {
@@ -632,13 +640,22 @@ public class WheelView extends View {
                     if (onlyShowCenterLabel && !TextUtils.isEmpty(label)) {
                         contentText += label;
                     }
-                    canvas.drawText(contentText, drawCenterContentStart, Y, paintCenterText);
+                    canvas.drawText(contentText, drawCenterContentStart, y, paintCenterText);
                 } else {
                     // 其他条目
                     canvas.save();
                     canvas.clipRect(0, 0, measuredWidth, itemHeight);
                     canvas.scale(1.0F, (float) Math.sin(radian) * SCALE_CONTENT);
-                    canvas.drawText(contentText, drawOutContentStart, maxTextHeight, paintOuterText);
+                    // 根据当前角度计算出偏差系数，用以在绘制时控制文字的 水平移动 透明度 倾斜程度
+                    float offsetCoefficient = (float) Math.pow(Math.abs(angle) / 90f, 2.2);
+                    if (textSkewXOffset != 0) {
+                        //控制文字倾斜度
+                        paintOuterText.setTextSkewX((textSkewXOffset > 0 ? 1 : -1) * (angle > 0 ? -1 : 1) * 0.5F * offsetCoefficient);
+                        // 控制透明度
+                        paintOuterText.setAlpha((int) ((1 - offsetCoefficient) * 255));
+                    }
+                    // 控制文字水平偏移距离
+                    canvas.drawText(contentText, drawOutContentStart + textSkewXOffset * offsetCoefficient, maxTextHeight, paintOuterText);
                     canvas.restore();
                 }
                 canvas.restore();
@@ -810,7 +827,9 @@ public class WheelView extends View {
                 }
                 break;
         }
-        invalidate();
+        if (event.getAction() != MotionEvent.ACTION_DOWN) {
+            invalidate();
+        }
         return true;
     }
 

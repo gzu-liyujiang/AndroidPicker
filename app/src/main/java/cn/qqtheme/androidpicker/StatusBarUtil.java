@@ -1,5 +1,6 @@
 package cn.qqtheme.androidpicker;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
@@ -25,8 +26,10 @@ import cn.qqtheme.framework.util.LogUtils;
  */
 public class StatusBarUtil {
     private static final int DEFAULT_ALPHA = 0;
+    @SuppressLint("ResourceType")
     @IdRes
     private static final int FAKE_STATUS_BAR_VIEW_ID = 0x20170419;
+    @SuppressLint("ResourceType")
     @IdRes
     private static final int FAKE_TRANSLUCENT_VIEW_ID = 0x20170420;
     private static final int TAG_KEY_HAVE_SET_OFFSET = -123;

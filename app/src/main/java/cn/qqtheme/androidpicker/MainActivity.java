@@ -213,7 +213,8 @@ public class MainActivity extends BaseActivity {
 
     public void onOptionPicker(View view) {
         OptionPicker picker = new OptionPicker(this, new String[]{
-                "第一项", "第二项", "这是一个很长很长很长很长很长很长很长很长很长的很长很长的很长很长的项"
+                "第一项", "第二项", "第三项","第四项","第五项","第六项","第七项",
+                "这是一个很长很长很长很长很长很长很长很长很长的很长很长的很长很长的项"
         });
         picker.setCanceledOnTouchOutside(false);
         picker.setDividerRatio(WheelView.DividerConfig.FILL);
