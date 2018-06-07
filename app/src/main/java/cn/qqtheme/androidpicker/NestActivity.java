@@ -6,8 +6,8 @@ import android.widget.TextView;
 
 import java.util.Locale;
 
-import cn.qqtheme.framework.picker.CarNumberPicker;
-import cn.qqtheme.framework.picker.LinkagePicker;
+import cn.qqtheme.framework.picker.DatePicker;
+import cn.qqtheme.framework.picker.DateTimePicker;
 import cn.qqtheme.framework.util.ConvertUtils;
 import cn.qqtheme.framework.widget.WheelView;
 
@@ -53,12 +53,30 @@ public class NestActivity extends BaseActivity {
             }
         });
 
-        final CarNumberPicker picker = new CarNumberPicker(this);
-        picker.setOffset(3);
-        picker.setOnWheelLinkageListener(new LinkagePicker.OnWheelLinkageListener() {
+//        final CarNumberPicker picker = new CarNumberPicker(this);
+//        picker.setOffset(3);
+//        picker.setOnWheelLinkageListener(new LinkagePicker.OnWheelLinkageListener() {
+//            @Override
+//            public void onLinkage(int firstIndex, int secondIndex, int thirdIndex) {
+//                textView.setText(String.format(Locale.PRC, "%s:%s", picker.getSelectedFirstItem(), picker.getSelectedSecondItem()));
+//            }
+//        });
+        final DatePicker picker = new DatePicker(this, DateTimePicker.YEAR_MONTH_DAY);
+        picker.setOffset(4);
+        picker.setOnWheelListener(new DatePicker.OnWheelListener() {
             @Override
-            public void onLinkage(int firstIndex, int secondIndex, int thirdIndex) {
-                textView.setText(String.format(Locale.PRC, "%s:%s", picker.getSelectedFirstItem(), picker.getSelectedSecondItem()));
+            public void onYearWheeled(int index, String year) {
+                textView.setText(String.format("%s年%s月%s日", year, picker.getSelectedMonth(), picker.getSelectedDay()));
+            }
+
+            @Override
+            public void onMonthWheeled(int index, String month) {
+                textView.setText(String.format("%s年%s月%s日", picker.getSelectedYear(), month, picker.getSelectedDay()));
+            }
+
+            @Override
+            public void onDayWheeled(int index, String day) {
+                textView.setText(String.format("%s年%s月%s日", picker.getSelectedYear(), picker.getSelectedMonth(), day));
             }
         });
         ViewGroup viewGroup = findView(R.id.wheelview_container);
