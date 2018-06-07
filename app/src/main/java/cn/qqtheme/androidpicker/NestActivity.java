@@ -57,6 +57,9 @@ public class NestActivity extends BaseActivity {
         LinearLayout layout = findView(R.id.wheelview_container);
         final CarNumberPicker carNumberPicker = new CarNumberPicker(this);
         carNumberPicker.setOffset(3);
+        carNumberPicker.setUseWeight(true);
+        carNumberPicker.setShadowColor(0xFFCCCCCC);
+        carNumberPicker.setDividerRatio(WheelView.DividerConfig.FILL);
         carNumberPicker.setOnWheelLinkageListener(new CarNumberPicker.OnWheelLinkageListener() {
             @Override
             public void onLinkage(int firstIndex, int secondIndex, int thirdIndex) {
