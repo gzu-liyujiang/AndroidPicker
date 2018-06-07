@@ -1,11 +1,12 @@
 package cn.qqtheme.androidpicker;
 
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.Locale;
 
+import cn.qqtheme.framework.picker.CarNumberPicker;
 import cn.qqtheme.framework.picker.DatePicker;
 import cn.qqtheme.framework.picker.DateTimePicker;
 import cn.qqtheme.framework.util.ConvertUtils;
@@ -41,7 +42,7 @@ public class NestActivity extends BaseActivity {
         wheelView.setTextColor(0xFFFF00FF);
         wheelView.setTextSize(18);
         WheelView.DividerConfig config = new WheelView.DividerConfig();
-        config.setRatio((float) (1.0 / 10.0));//线比率
+        config.setRatio(1.0f / 10.0f);//线比率
         config.setColor(0xFFFF0000);//线颜色
         config.setAlpha(100);//线透明度
         config.setThick(ConvertUtils.toPx(this, 5));//线粗
@@ -53,36 +54,36 @@ public class NestActivity extends BaseActivity {
             }
         });
 
-//        final CarNumberPicker picker = new CarNumberPicker(this);
-//        picker.setOffset(3);
-//        picker.setOnWheelLinkageListener(new LinkagePicker.OnWheelLinkageListener() {
-//            @Override
-//            public void onLinkage(int firstIndex, int secondIndex, int thirdIndex) {
-//                textView.setText(String.format(Locale.PRC, "%s:%s", picker.getSelectedFirstItem(), picker.getSelectedSecondItem()));
-//            }
-//        });
-        final DatePicker picker = new DatePicker(this, DateTimePicker.YEAR_MONTH_DAY);
-        picker.setOffset(4);
-        picker.setOnWheelListener(new DatePicker.OnWheelListener() {
+        LinearLayout layout = findView(R.id.wheelview_container);
+        final CarNumberPicker carNumberPicker = new CarNumberPicker(this);
+        carNumberPicker.setOffset(3);
+        carNumberPicker.setOnWheelLinkageListener(new CarNumberPicker.OnWheelLinkageListener() {
+            @Override
+            public void onLinkage(int firstIndex, int secondIndex, int thirdIndex) {
+                textView.setText(String.format(Locale.PRC, "%s:%s", carNumberPicker.getSelectedFirstItem(), carNumberPicker.getSelectedSecondItem()));
+            }
+        });
+        layout.addView(carNumberPicker.getContentView());
+        final DatePicker datePicker = new DatePicker(this, DateTimePicker.YEAR_MONTH_DAY);
+        datePicker.setOffset(4);
+        datePicker.setOnWheelListener(new DatePicker.OnWheelListener() {
             @Override
             public void onYearWheeled(int index, String year) {
-                textView.setText(String.format("%s年%s月%s日", year, picker.getSelectedMonth(), picker.getSelectedDay()));
+                textView.setText(String.format("%s年%s月%s日", year, datePicker.getSelectedMonth(), datePicker.getSelectedDay()));
             }
 
             @Override
             public void onMonthWheeled(int index, String month) {
-                textView.setText(String.format("%s年%s月%s日", picker.getSelectedYear(), month, picker.getSelectedDay()));
+                textView.setText(String.format("%s年%s月%s日", datePicker.getSelectedYear(), month, datePicker.getSelectedDay()));
             }
 
             @Override
             public void onDayWheeled(int index, String day) {
-                textView.setText(String.format("%s年%s月%s日", picker.getSelectedYear(), picker.getSelectedMonth(), day));
+                textView.setText(String.format("%s年%s月%s日", datePicker.getSelectedYear(), datePicker.getSelectedMonth(), day));
             }
         });
-        ViewGroup viewGroup = findView(R.id.wheelview_container);
         //得到选择器视图，可内嵌到其他视图容器，不需要调用show方法
-        View pickerContentView = picker.getContentView();
-        viewGroup.addView(pickerContentView);
+        layout.addView(datePicker.getContentView());
     }
 
 }

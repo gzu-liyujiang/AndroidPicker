@@ -56,13 +56,14 @@
 
         <LinearLayout
             android:id="@+id/wheelview_container"
-            android:layout_width="180dp"
-            android:layout_height="200dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:background="#FFF3F3F3"
             android:gravity="center"
-            android:orientation="horizontal" />
+            android:minHeight="300dp"
+            android:orientation="vertical" />
 
     </LinearLayout>
 
