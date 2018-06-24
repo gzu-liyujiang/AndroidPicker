@@ -4,7 +4,7 @@ buildscript {
     repositories {
         jcenter()
         maven {
-            url 'https://maven.google.com/'
+            url 'https://dl.google.com/dl/android/maven2/'
             name 'Google'
         }
     }
@@ -23,7 +23,7 @@ allprojects {
         mavenCentral() //sonatype的maven库
         mavenLocal() //本地的maven库
         maven {
-            url 'https://maven.google.com/' //谷歌的maven库
+            url 'https://dl.google.com/dl/android/maven2/' //谷歌的maven库
             name 'Google'
         }
         maven {
@@ -77,6 +77,8 @@ subprojects {
                 }
 
                 packagingOptions {
+                    doNotStrip '*/mips/*.so'
+                    doNotStrip '*/mips64/*.so'
                     exclude 'META-INF/DEPENDENCIES.txt'
                     exclude 'META-INF/LICENSE.txt'
                     exclude 'META-INF/NOTICE.txt'
