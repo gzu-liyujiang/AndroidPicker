@@ -1,4 +1,4 @@
-# Summary
+﻿# Summary
 [![API 14+](https://img.shields.io/badge/API-14%2B-green.svg)](https://github.com/gzu-liyujiang/AndroidPicker)
 [![Download](https://api.bintray.com/packages/gzu-liyujiang/maven/WheelPicker/images/download.svg)](http://jcenter.bintray.com/cn/qqtheme/framework/)
 [![JitPack](https://jitpack.io/v/gzu-liyujiang/AndroidPicker.svg)](https://jitpack.io/#gzu-liyujiang/AndroidPicker)
@@ -12,47 +12,42 @@
 # Install
 “app”是测试用例；“library”包括WheelPicker、ColorPicker、FilePicker、MultiplePicker，
 WheelPicker包括DatePicker、TimePicker、OptionPicker、LinkagePicker、AddressPicker、NumberPicker、DoublePicker等。
-#### 懒人建议直接远程加载jcenter里的
-WheelPicker、FilePicker及ColorPicker是独立的，需要用哪个就compile哪个。
-latest.release表示使用最新版，也可以[参照此处指定具体的版本号](https://github.com/gzu-liyujiang/AndroidPicker/releases)，~~1.3.x之前的版本基于ScrollView，1.4.x版本基于ListView~~，1.5.x之后的版本基于View：
-```groovy
-dependencies {
-    compile('cn.qqtheme.framework:WheelPicker:版本号') {
-        exclude group: 'com.android.support'
-    }
-    compile('cn.qqtheme.framework:FilePicker:版本号') {
-        exclude group: 'com.android.support'
-    }
-    compile('cn.qqtheme.framework:ColorPicker:版本号') {
-        exclude group: 'com.android.support'
-    }
-}
-```
-#### 若jcenter仓库里的无法下载的话，可换[JitPack](https://jitpack.io/#gzu-liyujiang/AndroidPicker)的仓库试试：
+其中WheelPicker、FilePicker及ColorPicker是独立的，需要用哪个就只依赖哪个，latest.release表示使用最新版，也可以[参照此处指定具体的版本号](https://github.com/gzu-liyujiang/AndroidPicker/releases)，
+具体步骤如下：
 第一步，在项目根目录下的build.gradle里加：
 ```
 repositories {
     maven {
-        url "https://www.jitpack.io"
+        url "https://jitpack.io"
     }
 }
 ```
 第二步，在项目的app模块下的build.gradle里加：
-```
+滚轮选择器：
+```groovy
 dependencies {
     compile('com.github.gzu-liyujiang.AndroidPicker:WheelPicker:版本号') {
         exclude group: 'com.android.support'
     }
+}
+```
+文件目录选择器：
+```groovy
+dependencies {
     compile('com.github.gzu-liyujiang.AndroidPicker:FilePicker:版本号') {
         exclude group: 'com.android.support'
     }
+}
+```
+颜色选择器：
+```groovy
+dependencies {
     compile('com.github.gzu-liyujiang.AndroidPicker:ColorPicker:版本号') {
         exclude group: 'com.android.support'
     }
 }
 ```
-#### 使用Eclipse的话如何集成？
-直接[下载AndroidPicker的jar包](/app/libs/)复制到你的项目的libs下即可。
+使用Eclipse的话，直接[下载AndroidPicker的jar包](/app/libs/)复制到你的项目的libs下即可。
 
 # ProGuard
 由于地址选择器使用了[fastjson](https://github.com/alibaba/fastjson)来解析，混淆时候需要加入以下类似的规则，不混淆Province、City等实体类。
