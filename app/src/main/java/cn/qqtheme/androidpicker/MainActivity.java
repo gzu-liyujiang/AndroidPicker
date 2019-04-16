@@ -138,6 +138,18 @@ public class MainActivity extends BaseActivity {
         picker.show();
     }
 
+    public void onDateTimeCustomPicker(View view) {
+        DateTimeCustomPicker picker = new DateTimeCustomPicker(this);
+        picker.setDateRangeStart(2017, 1, 1);
+        picker.setDateRangeEnd(2025, 11, 11);
+        picker.setOnDateTimePickListener(new DateTimeCustomPicker.OnYearMonthDayTimePickListener() {
+            @Override
+            public void onDateTimePicked(String year, String month, String day, String hour, String minute) {
+                showToast(year + "-" + month + "-" + day + " " + hour + ":" + minute);
+            }
+        });
+        picker.show();
+    }
 
     public void onYearMonthDayTimePicker(View view) {
         DateTimePicker picker = new DateTimePicker(this, DateTimePicker.HOUR_24);
@@ -213,7 +225,7 @@ public class MainActivity extends BaseActivity {
 
     public void onOptionPicker(View view) {
         OptionPicker picker = new OptionPicker(this, new String[]{
-                "第一项", "第二项", "第三项","第四项","第五项","第六项","第七项",
+                "第一项", "第二项", "第三项", "第四项", "第五项", "第六项", "第七项",
                 "这是一个很长很长很长很长很长很长很长很长很长的很长很长的很长很长的项"
         });
         picker.setCanceledOnTouchOutside(false);
