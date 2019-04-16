@@ -11,6 +11,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.yanzhenjie.permission.Action;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.runtime.Permission;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -558,32 +561,54 @@ public class MainActivity extends BaseActivity {
     }
 
     public void onFilePicker(View view) {
-        FilePicker picker = new FilePicker(this, FilePicker.FILE);
-        picker.setShowHideDir(false);
-        //picker.setAllowExtensions(new String[]{".apk"});
-        picker.setFileIcon(getResources().getDrawable(android.R.drawable.ic_menu_agenda));
-        picker.setFolderIcon(getResources().getDrawable(android.R.drawable.ic_menu_upload_you_tube));
-        //picker.setArrowIcon(getResources().getDrawable(android.R.drawable.arrow_down_float));
-        picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {
+        AndPermission.with(this).runtime().permission(Permission.Group.STORAGE)
+                .onGranted(new Action<List<String>>() {
+                    @Override
+                    public void onAction(List<String> permissions) {
+                        FilePicker picker = new FilePicker(MainActivity.this, FilePicker.FILE);
+                        picker.setShowHideDir(false);
+                        //picker.setAllowExtensions(new String[]{".apk"});
+                        picker.setFileIcon(MainActivity.this.getResources().getDrawable(android.R.drawable.ic_menu_agenda));
+                        picker.setFolderIcon(MainActivity.this.getResources().getDrawable(android.R.drawable.ic_menu_upload_you_tube));
+                        //picker.setArrowIcon(getResources().getDrawable(android.R.drawable.arrow_down_float));
+                        picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {
+                            @Override
+                            public void onFilePicked(String currentPath) {
+                                showToast(currentPath);
+                            }
+                        });
+                        picker.show();
+                    }
+                }).onDenied(new Action<List<String>>() {
             @Override
-            public void onFilePicked(String currentPath) {
-                showToast(currentPath);
+            public void onAction(List<String> permissions) {
+                showToast("Storage permission are not allowed.");
             }
-        });
-        picker.show();
+        }).start();
     }
 
     public void onDirPicker(View view) {
-        FilePicker picker = new FilePicker(this, FilePicker.DIRECTORY);
-        picker.setRootPath(StorageUtils.getExternalRootPath() + "Download/");
-        picker.setItemHeight(30);
-        picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {
+        AndPermission.with(this).runtime().permission(Permission.Group.STORAGE)
+                .onGranted(new Action<List<String>>() {
+                    @Override
+                    public void onAction(List<String> permissions) {
+                        FilePicker picker = new FilePicker(MainActivity.this, FilePicker.DIRECTORY);
+                        picker.setRootPath(StorageUtils.getExternalRootPath() + "Download/");
+                        picker.setItemHeight(30);
+                        picker.setOnFilePickListener(new FilePicker.OnFilePickListener() {
+                            @Override
+                            public void onFilePicked(String currentPath) {
+                                showToast(currentPath);
+                            }
+                        });
+                        picker.show();
+                    }
+                }).onDenied(new Action<List<String>>() {
             @Override
-            public void onFilePicked(String currentPath) {
-                showToast(currentPath);
+            public void onAction(List<String> permissions) {
+                showToast("Storage permission are not allowed.");
             }
-        });
-        picker.show();
+        }).start();
     }
 
     public void onContact(View view) {
