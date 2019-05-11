@@ -8,12 +8,12 @@ version = project.pomVersion   //版本号
 group = GROUP    // 包名
 project.archivesBaseName = project.pomArtifactId
 
+/**
+ * generate xxx-classes.jar
+ */
 task releaseJar(type: Jar) {
     classifier = 'classes'
     from 'build/intermediates/classes/release/'
-    //from 'build/intermediates/bundles/release/'
-    //exclude '**/aidl', '**/jni', '**/libs', '**/res'
-    //exclude '**/AndroidManifest.xml', '**/classes.jar', '**/R.txt'
     exclude '**/wheelpicker', '**/colorpicker', '**/filepicker'
     exclude '**/BuildConfig.class', '**/R.class'
     exclude { it.name.startsWith('R$'); }
@@ -21,7 +21,6 @@ task releaseJar(type: Jar) {
 
 /**
  * generate xxx-sources.jar
- * 生成 xxx-sources.jar, 即将源代码打包
  */
 task sourcesJar(type: Jar) {
     classifier = 'sources'
@@ -30,7 +29,6 @@ task sourcesJar(type: Jar) {
 
 /**
  * generate javadoc
- * 生成 javadoc 文档
  */
 task javadoc(type: Javadoc) {
     source = android.sourceSets.main.java.srcDirs
@@ -43,7 +41,6 @@ task javadoc(type: Javadoc) {
 
 /**
  * generate xxx-javadoc.jar
- * 将生成的 javadoc 打包为 xxx-javadoc.jar, 它依赖于 javadoc 任务
  */
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
@@ -51,7 +48,7 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 }
 
 /**
- * javadoc 配置
+ * javadoc configure
  */
 javadoc {
     options {
@@ -110,10 +107,6 @@ publishing {
             }
         }
     }
-}
-
-afterEvaluate {
-    publishing.publications.MyPublication.artifact(bundleRelease)
 }
 
 bintray {
