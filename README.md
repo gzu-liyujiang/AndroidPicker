@@ -10,7 +10,8 @@
 欢迎大伙儿在[Issues](https://github.com/gzu-liyujiang/AndroidPicker/issues)提交你的意见或建议。    
 欢迎Fork & Pull requests贡献您的代码，大家共同学习【[AndroidPicker交流群 604235437](https://jq.qq.com/?_wv=1027&k=42bKOeD)】。
 [查看更新日志](https://github.com/gzu-liyujiang/AndroidPicker/blob/master/ChangeLog.md)，新版本可能未对旧版API作兼容处理，升级后若编译报错请根据错误提示更改。
-
+<br/>
+正在重构2.x版本，感兴趣的小伙伴可以[点击此处查看](https://github.com/gzu-liyujiang/AndroidPicker/tree/refactor-2.0)
 # Install
 “app”是测试用例；“library”包括WheelPicker、ColorPicker、FilePicker、MultiplePicker，
 WheelPicker包括DatePicker、TimePicker、OptionPicker、LinkagePicker、AddressPicker、NumberPicker、DoublePicker等。
