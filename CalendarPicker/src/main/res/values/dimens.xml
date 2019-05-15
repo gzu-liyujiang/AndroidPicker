@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--month module-->
+    <dimen name="month_divide_line_height">0.5dp</dimen>
+    <!--calendar module-->
+    <dimen name="calendar_decoration_height">45dp</dimen>
+    <dimen name="calendar_decoration_divide_line_height">0.5dp</dimen>
+    <dimen name="calendar_decoration_text_size">13sp</dimen>
+</resources>

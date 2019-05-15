@@ -1,45 +1,40 @@
-//参考：https://raw.github.com/dm77/barcodescanner/master/build.gradle
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
     repositories {
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
         jcenter()
         maven {
             url 'https://dl.google.com/dl/android/maven2/'
-            name 'Google'
         }
+        google()
     }
+
     dependencies {
         classpath 'com.android.tools.build:gradle:3.4.0'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
     }
 }
 
 allprojects {
-    group = GROUP
+
+    //设置项目的版本号
     version = VERSION_NAME
+    //设置项目的组名
+    group = GROUP
+    //设置项目的归档文件基础名称
+    //archivesBaseName = project.name
 
-    repositories {
-        jcenter() //bintray的maven库
-        mavenCentral() //sonatype的maven库
-        mavenLocal() //本地的maven库
-        maven {
-            url 'https://dl.google.com/dl/android/maven2/' //谷歌的maven库
-            name 'Google'
-        }
-        maven {
-            url "https://www.jitpack.io" //jitpack的maven库
-        }
-        flatDir {
-            dirs 'libs' //本地aar文件
-        }
-    }
-
+    //自定义项目属性
     ext {
         isLibrary = false
         pomArtifactId = project.name
-        pomVersion = VERSION_NAME
+        pomVersion = project.version
         pomDescription = 'This is library description'
     }
+
+    apply from: "${rootDir}/gradle/repository.gradle"
 
 }
 
@@ -49,63 +44,15 @@ subprojects {
         def hasAppPlugin = ext.pluginContainer.hasPlugin("com.android.application")
         def hasLibPlugin = ext.pluginContainer.hasPlugin("com.android.library")
         if (hasAppPlugin || hasLibPlugin) {
-            android {
-                compileSdkVersion COMPILE_SDK_VERSION as int
-                buildToolsVersion BUILD_TOOL_VERSION
-
-                defaultConfig {
-                    minSdkVersion MIN_SDK_VERSION as int
-                    targetSdkVersion TARGET_SDK_VERSION as int
-                    versionCode VERSION_CODE as int
-                    versionName VERSION_NAME
-                }
-
-                buildTypes {
-                    release {
-                        debuggable false
-                        minifyEnabled false //实时构建库项目时若启用混淆，APP模块引用会造成部分方法找不到
-                    }
-                    debug {
-                        debuggable true
-                        minifyEnabled false
-                    }
-                }
-
-                lintOptions {
-                    checkReleaseBuilds false
-                    abortOnError false
-                }
-
-                packagingOptions {
-                    doNotStrip '*/mips/*.so'
-                    doNotStrip '*/mips64/*.so'
-                    exclude 'META-INF/DEPENDENCIES.txt'
-                    exclude 'META-INF/LICENSE.txt'
-                    exclude 'META-INF/NOTICE.txt'
-                    exclude 'META-INF/NOTICE'
-                    exclude 'META-INF/LICENSE'
-                    exclude 'META-INF/DEPENDENCIES'
-                    exclude 'META-INF/notice.txt'
-                    exclude 'META-INF/license.txt'
-                    exclude 'META-INF/dependencies.txt'
-                    exclude 'META-INF/LGPL2.1'
-                    exclude 'META-INF/ASL2.0'
-                }
-
-            }
-
-            dependencies {
-                compile "com.android.support:support-v4:${ANDROID_SUPPORT_VERSION}"
-                compile "com.android.support:support-annotations:${ANDROID_SUPPORT_VERSION}"
+            configure(project) {
+                apply from: "${rootDir}/gradle/common.gradle"
             }
         }
-
         if (project.isLibrary) {
             configure(project) {
-                apply from: "${rootDir}/publish.gradle" //调用发布脚本
+                apply from: "${rootDir}/gradle/publish.gradle"
             }
         }
-
     }
 }
 

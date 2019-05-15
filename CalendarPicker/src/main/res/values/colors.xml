@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--calendar module-->
+    <color name="calendar_background_color">#FFFFFF</color>
+    <color name="calendar_background_week_color">#FFFFFF</color>
+    <color name="calendar_background_decoration_color">#FFFFFF</color>
+    <color name="calendar_text_decoration_color">#333333</color>
+
+    <!--month module-->
+    <color name="month_divide_line_color">#FFFFFF</color>
+    <color name="month_background_color">#FFFFFF</color>
+
+    <!--day module-->
+    <color name="day_text_normal_color">#343434</color>
+    <color name="day_text_invalid_color">#CCCCCC</color>
+    <color name="day_text_select_color">#FFFFFF</color>
+    <color name="day_text_range_color">#FFFFFF</color>
+    <color name="day_text_stress_color">#FF6600</color>
+
+    <color name="day_background_normal_color">#FFFFFF</color>
+    <color name="day_background_invalid_color">#FFFFFF</color>
+    <color name="day_background_range_color">#EEE75051</color>
+    <color name="day_background_bound_color">#FFE75051</color>
+</resources>

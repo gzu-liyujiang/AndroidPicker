@@ -1,0 +1,85 @@
+configurations.all {
+    //此处可用于解决依赖冲突问题，参阅https://developer.android.google.cn/studio/build/dependencies#duplicate_classes
+    resolutionStrategy {
+        force "com.android.support:support-annotations:${ANDROID_SUPPORT_VERSION}"
+        force "com.android.support:support-v4:${ANDROID_SUPPORT_VERSION}"
+        force "com.android.support:appcompat-v7:${ANDROID_SUPPORT_VERSION}"
+        force "com.android.support:design:${ANDROID_SUPPORT_VERSION}"
+        force "com.android.support:recyclerview-v7:${ANDROID_SUPPORT_VERSION}"
+        force "com.android.support:cardview-v7:${ANDROID_SUPPORT_VERSION}"
+        force "com.android.support:exifinterface:${ANDROID_SUPPORT_VERSION}"
+    }
+}
+android {
+    compileSdkVersion COMPILE_SDK_VERSION as int
+    buildToolsVersion BUILD_TOOL_VERSION
+
+    defaultConfig {
+        minSdkVersion MIN_SDK_VERSION as int
+        targetSdkVersion TARGET_SDK_VERSION as int
+        versionCode VERSION_CODE as int
+        versionName VERSION_NAME
+        ndk {
+            //支持的CPU架构：armeabi、armeabi-v7a、arm64-v8a、x86、x86_64、mips、mips64
+            //参阅 https://blog.csdn.net/u011733020/article/details/84107354
+            abiFilters "armeabi-v7a"
+        }
+    }
+
+    buildTypes {
+        release {
+            debuggable false
+            jniDebuggable false
+            //实时构建库项目时若启用混淆，APP模块引用会造成部分方法找不到
+            minifyEnabled false
+        }
+        debug {
+            debuggable true
+            jniDebuggable true
+            minifyEnabled false
+        }
+    }
+
+    lintOptions {
+        // 如果构建时发现了致命（Fatal）的问题，会中止构建（具体由 abortOnError 控制）
+        checkReleaseBuilds false
+        // 设置为 true，则当 Lint 发现错误时停止 Gradle 构建
+        abortOnError false
+        // 设置为 true 则会生成一个 HTML 格式的报告
+        //htmlReport true
+        // 写入报告的路径，默认为构建目录下的 lint-results.html
+        //htmlOutput file("lint-report.html")
+    }
+
+    aaptOptions {
+        cruncherEnabled false
+        useNewCruncher false
+    }
+
+    dexOptions {
+        javaMaxHeapSize "4g"
+        jumboMode = true
+        preDexLibraries = true
+    }
+
+    packagingOptions {
+        doNotStrip '*/mips/*.so'
+        doNotStrip '*/mips64/*.so'
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LGPL2.1'
+        exclude 'META-INF/ASL2.0'
+    }
+
+}
+
+dependencies {
+    implementation "com.android.support:support-annotations:${ANDROID_SUPPORT_VERSION}"
+}

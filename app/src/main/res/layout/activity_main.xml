@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/immersion"
     android:orientation="vertical">
 
     <TextView
@@ -11,12 +10,12 @@
         android:layout_height="50dp"
         android:gravity="center"
         android:text="选择器示例"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/black" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background">
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -80,7 +79,25 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="onOptionPicker"
+                android:onClick="onBirthdayPicker"
+                android:text="生日选择" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onCalendarDateRangePicker"
+                android:text="日历日期范围选择（如酒店入住及离店日期）" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onCalendarDateSinglePicker"
+                android:text="日历单个日期选择（如航班出发日期）" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onSinglePicker"
                 android:text="单项选择" />
 
             <Button
@@ -100,12 +117,6 @@
                 android:layout_height="wrap_content"
                 android:onClick="onBusinessTimePicker"
                 android:text="双项选择（实现时间选择）" />
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="onMultiplePicker"
-                android:text="多项选择" />
 
             <Button
                 android:layout_width="match_parent"

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/calendar_background_color"
+    android:orientation="vertical">
+
+    <GridView
+        android:id="@+id/weekView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/calendar_background_week_color"
+        android:numColumns="7"
+        android:stretchMode="columnWidth" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/bodyView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never"
+        android:scrollbars="none" />
+
+</LinearLayout>
