@@ -23,4 +23,8 @@ public @interface TimeMode {
      * 12小时制
      */
     int HOUR_12 = 2;
+    /**
+     * 24小时制精确到秒
+     */
+    int HOUR_24_SECOND = 3;
 }

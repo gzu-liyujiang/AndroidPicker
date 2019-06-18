@@ -14,5 +14,5 @@ public interface OnDateSelectedListener {
      * @param month 月
      * @param day   日
      */
-    void onDateSelected(int year, int month, int day);
+    void onItemSelected(int year, int month, int day);
 }

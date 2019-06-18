@@ -12,6 +12,7 @@ public interface OnTimeSelectedListener {
      *
      * @param hour   时
      * @param minute 分
+     * @param second 秒
      */
-    void onTimeSelected(int hour, int minute);
+    void onItemSelected(int hour, int minute, int second);
 }

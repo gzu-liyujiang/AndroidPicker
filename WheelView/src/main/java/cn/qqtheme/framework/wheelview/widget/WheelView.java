@@ -20,12 +20,12 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.Scroller;
 
+import cn.qqtheme.framework.toolkit.CqrDensity;
+import cn.qqtheme.framework.wheelview.R;
 import cn.qqtheme.framework.wheelview.adapter.WheelAdapter;
 import cn.qqtheme.framework.wheelview.interfaces.OnWheelChangedListener;
 import cn.qqtheme.framework.wheelview.interfaces.OnWheelSelectedListener;
 import cn.qqtheme.framework.wheelview.interfaces.TextProvider;
-import cn.qqtheme.framework.toolkit.CqrDensity;
-import cn.qqtheme.framework.wheelview.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,8 @@ import java.util.List;
 /**
  * 滚轮控件，部分代码参考 https://github.com/florent37/SingleDateAndTimePicker#WheelPicker
  *
- * @param <T> 泛型除了{@link CharSequence}及其子类，需要实现{@link TextProvider}或者重载{@link Object#toString()}提供显示文本
+ * @param <T> 泛型除了{@link CharSequence}及其子类，需要实现{@link TextProvider}
+ *            或者重载{@link Object#toString()}提供显示文本
  * @author liyujiang
  * @date 2019/5/8 11:11
  * @see WheelAdapter
@@ -41,6 +42,7 @@ import java.util.List;
  * @see OnWheelSelectedListener
  * @see OnWheelChangedListener
  */
+@SuppressWarnings({"unused"})
 public class WheelView<T> extends View implements Runnable {
 
     public static final int SCROLL_STATE_IDLE = 0;
@@ -59,7 +61,7 @@ public class WheelView<T> extends View implements Runnable {
     private Paint paint;
     private Scroller scroller;
     private VelocityTracker tracker;
-    private OnWheelSelectedListener<T> onWheelSelectedListener;
+    private OnWheelSelectedListener onWheelListener;
     private OnWheelChangedListener wheelChangedListener;
     private final Rect rectDrawn = new Rect();
     private final Rect rectIndicatorHead = new Rect();
@@ -258,8 +260,8 @@ public class WheelView<T> extends View implements Runnable {
         invalidate();
     }
 
-    public void setOnWheelSelectedListener(OnWheelSelectedListener<T> listener) {
-        onWheelSelectedListener = listener;
+    public void setOnWheelListener(OnWheelSelectedListener listener) {
+        onWheelListener = listener;
     }
 
     public void setAdapter(WheelAdapter<T> adapter) {
@@ -617,9 +619,11 @@ public class WheelView<T> extends View implements Runnable {
             String data = "";
             if (isCyclic) {
                 final int itemCount = adapter.getItemCount();
-                int actualPos = drawnDataPos % itemCount;
-                actualPos = actualPos < 0 ? (actualPos + itemCount) : actualPos;
-                data = adapter.getItemText(actualPos);
+                if (itemCount != 0) {
+                    int actualPos = drawnDataPos % itemCount;
+                    actualPos = actualPos < 0 ? (actualPos + itemCount) : actualPos;
+                    data = adapter.getItemText(actualPos);
+                }
             } else {
                 if (isPosInRang(drawnDataPos)) {
                     data = adapter.getItemText(drawnDataPos);
@@ -905,8 +909,8 @@ public class WheelView<T> extends View implements Runnable {
             scrollOffsetY = scroller.getCurrY();
 
             int position = (-scrollOffsetY / mItemHeight + defaultItemPosition) % itemCount;
-            if (onWheelSelectedListener != null) {
-                onWheelSelectedListener.onCurrentItemOfScroll(this, position);
+            if (onWheelListener != null) {
+                onWheelListener.onCurrentItemOfScroll(this, position);
             }
             onItemCurrentScroll(position, adapter.getItem(position));
 
@@ -943,8 +947,8 @@ public class WheelView<T> extends View implements Runnable {
     protected final void onItemSelected() {
         int position = currentItemPosition;
         final T item = this.adapter.getItem(position);
-        if (null != onWheelSelectedListener) {
-            onWheelSelectedListener.onItemSelected(this, position, item);
+        if (null != onWheelListener) {
+            onWheelListener.onItemSelected(this, position);
         }
         onItemSelected(position, item);
     }

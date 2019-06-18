@@ -13,9 +13,9 @@ import cn.qqtheme.framework.wheelview.interfaces.DateFormatter;
 import cn.qqtheme.framework.wheelview.interfaces.OnDateSelectedListener;
 import cn.qqtheme.framework.wheelview.interfaces.OnTimeSelectedListener;
 import cn.qqtheme.framework.wheelview.interfaces.TimeFormatter;
-import cn.qqtheme.framework.wheelview.interfaces.impl.SimpleDateFormatter;
-import cn.qqtheme.framework.wheelview.interfaces.impl.SimpleTimeFormatter;
-import cn.qqtheme.framework.wheelview.widget.DateTimeWheelView;
+import cn.qqtheme.framework.wheelpicker.interfaces.impl.SimpleDateFormatter;
+import cn.qqtheme.framework.wheelpicker.interfaces.impl.SimpleTimeFormatter;
+import cn.qqtheme.framework.wheelview.widget.DateTimeWheelLayout;
 
 /**
  * 日期时间滚轮选择，参见 https://github.com/gzu-liyujiang/AndroidPicker
@@ -23,9 +23,10 @@ import cn.qqtheme.framework.wheelview.widget.DateTimeWheelView;
  * @author liyujiang
  * @date 2019/5/13 20:07
  */
-public class DateTimePicker extends AbstractConfirmPopup<DateTimeWheelView> {
+@SuppressWarnings({"unused", "WeakerAccess"})
+public class DateTimePicker extends AbstractConfirmPopup<DateTimeWheelLayout> {
 
-    private DateTimeWheelView dateTimeWheelView;
+    private DateTimeWheelLayout wheelLayout;
 
     private OnDateSelectedListener onDateSelectedListener;
     private OnTimeSelectedListener onTimeSelectedListener;
@@ -33,8 +34,8 @@ public class DateTimePicker extends AbstractConfirmPopup<DateTimeWheelView> {
     private int dateMode;
     private int timeMode;
 
-    private DateTimeEntity rangeStart;
-    private DateTimeEntity rangeEnd;
+    private DateTimeEntity startValue;
+    private DateTimeEntity endValue;
     private DateTimeEntity defaultValue;
 
     private DateFormatter dateFormatter = new SimpleDateFormatter();
@@ -45,6 +46,7 @@ public class DateTimePicker extends AbstractConfirmPopup<DateTimeWheelView> {
     private CharSequence dayLabel;
     private CharSequence hourLabel;
     private CharSequence minuteLabel;
+    private CharSequence secondLabel;
 
     public DateTimePicker(FragmentActivity activity, @DateMode int dateMode, @TimeMode int timeMode) {
         super(activity);
@@ -55,12 +57,12 @@ public class DateTimePicker extends AbstractConfirmPopup<DateTimeWheelView> {
     /**
      * 设置日期时间范围
      */
-    public void setRange(DateTimeEntity rangeStart, DateTimeEntity rangeEnd) {
-        this.rangeStart = rangeStart;
-        this.rangeEnd = rangeEnd;
+    public <T extends DateTimeEntity> void setRange(T startValue, T endValue) {
+        this.startValue = startValue;
+        this.endValue = endValue;
     }
 
-    public void setDefaultValue(DateTimeEntity defaultValue) {
+    public <T extends DateTimeEntity> void setDefaultValue(T defaultValue) {
         this.defaultValue = defaultValue;
     }
 
@@ -78,9 +80,10 @@ public class DateTimePicker extends AbstractConfirmPopup<DateTimeWheelView> {
         this.dayLabel = day;
     }
 
-    public void setTimeLabel(CharSequence hour, CharSequence minute) {
+    public void setTimeLabel(CharSequence hour, CharSequence minute, CharSequence second) {
         this.hourLabel = hour;
         this.minuteLabel = minute;
+        this.secondLabel = second;
     }
 
     /**
@@ -99,41 +102,42 @@ public class DateTimePicker extends AbstractConfirmPopup<DateTimeWheelView> {
 
     @NonNull
     @Override
-    protected DateTimeWheelView createBodyView(Context context) {
+    protected DateTimeWheelLayout createBodyView(Context context) {
         View view = View.inflate(context, R.layout.popup_wheel_date_time, null);
-        dateTimeWheelView = view.findViewById(R.id.date_time_wheel_view);
-        return dateTimeWheelView;
+        wheelLayout = view.findViewById(R.id.date_time_wheel_layout);
+        return wheelLayout;
     }
 
     @Override
     public void onViewCreated(@NonNull View contentView) {
         super.onViewCreated(contentView);
-        dateTimeWheelView.setMode(dateMode, timeMode);
-        dateTimeWheelView.setRange(rangeStart, rangeEnd, defaultValue);
-        dateTimeWheelView.setDateFormatter(dateFormatter);
-        dateTimeWheelView.setTimeFormatter(timeFormatter);
-        dateTimeWheelView.setDateLabel(yearLabel, monthLabel, dayLabel);
-        dateTimeWheelView.setTimeLabel(hourLabel, minuteLabel);
+        wheelLayout.setMode(dateMode, timeMode);
+        wheelLayout.setRange(startValue, endValue, defaultValue);
+        wheelLayout.setDateFormatter(dateFormatter);
+        wheelLayout.setTimeFormatter(timeFormatter);
+        wheelLayout.setDateLabel(yearLabel, monthLabel, dayLabel);
+        wheelLayout.setTimeLabel(hourLabel, minuteLabel, secondLabel);
     }
 
     @Override
     protected void onConfirm() {
         super.onConfirm();
         if (onDateSelectedListener != null) {
-            int year = dateTimeWheelView.getSelectedYear();
-            int month = dateTimeWheelView.getSelectedMonth();
-            int day = dateTimeWheelView.getSelectedDay();
-            onDateSelectedListener.onDateSelected(year, month, day);
+            int year = wheelLayout.getSelectedYear();
+            int month = wheelLayout.getSelectedMonth();
+            int day = wheelLayout.getSelectedDay();
+            onDateSelectedListener.onItemSelected(year, month, day);
         }
         if (onTimeSelectedListener != null) {
-            int hour = dateTimeWheelView.getSelectedHour();
-            int minute = dateTimeWheelView.getSelectedMinute();
-            onTimeSelectedListener.onTimeSelected(hour, minute);
+            int hour = wheelLayout.getSelectedHour();
+            int minute = wheelLayout.getSelectedMinute();
+            int second = wheelLayout.getSelectedSecond();
+            onTimeSelectedListener.onItemSelected(hour, minute, second);
         }
     }
 
-    public final DateTimeWheelView getDateTimeWheelView() {
-        return dateTimeWheelView;
+    public final DateTimeWheelLayout getWheelLayout() {
+        return wheelLayout;
     }
 
 }

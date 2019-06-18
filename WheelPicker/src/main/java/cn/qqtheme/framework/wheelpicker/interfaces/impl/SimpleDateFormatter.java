@@ -1,4 +1,4 @@
-package cn.qqtheme.framework.wheelview.interfaces.impl;
+package cn.qqtheme.framework.wheelpicker.interfaces.impl;
 
 import cn.qqtheme.framework.toolkit.CqrDateTime;
 import cn.qqtheme.framework.wheelview.interfaces.DateFormatter;

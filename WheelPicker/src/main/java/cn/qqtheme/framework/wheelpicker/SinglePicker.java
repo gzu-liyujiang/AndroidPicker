@@ -5,12 +5,12 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
-import java.util.List;
-
 import cn.qqtheme.framework.popup.AbstractConfirmPopup;
-import cn.qqtheme.framework.wheelview.interfaces.OnSingleSelectedListener;
+import cn.qqtheme.framework.wheelview.interfaces.OnItemSelectedListener;
 import cn.qqtheme.framework.wheelview.interfaces.TextProvider;
 import cn.qqtheme.framework.wheelview.widget.WheelView;
+
+import java.util.List;
 
 /**
  * 单项滚轮选择，参见 https://github.com/gzu-liyujiang/AndroidPicker
@@ -20,10 +20,10 @@ import cn.qqtheme.framework.wheelview.widget.WheelView;
  * @date 2019/5/8 10:04
  * @see WheelView
  * @see LayoutProvider
- * @see OnSingleSelectedListener
+ * @see OnItemSelectedListener
  */
 public class SinglePicker<T> extends AbstractConfirmPopup<WheelView<T>> {
-    private OnSingleSelectedListener<T> onSingleSelectedListener;
+    private OnItemSelectedListener<T> onItemSelectedListener;
     private List<T> data;
     private T defaultItem;
     private int defaultItemPosition;
@@ -45,8 +45,8 @@ public class SinglePicker<T> extends AbstractConfirmPopup<WheelView<T>> {
         return wheelView;
     }
 
-    public void setOnSingleSelectedListener(OnSingleSelectedListener<T> onSingleSelectedListener) {
-        this.onSingleSelectedListener = onSingleSelectedListener;
+    public void setOnItemSelectedListener(OnItemSelectedListener<T> onItemSelectedListener) {
+        this.onItemSelectedListener = onItemSelectedListener;
     }
 
     public void setData(List<T> data) {
@@ -64,8 +64,8 @@ public class SinglePicker<T> extends AbstractConfirmPopup<WheelView<T>> {
     @Override
     protected void onConfirm() {
         super.onConfirm();
-        if (onSingleSelectedListener != null) {
-            onSingleSelectedListener.onSingleSelected(getBodyView().getCurrentItemPosition(),
+        if (onItemSelectedListener != null) {
+            onItemSelectedListener.onItemSelected(getBodyView().getCurrentItemPosition(),
                     getBodyView().getCurrentItem());
         }
     }

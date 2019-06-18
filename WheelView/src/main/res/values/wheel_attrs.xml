@@ -25,21 +25,33 @@
             <enum name="right" value="2" />
         </attr>
     </declare-styleable>
-
-    <declare-styleable name="DateTimeWheelView">
-        <attr name="wheel_dt_textColor" format="color" />
-        <attr name="wheel_dt_textColorSelected" format="color" />
-        <attr name="wheel_dt_textSize" format="dimension" />
-        <attr name="wheel_dt_curved" format="boolean" />
-        <attr name="wheel_dt_cyclic" format="boolean" />
-        <attr name="wheel_dt_visibleItemCount" format="integer" />
-        <attr name="wheel_dt_selectorColor" format="integer" />
-        <attr name="wheel_dt_selectorHeight" format="dimension" />
-        <attr name="wheel_dt_displayYears" format="boolean" />
-        <attr name="wheel_dt_displayMonths" format="boolean" />
-        <attr name="wheel_dt_displayDays" format="boolean" />
-        <attr name="wheel_dt_displayHours" format="boolean" />
-        <attr name="wheel_dt_displayMinutes" format="boolean" />
+    <declare-styleable name="DateTimeWheelLayout">
+        <attr name="datetime_wheel_textColor" format="color" />
+        <attr name="datetime_wheel_textColorSelected" format="color" />
+        <attr name="datetime_wheel_textSize" format="dimension" />
+        <attr name="datetime_wheel_curved" format="boolean" />
+        <attr name="datetime_wheel_cyclic" format="boolean" />
+        <attr name="datetime_wheel_indicator" format="boolean" />
+        <attr name="datetime_wheel_visibleItemCount" format="integer" />
+        <attr name="datetime_wheel_selectorColor" format="integer" />
+        <attr name="datetime_wheel_selectorHeight" format="dimension" />
+        <attr name="datetime_wheel_displayYears" format="boolean" />
+        <attr name="datetime_wheel_displayMonths" format="boolean" />
+        <attr name="datetime_wheel_displayDays" format="boolean" />
+        <attr name="datetime_wheel_displayHours" format="boolean" />
+        <attr name="datetime_wheel_displayMinutes" format="boolean" />
+        <attr name="datetime_wheel_displaySeconds" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="LinkageWheelLayout">
+        <attr name="address_wheel_textColor" format="color" />
+        <attr name="address_wheel_textColorSelected" format="color" />
+        <attr name="address_wheel_textSize" format="dimension" />
+        <attr name="address_wheel_curved" format="boolean" />
+        <attr name="address_wheel_cyclic" format="boolean" />
+        <attr name="address_wheel_indicator" format="boolean" />
+        <attr name="address_wheel_visibleItemCount" format="integer" />
+        <attr name="address_wheel_selectorColor" format="integer" />
+        <attr name="address_wheel_selectorHeight" format="dimension" />
     </declare-styleable>
 
 </resources>

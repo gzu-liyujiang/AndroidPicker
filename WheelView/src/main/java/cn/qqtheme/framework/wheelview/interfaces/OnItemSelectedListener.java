@@ -6,7 +6,7 @@ package cn.qqtheme.framework.wheelview.interfaces;
  * @author liyujiang
  * @date 2019/5/14 20:00
  */
-public interface OnSingleSelectedListener<T> {
+public interface OnItemSelectedListener<T> {
     void onItemSelected(int position, T item);
 }
 

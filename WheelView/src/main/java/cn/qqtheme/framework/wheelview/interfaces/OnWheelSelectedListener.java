@@ -8,15 +8,14 @@ import cn.qqtheme.framework.wheelview.widget.WheelView;
  * @author liyujiang
  * @date 2019/5/14 20:04
  */
-public interface OnWheelSelectedListener<Item> {
+public interface OnWheelSelectedListener {
     /**
      * 条目已选择
      *
      * @param wheelView 滚轮视图
      * @param position  选中项的索引
-     * @param item      选中项的值
      */
-    void onItemSelected(WheelView wheelView, int position, Item item);
+    void onItemSelected(WheelView wheelView, int position);
 
     /**
      * 当前条目滚动

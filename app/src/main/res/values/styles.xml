@@ -3,6 +3,7 @@
 
     <style name="AppTheme" parent="CommonTheme">
         <item name="android:textSize">14sp</item>
+        <item name="android:windowBackground">@android:color/white</item>
     </style>
 
     <style name="Animation.CustomPopup" parent="@android:style/Animation">

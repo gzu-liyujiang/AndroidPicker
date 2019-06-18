@@ -3,11 +3,12 @@ package cn.qqtheme.framework.wheelview.entity;
 import java.util.Calendar;
 
 /**
- * 时间实体
+ * 时间数据实体
  *
  * @author liyujiang
- * @date 2019/5/15 17:48
+ * @date 2019/6/17 15:29
  */
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class TimeEntity extends DateTimeEntity {
 
     public static TimeEntity now() {
@@ -17,8 +18,13 @@ public class TimeEntity extends DateTimeEntity {
         return new TimeEntity(hour, minute);
     }
 
+    public TimeEntity(int hour, int minute, int second) {
+        super(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH),
+                Calendar.getInstance().get(Calendar.DAY_OF_MONTH), hour, minute, second);
+    }
+
     public TimeEntity(int hour, int minute) {
-        super(hour, minute);
+        this(hour, minute, 0);
     }
 
 }

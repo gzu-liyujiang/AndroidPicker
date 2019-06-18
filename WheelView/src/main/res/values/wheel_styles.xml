@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="WheelDefault">
+    <style name="Wheel">
         <item name="wheel_atmospheric">true</item>
         <item name="wheel_curtain">false</item>
         <item name="wheel_curved">false</item>
@@ -16,15 +16,6 @@
         <item name="wheel_item_text_size">19sp</item>
         <item name="wheel_same_width">false</item>
         <item name="wheel_visible_item_count">7</item>
-    </style>
-
-    <style name="WheelDateTime">
-        <item name="wheel_dt_curved">false</item>
-        <item name="wheel_dt_cyclic">false</item>
-        <item name="wheel_dt_textColor">#999999</item>
-        <item name="wheel_dt_textColorSelected">#000000</item>
-        <item name="wheel_dt_textSize">19sp</item>
-        <item name="wheel_dt_visibleItemCount">7</item>
     </style>
 
 </resources>

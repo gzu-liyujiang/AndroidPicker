@@ -1,4 +1,4 @@
-package cn.qqtheme.framework.wheelview.interfaces.impl;
+package cn.qqtheme.framework.wheelpicker.interfaces.impl;
 
 import cn.qqtheme.framework.toolkit.CqrDateTime;
 import cn.qqtheme.framework.wheelview.interfaces.TimeFormatter;
@@ -19,6 +19,11 @@ public class SimpleTimeFormatter implements TimeFormatter {
     @Override
     public String formatMinute(int minute) {
         return CqrDateTime.fillZero(minute);
+    }
+
+    @Override
+    public String formatSecond(int second) {
+        return CqrDateTime.fillZero(second);
     }
 
 }

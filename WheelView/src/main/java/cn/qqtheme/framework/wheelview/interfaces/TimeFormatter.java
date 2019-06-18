@@ -12,4 +12,6 @@ public interface TimeFormatter {
 
     String formatMinute(int minute);
 
+    String formatSecond(int second);
+
 }

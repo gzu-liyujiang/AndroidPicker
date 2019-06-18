@@ -12,11 +12,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import cn.qqtheme.androidpicker.custom.CustomUiAddressPicker;
 import cn.qqtheme.framework.calendarpicker.CalendarPicker;
 import cn.qqtheme.framework.toolkit.CqrDateTime;
 import cn.qqtheme.framework.wheelpicker.BirthdayPicker;
 import cn.qqtheme.framework.wheelpicker.DatePicker;
 import cn.qqtheme.framework.wheelpicker.DateTimePicker;
+import cn.qqtheme.framework.wheelpicker.PhoneCodePicker;
 import cn.qqtheme.framework.wheelpicker.SinglePicker;
 import cn.qqtheme.framework.wheelpicker.TimePicker;
 import cn.qqtheme.framework.wheelview.annotation.DateMode;
@@ -45,14 +47,15 @@ public class MainActivity extends BaseActivity {
 
     public void onYearMonthDayTimePicker(View view) {
         DateTimeEntity now = DateTimeEntity.now();
-        DateTimeEntity last = new DateTimeEntity(2020, 12, 31, 23, 59);
-        DateTimePicker picker = new DateTimePicker(this, DateMode.YEAR_MONTH_DAY, TimeMode.HOUR_12);
+        DateTimeEntity last = new DateTimeEntity(2020, 1, 1, 23, 59);
+        DateTimePicker picker = new DateTimePicker(this, DateMode.YEAR_MONTH_DAY,
+                TimeMode.HOUR_24);
         picker.setRange(now, last);
-        picker.setDefaultValue(last);
+        picker.setDefaultValue(now);
         picker.setDateLabel("年", "月", "日");
         SpannableString ss = new SpannableString(":");
         ss.setSpan(new StyleSpan(Typeface.BOLD), 0, ss.length(), SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-        picker.setTimeLabel(ss, "");
+        picker.setTimeLabel(ss, "", "");
         picker.showAtBottom();
     }
 
@@ -91,31 +94,35 @@ public class MainActivity extends BaseActivity {
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH) + 1;
         int day = calendar.get(Calendar.DAY_OF_MONTH);
-        picker.setDefaultValue(new DateTimeEntity(year, month, day));
+        picker.setDefaultValue(new DateEntity(year, month, day));
         picker.showAtBottom();
     }
 
     public void onSinglePicker(View view) {
         SinglePicker<String> picker = new SinglePicker<>(this);
         List<String> data = new ArrayList<>();
-        data.add("中国大陆+86");
-        data.add("香港+852");
-        data.add("澳门+853");
-        data.add("台湾+886");
+        data.add("第一项");
+        data.add("很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长长很长很长");
+        data.add("其他项");
+        data.add("最后一项");
         picker.setData(data);
         picker.setDefaultItemPosition(2);
         picker.showAtBottom();
     }
 
-    /**
-     * 地址选择器的省市区县最新数据可从以下两处抓取（2019/5/15）：
-     * 1、国家统计局：http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm
-     * 2、国家民政局：http://www.mca.gov.cn/article/sj/xzqh/2019/201901-06/201904301706.html
-     * <p>
-     * 省市区县数据抓取项目：https://github.com/small-dream/China_Province_City
-     */
-    public void onAddressPicker(View view) {
+    public void onPhoneCodePicker(View view) {
+        PhoneCodePicker picker = new PhoneCodePicker(this);
+        picker.setSelectCallback(new PhoneCodePicker.SelectCallback() {
+            @Override
+            public void onItemSelected(int position, String item) {
+            }
+        });
+        picker.showAtBottom();
+    }
 
+    public void onCustomUiAddressPicker(View view) {
+        CustomUiAddressPicker picker = new CustomUiAddressPicker(this);
+        picker.showAtBottom();
     }
 
 }

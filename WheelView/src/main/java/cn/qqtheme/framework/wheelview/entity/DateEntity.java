@@ -3,11 +3,12 @@ package cn.qqtheme.framework.wheelview.entity;
 import java.util.Calendar;
 
 /**
- * 日期视图
+ * 日期数据实体
  *
  * @author liyujiang
- * @date 2019/5/15 17:48
+ * @date 2019/6/17 15:29
  */
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class DateEntity extends DateTimeEntity {
 
     public static DateEntity today() {
@@ -19,7 +20,11 @@ public class DateEntity extends DateTimeEntity {
     }
 
     public DateEntity(int year, int month, int day) {
-        super(year, month, day);
+        super(year, month, day, 0, 0, 0);
+    }
+
+    public DateEntity(int month, int day) {
+        this(Calendar.getInstance().get(Calendar.YEAR), month, day);
     }
 
 }

@@ -103,6 +103,12 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="onPhoneCodePicker"
+                android:text="手机区号选择" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:onClick="onSinglePicker"
                 android:text="单项选择（支持对象）" />
 
@@ -139,7 +145,7 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="onAddressPicker"
+                android:onClick="onCustomUiAddressPicker"
                 android:text="地址选择（包括省级、地级、县级）" />
 
             <Button

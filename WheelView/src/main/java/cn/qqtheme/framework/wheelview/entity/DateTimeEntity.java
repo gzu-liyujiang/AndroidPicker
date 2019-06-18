@@ -3,17 +3,19 @@ package cn.qqtheme.framework.wheelview.entity;
 import java.util.Calendar;
 
 /**
- * 日期时间实体
+ * 日期时间数据实体
  *
  * @author liyujiang
  * @date 2019/5/14 17:30
  */
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class DateTimeEntity {
-    private int year = 2019;
-    private int month = 5;
-    private int day = 14;
-    private int hour = 12;
-    private int minute = 0;
+    private int year;
+    private int month;
+    private int day;
+    private int hour;
+    private int minute;
+    private int second;
 
     public static DateTimeEntity now() {
         Calendar calendar = Calendar.getInstance();
@@ -25,43 +27,69 @@ public class DateTimeEntity {
         return new DateTimeEntity(year, month, day, hour, minute);
     }
 
+    public DateTimeEntity(int year, int month, int day, int hour, int minute, int second) {
+        this.year = year;
+        this.month = month;
+        this.day = day;
+        this.hour = hour;
+        this.minute = minute;
+        this.second = second;
+    }
+
     public DateTimeEntity(int year, int month, int day, int hour, int minute) {
-        this.year = year;
-        this.month = month;
-        this.day = day;
-        this.hour = hour;
-        this.minute = minute;
+        this(year, month, day, hour, minute, 0);
     }
 
-    public DateTimeEntity(int year, int month, int day) {
-        this.year = year;
-        this.month = month;
-        this.day = day;
-    }
-
-    public DateTimeEntity(int hour, int minute) {
-        this.hour = hour;
-        this.minute = minute;
+    public DateTimeEntity(int month, int day, int hour, int minute) {
+        this(Calendar.getInstance().get(Calendar.YEAR), month, day, hour, minute, 0);
     }
 
     public int getYear() {
         return year;
     }
 
+    public void setYear(int year) {
+        this.year = year;
+    }
+
     public int getMonth() {
         return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
     }
 
     public int getDay() {
         return day;
     }
 
+    public void setDay(int day) {
+        this.day = day;
+    }
+
     public int getHour() {
         return hour;
     }
 
+    public void setHour(int hour) {
+        this.hour = hour;
+    }
+
     public int getMinute() {
         return minute;
+    }
+
+    public void setMinute(int minute) {
+        this.minute = minute;
+    }
+
+    public int getSecond() {
+        return second;
+    }
+
+    public void setSecond(int second) {
+        this.second = second;
     }
 
 }
