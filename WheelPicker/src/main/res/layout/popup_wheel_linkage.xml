@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <cn.qqtheme.framework.wheelview.widget.LinkageWheelLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/linkage_wheel_layout"
+    style="@style/WheelLinkage"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:address_wheel_curved="false"
-    app:address_wheel_cyclic="false"
-    app:address_wheel_textColor="#999999"
-    app:address_wheel_textColorSelected="#000000"
-    app:address_wheel_textSize="19sp"
-    app:address_wheel_visibleItemCount="7" />
+    android:layout_height="wrap_content" />

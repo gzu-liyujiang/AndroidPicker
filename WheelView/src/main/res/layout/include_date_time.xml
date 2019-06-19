@@ -6,7 +6,7 @@
 
     <cn.qqtheme.framework.wheelview.widget.YearWheelView
         android:id="@+id/year_wheel_view"
-        style="@style/Wheel"
+        style="@style/WheelDefault"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1.2" />
@@ -20,7 +20,7 @@
 
     <cn.qqtheme.framework.wheelview.widget.MonthWheelView
         android:id="@+id/month_wheel_view"
-        style="@style/Wheel"
+        style="@style/WheelDefault"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1.0" />
@@ -34,7 +34,7 @@
 
     <cn.qqtheme.framework.wheelview.widget.DayWheelView
         android:id="@+id/day_wheel_view"
-        style="@style/Wheel"
+        style="@style/WheelDefault"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1.0" />
@@ -48,7 +48,7 @@
 
     <cn.qqtheme.framework.wheelview.widget.HourWheelView
         android:id="@+id/hour_wheel_view"
-        style="@style/Wheel"
+        style="@style/WheelDefault"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1.0"
@@ -63,7 +63,7 @@
 
     <cn.qqtheme.framework.wheelview.widget.MinuteWheelView
         android:id="@+id/minute_wheel_view"
-        style="@style/Wheel"
+        style="@style/WheelDefault"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1.0"
@@ -78,7 +78,7 @@
 
     <cn.qqtheme.framework.wheelview.widget.SecondWheelView
         android:id="@+id/second_wheel_view"
-        style="@style/Wheel"
+        style="@style/WheelDefault"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1.0"

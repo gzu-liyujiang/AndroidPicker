@@ -15,8 +15,8 @@ import java.util.List;
 /**
  * 单项滚轮选择，参见 https://github.com/gzu-liyujiang/AndroidPicker
  *
- * @param <T> 泛型除了{@link CharSequence}及其子类，需要实现{@link TextProvider}或者重载{@link Object#toString()}提供显示文本
- * @author liyujiang
+ * @param <T> 泛型除了{@code CharSequence}及其子类，需要实现{@link TextProvider}或者重载{@code Object#toString}提供显示文本
+ * @author <a href="mailto:1032694760@qq.com">liyujiang</a>
  * @date 2019/5/8 10:04
  * @see WheelView
  * @see LayoutProvider

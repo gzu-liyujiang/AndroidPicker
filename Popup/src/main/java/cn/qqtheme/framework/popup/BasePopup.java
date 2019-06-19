@@ -40,7 +40,7 @@ import cn.qqtheme.framework.toolkit.CqrLog;
  * onDismiss
  * </code>
  *
- * @author liyujiang
+ * @author <a href="mailto:1032694760@qq.com">liyujiang</a>
  * @date 2018/9/22 19:46
  * @see OnApplyListener
  * @see OnDismissListener

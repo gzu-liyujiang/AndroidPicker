@@ -13,7 +13,7 @@ import android.widget.TextView;
 /**
  * 确认选择弹窗
  *
- * @author liyujiang
+ * @author <a href="mailto:1032694760@qq.com">liyujiang</a>
  * @date 2019/5/8 10:04
  */
 @SuppressWarnings("WeakerAccess")

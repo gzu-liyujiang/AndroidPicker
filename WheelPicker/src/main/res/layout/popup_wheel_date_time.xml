@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <cn.qqtheme.framework.wheelview.widget.DateTimeWheelLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/date_time_wheel_layout"
+    style="@style/WheelDateTime"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:datetime_wheel_curved="false"
-    app:datetime_wheel_cyclic="false"
-    app:datetime_wheel_textColor="#999999"
-    app:datetime_wheel_textColorSelected="#000000"
-    app:datetime_wheel_textSize="19sp"
-    app:datetime_wheel_visibleItemCount="7" />
+    android:layout_height="wrap_content" />

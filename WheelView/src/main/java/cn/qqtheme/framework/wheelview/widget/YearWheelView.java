@@ -8,8 +8,9 @@ import java.util.Calendar;
 /**
  * 年份滚轮控件
  *
- * @author liyujiang
+ * @author <a href="mailto:1032694760@qq.com">liyujiang</a>
  * @date 2019/6/17 13:45
+ * @since 2.0
  */
 public class YearWheelView extends NumberWheelView<Integer> {
     private static final int YEAR_OFFSET = 50;

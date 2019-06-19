@@ -5,7 +5,7 @@ import java.util.Calendar;
 /**
  * 日期时间数据实体
  *
- * @author liyujiang
+ * @author <a href="mailto:1032694760@qq.com">liyujiang</a>
  * @date 2019/5/14 17:30
  */
 @SuppressWarnings({"WeakerAccess", "unused"})
@@ -25,6 +25,12 @@ public class DateTimeEntity {
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
         return new DateTimeEntity(year, month, day, hour, minute);
+    }
+
+    public static DateTimeEntity hundredYearsOnFuture() {
+        DateTimeEntity entity = now();
+        entity.setYear(entity.getYear() + 100);
+        return entity;
     }
 
     public DateTimeEntity(int year, int month, int day, int hour, int minute, int second) {

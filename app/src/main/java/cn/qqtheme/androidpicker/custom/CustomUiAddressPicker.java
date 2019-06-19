@@ -14,7 +14,7 @@ import cn.qqtheme.framework.wheelpicker.entity.ProvinceEntity;
 /**
  * 自定义地址选择器
  *
- * @author liyujiang
+ * @author <a href="mailto:1032694760@qq.com">liyujiang</a>
  * @date 2019/6/17 19:12
  */
 public class CustomUiAddressPicker extends AddressPicker {

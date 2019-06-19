@@ -3,7 +3,7 @@ package cn.qqtheme.framework.wheelview.interfaces;
 /**
  * 时间显示文本格式化
  *
- * @author liyujiang
+ * @author <a href="mailto:1032694760@qq.com">liyujiang</a>
  * @date 2019/5/14 19:55
  */
 public interface TimeFormatter {

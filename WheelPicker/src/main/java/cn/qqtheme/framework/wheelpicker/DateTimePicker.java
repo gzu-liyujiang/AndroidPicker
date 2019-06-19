@@ -2,6 +2,7 @@ package cn.qqtheme.framework.wheelpicker;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.StyleRes;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
@@ -20,13 +21,15 @@ import cn.qqtheme.framework.wheelview.widget.DateTimeWheelLayout;
 /**
  * 日期时间滚轮选择，参见 https://github.com/gzu-liyujiang/AndroidPicker
  *
- * @author liyujiang
+ * @author <a href="mailto:1032694760@qq.com">liyujiang</a>
  * @date 2019/5/13 20:07
  */
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class DateTimePicker extends AbstractConfirmPopup<DateTimeWheelLayout> {
 
     private DateTimeWheelLayout wheelLayout;
+
+    private int wheelStyleRes = R.style.WheelDateTime;
 
     private OnDateSelectedListener onDateSelectedListener;
     private OnTimeSelectedListener onTimeSelectedListener;
@@ -48,10 +51,18 @@ public class DateTimePicker extends AbstractConfirmPopup<DateTimeWheelLayout> {
     private CharSequence minuteLabel;
     private CharSequence secondLabel;
 
+    public DateTimePicker(FragmentActivity activity) {
+        this(activity, DateMode.YEAR_MONTH_DAY, TimeMode.HOUR_24_SECOND);
+    }
+
     public DateTimePicker(FragmentActivity activity, @DateMode int dateMode, @TimeMode int timeMode) {
         super(activity);
         this.dateMode = dateMode;
         this.timeMode = timeMode;
+    }
+
+    public void setWheelStyle(@StyleRes int styleRes) {
+        this.wheelStyleRes = styleRes;
     }
 
     /**
@@ -111,7 +122,14 @@ public class DateTimePicker extends AbstractConfirmPopup<DateTimeWheelLayout> {
     @Override
     public void onViewCreated(@NonNull View contentView) {
         super.onViewCreated(contentView);
+        wheelLayout.setStyle(wheelStyleRes);
         wheelLayout.setMode(dateMode, timeMode);
+        if (startValue == null) {
+            startValue = DateTimeEntity.now();
+        }
+        if (endValue == null) {
+            endValue = DateTimeEntity.hundredYearsOnFuture();
+        }
         wheelLayout.setRange(startValue, endValue, defaultValue);
         wheelLayout.setDateFormatter(dateFormatter);
         wheelLayout.setTimeFormatter(timeFormatter);

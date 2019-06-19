@@ -8,8 +8,9 @@ import java.util.Calendar;
 /**
  * 月份滚轮控件
  *
- * @author liyujiang
+ * @author <a href="mailto:1032694760@qq.com">liyujiang</a>
  * @date 2019/6/17 13:50
+ * @since 2.0
  */
 public class MonthWheelView extends NumberWheelView<Integer> {
 

@@ -16,7 +16,7 @@ import cn.qqtheme.framework.wheelpicker.interfaces.AddressJsonParser;
 /**
  * 使用SDK自带的“org.json”包解析地址数据
  *
- * @author liyujiang
+ * @author <a href="mailto:1032694760@qq.com">liyujiang</a>
  * @date 2019/6/17 17:15
  */
 public class AddressOrgJsonParser implements AddressJsonParser {

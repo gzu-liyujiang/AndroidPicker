@@ -6,21 +6,21 @@
 
     <cn.qqtheme.framework.wheelview.widget.WheelView
         android:id="@+id/first_wheel_view"
-        style="@style/Wheel"
+        style="@style/WheelDefault"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1.0" />
 
     <cn.qqtheme.framework.wheelview.widget.WheelView
         android:id="@+id/second_wheel_view"
-        style="@style/Wheel"
+        style="@style/WheelDefault"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1.0" />
 
     <cn.qqtheme.framework.wheelview.widget.WheelView
         android:id="@+id/third_wheel_view"
-        style="@style/Wheel"
+        style="@style/WheelDefault"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1.0"

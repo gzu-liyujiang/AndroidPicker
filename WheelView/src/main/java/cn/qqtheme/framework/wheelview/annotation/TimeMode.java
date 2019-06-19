@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 /**
  * 时间模式
  *
- * @author liyujiang
+ * @author <a href="mailto:1032694760@qq.com">liyujiang</a>
  * @date 2019/5/14 17:09
  */
 @Retention(RetentionPolicy.SOURCE)

@@ -14,8 +14,9 @@ import java.util.Calendar;
 /**
  * 出生日期滚轮选择
  *
- * @author liyujiang
+ * @author <a href="mailto:1032694760@qq.com">liyujiang</a>
  * @date 2019/5/14 14:31
+ * @since 2.0
  */
 public class BirthdayPicker extends DateTimePicker {
     private static final int MAX_AGE = 100;
@@ -35,12 +36,12 @@ public class BirthdayPicker extends DateTimePicker {
     @Override
     public void onViewCreated(@NonNull View contentView) {
         super.onViewCreated(contentView);
-        getWheelLayout().setDisplayYears(true);
-        getWheelLayout().setDisplayMonths(true);
-        getWheelLayout().setDisplayDays(true);
-        getWheelLayout().setDisplayHours(false);
-        getWheelLayout().setDisplayMinutes(false);
-        getWheelLayout().setDisplaySeconds(false);
+        getWheelLayout().setDisplayYear(true);
+        getWheelLayout().setDisplayMonth(true);
+        getWheelLayout().setDisplayDay(true);
+        getWheelLayout().setDisplayHour(false);
+        getWheelLayout().setDisplayMinute(false);
+        getWheelLayout().setDisplaySecond(false);
         getCancelTextView().setVisibility(View.GONE);
         getConfirmTextView().setText("完成");
     }

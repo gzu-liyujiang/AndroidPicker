@@ -22,7 +22,7 @@ import cn.qqtheme.framework.popup.AbstractConfirmPopup;
 /**
  * 日历日期选择器
  *
- * @author liyujiang
+ * @author <a href="mailto:1032694760@qq.com">liyujiang</a>
  * @date 2019/4/30 13:36
  */
 public class CalendarPicker extends AbstractConfirmPopup<View> implements OnCalendarSelectListener {

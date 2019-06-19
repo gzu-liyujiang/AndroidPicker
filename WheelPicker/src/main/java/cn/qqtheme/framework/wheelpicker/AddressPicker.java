@@ -32,7 +32,7 @@ import cn.qqtheme.framework.wheelview.interfaces.OnLinkageSelectedListener;
  * 4、港澳维基数据：https://zh.wikipedia.org/wiki/中华人民共和国行政区划代码_(8区)
  * 5、数据抓取转化：https://github.com/small-dream/China_Province_City
  *
- * @author liyujiang
+ * @author <a href="mailto:1032694760@qq.com">liyujiang</a>
  * @date 2019/6/15 12:17
  */
 @SuppressWarnings({"unused", "WeakerAccess"})

@@ -35,6 +35,21 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
     }
 
+    public void onNestWheelPickerInView(View view) {
+    }
+
+    public void onAnimationStyle(View view) {
+    }
+
+    public void onWindowAnimator(View view) {
+    }
+
+    public void onCustomStyle(View view) {
+        DateTimePicker picker = new DateTimePicker(this);
+        picker.setWheelStyle(R.style.WheelDateTime_Custom);
+        picker.showAtBottom();
+    }
+
     public void onCalendarDateRangePicker(View view) {
         CalendarPicker picker = new CalendarPicker(this, false);
         picker.showAtBottom();
@@ -120,9 +135,42 @@ public class MainActivity extends BaseActivity {
         picker.showAtBottom();
     }
 
+    public void onNumberPicker(View view) {
+    }
+
+    public void onConstellationPicker(View view) {
+    }
+
+    public void onDoublePicker(View view) {
+    }
+
+    public void onBusinessTimePicker(View view) {
+    }
+
+    public void onLinkagePicker(View view) {
+    }
+
     public void onCustomUiAddressPicker(View view) {
         CustomUiAddressPicker picker = new CustomUiAddressPicker(this);
         picker.showAtBottom();
+    }
+
+    public void onCustomDataSourceAddressPicker(View view) {
+    }
+
+    public void onAddressNoProvincePicker(View view) {
+    }
+
+    public void onAddressNoCountyPicker(View view) {
+    }
+
+    public void onColorPicker(View view) {
+    }
+
+    public void onFilePicker(View view) {
+    }
+
+    public void onDirectoryPicker(View view) {
     }
 
 }

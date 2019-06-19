@@ -6,7 +6,7 @@ import cn.qqtheme.framework.wheelview.interfaces.TimeFormatter;
 /**
  * 简单的时间格式化
  *
- * @author liyujiang
+ * @author <a href="mailto:1032694760@qq.com">liyujiang</a>
  * @date 2019/5/15 18:13
  */
 public class SimpleTimeFormatter implements TimeFormatter {

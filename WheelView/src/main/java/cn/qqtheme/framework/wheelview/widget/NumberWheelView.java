@@ -1,29 +1,30 @@
 package cn.qqtheme.framework.wheelview.widget;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 
 import cn.qqtheme.framework.wheelview.interfaces.NumberFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * 数字滚轮控件
  *
- * @param <T> 泛型主要为{@link Integer}和{@link Float}
- * @author liyujiang
+ * @param <T> 泛型主要为{@code Integer}和{@code Float}
+ * @author <a href="mailto:1032694760@qq.com">liyujiang</a>
  * @date 2019/5/13 19:13
+ * @since 2.0
  */
 @SuppressWarnings("unused")
-public class NumberWheelView<T extends Number> extends WheelView<String> {
+public class NumberWheelView<T extends Number> extends WheelView<T> {
     private T minValue;
     private T maxValue;
     private T stepValue;
     private T defaultValue;
     private boolean isDecimal;
-    private NumberFormatter<T> numberFormatter;
+    private NumberFormatter<T> formatter;
 
     public NumberWheelView(Context context) {
         super(context);
@@ -44,36 +45,30 @@ public class NumberWheelView<T extends Number> extends WheelView<String> {
     }
 
     @Override
-    protected String assignDefault() {
-        return formatNumber(defaultValue);
+    protected T assignDefault() {
+        return defaultValue;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    protected List<String> generateData() {
-        final List<String> data = new ArrayList<>();
+    protected List<T> generateData() {
+        final List<T> data = new ArrayList<>();
         if (isDecimal) {
             for (float i = minValue.floatValue(); i <= maxValue.floatValue();
                  i = i + stepValue.floatValue()) {
-                data.add(formatNumber((T) Float.valueOf(i)));
+                data.add((T) Float.valueOf(i));
             }
         } else {
             for (int i = minValue.intValue(); i <= maxValue.intValue();
                  i = i + stepValue.intValue()) {
-                data.add(formatNumber((T) Integer.valueOf(i)));
+                data.add((T) Integer.valueOf(i));
             }
         }
         return data;
     }
 
-    private String formatNumber(T value) {
-        if (numberFormatter != null) {
-            return numberFormatter.format(value);
-        }
-        if (isDecimal) {
-            return String.format(Locale.getDefault(), "%.1f", value.floatValue());
-        }
-        return String.valueOf(value.intValue());
+    public void setFormatter(NumberFormatter<T> formatter) {
+        this.formatter = formatter;
     }
 
     public void setRange(int minValue, int maxValue) {
@@ -112,11 +107,6 @@ public class NumberWheelView<T extends Number> extends WheelView<String> {
         refreshData();
     }
 
-    public void setNumberFormatter(NumberFormatter<T> numberFormatter) {
-        this.numberFormatter = numberFormatter;
-        refreshData();
-    }
-
     private void refreshData() {
         setData(generateData());
         setDefaultItem(assignDefault());
@@ -131,21 +121,20 @@ public class NumberWheelView<T extends Number> extends WheelView<String> {
     }
 
     @Override
-    public String getCurrentItem() {
-        return formatNumber(getCurrentValue());
-    }
-
-    public T getCurrentValue() {
-        int position = super.getCurrentItemPosition();
-        return getValueByPosition(position);
-    }
-
-    @SuppressWarnings("unchecked")
-    public T getValueByPosition(int position) {
-        if (isDecimal) {
-            return (T) Float.valueOf(minValue.floatValue() + position);
+    public String formatItemText(int position, @NonNull Object object) {
+        if (formatter != null) {
+            //noinspection unchecked
+            return formatter.format((T) object);
         }
-        return (T) Integer.valueOf(minValue.intValue() + position);
+        return super.formatItemText(position, object);
+    }
+
+    public String getCurrentItemFormatString() {
+        T currentItem = getCurrentItem();
+        if (formatter != null) {
+            return formatter.format(currentItem);
+        }
+        return super.formatItemText(getCurrentItemPosition(), currentItem);
     }
 
 }

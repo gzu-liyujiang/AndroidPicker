@@ -2,6 +2,7 @@ package cn.qqtheme.framework.wheelpicker;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.StyleRes;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
@@ -15,12 +16,14 @@ import cn.qqtheme.framework.wheelview.widget.LinkageWheelLayout;
 /**
  * 二三级联动滚轮选择，参见 https://github.com/gzu-liyujiang/AndroidPicker
  *
- * @author liyujiang
+ * @author <a href="mailto:1032694760@qq.com">liyujiang</a>
  * @date 2019/6/17 11:21
  */
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class LinkagePicker<F extends LinkageTextProvider, S extends LinkageTextProvider,
         T extends TextProvider> extends AbstractConfirmPopup<LinkageWheelLayout> {
+
+    private int wheelStyleRes = R.style.WheelLinkage;
 
     private LinkageWheelLayout<F, S, T> wheelLayout;
     private LinkageDataProvider<F, S, T> dataProvider;
@@ -28,6 +31,10 @@ public class LinkagePicker<F extends LinkageTextProvider, S extends LinkageTextP
 
     public LinkagePicker(FragmentActivity activity) {
         super(activity);
+    }
+
+    public void setWheelStyle(@StyleRes int styleRes) {
+        this.wheelStyleRes = styleRes;
     }
 
     public void setDataProvider(LinkageDataProvider<F, S, T> dataProvider) {
@@ -49,6 +56,7 @@ public class LinkagePicker<F extends LinkageTextProvider, S extends LinkageTextP
     @Override
     public void onViewCreated(@NonNull View contentView) {
         super.onViewCreated(contentView);
+        wheelLayout.setStyle(wheelStyleRes);
         if (dataProvider != null) {
             wheelLayout.setDataProvider(dataProvider);
         }

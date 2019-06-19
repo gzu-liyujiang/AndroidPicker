@@ -3,7 +3,7 @@ package cn.qqtheme.framework.wheelpicker.interfaces.impl;
 /**
  * 生日格式化
  *
- * @author liyujiang
+ * @author <a href="mailto:1032694760@qq.com">liyujiang</a>
  * @date 2019/5/14 14:31
  */
 public class BirthdayDateFormatter extends SimpleDateFormatter {

@@ -5,7 +5,7 @@ import java.util.Calendar;
 /**
  * 日期数据实体
  *
- * @author liyujiang
+ * @author <a href="mailto:1032694760@qq.com">liyujiang</a>
  * @date 2019/6/17 15:29
  */
 @SuppressWarnings({"unused", "WeakerAccess"})

@@ -12,7 +12,7 @@ import cn.qqtheme.framework.wheelview.interfaces.LinkageDataProvider;
 /**
  * 地址数据提供者
  *
- * @author liyujiang
+ * @author <a href="mailto:1032694760@qq.com">liyujiang</a>
  * @date 2019/6/17 16:27
  */
 public class AddressDataProvider implements LinkageDataProvider<ProvinceEntity, CityEntity,

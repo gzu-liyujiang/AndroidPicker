@@ -14,7 +14,7 @@ import java.util.Locale;
 /**
  * 日期时间工具类
  *
- * @author liyujiang
+ * @author <a href="mailto:1032694760@qq.com">liyujiang</a>
  * @date 2015/8/5
  */
 @SuppressWarnings("WeakerAccess")
@@ -42,7 +42,7 @@ public class CqrDateTime extends android.text.format.DateUtils {
     /**
      * 根据年份及月份获取每月的天数
      *
-     * @see java.util.Calendar#getActualMaximum(int)
+     * @see Calendar#getActualMaximum(int)
      */
     public static int getTotalDaysInMonth(int year, int month) {
         switch (month) {

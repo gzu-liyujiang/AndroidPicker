@@ -11,4 +11,18 @@
         <item name="android:windowExitAnimation">@anim/popup_out</item>
     </style>
 
+    <style name="WheelDateTime.Custom" parent="WheelDateTime">
+        <item name="wheel_itemVisibleCount">7</item>
+        <item name="wheel_itemTextColor">#FFFF0000</item>
+        <item name="wheel_itemTextColorSelected">#FFFF0000</item>
+        <item name="wheel_atmospheric">true</item>
+        <item name="wheel_curtain">true</item>
+        <item name="wheel_curtainColor">#80EEEEEE</item>
+        <item name="wheel_curved">true</item>
+        <item name="wheel_cyclic">false</item>
+        <item name="wheel_indicator">true</item>
+        <item name="wheel_indicatorColor">#FFEEEEEE</item>
+        <item name="wheel_indicatorSize">1dp</item>
+    </style>
+
 </resources>

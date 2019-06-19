@@ -28,7 +28,7 @@ import java.util.List;
  * Android 8，参阅 https://developer.android.google.cn/about/versions/oreo/android-8.0-changes
  * Android 9，参阅 https://developer.android.google.cn/about/versions/pie/android-9.0-changes-all
  *
- * @author liyujiang
+ * @author <a href="mailto:1032694760@qq.com">liyujiang</a>
  * @date 2015/10/19
  */
 @SuppressWarnings("WeakerAccess")

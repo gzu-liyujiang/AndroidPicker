@@ -2,8 +2,11 @@ package cn.qqtheme.framework.wheelview.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StyleRes;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -13,27 +16,29 @@ import cn.qqtheme.framework.toolkit.CqrDateTime;
 import cn.qqtheme.framework.toolkit.CqrDensity;
 import cn.qqtheme.framework.wheelview.R;
 import cn.qqtheme.framework.wheelview.annotation.DateMode;
+import cn.qqtheme.framework.wheelview.annotation.ItemAlign;
 import cn.qqtheme.framework.wheelview.annotation.TimeMode;
 import cn.qqtheme.framework.wheelview.entity.DateTimeEntity;
 import cn.qqtheme.framework.wheelview.interfaces.DateFormatter;
 import cn.qqtheme.framework.wheelview.interfaces.NumberFormatter;
+import cn.qqtheme.framework.wheelview.interfaces.OnWheelChangedListener;
+import cn.qqtheme.framework.wheelview.interfaces.OnWheelSelectedListener;
 import cn.qqtheme.framework.wheelview.interfaces.TimeFormatter;
-import cn.qqtheme.framework.wheelview.interfaces.impl.AbstractWheelSelectedListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 /**
- * // FIXME: 2019/6/18 快速来回切换个滚轮可能会出现某些项显示为空问题
  * 日期时间滚轮控件
  *
- * @author liyujiang
+ * @author <a href="mailto:1032694760@qq.com">liyujiang</a>
  * @date 2019/5/14 15:26
+ * @since 2.0
  */
 @SuppressWarnings("unused")
-public class DateTimeWheelLayout extends LinearLayout {
-    private static final int DELAY_BEFORE_CHECK_PAST = 100;
+public class DateTimeWheelLayout extends LinearLayout implements OnWheelSelectedListener<Integer>,
+        OnWheelChangedListener {
 
     private YearWheelView wvYear;
     private MonthWheelView wvMonth;
@@ -54,28 +59,39 @@ public class DateTimeWheelLayout extends LinearLayout {
     private DateTimeEntity startValue;
     private DateTimeEntity endValue;
 
-    private int yearIndex;
-    private int monthIndex;
-    private int dayIndex;
-    private int hourIndex;
-    private int minuteIndex;
-    private int secondIndex;
+    private Integer selectedYear;
+    private Integer selectedMonth;
+    private Integer selectedDay;
+    private Integer selectedHour;
+    private Integer selectedMinute;
+    private Integer selectedSecond;
 
-    private int timeMode;
+    private int timeMode = TimeMode.HOUR_24_SECOND;
 
-    private boolean displayYears = true;
-    private boolean displayMonths = true;
-    private boolean displayDays = true;
-    private boolean displayHours = true;
-    private boolean displayMinutes = true;
-    private boolean displaySeconds = true;
+    private boolean displayYear = true;
+    private boolean displayMonth = true;
+    private boolean displayDay = true;
+    private boolean displayHour = true;
+    private boolean displayMinute = true;
+    private boolean displaySecond = true;
+
+    private AttributeSet attrs;
 
     public DateTimeWheelLayout(Context context) {
         this(context, null);
     }
 
     public DateTimeWheelLayout(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs, R.attr.WheelDateTimeStyle);
+    }
+
+    public DateTimeWheelLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+        this(context, attrs, defStyleAttr, R.style.WheelDateTime);
+    }
+
+    public DateTimeWheelLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr);
+        this.attrs = attrs;
         setOrientation(VERTICAL);
         inflate(context, R.layout.include_date_time, this);
 
@@ -99,7 +115,16 @@ public class DateTimeWheelLayout extends LinearLayout {
         ));
 
         setWheelListener();
-        initAttrs(context, attrs);
+        initAttrs(context, attrs, defStyleAttr, defStyleRes);
+    }
+
+    public void setStyle(@StyleRes int style) {
+        if (attrs == null) {
+            throw new RuntimeException("Please use " + getClass().getSimpleName() + " in xml");
+        }
+        initAttrs(getContext(), attrs, R.attr.WheelDateTimeStyle, style);
+        requestLayout();
+        postInvalidate();
     }
 
     public void setMode(@DateMode int dateMode, @TimeMode int timeMode) {
@@ -141,12 +166,14 @@ public class DateTimeWheelLayout extends LinearLayout {
     }
 
     private <T extends DateTimeEntity> void changeDefaultData(@Nullable T defaultValue) {
-        yearIndex = 0;
-        monthIndex = 0;
-        dayIndex = 0;
-        hourIndex = 0;
-        minuteIndex = 0;
-        secondIndex = 0;
+        if (defaultValue != null) {
+            selectedYear = defaultValue.getYear();
+            selectedMonth = defaultValue.getMonth();
+            selectedDay = defaultValue.getDay();
+            selectedHour = defaultValue.getHour();
+            selectedMinute = defaultValue.getMinute();
+            selectedSecond = defaultValue.getSecond();
+        }
         changeYear();
     }
 
@@ -154,19 +181,19 @@ public class DateTimeWheelLayout extends LinearLayout {
         if (dateFormatter == null) {
             return;
         }
-        wvYear.setNumberFormatter(new NumberFormatter<Integer>() {
+        wvYear.setFormatter(new NumberFormatter<Integer>() {
             @Override
             public String format(Integer value) {
                 return dateFormatter.formatYear(value);
             }
         });
-        wvMonth.setNumberFormatter(new NumberFormatter<Integer>() {
+        wvMonth.setFormatter(new NumberFormatter<Integer>() {
             @Override
             public String format(Integer value) {
                 return dateFormatter.formatMonth(value);
             }
         });
-        wvDay.setNumberFormatter(new NumberFormatter<Integer>() {
+        wvDay.setFormatter(new NumberFormatter<Integer>() {
             @Override
             public String format(Integer value) {
                 return dateFormatter.formatDay(value);
@@ -178,19 +205,19 @@ public class DateTimeWheelLayout extends LinearLayout {
         if (timeFormatter == null) {
             return;
         }
-        wvHour.setNumberFormatter(new NumberFormatter<Integer>() {
+        wvHour.setFormatter(new NumberFormatter<Integer>() {
             @Override
             public String format(Integer value) {
                 return timeFormatter.formatHour(value);
             }
         });
-        wvMinute.setNumberFormatter(new NumberFormatter<Integer>() {
+        wvMinute.setFormatter(new NumberFormatter<Integer>() {
             @Override
             public String format(Integer value) {
                 return timeFormatter.formatMinute(value);
             }
         });
-        wvSecond.setNumberFormatter(new NumberFormatter<Integer>() {
+        wvSecond.setFormatter(new NumberFormatter<Integer>() {
             @Override
             public String format(Integer value) {
                 return timeFormatter.formatSecond(value);
@@ -259,103 +286,111 @@ public class DateTimeWheelLayout extends LinearLayout {
     }
 
     public final int getSelectedYear() {
-        return wvYear.getCurrentValue();
+        return wvYear.getCurrentItem();
     }
 
     public final int getSelectedMonth() {
-        return wvMonth.getCurrentValue();
+        return wvMonth.getCurrentItem();
     }
 
     public final int getSelectedDay() {
-        return wvDay.getCurrentValue();
+        return wvDay.getCurrentItem();
     }
 
     public final int getSelectedHour() {
-        return wvHour.getCurrentValue();
+        return wvHour.getCurrentItem();
     }
 
     public final int getSelectedMinute() {
-        return wvMinute.getCurrentValue();
+        return wvMinute.getCurrentItem();
     }
 
     public final int getSelectedSecond() {
-        return wvSecond.getCurrentValue();
+        return wvSecond.getCurrentItem();
     }
 
     private void setWheelListener() {
-        wvYear.setOnWheelListener(new AbstractWheelSelectedListener() {
-            @Override
-            public void onItemSelected(WheelView wheelView, int position) {
-                yearIndex = position;
-                monthIndex = 0;
-                dayIndex = 0;
-                hourIndex = 0;
-                minuteIndex = 0;
-                secondIndex = 0;
-                changeMonth();
-            }
-        });
-        wvMonth.setOnWheelListener(new AbstractWheelSelectedListener() {
-            @Override
-            public void onItemSelected(WheelView wheelView, int position) {
-                monthIndex = position;
-                dayIndex = 0;
-                hourIndex = 0;
-                minuteIndex = 0;
-                secondIndex = 0;
-                changeDay();
-            }
-        });
-        wvDay.setOnWheelListener(new AbstractWheelSelectedListener() {
-            @Override
-            public void onItemSelected(WheelView wheelView, int position) {
-                dayIndex = position;
-                hourIndex = 0;
-                minuteIndex = 0;
-                secondIndex = 0;
-                changeHour();
-            }
-        });
-        wvHour.setOnWheelListener(new AbstractWheelSelectedListener() {
-            @Override
-            public void onItemSelected(WheelView wheelView, int position) {
-                hourIndex = position;
-                minuteIndex = 0;
-                secondIndex = 0;
-                changeMinute();
-            }
-        });
-        wvMinute.setOnWheelListener(new AbstractWheelSelectedListener() {
-            @Override
-            public void onItemSelected(WheelView wheelView, int position) {
-                minuteIndex = position;
-                secondIndex = 0;
-                changeSecond();
-            }
-        });
-        wvSecond.setOnWheelListener(new AbstractWheelSelectedListener() {
-            @Override
-            public void onItemSelected(WheelView wheelView, int position) {
-                secondIndex = position;
-            }
-        });
+        wvYear.setWheelSelectedListener(this);
+        wvMonth.setWheelSelectedListener(this);
+        wvDay.setWheelSelectedListener(this);
+        wvHour.setWheelSelectedListener(this);
+        wvMinute.setWheelSelectedListener(this);
+        wvSecond.setWheelSelectedListener(this);
+
+        wvYear.setWheelChangedListener(this);
+        wvMonth.setWheelChangedListener(this);
+        wvDay.setWheelChangedListener(this);
+        wvHour.setWheelChangedListener(this);
+        wvMinute.setWheelChangedListener(this);
+        wvSecond.setWheelChangedListener(this);
+    }
+
+    @Override
+    public void onItemSelected(WheelView wheelView, int position, Integer item) {
+        if (wheelView instanceof YearWheelView) {
+            selectedYear = item;
+            selectedMonth = null;
+            selectedDay = null;
+            selectedHour = null;
+            selectedMinute = null;
+            selectedSecond = null;
+            changeMonth(item);
+        } else if (wheelView instanceof MonthWheelView) {
+            selectedMonth = item;
+            selectedDay = null;
+            selectedHour = null;
+            selectedMinute = null;
+            selectedSecond = null;
+            changeDay(selectedYear, item);
+        } else if (wheelView instanceof DayWheelView) {
+            selectedDay = item;
+            selectedHour = null;
+            selectedMinute = null;
+            selectedSecond = null;
+            changeHour(selectedYear, selectedMonth, item);
+        } else if (wheelView instanceof HourWheelView) {
+            selectedHour = item;
+            selectedMinute = null;
+            selectedSecond = null;
+            changeMinute(selectedYear, selectedMonth, selectedDay, item);
+        } else if (wheelView instanceof MinuteWheelView) {
+            selectedMinute = item;
+            selectedSecond = null;
+            changeSecond(selectedYear, selectedMonth, selectedDay, selectedHour, item);
+        } else if (wheelView instanceof SecondWheelView) {
+            selectedSecond = item;
+        }
+    }
+
+    @Override
+    public void onWheelScrolled(WheelView wheelView, int offset) {
+
+    }
+
+    @Override
+    public void onWheelSelected(WheelView wheelView, int position) {
+
+    }
+
+    @Override
+    public void onWheelScrollStateChanged(WheelView wheelView, int state) {
+        // 除当前操作的滚轮外，其他滚轮在有滚轮滚动时设置触摸事件不可用，
+        // 防止快速来回切换多个滚轮可能会出现某些项显示为空的问题
+        setEnabled(state == WheelView.SCROLL_STATE_IDLE);
+        wheelView.setEnabled(true);
     }
 
     private void changeYear() {
         final int min = Math.min(startValue.getYear(), endValue.getYear());
         final int max = Math.max(startValue.getYear(), endValue.getYear());
-        wvYear.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                wvYear.setRange(min, max);
-                wvYear.setDefaultItemPosition(yearIndex);
-                changeMonth();
-            }
-        }, DELAY_BEFORE_CHECK_PAST);
+        if (selectedYear == null) {
+            selectedYear = min;
+        }
+        wvYear.setRange(min, max, selectedYear);
+        changeMonth(selectedYear);
     }
 
-    private void changeMonth() {
-        int year = wvYear.getValueByPosition(yearIndex);
+    private void changeMonth(int year) {
         final int min, max;
         //开始年份和结束年份相同（即只有一个年份，这种情况建议使用月日模式）
         if (startValue.getYear() == endValue.getYear()) {
@@ -377,19 +412,14 @@ public class DateTimeWheelLayout extends LinearLayout {
             min = 1;
             max = 12;
         }
-        wvMonth.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                wvMonth.setRange(min, max);
-                wvMonth.setDefaultItemPosition(monthIndex);
-                changeDay();
-            }
-        }, DELAY_BEFORE_CHECK_PAST);
+        if (selectedMonth == null) {
+            selectedMonth = min;
+        }
+        wvMonth.setRange(min, max, selectedMonth);
+        changeDay(year, selectedMonth);
     }
 
-    private void changeDay() {
-        int year = wvYear.getValueByPosition(yearIndex);
-        int month = wvMonth.getValueByPosition(monthIndex);
+    private void changeDay(int year, int month) {
         final int min, max;
         //开始年月及结束年月相同情况
         if (year == startValue.getYear() && month == startValue.getMonth()
@@ -410,85 +440,83 @@ public class DateTimeWheelLayout extends LinearLayout {
             min = 1;
             max = CqrDateTime.getTotalDaysInMonth(year, month);
         }
-        wvDay.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                wvDay.setRange(min, max);
-                wvDay.setDefaultItemPosition(dayIndex);
-                changeHour();
-            }
-        }, DELAY_BEFORE_CHECK_PAST);
+        if (selectedDay == null) {
+            selectedDay = min;
+        }
+        wvDay.setRange(min, max, selectedDay);
+        changeHour(year, month, selectedDay);
     }
 
-    private void changeHour() {
-        int day = wvDay.getValueByPosition(dayIndex);
+    private void changeHour(int year, int month, int day) {
         final int min, max;
         //开始日子和结束日子相同（即只有一个日子，这种情况建议使用时分模式）
-        if (startValue.getDay() == endValue.getDay()) {
+        if (startValue.getYear() == endValue.getYear() &&
+                startValue.getMonth() == endValue.getMonth() &&
+                startValue.getDay() == endValue.getDay()) {
             min = Math.min(startValue.getHour(), endValue.getHour());
             max = Math.max(startValue.getHour(), endValue.getHour());
         }
         //当前所选日子和开始日子相同
-        else if (day == startValue.getDay()) {
+        else if (startValue.getYear() == endValue.getYear() &&
+                startValue.getMonth() == endValue.getMonth() &&
+                day == startValue.getDay()) {
             min = startValue.getHour();
-            max = timeMode == TimeMode.HOUR_12 ? 12 : 24;
+            max = timeMode == TimeMode.HOUR_12 ? 12 : 23;
         }
         //当前所选日子和结束日子相同
-        else if (day == endValue.getDay()) {
+        else if (startValue.getYear() == endValue.getYear() &&
+                startValue.getMonth() == endValue.getMonth() &&
+                day == endValue.getDay()) {
             min = 0;
             max = endValue.getHour();
         }
         //当前所选日子在开始日子和结束日子之间
         else {
             min = 0;
-            max = timeMode == TimeMode.HOUR_12 ? 12 : 24;
+            max = timeMode == TimeMode.HOUR_12 ? 12 : 23;
         }
-        wvHour.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                wvHour.setRange(min, max);
-                wvHour.setDefaultItemPosition(hourIndex);
-                changeMinute();
-            }
-        }, DELAY_BEFORE_CHECK_PAST);
+        if (selectedHour == null) {
+            selectedHour = min;
+        }
+        wvHour.setRange(min, max, selectedHour);
+        changeMinute(year, month, day, selectedHour);
     }
 
-    private void changeMinute() {
-        int day = wvDay.getValueByPosition(dayIndex);
-        int hour = wvHour.getValueByPosition(hourIndex);
+    private void changeMinute(int year, int month, int day, int hour) {
         final int min, max;
         //开始日时及结束日时相同情况
-        if (day == startValue.getDay() && hour == startValue.getHour()
+        if (startValue.getYear() == endValue.getYear() &&
+                startValue.getMonth() == endValue.getMonth() &&
+                day == startValue.getDay() && hour == startValue.getHour()
                 && day == endValue.getDay() && hour == endValue.getHour()) {
             min = startValue.getMinute();
             max = endValue.getMinute();
         }
         //开始日时相同情况
-        else if (day == startValue.getDay() && hour == startValue.getHour()) {
+        else if (startValue.getYear() == endValue.getYear() &&
+                startValue.getMonth() == endValue.getMonth() &&
+                day == startValue.getDay() && hour == startValue.getHour()) {
             min = startValue.getMinute();
             max = 59;
         }
         //结束日时相同情况
-        else if (day == endValue.getDay() && hour == endValue.getHour()) {
+        else if (startValue.getYear() == endValue.getYear() &&
+                startValue.getMonth() == endValue.getMonth() &&
+                day == endValue.getDay() && hour == endValue.getHour()) {
             min = 0;
             max = endValue.getMinute();
         } else {
             min = 0;
             max = 59;
         }
-        wvMinute.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                wvMinute.setRange(min, max);
-                wvMinute.setDefaultItemPosition(minuteIndex);
-                changeSecond();
-            }
-        }, DELAY_BEFORE_CHECK_PAST);
+        if (selectedMinute == null) {
+            selectedMinute = min;
+        }
+        wvMinute.setRange(min, max, selectedMinute);
+        changeSecond(year, month, day, hour, selectedMinute);
     }
 
-    private void changeSecond() {
-        int hour = wvHour.getValueByPosition(hourIndex);
-        int minute = wvMinute.getValueByPosition(minuteIndex);
+    private void changeSecond(int year, int month, int day, int hour, int minute) {
         final int min, max;
         //开始时分及结束时分相同情况
         if (hour == startValue.getHour() && minute == startValue.getMinute()
@@ -509,13 +537,10 @@ public class DateTimeWheelLayout extends LinearLayout {
             min = 0;
             max = 59;
         }
-        wvSecond.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                wvSecond.setRange(min, max);
-                wvSecond.setDefaultItemPosition(secondIndex);
-            }
-        }, DELAY_BEFORE_CHECK_PAST);
+        if (selectedSecond == null) {
+            selectedSecond = min;
+        }
+        wvSecond.setRange(min, max, selectedSecond);
     }
 
     @Override
@@ -526,9 +551,33 @@ public class DateTimeWheelLayout extends LinearLayout {
         }
     }
 
+    public void setCurtain(boolean hasCurtain) {
+        for (WheelView wheelView : wheelViews) {
+            wheelView.setCurtain(hasCurtain);
+        }
+    }
+
+    public void setCurtainColor(@ColorInt int color) {
+        for (WheelView wheelView : wheelViews) {
+            wheelView.setCurtainColor(color);
+        }
+    }
+
+    public void setAtmospheric(boolean hasAtmospheric) {
+        for (WheelView wheelView : wheelViews) {
+            wheelView.setAtmospheric(hasAtmospheric);
+        }
+    }
+
     public void setCurved(boolean curved) {
         for (WheelView wheelView : wheelViews) {
             wheelView.setCurved(curved);
+        }
+    }
+
+    public void setItemSpace(int space) {
+        for (WheelView wheelView : wheelViews) {
+            wheelView.setItemSpace(space);
         }
     }
 
@@ -538,21 +587,66 @@ public class DateTimeWheelLayout extends LinearLayout {
         }
     }
 
+    public void setIndicator(boolean hasIndicator) {
+        for (WheelView wheelView : wheelViews) {
+            wheelView.setIndicator(hasIndicator);
+        }
+    }
+
+    public void setIndicatorSize(int size) {
+        for (WheelView wheelView : wheelViews) {
+            wheelView.setIndicatorSize(size);
+        }
+    }
+
+    public void setIndicatorColor(@ColorInt int color) {
+        for (WheelView wheelView : wheelViews) {
+            wheelView.setIndicatorColor(color);
+        }
+    }
+
     public void setTextSize(int textSize) {
         for (WheelView wheelView : wheelViews) {
-            wheelView.setItemTextSize(textSize);
+            wheelView.setTextSize(textSize);
+        }
+    }
+
+    public void setSameWidth(boolean hasSameWidth) {
+        for (WheelView wheelView : wheelViews) {
+            wheelView.setSameWidth(hasSameWidth);
+        }
+    }
+
+    public void setDefaultItemPosition(int position) {
+        for (WheelView wheelView : wheelViews) {
+            wheelView.setDefaultItemPosition(position);
+        }
+    }
+
+    public void setMaxWidthTextPosition(int position) {
+        for (WheelView wheelView : wheelViews) {
+            wheelView.setMaxWidthTextPosition(position);
+        }
+    }
+
+    public void setMaxWidthText(String text) {
+        if (TextUtils.isEmpty(text)) {
+            return;
+        }
+        for (WheelView wheelView : wheelViews) {
+            wheelView.setMaxWidthText(text);
         }
     }
 
     public void setSelectedTextColor(int selectedTextColor) {
         for (WheelView wheelView : wheelViews) {
-            wheelView.setSelectedItemTextColor(selectedTextColor);
+            wheelView.setSelectedTextColor(selectedTextColor);
         }
     }
 
     public void setTextColor(int textColor) {
         for (WheelView wheelView : wheelViews) {
-            wheelView.setItemTextColor(textColor);
+            wheelView.setTextColor(textColor);
         }
     }
 
@@ -562,51 +656,76 @@ public class DateTimeWheelLayout extends LinearLayout {
         }
     }
 
-    public void setDisplayYears(boolean displayYears) {
-        this.displayYears = displayYears;
-        wvYear.setVisibility(displayYears ? VISIBLE : GONE);
+    public void setItemAlign(@ItemAlign int align) {
+        for (WheelView wheelView : wheelViews) {
+            wheelView.setItemAlign(align);
+        }
     }
 
-    public void setDisplayMonths(boolean displayMonths) {
-        this.displayMonths = displayMonths;
-        wvMonth.setVisibility(displayMonths ? VISIBLE : GONE);
+    public void setDisplayYear(boolean displayYear) {
+        this.displayYear = displayYear;
+        wvYear.setVisibility(displayYear ? VISIBLE : GONE);
     }
 
-    public void setDisplayDays(boolean displayDays) {
-        this.displayDays = displayDays;
-        wvDay.setVisibility(displayDays ? VISIBLE : GONE);
+    public void setDisplayMonth(boolean displayMonth) {
+        this.displayMonth = displayMonth;
+        wvMonth.setVisibility(displayMonth ? VISIBLE : GONE);
     }
 
-    public void setDisplayHours(boolean displayHours) {
-        this.displayHours = displayHours;
-        wvHour.setVisibility(displayHours ? VISIBLE : GONE);
+    public void setDisplayDay(boolean displayDay) {
+        this.displayDay = displayDay;
+        wvDay.setVisibility(displayDay ? VISIBLE : GONE);
     }
 
-    public void setDisplayMinutes(boolean displayMinutes) {
-        this.displayMinutes = displayMinutes;
-        wvMinute.setVisibility(displayMinutes ? VISIBLE : GONE);
+    public void setDisplayHour(boolean displayHour) {
+        this.displayHour = displayHour;
+        wvHour.setVisibility(displayHour ? VISIBLE : GONE);
     }
 
-    public void setDisplaySeconds(boolean displaySeconds) {
-        this.displaySeconds = displaySeconds;
-        wvSecond.setVisibility(displaySeconds ? VISIBLE : GONE);
+    public void setDisplayMinute(boolean displayMinute) {
+        this.displayMinute = displayMinute;
+        wvMinute.setVisibility(displayMinute ? VISIBLE : GONE);
     }
 
-    private void initAttrs(Context context, AttributeSet attrs) {
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.DateTimeWheelLayout);
+    public void setDisplaySecond(boolean displaySecond) {
+        this.displaySecond = displaySecond;
+        wvSecond.setVisibility(displaySecond ? VISIBLE : GONE);
+    }
 
-        setTextColor(a.getColor(R.styleable.DateTimeWheelLayout_datetime_wheel_textColor, 0xFF999999));
-        setSelectedTextColor(a.getColor(R.styleable.DateTimeWheelLayout_datetime_wheel_textColorSelected, 0xFF000000));
-        setTextSize(a.getDimensionPixelSize(R.styleable.DateTimeWheelLayout_datetime_wheel_textSize, CqrDensity.sp2px(context, 19)));
-        setCurved(a.getBoolean(R.styleable.DateTimeWheelLayout_datetime_wheel_curved, false));
-        setCyclic(a.getBoolean(R.styleable.DateTimeWheelLayout_datetime_wheel_cyclic, false));
-        setVisibleItemCount(a.getInt(R.styleable.DateTimeWheelLayout_datetime_wheel_visibleItemCount, 7));
-        setDisplayYears(a.getBoolean(R.styleable.DateTimeWheelLayout_datetime_wheel_displayYears, displayYears));
-        setDisplayMonths(a.getBoolean(R.styleable.DateTimeWheelLayout_datetime_wheel_displayMonths, displayMonths));
-        setDisplayDays(a.getBoolean(R.styleable.DateTimeWheelLayout_datetime_wheel_displayDays, displayDays));
-        setDisplayHours(a.getBoolean(R.styleable.DateTimeWheelLayout_datetime_wheel_displayHours, displayHours));
-        setDisplayMinutes(a.getBoolean(R.styleable.DateTimeWheelLayout_datetime_wheel_displayMinutes, displayMinutes));
-        setDisplaySeconds(a.getBoolean(R.styleable.DateTimeWheelLayout_datetime_wheel_displaySeconds, displaySeconds));
+    private void initAttrs(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        if (attrs == null) {
+            return;
+        }
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.DateTimeWheelLayout,
+                defStyleAttr, defStyleRes);
+
+        setTextSize(a.getDimensionPixelSize(R.styleable.DateTimeWheelLayout_wheel_itemTextSize,
+                CqrDensity.sp2px(context, 20)));
+        setVisibleItemCount(a.getInt(R.styleable.DateTimeWheelLayout_wheel_itemVisibleCount, 5));
+        setDefaultItemPosition(a.getInt(R.styleable.DateTimeWheelLayout_wheel_itemDefaultPosition, 0));
+        setSameWidth(a.getBoolean(R.styleable.DateTimeWheelLayout_wheel_hasSameWidth, false));
+        setMaxWidthTextPosition(a.getInt(R.styleable.DateTimeWheelLayout_wheel_maxWidthTextPosition, 0));
+        setMaxWidthText(a.getString(R.styleable.DateTimeWheelLayout_wheel_maxWidthText));
+        setSelectedTextColor(a.getColor(R.styleable.DateTimeWheelLayout_wheel_itemTextColorSelected, 0xFF000000));
+        setTextColor(a.getColor(R.styleable.DateTimeWheelLayout_wheel_itemTextColor, 0xFF888888));
+        setItemSpace(a.getDimensionPixelSize(R.styleable.DateTimeWheelLayout_wheel_itemSpace,
+                CqrDensity.dp2px(context, 15)));
+        setCyclic(a.getBoolean(R.styleable.DateTimeWheelLayout_wheel_cyclic, false));
+        setIndicator(a.getBoolean(R.styleable.DateTimeWheelLayout_wheel_indicator, false));
+        setIndicatorColor(a.getColor(R.styleable.DateTimeWheelLayout_wheel_indicatorColor, 0xFFEE3333));
+        setIndicatorSize(a.getDimensionPixelSize(R.styleable.DateTimeWheelLayout_wheel_indicatorSize,
+                CqrDensity.sp2px(context, 1)));
+        setCurtain(a.getBoolean(R.styleable.DateTimeWheelLayout_wheel_curtain, false));
+        setCurtainColor(a.getColor(R.styleable.DateTimeWheelLayout_wheel_curtainColor, 0x88FFFFFF));
+        setAtmospheric(a.getBoolean(R.styleable.DateTimeWheelLayout_wheel_atmospheric, false));
+        setCurved(a.getBoolean(R.styleable.DateTimeWheelLayout_wheel_curved, false));
+        setItemAlign(a.getInt(R.styleable.DateTimeWheelLayout_wheel_itemAlign, ItemAlign.CENTER));
+        setDisplayYear(a.getBoolean(R.styleable.DateTimeWheelLayout_wheel_displayYear, displayYear));
+        setDisplayMonth(a.getBoolean(R.styleable.DateTimeWheelLayout_wheel_displayMonth, displayMonth));
+        setDisplayDay(a.getBoolean(R.styleable.DateTimeWheelLayout_wheel_displayDay, displayDay));
+        setDisplayHour(a.getBoolean(R.styleable.DateTimeWheelLayout_wheel_displayHour, displayHour));
+        setDisplayMinute(a.getBoolean(R.styleable.DateTimeWheelLayout_wheel_displayMinute, displayMinute));
+        setDisplaySecond(a.getBoolean(R.styleable.DateTimeWheelLayout_wheel_displaySecond, displaySecond));
 
         a.recycle();
     }
