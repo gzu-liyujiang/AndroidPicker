@@ -25,14 +25,14 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.Scroller;
 
-import cn.qqtheme.framework.toolkit.CqrDensity;
-import cn.qqtheme.framework.toolkit.CqrLog;
+import cn.qqtheme.framework.logger.CqrLog;
 import cn.qqtheme.framework.wheelview.R;
 import cn.qqtheme.framework.wheelview.adapter.WheelAdapter;
 import cn.qqtheme.framework.wheelview.annotation.ItemAlign;
-import cn.qqtheme.framework.wheelview.interfaces.OnWheelChangedListener;
-import cn.qqtheme.framework.wheelview.interfaces.OnWheelSelectedListener;
-import cn.qqtheme.framework.wheelview.interfaces.TextProvider;
+import cn.qqtheme.framework.wheelview.contract.OnWheelChangedListener;
+import cn.qqtheme.framework.wheelview.contract.OnWheelSelectedListener;
+import cn.qqtheme.framework.wheelview.contract.TextProvider;
+import cn.qqtheme.framework.wheelview.util.DensityUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -168,7 +168,7 @@ public class WheelView<T> extends View implements Runnable, WheelAdapter.Formatt
                 defStyleAttr, defStyleRes);
 
         itemTextSize = a.getDimensionPixelSize(R.styleable.WheelView_wheel_itemTextSize,
-                CqrDensity.sp2px(context, 20));
+                DensityUtils.sp2px(context, 20));
         visibleItemCount = a.getInt(R.styleable.WheelView_wheel_itemVisibleCount, 5);
         defaultItemPosition = a.getInt(R.styleable.WheelView_wheel_itemDefaultPosition, 0);
         hasSameWidth = a.getBoolean(R.styleable.WheelView_wheel_hasSameWidth, false);
@@ -177,12 +177,12 @@ public class WheelView<T> extends View implements Runnable, WheelAdapter.Formatt
         selectedItemTextColor = a.getColor(R.styleable.WheelView_wheel_itemTextColorSelected, 0xFF000000);
         itemTextColor = a.getColor(R.styleable.WheelView_wheel_itemTextColor, 0xFF888888);
         itemSpace = a.getDimensionPixelSize(R.styleable.WheelView_wheel_itemSpace,
-                CqrDensity.dp2px(context, 15));
+                DensityUtils.dp2px(context, 15));
         isCyclic = a.getBoolean(R.styleable.WheelView_wheel_cyclic, false);
         hasIndicator = a.getBoolean(R.styleable.WheelView_wheel_indicator, false);
         indicatorColor = a.getColor(R.styleable.WheelView_wheel_indicatorColor, 0xFFEE3333);
         indicatorSize = a.getDimensionPixelSize(R.styleable.WheelView_wheel_indicatorSize,
-                CqrDensity.sp2px(context, 1));
+                DensityUtils.sp2px(context, 1));
         hasCurtain = a.getBoolean(R.styleable.WheelView_wheel_curtain, false);
         curtainColor = a.getColor(R.styleable.WheelView_wheel_curtainColor, 0x88FFFFFF);
         hasAtmospheric = a.getBoolean(R.styleable.WheelView_wheel_atmospheric, false);

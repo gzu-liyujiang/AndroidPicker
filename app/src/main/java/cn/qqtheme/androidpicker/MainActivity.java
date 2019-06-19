@@ -7,6 +7,8 @@ import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.view.View;
 
+import com.blankj.utilcode.util.TimeUtils;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -14,7 +16,6 @@ import java.util.List;
 
 import cn.qqtheme.androidpicker.custom.CustomUiAddressPicker;
 import cn.qqtheme.framework.calendarpicker.CalendarPicker;
-import cn.qqtheme.framework.toolkit.CqrDateTime;
 import cn.qqtheme.framework.wheelpicker.BirthdayPicker;
 import cn.qqtheme.framework.wheelpicker.DatePicker;
 import cn.qqtheme.framework.wheelpicker.DateTimePicker;
@@ -27,6 +28,12 @@ import cn.qqtheme.framework.wheelview.entity.DateEntity;
 import cn.qqtheme.framework.wheelview.entity.DateTimeEntity;
 import cn.qqtheme.framework.wheelview.entity.TimeEntity;
 
+/**
+ * 主页
+ *
+ * @author <a href="mailto:1032694760@qq.com">liyujiang</a>
+ * @date 2016/7/20 20:28
+ */
 public class MainActivity extends BaseActivity {
 
     @Override
@@ -57,6 +64,7 @@ public class MainActivity extends BaseActivity {
 
     public void onCalendarDateSinglePicker(View view) {
         CalendarPicker picker = new CalendarPicker(this, true);
+        picker.setRangeDateOnFuture(6);
         picker.showAtBottom();
     }
 
@@ -103,7 +111,7 @@ public class MainActivity extends BaseActivity {
 
     public void onBirthdayPicker(View view) {
         BirthdayPicker picker = new BirthdayPicker(this);
-        Date date = CqrDateTime.parseDate("2019年5月15日", "yyyy年M月d日");
+        Date date = TimeUtils.string2Date("1991-11-11");
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         int year = calendar.get(Calendar.YEAR);

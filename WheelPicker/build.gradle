@@ -9,7 +9,7 @@ ext {
 
 dependencies {
     implementation "com.android.support:support-fragment:${ANDROID_SUPPORT_VERSION}"
-    implementation project(':Toolkit')
+    implementation project(':Logger')
     api project(":Popup")
     api project(":WheelView")
 }

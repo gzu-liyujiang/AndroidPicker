@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.TextView;
 
-import cn.qqtheme.framework.wheelview.interfaces.OnItemSelectedListener;
+import cn.qqtheme.framework.wheelview.contract.OnItemSelectedListener;
 
 import java.util.ArrayList;
 import java.util.List;

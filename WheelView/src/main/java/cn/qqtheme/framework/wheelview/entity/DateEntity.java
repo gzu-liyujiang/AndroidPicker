@@ -8,7 +8,7 @@ import java.util.Calendar;
  * @author <a href="mailto:1032694760@qq.com">liyujiang</a>
  * @date 2019/6/17 15:29
  */
-@SuppressWarnings({"unused", "WeakerAccess"})
+@SuppressWarnings({"unused"})
 public class DateEntity extends DateTimeEntity {
 
     public static DateEntity today() {

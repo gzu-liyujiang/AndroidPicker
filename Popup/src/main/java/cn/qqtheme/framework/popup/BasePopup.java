@@ -23,7 +23,8 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 
-import cn.qqtheme.framework.toolkit.CqrLog;
+import cn.qqtheme.framework.popup.contract.OnApplyListener;
+import cn.qqtheme.framework.popup.contract.OnDismissListener;
 
 /**
  * 弹出层基类，用于实现弹窗、下拉菜单、底部弹出式菜单……
@@ -40,12 +41,12 @@ import cn.qqtheme.framework.toolkit.CqrLog;
  * onDismiss
  * </code>
  *
- * @author <a href="mailto:1032694760@qq.com">liyujiang</a>
+ * @author liyujiang
  * @date 2018/9/22 19:46
  * @see OnApplyListener
  * @see OnDismissListener
  */
-@SuppressWarnings({"WeakerAccess", "UnusedReturnValue"})
+@SuppressWarnings({"WeakerAccess", "UnusedReturnValue", "unused"})
 public abstract class BasePopup<P extends BasePopup> implements PopupWindow.OnDismissListener,
         LifecycleObserver, View.OnTouchListener, View.OnClickListener {
     protected static final int MATCH_PARENT = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -317,7 +318,6 @@ public abstract class BasePopup<P extends BasePopup> implements PopupWindow.OnDi
 
     @OnLifecycleEvent(Lifecycle.Event.ON_ANY)
     public void onAny(LifecycleOwner source, Lifecycle.Event event) {
-        CqrLog.d("lifecycle: " + event.name());
         if (event == Lifecycle.Event.ON_DESTROY) {
             activity.getLifecycle().removeObserver(this);
             dismiss();
@@ -392,13 +392,6 @@ public abstract class BasePopup<P extends BasePopup> implements PopupWindow.OnDi
         } else {
             return height;
         }
-    }
-
-    public interface OnApplyListener {
-        void onApply();
-    }
-
-    public interface OnDismissListener extends android.widget.PopupWindow.OnDismissListener {
     }
 
 }

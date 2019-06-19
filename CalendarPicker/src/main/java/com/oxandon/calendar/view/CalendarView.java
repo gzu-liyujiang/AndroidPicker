@@ -27,8 +27,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.qqtheme.framework.toolkit.CqrDensity;
-
 /**
  * 日历控件
  * Created by peng on 2017/8/3.
@@ -104,7 +102,7 @@ public class CalendarView extends LinearLayout {
                 //字体颜色
                 .setTypeface(Typeface.defaultFromStyle(Typeface.BOLD)) //加粗
                 .setGroupTextSize((int) getResources().getDimension(R.dimen.calendar_decoration_text_size))   //字体大小
-                .setTextSideMargin(CqrDensity.dp2px(getContext(), 10))  //边距   靠左时为左边距  靠右时为右边距
+                .setTextSideMargin(dp2px(10))  //边距   靠左时为左边距  靠右时为右边距
                 .setTextAlign(Paint.Align.CENTER)                      //居中显示
                 .build();
         bodyView.addItemDecoration(decoration);
@@ -117,4 +115,10 @@ public class CalendarView extends LinearLayout {
     public RecyclerView bodyView() {
         return bodyView;
     }
+
+    private int dp2px(float dpValue) {
+        final float scale = getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
+    }
+
 }

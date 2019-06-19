@@ -9,14 +9,14 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
-import cn.qqtheme.framework.toolkit.CqrDensity;
 import cn.qqtheme.framework.wheelview.R;
 import cn.qqtheme.framework.wheelview.annotation.ItemAlign;
-import cn.qqtheme.framework.wheelview.interfaces.LinkageDataProvider;
-import cn.qqtheme.framework.wheelview.interfaces.LinkageTextProvider;
-import cn.qqtheme.framework.wheelview.interfaces.OnWheelChangedListener;
-import cn.qqtheme.framework.wheelview.interfaces.OnWheelSelectedListener;
-import cn.qqtheme.framework.wheelview.interfaces.TextProvider;
+import cn.qqtheme.framework.wheelview.contract.LinkageDataProvider;
+import cn.qqtheme.framework.wheelview.contract.LinkageTextProvider;
+import cn.qqtheme.framework.wheelview.contract.OnWheelChangedListener;
+import cn.qqtheme.framework.wheelview.contract.OnWheelSelectedListener;
+import cn.qqtheme.framework.wheelview.contract.TextProvider;
+import cn.qqtheme.framework.wheelview.util.DensityUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -331,7 +331,7 @@ public class LinkageWheelLayout<F extends LinkageTextProvider, S extends Linkage
                 defStyleAttr, defStyleRes);
 
         setTextSize(a.getDimensionPixelSize(R.styleable.LinkageWheelLayout_wheel_itemTextSize,
-                CqrDensity.sp2px(context, 20)));
+                DensityUtils.sp2px(context, 20)));
         setVisibleItemCount(a.getInt(R.styleable.LinkageWheelLayout_wheel_itemVisibleCount, 5));
         setDefaultItemPosition(a.getInt(R.styleable.LinkageWheelLayout_wheel_itemDefaultPosition, 0));
         setSameWidth(a.getBoolean(R.styleable.LinkageWheelLayout_wheel_hasSameWidth, false));
@@ -340,12 +340,12 @@ public class LinkageWheelLayout<F extends LinkageTextProvider, S extends Linkage
         setSelectedTextColor(a.getColor(R.styleable.LinkageWheelLayout_wheel_itemTextColorSelected, 0xFF000000));
         setTextColor(a.getColor(R.styleable.LinkageWheelLayout_wheel_itemTextColor, 0xFF888888));
         setItemSpace(a.getDimensionPixelSize(R.styleable.LinkageWheelLayout_wheel_itemSpace,
-                CqrDensity.dp2px(context, 15)));
+                DensityUtils.dp2px(context, 15)));
         setCyclic(a.getBoolean(R.styleable.LinkageWheelLayout_wheel_cyclic, false));
         setIndicator(a.getBoolean(R.styleable.LinkageWheelLayout_wheel_indicator, false));
         setIndicatorColor(a.getColor(R.styleable.LinkageWheelLayout_wheel_indicatorColor, 0xFFEE3333));
         setIndicatorSize(a.getDimensionPixelSize(R.styleable.LinkageWheelLayout_wheel_indicatorSize,
-                CqrDensity.sp2px(context, 1)));
+                DensityUtils.sp2px(context, 1)));
         setCurtain(a.getBoolean(R.styleable.LinkageWheelLayout_wheel_curtain, false));
         setCurtainColor(a.getColor(R.styleable.LinkageWheelLayout_wheel_curtainColor, 0x88FFFFFF));
         setAtmospheric(a.getBoolean(R.styleable.LinkageWheelLayout_wheel_atmospheric, false));

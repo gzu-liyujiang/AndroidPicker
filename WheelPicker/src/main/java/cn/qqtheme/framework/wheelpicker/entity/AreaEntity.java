@@ -4,7 +4,7 @@ import android.support.annotation.Keep;
 
 import java.io.Serializable;
 
-import cn.qqtheme.framework.wheelview.interfaces.TextProvider;
+import cn.qqtheme.framework.wheelview.contract.TextProvider;
 
 /**
  * 地址数据实体

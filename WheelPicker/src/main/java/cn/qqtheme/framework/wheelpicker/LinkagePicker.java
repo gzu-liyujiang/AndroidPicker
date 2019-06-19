@@ -7,10 +7,10 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
 import cn.qqtheme.framework.popup.AbstractConfirmPopup;
-import cn.qqtheme.framework.wheelview.interfaces.LinkageDataProvider;
-import cn.qqtheme.framework.wheelview.interfaces.LinkageTextProvider;
-import cn.qqtheme.framework.wheelview.interfaces.OnLinkageSelectedListener;
-import cn.qqtheme.framework.wheelview.interfaces.TextProvider;
+import cn.qqtheme.framework.wheelview.contract.LinkageDataProvider;
+import cn.qqtheme.framework.wheelview.contract.LinkageTextProvider;
+import cn.qqtheme.framework.wheelview.contract.OnLinkageSelectedListener;
+import cn.qqtheme.framework.wheelview.contract.TextProvider;
 import cn.qqtheme.framework.wheelview.widget.LinkageWheelLayout;
 
 /**

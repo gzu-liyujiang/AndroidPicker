@@ -6,8 +6,8 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
 import cn.qqtheme.framework.popup.AbstractConfirmPopup;
-import cn.qqtheme.framework.wheelview.interfaces.OnItemSelectedListener;
-import cn.qqtheme.framework.wheelview.interfaces.TextProvider;
+import cn.qqtheme.framework.wheelview.contract.OnItemSelectedListener;
+import cn.qqtheme.framework.wheelview.contract.TextProvider;
 import cn.qqtheme.framework.wheelview.widget.WheelView;
 
 import java.util.List;

@@ -6,7 +6,7 @@ import android.view.View;
 import java.util.List;
 
 import cn.qqtheme.androidpicker.R;
-import cn.qqtheme.framework.popup.AbstractConfirmPopup;
+import cn.qqtheme.framework.popup.contract.LayoutProvider;
 import cn.qqtheme.framework.wheelpicker.AddressPicker;
 import cn.qqtheme.framework.wheelpicker.annotation.AddressMode;
 import cn.qqtheme.framework.wheelpicker.entity.ProvinceEntity;
@@ -39,7 +39,7 @@ public class CustomUiAddressPicker extends AddressPicker {
         getCancelTextView().setTextColor(0xFFF3816F);
     }
 
-    static class AddressLayoutProvider implements AbstractConfirmPopup.LayoutProvider {
+    static class AddressLayoutProvider implements LayoutProvider {
 
         @Override
         public int provideLayoutRes() {

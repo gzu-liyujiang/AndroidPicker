@@ -12,18 +12,18 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import cn.qqtheme.framework.toolkit.CqrDateTime;
-import cn.qqtheme.framework.toolkit.CqrDensity;
 import cn.qqtheme.framework.wheelview.R;
 import cn.qqtheme.framework.wheelview.annotation.DateMode;
 import cn.qqtheme.framework.wheelview.annotation.ItemAlign;
 import cn.qqtheme.framework.wheelview.annotation.TimeMode;
 import cn.qqtheme.framework.wheelview.entity.DateTimeEntity;
-import cn.qqtheme.framework.wheelview.interfaces.DateFormatter;
-import cn.qqtheme.framework.wheelview.interfaces.NumberFormatter;
-import cn.qqtheme.framework.wheelview.interfaces.OnWheelChangedListener;
-import cn.qqtheme.framework.wheelview.interfaces.OnWheelSelectedListener;
-import cn.qqtheme.framework.wheelview.interfaces.TimeFormatter;
+import cn.qqtheme.framework.wheelview.contract.DateFormatter;
+import cn.qqtheme.framework.wheelview.contract.NumberFormatter;
+import cn.qqtheme.framework.wheelview.contract.OnWheelChangedListener;
+import cn.qqtheme.framework.wheelview.contract.OnWheelSelectedListener;
+import cn.qqtheme.framework.wheelview.contract.TimeFormatter;
+import cn.qqtheme.framework.wheelview.util.DateTimeUtils;
+import cn.qqtheme.framework.wheelview.util.DensityUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -430,7 +430,7 @@ public class DateTimeWheelLayout extends LinearLayout implements OnWheelSelected
         //开始年月相同情况
         else if (year == startValue.getYear() && month == startValue.getMonth()) {
             min = startValue.getDay();
-            max = CqrDateTime.getTotalDaysInMonth(year, month);
+            max = DateTimeUtils.getTotalDaysInMonth(year, month);
         }
         //结束年月相同情况
         else if (year == endValue.getYear() && month == endValue.getMonth()) {
@@ -438,7 +438,7 @@ public class DateTimeWheelLayout extends LinearLayout implements OnWheelSelected
             max = endValue.getDay();
         } else {
             min = 1;
-            max = CqrDateTime.getTotalDaysInMonth(year, month);
+            max = DateTimeUtils.getTotalDaysInMonth(year, month);
         }
         if (selectedDay == null) {
             selectedDay = min;
@@ -700,7 +700,7 @@ public class DateTimeWheelLayout extends LinearLayout implements OnWheelSelected
                 defStyleAttr, defStyleRes);
 
         setTextSize(a.getDimensionPixelSize(R.styleable.DateTimeWheelLayout_wheel_itemTextSize,
-                CqrDensity.sp2px(context, 20)));
+                DensityUtils.sp2px(context, 20)));
         setVisibleItemCount(a.getInt(R.styleable.DateTimeWheelLayout_wheel_itemVisibleCount, 5));
         setDefaultItemPosition(a.getInt(R.styleable.DateTimeWheelLayout_wheel_itemDefaultPosition, 0));
         setSameWidth(a.getBoolean(R.styleable.DateTimeWheelLayout_wheel_hasSameWidth, false));
@@ -709,12 +709,12 @@ public class DateTimeWheelLayout extends LinearLayout implements OnWheelSelected
         setSelectedTextColor(a.getColor(R.styleable.DateTimeWheelLayout_wheel_itemTextColorSelected, 0xFF000000));
         setTextColor(a.getColor(R.styleable.DateTimeWheelLayout_wheel_itemTextColor, 0xFF888888));
         setItemSpace(a.getDimensionPixelSize(R.styleable.DateTimeWheelLayout_wheel_itemSpace,
-                CqrDensity.dp2px(context, 15)));
+                DensityUtils.dp2px(context, 15)));
         setCyclic(a.getBoolean(R.styleable.DateTimeWheelLayout_wheel_cyclic, false));
         setIndicator(a.getBoolean(R.styleable.DateTimeWheelLayout_wheel_indicator, false));
         setIndicatorColor(a.getColor(R.styleable.DateTimeWheelLayout_wheel_indicatorColor, 0xFFEE3333));
         setIndicatorSize(a.getDimensionPixelSize(R.styleable.DateTimeWheelLayout_wheel_indicatorSize,
-                CqrDensity.sp2px(context, 1)));
+                DensityUtils.sp2px(context, 1)));
         setCurtain(a.getBoolean(R.styleable.DateTimeWheelLayout_wheel_curtain, false));
         setCurtainColor(a.getColor(R.styleable.DateTimeWheelLayout_wheel_curtainColor, 0x88FFFFFF));
         setAtmospheric(a.getBoolean(R.styleable.DateTimeWheelLayout_wheel_atmospheric, false));

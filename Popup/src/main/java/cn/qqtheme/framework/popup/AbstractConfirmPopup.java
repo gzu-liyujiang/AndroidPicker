@@ -1,8 +1,6 @@
 package cn.qqtheme.framework.popup;
 
 import android.content.Context;
-import android.support.annotation.IdRes;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
@@ -10,13 +8,16 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import cn.qqtheme.framework.popup.contract.LayoutProvider;
+import cn.qqtheme.framework.popup.impl.ConfirmLayoutProvider;
+
 /**
  * 确认选择弹窗
  *
- * @author <a href="mailto:1032694760@qq.com">liyujiang</a>
+ * @author liyujiang
  * @date 2019/5/8 10:04
  */
-@SuppressWarnings("WeakerAccess")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public abstract class AbstractConfirmPopup<V extends View> extends BasePopup<AbstractConfirmPopup> {
     private RelativeLayout rlHeader;
     private TextView tvCancel;
@@ -128,81 +129,6 @@ public abstract class AbstractConfirmPopup<V extends View> extends BasePopup<Abs
     public final V getBodyView() {
         checkContentView();
         return bodyView;
-    }
-
-    /**
-     * 自定义布局提供者接口
-     */
-    public interface LayoutProvider {
-
-        /**
-         * 提供布局文件
-         *
-         * @return {@link LayoutRes}
-         */
-        @LayoutRes
-        int provideLayoutRes();
-
-        /**
-         * 提供取消的资源ID
-         *
-         * @return {@link IdRes}
-         */
-        @IdRes
-        int specifyCancelIdRes();
-
-        /**
-         * 提供标题的资源ID
-         *
-         * @return {@link IdRes}
-         */
-        @IdRes
-        int specifyTitleIdRes();
-
-        /**
-         * 提供确认的资源ID
-         *
-         * @return {@link IdRes}
-         */
-        @IdRes
-        int specifyConfirmIdRes();
-
-        /**
-         * 提供主体视图的资源ID
-         *
-         * @return {@link IdRes}
-         */
-        int specifyBodyIdRes();
-
-    }
-
-    private static class ConfirmLayoutProvider implements LayoutProvider {
-
-        @Override
-        public int provideLayoutRes() {
-            return R.layout.popup_confirm;
-        }
-
-        @Override
-        public int specifyCancelIdRes() {
-            return R.id.tv_cancel;
-        }
-
-        @Override
-        public int specifyTitleIdRes() {
-            return R.id.tv_title;
-        }
-
-        @Override
-        public int specifyConfirmIdRes() {
-            return R.id.tv_confirm;
-        }
-
-        @Override
-        public int specifyBodyIdRes() {
-            return R.id.fl_body;
-        }
-
     }
 
 }

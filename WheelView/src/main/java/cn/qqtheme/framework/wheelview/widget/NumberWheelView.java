@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 
-import cn.qqtheme.framework.wheelview.interfaces.NumberFormatter;
+import cn.qqtheme.framework.wheelview.contract.NumberFormatter;
 
 import java.util.ArrayList;
 import java.util.List;

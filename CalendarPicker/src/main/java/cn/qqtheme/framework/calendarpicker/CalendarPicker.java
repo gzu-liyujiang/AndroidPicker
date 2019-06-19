@@ -74,7 +74,7 @@ public class CalendarPicker extends AbstractConfirmPopup<View> implements OnCale
         this.maxDate = DateUtils.max(minDate, maxDate);
     }
 
-    public void setRangeDateBaseOnToday(int offsetMonth) {
+    public void setRangeDateOnFuture(int offsetMonth) {
         minDate = new Date(System.currentTimeMillis());
         Calendar calendar = Calendar.getInstance(Locale.CHINA);
         calendar.setTime(minDate);

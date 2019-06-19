@@ -8,6 +8,6 @@ ext {
 }
 
 dependencies {
-    implementation project(':Toolkit')
+    implementation project(':Logger')
     api project(":Popup")
 }

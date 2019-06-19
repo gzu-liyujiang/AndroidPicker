@@ -12,15 +12,15 @@ import cn.qqtheme.framework.wheelpicker.annotation.AddressMode;
 import cn.qqtheme.framework.wheelpicker.entity.CityEntity;
 import cn.qqtheme.framework.wheelpicker.entity.CountyEntity;
 import cn.qqtheme.framework.wheelpicker.entity.ProvinceEntity;
-import cn.qqtheme.framework.wheelpicker.interfaces.AddressDataLoadListener;
-import cn.qqtheme.framework.wheelpicker.interfaces.AddressJsonLoader;
-import cn.qqtheme.framework.wheelpicker.interfaces.AddressJsonParser;
-import cn.qqtheme.framework.wheelpicker.interfaces.OnAddressSelectedListener;
-import cn.qqtheme.framework.wheelpicker.interfaces.impl.AddressAssetsJsonLoader;
-import cn.qqtheme.framework.wheelpicker.interfaces.impl.AddressDataProvider;
-import cn.qqtheme.framework.wheelpicker.interfaces.impl.AddressOrgJsonParser;
-import cn.qqtheme.framework.wheelview.interfaces.LinkageDataProvider;
-import cn.qqtheme.framework.wheelview.interfaces.OnLinkageSelectedListener;
+import cn.qqtheme.framework.wheelpicker.contract.AddressDataLoadListener;
+import cn.qqtheme.framework.wheelpicker.contract.AddressJsonLoader;
+import cn.qqtheme.framework.wheelpicker.contract.AddressJsonParser;
+import cn.qqtheme.framework.wheelpicker.contract.OnAddressSelectedListener;
+import cn.qqtheme.framework.wheelpicker.impl.AddressAssetsJsonLoader;
+import cn.qqtheme.framework.wheelpicker.impl.AddressDataProvider;
+import cn.qqtheme.framework.wheelpicker.impl.AddressOrgJsonParser;
+import cn.qqtheme.framework.wheelview.contract.LinkageDataProvider;
+import cn.qqtheme.framework.wheelview.contract.OnLinkageSelectedListener;
 
 /**
  * 省市区县滚轮选择，参见 https://github.com/gzu-liyujiang/AndroidPicker

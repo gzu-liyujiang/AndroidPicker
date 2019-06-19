@@ -4,8 +4,8 @@ import android.support.annotation.Keep;
 
 import java.util.List;
 
-import cn.qqtheme.framework.wheelview.interfaces.LinkageTextProvider;
-import cn.qqtheme.framework.wheelview.interfaces.TextProvider;
+import cn.qqtheme.framework.wheelview.contract.LinkageTextProvider;
+import cn.qqtheme.framework.wheelview.contract.TextProvider;
 
 /**
  * 省级数据实体

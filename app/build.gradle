@@ -22,11 +22,13 @@ android {
 }
 
 dependencies {
+    implementation "com.android.support:support-annotations:${ANDROID_SUPPORT_VERSION}"
+    implementation "com.android.support:support-v4:${ANDROID_SUPPORT_VERSION}"
+    implementation "com.android.support:appcompat-v7:${ANDROID_SUPPORT_VERSION}"
+    implementation "com.blankj:utilcode:1.23.7"
     implementation 'com.alibaba:fastjson:1.2.56'
     implementation 'com.yanzhenjie.permission:support:2.0.1'
-    implementation project(':Toolkit')
-    //implementation project(':Popup')
-    //implementation project(':WheelView')
+    implementation project(':Logger')
     implementation project(':WheelPicker')
     implementation project(':FilePicker')
     implementation project(':ColorPicker')

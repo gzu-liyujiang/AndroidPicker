@@ -7,7 +7,7 @@ import android.view.View;
 import cn.qqtheme.framework.wheelview.annotation.DateMode;
 import cn.qqtheme.framework.wheelview.annotation.TimeMode;
 import cn.qqtheme.framework.wheelview.entity.DateEntity;
-import cn.qqtheme.framework.wheelpicker.interfaces.impl.BirthdayDateFormatter;
+import cn.qqtheme.framework.wheelpicker.impl.BirthdayDateFormatter;
 
 import java.util.Calendar;
 
