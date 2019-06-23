@@ -46,15 +46,16 @@ class LogPrinter {
     }
 
     /**
-     * 可显示调用方法所在的文件行号，在AndroidStudio的logcat处可点击定位。
-     * 此方法参考：https://github.com/orhanobut/logger
+     * 可显示调用方法所在的文件行号，在 Android Studio 的 Logcat 处可点击定位。
+     * 此方法参考 https://github.com/orhanobut/logger
      */
     private static String getTraceElement() {
         try {
             int methodCount = METHOD_COUNT_IN_TRACE + 1;
             StackTraceElement[] trace = Thread.currentThread().getStackTrace();
             int stackOffset = getStackOffset(trace);
-            //corresponding method count with the current stack may exceeds the stack trace. Trims the count
+            //corresponding method count with the current stack may exceeds the stack trace.
+            //Trims the count
             if (methodCount + stackOffset > trace.length) {
                 methodCount = trace.length - stackOffset - 1;
             }

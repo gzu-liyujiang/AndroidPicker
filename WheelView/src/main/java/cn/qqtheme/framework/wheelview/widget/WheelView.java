@@ -62,7 +62,7 @@ public class WheelView<T> extends View implements Runnable, WheelAdapter.Formatt
     protected T defaultItem;
     protected int lastScrollPosition;
     protected Listener<T> listener;
-    protected WheelAdapter adapter = new WheelAdapter();
+    protected WheelAdapter<T> adapter = new WheelAdapter<>();
 
     private final Handler handler = new Handler();
     private Paint paint;
@@ -277,8 +277,7 @@ public class WheelView<T> extends View implements Runnable, WheelAdapter.Formatt
     }
 
     public T getItemByPosition(int position) {
-        //noinspection unchecked
-        return (T) adapter.getItem(position);
+        return adapter.getItem(position);
     }
 
     public int getVisibleItemCount() {
@@ -313,13 +312,13 @@ public class WheelView<T> extends View implements Runnable, WheelAdapter.Formatt
         wheelChangedListener = listener;
     }
 
-    public void setAdapter(WheelAdapter adapter) {
+    public void setAdapter(WheelAdapter<T> adapter) {
         this.adapter = adapter;
         updateItemTextAlign();
         notifyDataSetChanged();
     }
 
-    public WheelAdapter getAdapter() {
+    public WheelAdapter<T> getAdapter() {
         return adapter;
     }
 
@@ -1020,8 +1019,7 @@ public class WheelView<T> extends View implements Runnable, WheelAdapter.Formatt
 
             scrollOffsetYcoord = scroller.getCurrY();
             int position = (-scrollOffsetYcoord / itemHeight + defaultItemPosition) % itemCount;
-            //noinspection unchecked
-            onItemCurrentScroll(position, (T) adapter.getItem(position));
+            onItemCurrentScroll(position, adapter.getItem(position));
 
             postInvalidate();
             handler.postDelayed(this, 16);
@@ -1055,8 +1053,7 @@ public class WheelView<T> extends View implements Runnable, WheelAdapter.Formatt
 
     protected final void selectCurrentItem() {
         int position = currentItemPosition;
-        //noinspection unchecked
-        final T item = (T) adapter.getItem(position);
+        final T item = adapter.getItem(position);
         if (null != wheelSelectedListener) {
             wheelSelectedListener.onItemSelected(this, position, item);
         }

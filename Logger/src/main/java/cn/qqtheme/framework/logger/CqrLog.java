@@ -34,10 +34,10 @@ public final class CqrLog {
      * @param tag    日志标签，启用日志输出时有效
      */
     public static void useDefaultLogger(boolean enable, String tag) {
-        LoggerImpl loggerImpl = new LoggerImpl();
-        loggerImpl.setEnable(enable);
-        loggerImpl.setTag(tag);
-        logger = loggerImpl;
+        LoggerImpl logger = new LoggerImpl();
+        logger.setEnable(enable);
+        logger.setTag(tag);
+        CqrLog.logger = logger;
     }
 
     /**

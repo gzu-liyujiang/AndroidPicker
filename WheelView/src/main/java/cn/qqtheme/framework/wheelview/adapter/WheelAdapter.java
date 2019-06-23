@@ -8,13 +8,12 @@ import java.util.List;
 /**
  * 滚轮数据适配器
  *
- * @author Florent Champigny
  * @author <a href="mailto:1032694760@qq.com">liyujiang</a>
  * @date 2019/5/14 20:02
  */
 @SuppressWarnings({"unused"})
-public class WheelAdapter {
-    private List<Object> data;
+public class WheelAdapter<T> {
+    private List<T> data;
 
     public WheelAdapter() {
         this.data = new ArrayList<>();
@@ -24,7 +23,7 @@ public class WheelAdapter {
         return data.size();
     }
 
-    public Object getItem(int position) {
+    public T getItem(int position) {
         final int itemCount = getItemCount();
         if (itemCount == 0) {
             return null;
@@ -34,7 +33,7 @@ public class WheelAdapter {
     }
 
     public String getItemText(int position, Formatter formatter) {
-        Object item = getItem(position);
+        T item = getItem(position);
         if (item == null) {
             return "";
         }
@@ -44,20 +43,20 @@ public class WheelAdapter {
         return item.toString();
     }
 
-    public List<?> getData() {
+    public List<T> getData() {
         return data;
     }
 
-    public void setData(List<?> data) {
+    public void setData(List<T> data) {
         this.data.clear();
         this.data.addAll(data);
     }
 
-    public void addData(List<?> data) {
+    public void addData(List<T> data) {
         this.data.addAll(data);
     }
 
-    public int getItemPosition(Object item) {
+    public int getItemPosition(T item) {
         int position = -1;
         if (data != null) {
             return data.indexOf(item);

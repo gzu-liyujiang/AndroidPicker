@@ -6,6 +6,13 @@
     android:background="#FFFFFF"
     android:orientation="vertical">
 
+    <View
+        android:id="@+id/top_border"
+        android:layout_width="match_parent"
+        android:layout_height="0.6dp"
+        android:background="#FFEEEEEE"
+        android:visibility="gone" />
+
     <RelativeLayout
         android:id="@+id/rl_header"
         android:layout_width="match_parent"
@@ -52,7 +59,7 @@
     <View
         android:id="@+id/header_divider"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="0.6dp"
         android:background="#FFEEEEEE" />
 
     <FrameLayout

@@ -3,8 +3,11 @@ package cn.qqtheme.framework.popup;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -23,6 +26,7 @@ public abstract class AbstractConfirmPopup<V extends View> extends BasePopup<Abs
     private TextView tvCancel;
     private TextView tvTitle;
     private TextView tvConfirm;
+    private View topBorder;
     private View headerDivider;
     private V bodyView;
 
@@ -45,6 +49,7 @@ public abstract class AbstractConfirmPopup<V extends View> extends BasePopup<Abs
             layoutProvider = new ConfirmLayoutProvider();
         }
         View view = View.inflate(activity, layoutProvider.provideLayoutRes(), null);
+        topBorder = view.findViewById(R.id.top_border);
         rlHeader = view.findViewById(R.id.rl_header);
         tvCancel = view.findViewById(layoutProvider.specifyCancelIdRes());
         tvTitle = view.findViewById(layoutProvider.specifyTitleIdRes());
@@ -59,7 +64,36 @@ public abstract class AbstractConfirmPopup<V extends View> extends BasePopup<Abs
             bodyViewGroup.removeAllViews();
         }
         bodyView = createBodyView(activity);
-        bodyViewGroup.addView(bodyView);
+        ViewGroup.LayoutParams bodyParams = bodyView.getLayoutParams();
+        if (bodyViewGroup instanceof FrameLayout) {
+            FrameLayout.LayoutParams layoutParams;
+            if (bodyParams == null) {
+                layoutParams = new FrameLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
+            } else {
+                layoutParams = new FrameLayout.LayoutParams(bodyParams);
+            }
+            layoutParams.gravity = Gravity.CENTER;
+            bodyParams = layoutParams;
+        } else if (bodyViewGroup instanceof LinearLayout) {
+            LinearLayout.LayoutParams layoutParams;
+            if (bodyParams == null) {
+                layoutParams = new LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
+            } else {
+                layoutParams = new LinearLayout.LayoutParams(bodyParams);
+            }
+            layoutParams.gravity = Gravity.CENTER;
+            bodyParams = layoutParams;
+        } else if (bodyViewGroup instanceof RelativeLayout) {
+            RelativeLayout.LayoutParams layoutParams;
+            if (bodyParams == null) {
+                layoutParams = new RelativeLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
+            } else {
+                layoutParams = new RelativeLayout.LayoutParams(bodyParams);
+            }
+            layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+            bodyParams = layoutParams;
+        }
+        bodyViewGroup.addView(bodyView, bodyParams);
         return view;
     }
 
@@ -119,6 +153,11 @@ public abstract class AbstractConfirmPopup<V extends View> extends BasePopup<Abs
     public final TextView getConfirmTextView() {
         checkContentView();
         return tvConfirm;
+    }
+
+    public final View getTopBorderView() {
+        checkContentView();
+        return topBorder;
     }
 
     public final View getHeaderDividerView() {

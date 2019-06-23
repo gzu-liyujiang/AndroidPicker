@@ -18,6 +18,10 @@ import cn.qqtheme.framework.wheelview.widget.LinkageWheelLayout;
  *
  * @author <a href="mailto:1032694760@qq.com">liyujiang</a>
  * @date 2019/6/17 11:21
+ * @see LinkageTextProvider
+ * @see LinkageDataProvider
+ * @see LinkageWheelLayout
+ * @see OnLinkageSelectedListener
  */
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class LinkagePicker<F extends LinkageTextProvider, S extends LinkageTextProvider,

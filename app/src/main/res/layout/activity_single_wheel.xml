@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <TextView
-        style="?android:textAppearanceMedium"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:gravity="center"
-        android:text="选择器示例"
-        android:textColor="@android:color/black" />
+    android:layout_height="match_parent">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -25,35 +16,43 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="onDateTime"
-                android:text="日期时间滚轮选择器" />
+                android:onClick="onSingleText"
+                android:text="单项选择" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="onCalendarDate"
-                android:text="日历日期选择器" />
+                android:onClick="onSingleBean"
+                android:text="单项选择（支持对象）" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="onSingleWheel"
-                android:text="单项滚轮选择器" />
+                android:onClick="onLikeMobileQq"
+                android:text="单项选择（仿手机QQ风格）" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="onDoubleWheel"
-                android:text="双项滚轮选择器" />
+                android:onClick="onLikeQqBrowser"
+                android:text="单项选择（仿QQ浏览器风格）" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="onAddressCity"
-                android:text="省市区县滚轮选择器" />
+                android:onClick="onLikeAntFortune"
+                android:text="单项选择（仿蚂蚁财富风格）" />
 
         </LinearLayout>
 
     </ScrollView>
 
-</LinearLayout>
+    <View
+        android:id="@+id/alpha_mask_for_popup"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.3"
+        android:background="#000000"
+        android:visibility="gone" />
+
+</FrameLayout>
