@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="WheelDefault">
+        <item name="wheel_itemVisibleCount">5</item>
+        <item name="wheel_itemDefaultPosition">0</item>
+        <item name="wheel_itemAlign">center</item>
+        <item name="wheel_itemSpace">21dp</item>
+        <item name="wheel_itemTextColor">#FF999999</item>
+        <item name="wheel_itemTextColorSelected">#FF000000</item>
+        <item name="wheel_itemTextSize">19sp</item>
+        <item name="wheel_hasSameWidth">false</item>
+        <item name="wheel_atmospheric">true</item>
+        <item name="wheel_curtain">false</item>
+        <item name="wheel_curtainColor">#FFDEDEDE</item>
+        <item name="wheel_curved">false</item>
+        <item name="wheel_cyclic">false</item>
+        <item name="wheel_indicator">true</item>
+        <item name="wheel_indicatorColor">#FFDEDEDE</item>
+        <item name="wheel_indicatorSize">1dp</item>
+    </style>
+
+    <style name="WheelDateTime" parent="WheelDefault">
+        <item name="wheel_displayYear">true</item>
+        <item name="wheel_displayMonth">true</item>
+        <item name="wheel_displayDay">true</item>
+        <item name="wheel_displayHour">true</item>
+        <item name="wheel_displayMinute">true</item>
+        <item name="wheel_displaySecond">false</item>
+    </style>
+
+    <style name="WheelLinkage" parent="WheelDefault">
+        <item name="wheel_onlyTwoLevel">false</item>
+    </style>
+
+</resources>

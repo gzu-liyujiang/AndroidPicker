@@ -1,0 +1,12 @@
+apply plugin: 'com.android.library'
+
+ext {
+    isLibrary = true
+    pomArtifactId = "WheelView"
+    pomVersion = "2.0.0"
+    pomDescription = "WheelView for android like IOS"
+}
+
+dependencies {
+    implementation project(':Logger')
+}

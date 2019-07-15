@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <cn.qqtheme.framework.wheelview.widget.YearWheelView
+        android:id="@+id/year_wheel_view"
+        style="@style/WheelDefault"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.2" />
+
+    <TextView
+        android:id="@+id/tv_year_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="" />
+
+    <cn.qqtheme.framework.wheelview.widget.MonthWheelView
+        android:id="@+id/month_wheel_view"
+        style="@style/WheelDefault"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.0" />
+
+    <TextView
+        android:id="@+id/tv_month_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="" />
+
+    <cn.qqtheme.framework.wheelview.widget.DayWheelView
+        android:id="@+id/day_wheel_view"
+        style="@style/WheelDefault"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.0" />
+
+    <TextView
+        android:id="@+id/tv_day_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="" />
+
+    <cn.qqtheme.framework.wheelview.widget.HourWheelView
+        android:id="@+id/hour_wheel_view"
+        style="@style/WheelDefault"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.0"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/tv_hour_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="" />
+
+    <cn.qqtheme.framework.wheelview.widget.MinuteWheelView
+        android:id="@+id/minute_wheel_view"
+        style="@style/WheelDefault"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.0"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/tv_minute_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="" />
+
+    <cn.qqtheme.framework.wheelview.widget.SecondWheelView
+        android:id="@+id/second_wheel_view"
+        style="@style/WheelDefault"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.0"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/tv_second_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="" />
+
+</LinearLayout>

@@ -1,0 +1,13 @@
+apply plugin: 'com.android.library'
+
+ext {
+    isLibrary = true
+    pomArtifactId = "ColorPicker"
+    pomVersion = "2.0.0"
+    pomDescription = "color picker for android"
+}
+
+dependencies {
+    implementation project(':Logger')
+    api project(":Popup")
+}

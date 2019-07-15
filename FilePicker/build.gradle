@@ -1,0 +1,13 @@
+apply plugin: 'com.android.library'
+
+ext {
+    isLibrary = true
+    pomArtifactId = "FilePicker"
+    pomVersion = "2.0.0"
+    pomDescription = "file picker for android"
+}
+
+dependencies {
+    implementation project(':Logger')
+    api project(":Popup")
+}

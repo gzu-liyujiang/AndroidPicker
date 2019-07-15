@@ -1,0 +1,22 @@
+repositories {
+    //Gradle Sync太慢，在Settings->Gradle->Android Studio勾选Enable embedded Maven repository，优先用阿里云镜像
+    maven { url 'https://maven.aliyun.com/repository/public/' }
+    maven { url 'https://maven.aliyun.com/repository/jcenter' }
+    maven { url 'https://maven.aliyun.com/repository/google' }
+    //JFrog公司提供的Maven仓库：https://jcenter.bintray.com/
+    jcenter()
+    //本地的Maven仓库：{userHome}/.m2/repository
+    mavenLocal()
+   //JitPack提供的Maven仓库
+    maven {
+        url "https://jitpack.io"
+    }
+    //项目里的aar文件
+    flatDir {
+        dirs "libs"/*, "${rootDir}/{moduleName}/libs"*/
+    }
+    //Sonatype公司提供的Maven仓库：https://repo.maven.apache.org/maven2/
+    mavenCentral()
+    //谷歌公司提供的Maven仓库：https://dl.google.com/dl/android/maven2
+    google()
+}
