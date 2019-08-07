@@ -5,17 +5,13 @@ ext {
 }
 
 android {
-    defaultConfig {
-        ndk {
-            abiFilters "armeabi-v7a", "x86"
-        }
-    }
+
     buildTypes {
         release {
             //是否zip优化
             zipAlignEnabled true
-            //是否移除无用的资源：工具栏->Refactor->Remove Unused Resources
-            shrinkResources false
+            //是否移除无用的资源，造成：specified for property 'resourceFile' does not exist.
+            //shrinkResources true
             //是否混淆
             minifyEnabled true
             //混淆配置文件
@@ -26,15 +22,28 @@ android {
 }
 
 dependencies {
-    implementation "com.android.support:support-annotations:${ANDROID_SUPPORT_VERSION}"
-    implementation "com.android.support:support-v4:${ANDROID_SUPPORT_VERSION}"
-    implementation "com.android.support:appcompat-v7:${ANDROID_SUPPORT_VERSION}"
-    implementation "com.blankj:utilcode:1.23.7"
-    implementation 'com.alibaba:fastjson:1.2.56'
-    implementation 'com.yanzhenjie.permission:support:2.0.1'
-    implementation project(':Logger')
-    implementation project(':WheelPicker')
-    implementation project(':FilePicker')
-    implementation project(':ColorPicker')
-    implementation project(':CalendarPicker')
+    compile 'com.alibaba:fastjson:1.1.55.android'
+    compile project(':library:WheelPicker')
+    compile project(':library:FilePicker')
+    compile project(':library:ColorPicker')
+    compile project(':library:MultiplePicker')
+//    compile files('libs/AndroidPicker-1.5.6.jar')
+//    compile('cn.qqtheme.framework:WheelPicker:latest.release') {
+//        exclude group: 'com.android.support'
+//    }
+//    compile('cn.qqtheme.framework:FilePicker:latest.release') {
+//        exclude group: 'com.android.support'
+//    }
+//    compile('cn.qqtheme.framework:ColorPicker:latest.release') {
+//        exclude group: 'com.android.support'
+//    }
+//    compile('com.github.gzu-liyujiang.AndroidPicker:WheelPicker:1.5.6') {
+//        exclude group: 'com.android.support'
+//    }
+//    compile('com.github.gzu-liyujiang.AndroidPicker:FilePicker:1.5.6') {
+//        exclude group: 'com.android.support'
+//    }
+//    compile('com.github.gzu-liyujiang.AndroidPicker:ColorPicker:1.5.6') {
+//        exclude group: 'com.android.support'
+//    }
 }

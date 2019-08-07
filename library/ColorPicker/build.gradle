@@ -1,0 +1,15 @@
+apply plugin: 'com.android.library'
+
+ext {
+    isLibrary = true
+    pomArtifactId = "ColorPicker"
+    pomDescription = "color picker for android"
+}
+
+dependencies {
+    compile project(":library:Common")
+}
+
+android {
+    buildToolsVersion '25.0.0'
+}

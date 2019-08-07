@@ -1,0 +1,157 @@
+//参见：https://github.com/bintray/gradle-bintray-plugin
+//参见：https://raw.githubusercontent.com/liungkejin/GradlePublish/master/java-bintray.gradle
+
+apply plugin: 'maven-publish' //发布项目到maven库
+apply plugin: 'com.jfrog.bintray' //上传项目到jcenter
+
+version = project.pomVersion   //版本号
+group = GROUP    // 包名
+project.archivesBaseName = project.pomArtifactId
+
+task releaseJar(type: Jar) {
+    classifier = 'classes'
+    from 'build/intermediates/classes/release/'
+    //from 'build/intermediates/bundles/release/'
+    //exclude '**/aidl', '**/jni', '**/libs', '**/res'
+    //exclude '**/AndroidManifest.xml', '**/classes.jar', '**/R.txt'
+    exclude '**/wheelpicker', '**/colorpicker', '**/filepicker'
+    exclude '**/BuildConfig.class', '**/R.class'
+    exclude { it.name.startsWith('R$'); }
+}
+
+/**
+ * generate xxx-sources.jar
+ * 生成 xxx-sources.jar, 即将源代码打包
+ */
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.srcDirs
+}
+
+/**
+ * generate javadoc
+ * 生成 javadoc 文档
+ */
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += configurations.compile
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    exclude '**/BuildConfig.java'
+    exclude '**/R.java'
+    failOnError = false //ignore error
+}
+
+/**
+ * generate xxx-javadoc.jar
+ * 将生成的 javadoc 打包为 xxx-javadoc.jar, 它依赖于 javadoc 任务
+ */
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+/**
+ * javadoc 配置
+ */
+javadoc {
+    options {
+        encoding "UTF-8"
+        charSet 'UTF-8'
+        author true
+        version true
+        links "http://docs.oracle.com/javase/7/docs/api"
+        title project.pomArtifactId
+    }
+}
+
+publishing {
+    publications {
+        MyPublication(MavenPublication) {
+            artifactId project.pomArtifactId
+            artifact "${buildDir}/outputs/aar/${project.pomArtifactId}-release.aar"
+            artifact releaseJar
+            artifact javadocJar
+            artifact sourcesJar
+
+            pom.withXml {
+                Node root = asNode()
+                root.appendNode('name', project.pomArtifactId)
+                root.appendNode('description', project.pomDescription)
+                root.appendNode('url', SITE_URL)
+
+                def issues = root.appendNode('issueManagement')
+                issues.appendNode('system', 'github')
+                issues.appendNode('url', SITE_URL)
+
+                def scm = root.appendNode('scm')
+                scm.appendNode('url', GIT_URL)
+                scm.appendNode('connection', "scm:git:${GIT_URL}")
+                scm.appendNode('developerConnection', "scm:git:${GIT_URL}")
+
+                def license = root.appendNode('licenses').appendNode('license')
+                license.appendNode('name', "The Apache Software License, Version 2.0")
+                license.appendNode('url', "http://www.apache.org/licenses/LICENSE-2.0.txt")
+                license.appendNode('distribution', "repo")
+
+                def developer = root.appendNode('developers').appendNode('developer')
+                developer.appendNode('id', DEVELOPER_ID)
+                developer.appendNode('name', DEVELOPER_NAME)
+                developer.appendNode('email', DEVELOPER_EMAIL)
+
+                def dependenciesNode = root.appendNode('dependencies')
+                configurations.compile.allDependencies.each {
+                    if (it.group && it.name && it.version) {
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', it.group)
+                        dependencyNode.appendNode('artifactId', it.name)
+                        dependencyNode.appendNode('version', it.version)
+                    }
+                }
+            }
+        }
+    }
+}
+
+afterEvaluate {
+    publishing.publications.MyPublication.artifact(bundleRelease)
+}
+
+bintray {
+    // You should configure "bintray.user" and "bintray.apiKey" in the gradle.properties
+    // that in gradle cache directory (～/.gradle/gradle.properties)
+    try {
+        user = getProperty("bintray.user")
+        key = getProperty("bintray.apikey")
+    } catch (Exception e) {
+        System.err.println("bintray exception: " + e);
+        user = ""
+        key = ""
+    }
+
+    publications = ['MyPublication'] //对应前面的publishing.publications.mavenJava
+    dryRun = false //[Default: false] Whether to run this as dry-run, without deploying
+    publish = true //[Default: false] Whether version should be auto published after an upload
+    override = true //[Default: false] Whether to override version artifacts already published
+
+    pkg {
+        repo = "maven"    //上传的中央仓库名称
+        name = project.pomArtifactId    //发布到中央仓库上的项目名字
+        desc = project.pomDescription
+        websiteUrl = SITE_URL   //项目主页
+        issueTrackerUrl = ISSUE_URL    //项目讨论页
+        vcsUrl = GIT_URL    //项目GIT仓库
+        licenses = ["Apache-2.0"]
+        publicDownloadNumbers = true
+        githubReleaseNotesFile = 'README.md' //Optional Github readme file
+        version {
+            name = project.pomVersion
+            desc = project.pomDescription
+            gpg {
+                sign = false    //是否GPG签名，可使用Gpg4win创建密钥文件
+            }
+            mavenCentralSync {
+                sync = false    //是否同步到Maven Central
+            }
+        }
+    }
+}
