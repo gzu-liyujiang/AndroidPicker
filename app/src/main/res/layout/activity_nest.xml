@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/immersion"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/nest_back"
+            style="?android:textAppearanceMedium"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:drawableLeft="@android:drawable/ic_menu_revert"
+            android:gravity="center_vertical"
+            android:text="返回"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            style="?android:textAppearanceMedium"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="-45dp"
+            android:layout_weight="1.0"
+            android:gravity="center"
+            android:text="内嵌选择器"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/wheelview_tips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/app_name" />
+
+        <cn.qqtheme.framework.widget.WheelView
+            android:id="@+id/wheelview_single"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:layout_gravity="center" />
+
+        <LinearLayout
+            android:id="@+id/wheelview_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="#FFF3F3F3"
+            android:gravity="center"
+            android:minHeight="300dp"
+            android:orientation="vertical" />
+
+    </LinearLayout>
+
+</LinearLayout>

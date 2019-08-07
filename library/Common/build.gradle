@@ -1,0 +1,12 @@
+apply plugin: 'com.android.library'
+
+ext {
+    isLibrary = true
+    pomArtifactId = "Common"
+    pomDescription = "Common of android picker"
+}
+
+dependencies {
+}
+
+

@@ -1,0 +1,49 @@
+apply plugin: 'com.android.application'
+
+ext {
+    isLibrary = false
+}
+
+android {
+
+    buildTypes {
+        release {
+            //是否zip优化
+            zipAlignEnabled true
+            //是否移除无用的资源，造成：specified for property 'resourceFile' does not exist.
+            //shrinkResources true
+            //是否混淆
+            minifyEnabled true
+            //混淆配置文件
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    compile 'com.alibaba:fastjson:1.1.55.android'
+    compile project(':library:WheelPicker')
+    compile project(':library:FilePicker')
+    compile project(':library:ColorPicker')
+    compile project(':library:MultiplePicker')
+//    compile files('libs/AndroidPicker-1.5.6.jar')
+//    compile('cn.qqtheme.framework:WheelPicker:latest.release') {
+//        exclude group: 'com.android.support'
+//    }
+//    compile('cn.qqtheme.framework:FilePicker:latest.release') {
+//        exclude group: 'com.android.support'
+//    }
+//    compile('cn.qqtheme.framework:ColorPicker:latest.release') {
+//        exclude group: 'com.android.support'
+//    }
+//    compile('com.github.gzu-liyujiang.AndroidPicker:WheelPicker:1.5.6') {
+//        exclude group: 'com.android.support'
+//    }
+//    compile('com.github.gzu-liyujiang.AndroidPicker:FilePicker:1.5.6') {
+//        exclude group: 'com.android.support'
+//    }
+//    compile('com.github.gzu-liyujiang.AndroidPicker:ColorPicker:1.5.6') {
+//        exclude group: 'com.android.support'
+//    }
+}

@@ -1,0 +1,12 @@
+apply plugin: 'com.android.library'
+
+ext {
+    isLibrary = true
+    pomArtifactId = "ImagePicker"
+    pomDescription = "image picker for android, like qq image picker"
+}
+
+dependencies {
+    compile 'com.squareup.picasso:picasso:latest.release'
+    compile project(":library:Common")
+}

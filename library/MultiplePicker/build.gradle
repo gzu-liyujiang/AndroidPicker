@@ -1,0 +1,11 @@
+apply plugin: 'com.android.library'
+
+ext {
+    isLibrary = false
+    pomArtifactId = "MultiplePicker"
+    pomDescription = "multiple picker for android"
+}
+
+dependencies {
+    compile project(":library:Common")
+}

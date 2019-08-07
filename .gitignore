@@ -1,0 +1,13 @@
+/*.iml
+/*/*.iml
+/.idea
+bin/
+gen/
+.gradle/
+build/
+/*/build/
+local.properties
+proguard/
+*.log
+*.apk
+
