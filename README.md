@@ -12,23 +12,23 @@
 [查看更新日志](https://github.com/gzu-liyujiang/AndroidPicker/blob/master/ChangeLog.md)，新版本可能未对旧版API作兼容处理，升级后若编译报错请根据错误提示更改。
 
 # Notice
-该分支为最新的重构的2.x版本，2.0之前的版本需切换到master分支。2.0版本还没有重构完结，未发布到远程仓库，感兴趣的小伙伴可自行下载源码运行查看效果。随便说一下，我对谷歌力推的跨端UI开发框架Flutter比较感兴趣，目前在练手中，暂停对Android原生开发的开源项目的维护。伙计们，加油💪
+该分支为最新的重构的2.x版本，2.0之前的版本需切换到master分支【[点击进入master分支查看稳定版1.5.6使用说明](https://github.com/gzu-liyujiang/AndroidPicker/blob/master/README.md)】。2.0版本还没有重构完结，未发布到远程仓库，感兴趣的小伙伴可自行下载源码运行查看效果。随便说一下，我对谷歌力推的跨端UI开发框架Flutter比较感兴趣，目前在练手中，暂停对Android原生开发的开源项目的维护。伙计们，加油💪
 
 # Screenshots
 以下图片显示的效果可能已修改过，实际效果请运行demo查看。   
-![滑轮选择器内嵌效果图](/screenshots/nestwheelview.jpg)
-![自定义选择器效果图](/screenshots/custom.gif)
-![日期选择器效果图](/screenshots/date.gif)
-![日期选择器效果图](/screenshots/monthday.jpg)
-![日期选择器定制图](/screenshots/datetime_custom.png)
-![时间选择器效果图](/screenshots/time.gif)
-![单项选择器效果图](/screenshots/option.gif)
-![地址选择器效果图](/screenshots/address.gif)
-![数字选择器效果图](/screenshots/number.gif)
-![星座选择器效果图](/screenshots/constellation.jpg)
-![颜色选择器效果图](/screenshots/color.gif)
-![文件选择器效果图](/screenshots/file.gif)
-![目录选择器效果图](/screenshots/dir.png)
+![滑轮选择器内嵌效果图](https://github.com/gzu-liyujiang/AndroidPicker/blob/master/screenshots/nestwheelview.jpg)
+![自定义选择器效果图](https://github.com/gzu-liyujiang/AndroidPicker/blob/master/screenshots/custom.gif)
+![日期选择器效果图](https://github.com/gzu-liyujiang/AndroidPicker/blob/master/screenshots/date.gif)
+![日期选择器效果图](https://github.com/gzu-liyujiang/AndroidPicker/blob/master/screenshots/monthday.jpg)
+![日期选择器定制图](https://github.com/gzu-liyujiang/AndroidPicker/blob/master/screenshots/datetime_custom.png)
+![时间选择器效果图](https://github.com/gzu-liyujiang/AndroidPicker/blob/master/screenshots/time.gif)
+![单项选择器效果图](https://github.com/gzu-liyujiang/AndroidPicker/blob/master/screenshots/option.gif)
+![地址选择器效果图](https://github.com/gzu-liyujiang/AndroidPicker/blob/master/screenshots/address.gif)
+![数字选择器效果图](https://github.com/gzu-liyujiang/AndroidPicker/blob/master/screenshots/number.gif)
+![星座选择器效果图](https://github.com/gzu-liyujiang/AndroidPicker/blob/master/screenshots/constellation.jpg)
+![颜色选择器效果图](https://github.com/gzu-liyujiang/AndroidPicker/blob/master/screenshots/color.gif)
+![文件选择器效果图](https://github.com/gzu-liyujiang/AndroidPicker/blob/master/screenshots/file.gif)
+![目录选择器效果图](https://github.com/gzu-liyujiang/AndroidPicker/blob/master/screenshots/dir.png)
 
 # Thanks
 [基于View的WheelView](https://github.com/weidongjian/androidWheelView)<br />
