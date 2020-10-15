@@ -7,6 +7,6 @@ ext {
 }
 
 dependencies {
-    compile 'com.squareup.picasso:picasso:latest.release'
-    compile project(":library:Common")
+    implementation 'com.squareup.picasso:picasso:latest.release'
+    implementation project(":library:Common")
 }

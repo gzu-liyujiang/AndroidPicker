@@ -7,5 +7,5 @@ ext {
 }
 
 dependencies {
-    compile project(":library:Common")
+    api project(":library:Common")
 }
