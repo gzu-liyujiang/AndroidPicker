@@ -9,11 +9,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
-import android.support.annotation.CallSuper;
-import android.support.annotation.IdRes;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentActivity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +19,11 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.CallSuper;
+import androidx.annotation.IdRes;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import cn.qqtheme.framework.util.LogUtils;
 
 /**

@@ -3,9 +3,6 @@ package cn.qqtheme.framework.picker;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.ColorInt;
-import android.support.annotation.IdRes;
-import android.support.annotation.NonNull;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -13,6 +10,9 @@ import android.widget.RelativeLayout;
 
 import java.util.Locale;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
 import cn.qqtheme.framework.icons.ColorPickerIcon;
 import cn.qqtheme.framework.popup.ConfirmPopup;
 import cn.qqtheme.framework.util.ConvertUtils;

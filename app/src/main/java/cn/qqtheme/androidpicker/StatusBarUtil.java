@@ -6,9 +6,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
-import android.support.annotation.ColorInt;
-import android.support.annotation.IdRes;
-import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -17,6 +14,9 @@ import android.widget.LinearLayout;
 
 import java.lang.reflect.Field;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.IdRes;
+import androidx.drawerlayout.widget.DrawerLayout;
 import cn.qqtheme.framework.util.LogUtils;
 
 /**
