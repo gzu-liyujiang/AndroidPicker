@@ -4,8 +4,8 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.DrawableRes;
 import android.view.View;
+import androidx.annotation.DrawableRes;
 
 /**
  * 兼容旧版&新版

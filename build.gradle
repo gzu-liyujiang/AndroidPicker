@@ -7,9 +7,10 @@ buildscript {
             url 'https://dl.google.com/dl/android/maven2/'
             name 'Google'
         }
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
+        classpath 'com.android.tools.build:gradle:4.0.0'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
     }
 }
@@ -95,8 +96,8 @@ subprojects {
             }
 
             dependencies {
-                compile "com.android.support:support-v4:${ANDROID_SUPPORT_VERSION}"
-                compile "com.android.support:support-annotations:${ANDROID_SUPPORT_VERSION}"
+                implementation "androidx.legacy:legacy-support-v4:1.0.0"
+                implementation "androidx.annotation:annotation:1.2.0-alpha01"
             }
         }
 

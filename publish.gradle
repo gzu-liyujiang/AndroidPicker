@@ -112,10 +112,6 @@ publishing {
     }
 }
 
-afterEvaluate {
-    publishing.publications.MyPublication.artifact(bundleRelease)
-}
-
 bintray {
     // You should configure "bintray.user" and "bintray.apiKey" in the gradle.properties
     // that in gradle cache directory (～/.gradle/gradle.properties)

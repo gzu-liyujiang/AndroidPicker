@@ -2,7 +2,7 @@ package cn.qqtheme.framework.drawable;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.annotation.ColorInt;
+import androidx.annotation.ColorInt;
 
 /**
  * 按下状态与普通状态下显示不同的颜色

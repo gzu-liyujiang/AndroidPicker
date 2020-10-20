@@ -19,12 +19,12 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.support.annotation.ColorInt;
-import android.support.annotation.FloatRange;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ScrollView;
+import androidx.annotation.ColorInt;
+import androidx.annotation.FloatRange;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
