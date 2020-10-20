@@ -4,6 +4,7 @@
 [![JitPack](https://jitpack.io/v/gzu-liyujiang/AndroidPicker.svg)](https://jitpack.io/#gzu-liyujiang/AndroidPicker)
 [![Build Status](https://travis-ci.org/gzu-liyujiang/AndroidPicker.svg?branch=master)](https://travis-ci.org/gzu-liyujiang/AndroidPicker)
 [![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
+[![LICENSE](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/gzu-liyujiang/AndroidPicker/blob/master/LICENSE)
 [![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
 
 安卓选择器类库，包括日期及时间选择器（可设置范围）、单项选择器（可用于性别、职业、学历、星座等）、城市地址选择器（分省级、地级及县级）、数字选择器（可用于年龄、身高、体重、温度等）、双项选择器、颜色选择器、文件及目录选择器等……
@@ -29,28 +30,22 @@ repositories {
 滚轮选择器：
 ```groovy
 dependencies {
-    compile('com.github.gzu-liyujiang.AndroidPicker:WheelPicker:版本号') {
-        exclude group: 'com.android.support'
-    }
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:WheelPicker:版本号'
 }
 ```
 文件目录选择器：
 ```groovy
 dependencies {
-    compile('com.github.gzu-liyujiang.AndroidPicker:FilePicker:版本号') {
-        exclude group: 'com.android.support'
-    }
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:FilePicker:版本号'
 }
 ```
 颜色选择器：
 ```groovy
 dependencies {
-    compile('com.github.gzu-liyujiang.AndroidPicker:ColorPicker:版本号') {
-        exclude group: 'com.android.support'
-    }
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:ColorPicker:版本号'
 }
 ```
-使用Eclipse的话，直接[下载AndroidPicker的jar包](/app/libs/)复制到你的项目的libs下即可。
+注：Support版本截止1.5.6，从2.0.0开始为AndroidX版本。
 
 # ProGuard
 由于地址选择器使用了[fastjson](https://github.com/alibaba/fastjson)来解析，混淆时候需要加入以下类似的规则，不混淆Province、City等实体类。
