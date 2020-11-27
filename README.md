@@ -45,7 +45,21 @@ dependencies {
     implementation 'com.github.gzu-liyujiang.AndroidPicker:ColorPicker:版本号'
 }
 ```
-注：Support版本截止1.5.6，从2.0.0开始为AndroidX版本。
+注：Support版本截止1.5.6，从2.0.0开始为AndroidX版本。  
+
+**Support版本**依赖：  
+```groovy
+dependencies {
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:WheelPicker:1.5.6.20181018'
+}
+```
+**AndroidX版本**依赖：  
+```groovy
+dependencies {
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:Common:2.0.0'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:WheelPicker:2.0.0'
+}
+```
 
 # ProGuard
 由于地址选择器使用了[fastjson](https://github.com/alibaba/fastjson)来解析，混淆时候需要加入以下类似的规则，不混淆Province、City等实体类。
