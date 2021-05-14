@@ -1,0 +1,16 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.aliyun.com/repositories/jcenter' }
+        maven { url 'https://maven.aliyun.com/repositories/google' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+    }
+}
+    
+allprojects {
+    repositories {
+        maven { url 'https://maven.aliyun.com/repositories/jcenter' }
+        maven { url 'https://maven.aliyun.com/repositories/google' }
+        maven { url 'https://maven.aliyun.com/repository/central' }
+        maven { url "https://www.jitpack.io" }
+    }
+}

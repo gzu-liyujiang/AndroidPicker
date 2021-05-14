@@ -1,0 +1,75 @@
+/*
+ * Copyright (c) 2016-present 贵州纳雍穿青人李裕江<1032694760@qq.com>
+ *
+ * The software is licensed under the Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *     http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR
+ * PURPOSE.
+ * See the Mulan PSL v2 for more details.
+ */
+
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    apply from: "${rootDir}/gradle/git.gradle"
+    apply from: "${rootDir}/gradle/config.gradle"
+    apply from: "${rootDir}/gradle/dependency.gradle"
+    repositories {
+        //noinspection JcenterRepositoryObsolete http://developer.android.google.cn/r/tools/jcenter-end-of-service
+        jcenter()
+        google()
+        mavenCentral()
+        maven { url 'https://repo1.maven.org/maven2/' }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:4.2.0'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5'
+    }
+}
+
+allprojects {
+    repositories {
+        //本地的Maven仓库：{USER_HOME}/.m2/repository，如C:/Users/Administrator/.m2/repository
+        mavenLocal()
+        maven { url "https://gitee.com/li_yu_jiang/maven-repo/raw/master" }
+        //项目里的aar文件
+        //flatDir { dir rootProject.file("app/libs") }
+        //JitPack提供的Maven仓库
+        maven { url "https://www.jitpack.io" }
+        //noinspection JcenterRepositoryObsolete http://developer.android.google.cn/r/tools/jcenter-end-of-service
+        jcenter()
+        //谷歌公司提供的Maven仓库：https://maven.google.com
+        google()
+        //Sonatype公司提供的中央库：http://central.maven.org/maven2
+        mavenCentral()
+        maven { url 'https://repo1.maven.org/maven2/' }
+    }
+}
+
+subprojects {
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            //增加一些编译选项
+            //options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+        }
+    }
+}
+
+task clean(type: Delete) {
+    println("********** clean build **********")
+    println("delete project dir: " + rootProject.buildDir)
+    rootProject.buildDir.deleteDir()
+    def dir = new File(new File(".").getAbsolutePath())
+    println("root dir: " + dir.getAbsolutePath())
+    dir.eachDirRecurse {
+        dir2 ->
+            dir2.eachDirMatch(~/build/) {
+                directory ->
+                    println("delete child dir:" + directory)
+                    directory.deleteDir()
+            }
+    }
+}
