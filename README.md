@@ -17,7 +17,7 @@
 - lanhuapp：UI设计稿协作
 - git：程序代码协作
 
-### 模板文件
+## 模板文件
 
 - .github/workflows  自动化工作流
 - .gitignore  通用的GIT版本控制文件忽略规则
@@ -32,7 +32,7 @@
 - gradle/app.gradle 通用的APK打包配置，包括解决依赖冲突、分环境分渠道打包、分包、自动签名、归档备份等
 - gradle/library.gradle 通用的库项目配置
 
-### 镜像加速
+## 镜像加速
 
 在天朝使用jcenter、mavenCentral及google三个远程仓库，Gradle Sync会很慢，
 google仓库甚至需要[科学上网](https://github.com/hugetiny/awesome-vpn)才能访问。
@@ -83,7 +83,7 @@ allprojects {
 
 MVVM：Model-View-ViewModel。使用谷歌架构组件`ViewModel`及`LiveData`或`DataBinding`实现。
 
-### 许可协议
+## 许可协议
 
 ```text
 Copyright (c) 2016-present 贵州纳雍穿青人李裕江<1032694760@qq.com>
