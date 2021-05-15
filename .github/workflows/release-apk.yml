@@ -27,7 +27,7 @@ jobs:
       - name: Store android package
         uses: actions/upload-artifact@v2
         with:
-          name: app-release
+          name: artifact
           path: app/build/outputs/apk/pub/release/*.apk
           if-no-files-found: warn
           retention-days: 7
