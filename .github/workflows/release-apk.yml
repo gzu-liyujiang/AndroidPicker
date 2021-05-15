@@ -24,8 +24,10 @@ jobs:
         run: chmod +x gradlew
       - name: Build with Gradle
         run: ./gradlew clean assembleRelease --info --warning-mode all
-      - uses: actions/upload-artifact@v2
+      - name: Store android package
+        uses: actions/upload-artifact@v2
         with:
-         name: Store Android Package
-         path: build/outputs/apk/pub/release/*.apk
+         name: app-release
+         path: app/build/outputs/apk/pub/release/*.apk
          if-no-files-found: warn
+         retention-days:0
