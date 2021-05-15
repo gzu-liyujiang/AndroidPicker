@@ -11,7 +11,6 @@
  * See the Mulan PSL v2 for more details.
  */
 
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
     apply from: "${rootDir}/gradle/git.gradle"
@@ -32,18 +31,11 @@ buildscript {
 
 allprojects {
     repositories {
-        //本地的Maven仓库：{USER_HOME}/.m2/repository，如C:/Users/Administrator/.m2/repository
-        mavenLocal()
-        //项目里的aar文件
-        //flatDir { dir rootProject.file("app/libs") }
-        //JitPack提供的Maven仓库
-        maven { url "https://www.jitpack.io" }
-        //noinspection JcenterRepositoryObsolete http://developer.android.google.cn/r/tools/jcenter-end-of-service
+        //noinspection JcenterRepositoryObsolete
         jcenter()
-        //谷歌公司提供的Maven仓库：https://maven.google.com
         google()
-        //Sonatype公司提供的中央库：http://central.maven.org/maven2
         mavenCentral()
+        maven { url "https://www.jitpack.io" }
         maven { url 'https://repo1.maven.org/maven2/' }
     }
 }
