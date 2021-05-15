@@ -1,5 +1,6 @@
-# Adapted from https://github.com/actions/starter-workflows/blob/master/ci/gradle-publish.yml
 # This workflow will build a package using Gradle and then publish it to maven local when a release is created
+# See https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
+# and https://github.com/actions/starter-workflows/blob/master/ci/gradle-publish.yml
 
 name: Gradle Package
 
@@ -13,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 1.8
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v1
         with:
           java-version: 1.8
       - name: Grant execute permission for gradlew
