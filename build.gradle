@@ -25,7 +25,7 @@ buildscript {
         maven { url 'https://repo1.maven.org/maven2/' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.0'
+        classpath 'com.android.tools.build:gradle:4.2.1'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5'
     }
 }
@@ -34,7 +34,6 @@ allprojects {
     repositories {
         //本地的Maven仓库：{USER_HOME}/.m2/repository，如C:/Users/Administrator/.m2/repository
         mavenLocal()
-        maven { url "https://gitee.com/li_yu_jiang/maven-repo/raw/master" }
         //项目里的aar文件
         //flatDir { dir rootProject.file("app/libs") }
         //JitPack提供的Maven仓库

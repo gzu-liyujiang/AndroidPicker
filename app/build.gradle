@@ -15,8 +15,8 @@ apply from: "${rootDir}/gradle/app.gradle"
 
 dependencies {
     implementation project(":library")
-    implementation androidxLibrary.fragment
-    debugRuntimeOnly library.logger
+    implementation androidxLibrary.appcompat
+    implementation library.material
 }
 
 android {
