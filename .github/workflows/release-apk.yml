@@ -14,7 +14,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout source code
+        uses: actions/checkout@v2
       - name: Set up JDK 1.8
         uses: actions/setup-java@v1
         with:
@@ -22,9 +23,9 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build with Gradle
-        run: ./gradlew clean assembleRelease --warning-mode all
+        run: ./gradlew clean assembleRelease --info --warning-mode all
       - uses: actions/upload-artifact@v2
         with:
          name: Store Android Package
-         path: build\outputs\apk\pub\release
-         
+         path: build/outputs/apk/pub/release/*.apk
+         if-no-files-found: warn
