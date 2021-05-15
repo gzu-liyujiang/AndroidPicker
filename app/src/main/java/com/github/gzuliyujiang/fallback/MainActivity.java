@@ -10,21 +10,18 @@
  * PURPOSE.
  * See the Mulan PSL v2 for more details.
  */
+package com.github.gzuliyujiang.fallback;
 
-ext {
+import android.os.Bundle;
 
-    //Android版本（4.4-19、5.0-21、6.0-23、7.0-24、8.0-26、9.0-28、10-29、11-30）
-    minSdkVersion = 19
-    targetSdkVersion = 30
-    compileSdkVersion = 30
-    buildToolsVersion = '30.0.3'
-    //启用x86架构支持（模拟器运行时需要）
-    enableX86Support = true
-    //发布包是否混淆Java代码
-    enableJavaProguard = true
-    //发布包是否移除未用到的资源文件
-    removeUnusedResource = true
-    //避免编译错误”a .dex file cannot exceed 64K“
-    enableMultiDex = true
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+    }
 
 }

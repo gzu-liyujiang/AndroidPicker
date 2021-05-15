@@ -10,18 +10,25 @@
  * PURPOSE.
  * See the Mulan PSL v2 for more details.
  */
-package com.github.gzuliyujiang.demo;
 
-import android.os.Bundle;
+package com.github.gzuliyujiang.fallback;
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.app.Application;
+import android.content.Context;
 
-public class MainActivity extends AppCompatActivity {
+import androidx.multidex.MultiDex;
+
+/**
+ * @author 贵州山野羡民（1032694760@qq.com）
+ * @see androidx.multidex.MultiDexApplication
+ * @since 2021/5/15 16:01
+ */
+public class DemoApp extends Application {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 
 }
