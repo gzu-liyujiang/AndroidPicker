@@ -1,6 +1,6 @@
 # This workflow will build a package using Gradle and then publish it to maven local when a release is created
 # See https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
-# and https://github.com/actions/starter-workflows/blob/master/ci/gradle-publish.yml
+# and https://docs.github.com/en/actions/guides/storing-workflow-data-as-artifacts
 
 name: Gradle Package
 
@@ -24,4 +24,9 @@ jobs:
       #- name: Publish to mavenLocal()
       #  run: ./gradlew publishToMavenLocal --warning-mode all
       - name: Publish to local maven repository
-        run: ./gradlew publishReleasePublicationToLocal --warning-mode all
+        run: ./gradlew clean publishReleasePublicationToLocalRepository --info --warning-mode all
+      - uses: actions/upload-artifact@v2
+        with:
+         name: Store Android Archive
+         path: ../归档/
+         

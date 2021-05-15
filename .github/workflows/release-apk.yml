@@ -26,5 +26,5 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
          name: Store Android Package
-         path: build/libs
+         path: ../归档/
          
