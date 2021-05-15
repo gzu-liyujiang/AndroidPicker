@@ -6,9 +6,9 @@ name: Release APK
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   build:
@@ -23,11 +23,11 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build with Gradle
-        run: ./gradlew clean assembleRelease --info --warning-mode all
+        run: gradlew clean assembleRelease --info --warning-mode all
       - name: Store android package
         uses: actions/upload-artifact@v2
         with:
-         name: app-release
-         path: app/build/outputs/apk/pub/release/*.apk
-         if-no-files-found: warn
-         retention-days:0
+          name: app-release
+          path: app/build/outputs/apk/pub/release/*.apk
+          if-no-files-found: warn
+          retention-days: 0
