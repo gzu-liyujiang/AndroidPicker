@@ -1,6 +1,6 @@
 # 项目说明
 
->2020.05.14
+> 2020.05.14
 
 ## 开发环境
 
@@ -14,32 +14,33 @@
 ## 协作工具
 
 - xiaopiu：产品原型协作
-- lanhuapp：UI设计稿协作
+- 蓝湖：UI 设计稿协作
 - git：程序代码协作
 
 ## 模板文件
 
-- .github/workflows  自动化工作流
-- .gitignore  通用的GIT版本控制文件忽略规则
+- .github/workflows 自动化工作流
+- .gitignore 通用的 GIT 版本控制文件忽略规则
 - build.gradle 项目构建管理
 - gradle.properties 通用的项目配置
-- app/proguard-common.pro  通用的混淆规则
-- gradle/common.gradle 通用的项目配置，包括GIT提交信息、打包排除文件、静态检查白名单等
-- gradle/config.gradle 构建配置，包括指定SDK版本、是否启用X86支持、是否启用混淆
+- app/proguard-common.pro 通用的混淆规则
+- gradle/common.gradle 通用的项目配置，包括 GIT 提交信息、打包排除文件、静态检查白名单等
+- gradle/config.gradle 构建配置，包括指定 SDK 版本、是否启用 X86 支持、是否启用混淆
 - gradle/dependency.gradle 第三方依赖项集中管理
-- gradle/git.gradle 基于GIT进行版本号得到APP版本号
-- gradle/publish.gradle 项目打包发布到Maven仓库
-- gradle/app.gradle 通用的APK打包配置，包括解决依赖冲突、分环境分渠道打包、分包、自动签名、归档备份等
+- gradle/git.gradle 基于 GIT 进行版本号得到 APP 版本号
+- gradle/publish.gradle 项目打包发布到 Maven 仓库
+- gradle/app.gradle 通用的 APK 打包配置，包括解决依赖冲突、分环境分渠道打包、分包、自动签名、归档备份等
 - gradle/library.gradle 通用的库项目配置
 
 ## 镜像加速
 
-在天朝使用jcenter、mavenCentral及google三个远程仓库，Gradle Sync会很慢，
-google仓库甚至需要`科学上网`才能访问。
+在天朝使用 jcenter、mavenCentral 及 google 三个远程仓库，Gradle Sync 会很慢，
+google 仓库甚至需要`科学上网`才能访问。
 为了加快速度，优先用 [阿里云仓库服务](https://maven.aliyun.com/mvn/view) 的仓库作为下载源，
 将本项目的[gradle/init.d/init.gradle](/gradle/init.d/init.gradle)复制到`{USER_HOME}/.gradle/`下即可，
-`USER_HOME`在Windows上大约为`C:/Users/liyujiang/.gradle/`，在Linux上大约为`/home/liyujiang/.gradle/`，  
+`USER_HOME`在 Windows 上大约为`C:/Users/liyujiang/.gradle/`，在 Linux 上大约为`/home/liyujiang/.gradle/`，  
 `init.d/init.gradle`内容为：
+
 ```gradle
 buildscript {
     repositories {
@@ -48,7 +49,7 @@ buildscript {
         maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
     }
 }
-    
+
 allprojects {
     repositories {
         maven { url 'https://maven.aliyun.com/repositories/jcenter' }

@@ -11,13 +11,10 @@
  * See the Mulan PSL v2 for more details.
  */
 
-// See https://github.com/bintray/gradle-bintray-plugin
-//
 // 打包到{USER_HOME}/.m2/repository
 // ./gradlew clean build publishReleasePublicationToLocalRepository --info --warning-mode all
 // "./gradlew.bat" clean build publishReleasePublicationToLocalRepository --info --warning-mode all
 
-//用于将打包项目发布到Jfrog Bintray的Maven仓库
 apply plugin: 'maven-publish'
 
 //项目相关信息
