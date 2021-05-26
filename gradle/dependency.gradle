@@ -47,7 +47,7 @@ ext {
             GSYVideoPlayer            : "com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer:v8.1.3-jitpack",
             //noinspection GradleDependency 注意：zxing 3.4.0开始，扫码/二维码生成只支持API>=24，若要支持Android7.0以下则需降级到3.3.3版本
             zxing                     : "com.google.zxing:core:3.3.3",
-            zt_zip                    : "org.zeroturnaround:zt-zip:1.14",
+            zip4j                     : "net.lingala.zip4j:zip4j:2.8.0",
             OAID                      : "com.github.gzu-liyujiang:Android_CN_OAID:4.1.3",
     ]
 
