@@ -4,7 +4,7 @@
 ![Gradle Package](https://github.com/gzu-liyujiang/AndroidPicker/workflows/Gradle%20Package/badge.svg) [![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
 [![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
 
-安卓选择器类库，包括日期及时间选择器（可用于出生日期、营业时间等）、单项选择器（可用于性别、职业、学历、星座等）、城市地址选择器（分省级、地级及县级）、数字选择器（可用于年龄、身高、体重、温度等）、日历选日期择器（可用于酒店及机票预定日期）、颜色选择器、文件及目录选择器等……
+安卓选择器类库，包括日期及时间选择器（可用于出生日期、营业时间等）、单项选择器（可用于性别、职业、学历、星座等）、二三级联动选择器（可用于车牌号、基金定投日期等）、城市地址选择器（分省级、地市级及区县级）、数字选择器（可用于年龄、身高、体重、温度等）、日历选日期择器（可用于酒店及机票预定日期）、颜色选择器、文件及目录选择器等……
 
 欢迎大伙儿在[Issues](https://github.com/gzu-liyujiang/AndroidPicker/issues)提交你的意见或建议。欢迎 Fork & Pull requests 贡献您的代码，大家共同学习【[AndroidPicker 交流群 604235437](https://jq.qq.com/?_wv=1027&k=42bKOeD)】。
 
@@ -25,19 +25,35 @@ allprojects {
 }
 ```
 
+所有选择器的基础窗体：
+
+```groovy
+dependencies {
+    implementation 'com.github.gzu-liyujiang:AndroidPicker:basepicker:<version>'
+}
+```
+
+滚轮选择器的滚轮控件：
+
+```groovy
+dependencies {
+    implementation 'com.github.gzu-liyujiang:AndroidPicker:wheelview:<version>'
+}
+```
+
 滚轮选择器：
 
 ```groovy
 dependencies {
-    implementation 'com.github.gzu-liyujiang.AndroidPicker:WheelPicker:版本号'
+    implementation 'com.github.gzu-liyujiang:AndroidPicker:wheelpicker:<version>'
 }
 ```
 
-文件目录选择器：
+文件/目录选择器：
 
 ```groovy
 dependencies {
-    implementation 'com.github.gzu-liyujiang.AndroidPicker:FilePicker:版本号'
+    implementation 'com.github.gzu-liyujiang:AndroidPicker:filepicker:<version>'
 }
 ```
 
@@ -45,11 +61,19 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'com.github.gzu-liyujiang.AndroidPicker:ColorPicker:版本号'
+    implementation 'com.github.gzu-liyujiang:AndroidPicker:colorpicker:<version>'
 }
 ```
 
-注：Support 版本截止 1.5.6，从 2.0.0 开始为 AndroidX 版本，从 3.0.0 开始为全新重构版本。
+日历日期选择器：
+
+```groovy
+dependencies {
+    implementation 'com.github.gzu-liyujiang:AndroidPicker:calendarpicker:<version>'
+}
+```
+
+**注意**：Support 版本截止 1.5.6，从 2.0.0 开始为 AndroidX 版本，从 3.0.0 开始为全新重构版本。
 
 **Support 版本**依赖：
 
@@ -69,6 +93,10 @@ dependencies {
     implementation 'com.github.gzu-liyujiang.AndroidPicker:ColorPicker:2.0.0'
 }
 ```
+
+## 用法示例
+
+常见用法[详见 demo ](/app)，建议拉取代码运行，对比查看实际效果。
 
 ## 效果预览
 
