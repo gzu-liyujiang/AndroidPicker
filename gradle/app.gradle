@@ -60,6 +60,9 @@ android {
 
     defaultConfig {
         multiDexEnabled enableMultiDex
+        dexOptions {
+            preDexLibraries = false
+        }
         signingConfigs {
             //直接使用真实的密钥库文件，避免微信、高德地图等第三方SDK校验失败
             releaseConfig {
