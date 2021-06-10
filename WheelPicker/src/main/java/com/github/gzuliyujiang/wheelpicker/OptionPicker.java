@@ -32,7 +32,7 @@ import java.util.List;
  * 单项选择器
  *
  * @author 贵州山野羡民（1032694760@qq.com）
- * @see TextProvider
+ * @see com.github.gzuliyujiang.wheelview.contract.TextProvider
  * @since 2019/5/8 10:04
  */
 @SuppressWarnings({"unused"})

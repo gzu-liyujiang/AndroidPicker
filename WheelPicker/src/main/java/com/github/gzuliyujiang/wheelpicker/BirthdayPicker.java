@@ -31,6 +31,7 @@ import java.util.Calendar;
  * @since 2019/5/14 14:31
  * @since 2.0
  */
+@SuppressWarnings("unused")
 public class BirthdayPicker extends DatePicker {
     private static final int MAX_AGE = 100;
 

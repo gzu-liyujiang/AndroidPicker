@@ -87,7 +87,9 @@ public abstract class BottomPicker extends Dialog implements DialogInterface.OnS
             window.getDecorView().setPadding(0, 0, 0, 0);
         }
         // 调用create或show才能触发onCreate
-        create();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            create();
+        }
     }
 
     protected void onInit(@NonNull Context context) {
@@ -140,7 +142,9 @@ public abstract class BottomPicker extends Dialog implements DialogInterface.OnS
                 params.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
             }
             params.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-            params.flags = WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                params.flags = WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS;
+            }
             params.type = WindowManager.LayoutParams.TYPE_APPLICATION_PANEL;
             params.format = PixelFormat.TRANSLUCENT;
             params.token = activity.getWindow().getDecorView().getWindowToken();

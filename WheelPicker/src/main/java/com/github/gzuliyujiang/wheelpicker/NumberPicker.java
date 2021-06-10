@@ -32,6 +32,7 @@ import com.github.gzuliyujiang.wheelview.widget.WheelView;
  * @author 李玉江[QQ:1032694760]
  * @since 2015/10/24
  */
+@SuppressWarnings("unused")
 public class NumberPicker extends ConfirmPicker {
     protected NumberWheelLayout wheelLayout;
     private OnNumberPickedListener onNumberPickedListener;

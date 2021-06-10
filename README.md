@@ -29,7 +29,7 @@ allprojects {
 
 ```groovy
 dependencies {
-    implementation 'com.github.gzu-liyujiang:AndroidPicker:basepicker:<version>'
+    implementation 'com.github.gzu-liyujiang:AndroidPicker:BasePicker:<version>'
 }
 ```
 
@@ -37,7 +37,7 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'com.github.gzu-liyujiang:AndroidPicker:wheelview:<version>'
+    implementation 'com.github.gzu-liyujiang:AndroidPicker:WheelView:<version>'
 }
 ```
 
@@ -45,7 +45,7 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'com.github.gzu-liyujiang:AndroidPicker:wheelpicker:<version>'
+    implementation 'com.github.gzu-liyujiang:AndroidPicker:WheelPicker:<version>'
 }
 ```
 
@@ -53,7 +53,7 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'com.github.gzu-liyujiang:AndroidPicker:filepicker:<version>'
+    implementation 'com.github.gzu-liyujiang:AndroidPicker:FilePicker:<version>'
 }
 ```
 
@@ -61,7 +61,7 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'com.github.gzu-liyujiang:AndroidPicker:colorpicker:<version>'
+    implementation 'com.github.gzu-liyujiang:AndroidPicker:ColorPicker:<version>'
 }
 ```
 
@@ -69,7 +69,7 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'com.github.gzu-liyujiang:AndroidPicker:calendarpicker:<version>'
+    implementation 'com.github.gzu-liyujiang:AndroidPicker:CalendarPicker:<version>'
 }
 ```
 
