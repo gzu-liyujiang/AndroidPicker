@@ -1,7 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2016-present 贵州纳雍穿青人李裕江<1032694760@qq.com>
+  ~
+  ~ The software is licensed under the Mulan PSL v2.
+  ~ You can use this software according to the terms and conditions of the Mulan PSL v2.
+  ~ You may obtain a copy of Mulan PSL v2 at:
+  ~     http://license.coscl.org.cn/MulanPSL2
+  ~ THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR
+  ~ PURPOSE.
+  ~ See the Mulan PSL v2 for more details.
+  -->
+
 <resources>
 
-    <color name="immersion">#FF18B4ED</color>
-    <color name="background">#FFFFFFFF</color>
+    <eat-comment />
+    <!-- 应用的主要色调，ActionBar Toolbar 默认使用该颜色 -->
+    <color name="colorPrimary">@android:color/white</color>
+    <!-- 应用的主要暗色调，StatusBar、NavigationBar默认使用该颜色 -->
+    <color name="colorPrimaryDark">@color/colorPrimary</color>
+    <!-- 应用的补充亮色调，默认情况下用于框架控件的颜色（通过colorControlActivated），CheckBox RadioButton Switch 等一般控件默认采用该颜色 -->
+    <color name="colorAccent">@android:color/holo_blue_light</color>
 
 </resources>

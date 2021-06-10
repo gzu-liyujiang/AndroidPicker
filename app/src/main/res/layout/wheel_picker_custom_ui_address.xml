@@ -1,0 +1,99 @@
+<!--
+  ~ Copyright (c) 2016-present 贵州纳雍穿青人李裕江<1032694760@qq.com>
+  ~
+  ~ The software is licensed under the Mulan PSL v2.
+  ~ You can use this software according to the terms and conditions of the Mulan PSL v2.
+  ~ You may obtain a copy of Mulan PSL v2 at:
+  ~     http://license.coscl.org.cn/MulanPSL2
+  ~ THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR
+  ~ PURPOSE.
+  ~ See the Mulan PSL v2 for more details.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:background="#FFEEEEEE"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp">
+
+        <TextView
+            android:id="@+id/wheel_picker_address_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:paddingLeft="11dp"
+            android:paddingRight="11dp"
+            android:text="取消"
+            android:textColor="#ff999999"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/wheel_picker_address_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:paddingLeft="11dp"
+            android:paddingRight="11dp"
+            android:text="确定"
+            android:textColor="#ffe6212f" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#FF999999" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:gravity="center"
+            android:text="省"
+            android:textColor="#ff666666"
+            android:textSize="19sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:gravity="center"
+            android:text="市"
+            android:textColor="#ff666666"
+            android:textSize="19sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:gravity="center"
+            android:text="区"
+            android:textColor="#ff666666"
+            android:textSize="19sp"
+            android:visibility="visible" />
+
+    </LinearLayout>
+
+    <com.github.gzuliyujiang.wheelpicker.widget.LinkageWheelLayout
+        android:id="@+id/wheel_picker_address_wheel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="200dp" />
+
+</LinearLayout>

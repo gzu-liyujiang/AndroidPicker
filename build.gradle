@@ -1,112 +1,64 @@
-//参考：https://raw.github.com/dm77/barcodescanner/master/build.gradle
+/*
+ * Copyright (c) 2016-present 贵州纳雍穿青人李裕江<1032694760@qq.com>
+ *
+ * The software is licensed under the Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *     http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR
+ * PURPOSE.
+ * See the Mulan PSL v2 for more details.
+ */
 
 buildscript {
+    apply from: "${rootDir}/gradle/git.gradle"
+    apply from: "${rootDir}/gradle/config.gradle"
+    apply from: "${rootDir}/gradle/dependency.gradle"
     repositories {
+        //noinspection JcenterRepositoryObsolete http://developer.android.google.cn/r/tools/jcenter-end-of-service
         jcenter()
-        maven {
-            url 'https://dl.google.com/dl/android/maven2/'
-            name 'Google'
-        }
         google()
+        mavenCentral()
+        maven { url 'https://repo1.maven.org/maven2/' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.0'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+        classpath 'com.android.tools.build:gradle:4.2.1'
     }
 }
 
 allprojects {
-    group = GROUP
-    version = VERSION_NAME
-
     repositories {
-        jcenter() //bintray的maven库
-        mavenCentral() //sonatype的maven库
-        mavenLocal() //本地的maven库
-        maven {
-            url 'https://dl.google.com/dl/android/maven2/' //谷歌的maven库
-            name 'Google'
-        }
-        maven {
-            url "https://www.jitpack.io" //jitpack的maven库
-        }
-        flatDir {
-            dirs 'libs' //本地aar文件
-        }
+        //noinspection JcenterRepositoryObsolete
+        jcenter()
+        google()
+        mavenCentral()
+        maven { url "https://www.jitpack.io" }
+        maven { url 'https://repo1.maven.org/maven2/' }
     }
-
-    ext {
-        isLibrary = false
-        pomArtifactId = project.name
-        pomVersion = VERSION_NAME
-        pomDescription = 'This is library description'
-    }
-
 }
 
 subprojects {
-    afterEvaluate { Project project ->
-        ext.pluginContainer = project.getPlugins()
-        def hasAppPlugin = ext.pluginContainer.hasPlugin("com.android.application")
-        def hasLibPlugin = ext.pluginContainer.hasPlugin("com.android.library")
-        if (hasAppPlugin || hasLibPlugin) {
-            android {
-                compileSdkVersion COMPILE_SDK_VERSION as int
-                buildToolsVersion BUILD_TOOL_VERSION
-
-                defaultConfig {
-                    minSdkVersion MIN_SDK_VERSION as int
-                    targetSdkVersion TARGET_SDK_VERSION as int
-                    versionCode VERSION_CODE as int
-                    versionName VERSION_NAME
-                }
-
-                buildTypes {
-                    release {
-                        debuggable false
-                        minifyEnabled false //实时构建库项目时若启用混淆，APP模块引用会造成部分方法找不到
-                    }
-                    debug {
-                        debuggable true
-                        minifyEnabled false
-                    }
-                }
-
-                lintOptions {
-                    checkReleaseBuilds false
-                    abortOnError false
-                }
-
-                packagingOptions {
-                    doNotStrip '*/mips/*.so'
-                    doNotStrip '*/mips64/*.so'
-                    exclude 'META-INF/DEPENDENCIES.txt'
-                    exclude 'META-INF/LICENSE.txt'
-                    exclude 'META-INF/NOTICE.txt'
-                    exclude 'META-INF/NOTICE'
-                    exclude 'META-INF/LICENSE'
-                    exclude 'META-INF/DEPENDENCIES'
-                    exclude 'META-INF/notice.txt'
-                    exclude 'META-INF/license.txt'
-                    exclude 'META-INF/dependencies.txt'
-                    exclude 'META-INF/LGPL2.1'
-                    exclude 'META-INF/ASL2.0'
-                }
-
-            }
-
-            dependencies {
-                implementation "androidx.legacy:legacy-support-v4:1.0.0"
-                implementation "androidx.annotation:annotation:1.2.0-alpha01"
-            }
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            //增加一些编译选项
+            //options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
         }
-
-        if (project.isLibrary) {
-            configure(project) {
-                apply from: "${rootDir}/publish.gradle" //调用发布脚本
-            }
-        }
-
     }
 }
 
+task clean(type: Delete) {
+    println("********** clean build **********")
+    println("delete project dir: " + rootProject.buildDir)
+    rootProject.buildDir.deleteDir()
+    def dir = new File(new File(".").getAbsolutePath())
+    println("root dir: " + dir.getAbsolutePath())
+    dir.eachDirRecurse {
+        dir2 ->
+            dir2.eachDirMatch(~/build/) {
+                directory ->
+                    println("delete child dir:" + directory)
+                    directory.deleteDir()
+            }
+    }
+}

@@ -1,0 +1,34 @@
+<!--
+  ~ Copyright (c) 2016-present 贵州纳雍穿青人李裕江<1032694760@qq.com>
+  ~
+  ~ The software is licensed under the Mulan PSL v2.
+  ~ You can use this software according to the terms and conditions of the Mulan PSL v2.
+  ~ You may obtain a copy of Mulan PSL v2 at:
+  ~     http://license.coscl.org.cn/MulanPSL2
+  ~ THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR
+  ~ PURPOSE.
+  ~ See the Mulan PSL v2 for more details.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:baselineAligned="false"
+    android:orientation="horizontal">
+
+    <com.github.gzuliyujiang.wheelpicker.widget.DateWheelLayout
+        android:id="@+id/wheel_picker_date_wheel"
+        style="@style/WheelDefault"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.2" />
+
+    <com.github.gzuliyujiang.wheelpicker.widget.TimeWheelLayout
+        android:id="@+id/wheel_picker_time_wheel"
+        style="@style/WheelDefault"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.0" />
+
+</LinearLayout>

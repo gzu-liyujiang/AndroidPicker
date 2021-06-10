@@ -1,49 +1,65 @@
-apply plugin: 'com.android.application'
+/*
+ * Copyright (c) 2016-present 贵州纳雍穿青人李裕江<1032694760@qq.com>
+ *
+ * The software is licensed under the Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *     http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR
+ * PURPOSE.
+ * See the Mulan PSL v2 for more details.
+ */
 
-ext {
-    isLibrary = false
+apply from: "${rootDir}/gradle/app.gradle"
+
+dependencies {
+    implementation androidxLibrary.multidex
+    implementation androidxLibrary.appcompat
+    implementation library.material
+    implementation project(':BasePicker')
+    implementation project(':WheelView')
+    implementation project(':WheelPicker')
+    implementation project(':ColorPicker')
+    implementation project(':FilePicker')
+    implementation project(':CalendarPicker')
+    debugRuntimeOnly library.logger
 }
 
 android {
+    defaultConfig {
+        //应用的实际包名
+        applicationId "com.github.gzuliyujiang.demo"
+        // 配合 productFlavors 节点按不同维度打包
+        flavorDimensions "MODE"
+        // 修改 AndroidManifest.xml 里的变量，占位值无法覆盖的坑可参阅 https://www.jianshu.com/p/1d5271c2c366
+        manifestPlaceholders = [
+                MY_CHANNEL: "unknown",
+        ]
+    }
 
-    buildTypes {
-        release {
-            //是否zip优化
-            zipAlignEnabled true
-            //是否移除无用的资源，造成：specified for property 'resourceFile' does not exist.
-            //shrinkResources true
-            //是否混淆
-            minifyEnabled true
-            //混淆配置文件
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    // 打包维度列表，会按维度名字母顺序执行，最终发布的具体渠道包的生成可以借助360加固等工具
+    productFlavors {
+        // 发布模式/正式环境
+        pub {
+            dimension "MODE"
+            // 服务端接口地址
+            buildConfigField "String", "API_BASE_URL", '"https://api.example.com"'
+            // 修改 AndroidManifest.xml 里的变量
+            manifestPlaceholders = [
+                    MY_CHANNEL: "publisher-default",
+            ]
+        }
+        // 开发模式/测试环境
+        dev {
+            dimension "MODE"
+            // 服务端接口地址
+            buildConfigField "String", "API_BASE_URL", '"https://test.example.com"'
+            // 修改 AndroidManifest.xml 里的变量
+            manifestPlaceholders = [
+                    MY_CHANNEL: "developer-default",
+            ]
         }
     }
 
-}
-
-dependencies {
-    implementation 'com.alibaba:fastjson:1.1.55.android'
-    implementation project(':library:WheelPicker')
-    implementation project(':library:FilePicker')
-    implementation project(':library:ColorPicker')
-    implementation project(':library:MultiplePicker')
-//    compile files('libs/AndroidPicker-1.5.6.jar')
-//    compile('cn.qqtheme.framework:WheelPicker:latest.release') {
-//        exclude group: 'com.android.support'
-//    }
-//    compile('cn.qqtheme.framework:FilePicker:latest.release') {
-//        exclude group: 'com.android.support'
-//    }
-//    compile('cn.qqtheme.framework:ColorPicker:latest.release') {
-//        exclude group: 'com.android.support'
-//    }
-//    compile('com.github.gzu-liyujiang.AndroidPicker:WheelPicker:1.5.6') {
-//        exclude group: 'com.android.support'
-//    }
-//    compile('com.github.gzu-liyujiang.AndroidPicker:FilePicker:1.5.6') {
-//        exclude group: 'com.android.support'
-//    }
-//    compile('com.github.gzu-liyujiang.AndroidPicker:ColorPicker:1.5.6') {
-//        exclude group: 'com.android.support'
-//    }
 }

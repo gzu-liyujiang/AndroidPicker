@@ -1,0 +1,83 @@
+/*
+ * Copyright (c) 2016-present 贵州纳雍穿青人李裕江<1032694760@qq.com>
+ *
+ * The software is licensed under the Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *     http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR
+ * PURPOSE.
+ * See the Mulan PSL v2 for more details.
+ */
+
+android {
+
+    compileSdkVersion rootProject.ext.compileSdkVersion as Integer
+    buildToolsVersion rootProject.ext.buildToolsVersion
+    // 配置资源名前缀提示，避免资源名重复
+    //resourcePrefix project.name == 'app' ? '' : project.name.toLowerCase() + '_'
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion as Integer
+        targetSdkVersion rootProject.ext.targetSdkVersion as Integer
+        versionCode rootProject.ext.getAppVersionCode() as Integer
+        versionName rootProject.ext.getAppVersionName()
+        println("versionCode: $versionCode\nversionName: $versionName")
+        buildConfigField "String", "BUILD_TIME", '"' + new Date().format("yyyy-MM-dd HH:mm") + '"'
+        buildConfigField "String", "GIT_BRANCH", '"' + rootProject.ext.getGitBranch() + '"'
+        buildConfigField "String", "GIT_LATEST_COMMIT_HASH", '"' + rootProject.ext.getGitLatestCommitHashShort() + '"'
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+            res.srcDirs = ['src/main/res']
+            java.srcDirs = ['src/main/java']
+            assets.srcDirs = ['src/main/assets']
+            aidl.srcDirs = ['src/main/aidl']
+            jni.srcDirs = ['cpp', 'jni', 'src/main/cpp', 'src/main/jni']
+            jniLibs.srcDirs = ['libs', 'src/main/jniLibs']
+        }
+    }
+
+    aaptOptions {
+        cruncherEnabled false
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+        // 执行命令 `${ANDROID_SDK_HOME}/tools/bin/lint --list` 查看可用的ID
+        disable 'InvalidPackage', 'HardcodedText', 'SmallSp', 'ContentDescription', 'AddJavascriptInterface'
+    }
+
+    compileOptions {
+        encoding 'UTF-8'
+        // jdk 1.8 开始支持 lambda 表达式
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    packagingOptions {
+        doNotStrip '*/mips/*.so'
+        doNotStrip '*/mips64/*.so'
+        exclude 'DEPENDENCIES'
+        exclude 'LICENSE'
+        exclude 'NOTICE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/proguard/*.pro'
+        exclude 'META-INF/*.version'
+        exclude 'junit/*/*'
+        exclude 'androidsupportmultidexversion.txt'
+    }
+
+}

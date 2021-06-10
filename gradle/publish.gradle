@@ -1,0 +1,141 @@
+/*
+ * Copyright (c) 2016-present 贵州纳雍穿青人李裕江<1032694760@qq.com>
+ *
+ * The software is licensed under the Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *     http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR
+ * PURPOSE.
+ * See the Mulan PSL v2 for more details.
+ */
+
+// 打包到{USER_HOME}/.m2/repository
+// ./gradlew clean build publishReleasePublicationToLocalRepository --info --warning-mode all
+// "./gradlew.bat" clean build publishReleasePublicationToLocalRepository --info --warning-mode all
+
+apply plugin: 'maven-publish'
+
+//项目相关信息
+def includeJar = false
+def includeDoc = false
+def includeSrc = false
+def pomLibGroupName = 'com.github.gzuliyujiang'
+def pomLibArtifactId = project.name
+def pomLibVersion = getGitLatestTag()
+def pomLibDescription = "TODO description: ${rootProject.name} for Android"
+def pomSiteUrl = "https://gitee.com/li_yu_jiang/${rootProject.name}"
+def pomLicenses = ["Apache License 2.0", "Mulan PSL v2"]
+//开发者信息
+def pomDeveloperId = 'liyujiang-gzu'
+def pomDeveloperName = '李玉江'
+def pomDeveloperEmail = '1032694760@qq.com'
+
+/**
+ * generate xxx-sources.jar
+ */
+task sourcesJar(type: Jar) {
+    getArchiveClassifier().set('sources')
+    from android.sourceSets.main.java.srcDirs
+}
+
+/**
+ * generate javadoc
+ */
+task javadoc(type: Javadoc) {
+    source android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    exclude '**/BuildConfig.java'
+    exclude '**/R.java'
+    failOnError false
+}
+
+/**
+ * generate xxx-javadoc.jar
+ */
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    getArchiveClassifier().set('javadoc')
+    from javadoc.destinationDir
+}
+
+/**
+ * javadoc configure
+ */
+javadoc {
+    options {
+        encoding "UTF-8"
+        charSet 'UTF-8'
+        author true
+        version true
+    }
+}
+
+afterEvaluate {
+    //发布jar或aar包
+    publishing {
+        repositories {
+            maven {
+                // 执行命令`gradlew publishReleasePublicationToLocalRepository`
+                name = 'Local'
+                // 可同步到`https://gitee.com/li_yu_jiang/maven-repo`，通过`https://gitee.com/li_yu_jiang/maven-repo/raw/master`访问
+                url = rootProject.file("归档")
+            }
+        }
+        publications {
+            // See https://developer.android.google.cn/studio/build/maven-publish-plugin
+            release(MavenPublication) {
+                try {
+                    from components.release
+                } catch (e) {
+                    e.printStackTrace()
+                }
+                group = pomLibGroupName
+                version = pomLibVersion
+                description = pomLibDescription
+                artifactId pomLibArtifactId
+                if (includeJar) {
+                    artifact "${buildDir}/intermediates/aar_main_jar/release/classes.jar"
+                }
+                if (includeSrc) {
+                    artifact sourcesJar
+                }
+                if (includeDoc) {
+                    artifact javadocJar
+                }
+                pom.withXml {
+                    def root = asNode()
+                    root.appendNode('name', pomLibArtifactId)
+                    root.appendNode('description', pomLibDescription)
+                    root.appendNode('url', pomSiteUrl)
+                    root.appendNode('licenses').appendNode('license').appendNode('name', pomLicenses[0])
+                    def developer = root.appendNode('developers').appendNode('developer')
+                    developer.appendNode('id', pomDeveloperId)
+                    developer.appendNode('name', pomDeveloperName)
+                    developer.appendNode('email', pomDeveloperEmail)
+                    // Define this explicitly if using implementation or api configurations
+                    def dependenciesNode = root['dependencies'][0] ?: root.appendNode('dependencies')
+                    def addDependency = {
+                        // Ensure dependencies such as fileTree are not included.
+                        if (it.group && it.name && it.version) {
+                            def dependencyNode = dependenciesNode.appendNode('dependency')
+                            dependencyNode.appendNode('groupId', it.group)
+                            dependencyNode.appendNode('artifactId', it.name)
+                            if (it.group == pomLibGroupName && it.version == 'unspecified') {
+                                dependencyNode.appendNode('version', pomLibVersion)
+                            } else {
+                                dependencyNode.appendNode('version', it.version)
+                            }
+                            if (it.hasProperty('optional') && it.optional) {
+                                dependencyNode.appendNode('optional', 'true')
+                            }
+                        }
+                    }
+                    // Iterate over the implementation dependencies (we don't want the test ones), adding a <dependency> node for each
+                    configurations.implementation.allDependencies.each addDependency
+                    configurations.api.allDependencies.each addDependency
+                }
+            }
+        }
+    }
+}

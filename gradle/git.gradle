@@ -1,0 +1,101 @@
+/*
+ * Copyright (c) 2016-present 贵州纳雍穿青人李裕江<1032694760@qq.com>
+ *
+ * The software is licensed under the Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *     http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR
+ * PURPOSE.
+ * See the Mulan PSL v2 for more details.
+ */
+
+//扩展函数，参阅 https://blog.csdn.net/sinat_35073873/article/details/53263651
+ext {
+    gitGitCommitNumber = this.&gitGitCommitNumber
+    getGitLatestTag = this.&getGitLatestTag
+    getGitBranch = this.&getGitBranch
+    getGitLatestCommitHash = this.&getGitLatestCommitHash
+    getGitLatestCommitHashShort = this.&getGitLatestCommitHashShort
+    getAppVersionCode = this.&getAppVersionCode
+    getAppVersionName = this.&getAppVersionName
+}
+
+static def gitGitCommitNumber() {
+    try {
+        // See https://blog.csdn.net/liumeng920/article/details/51011251
+        def cmd = 'git rev-list HEAD --first-parent --count'
+        def integer = cmd.execute().text.trim().toInteger()
+        if (integer < 1) {
+            integer = 1
+        }
+        return integer
+    } catch (ignored) {
+        return 1
+    }
+}
+
+static def getGitLatestTag() {
+    try {
+        // See https://www.jianshu.com/p/2ecfd791c464
+        def cmd = 'git describe --tags --always'
+        return cmd.execute().text.trim() ?: '0.1.0'
+    } catch (ignored) {
+        return "0.0.0"
+    }
+}
+
+static def getGitBranch() {
+    try {
+        // See https://www.jianshu.com/p/1f81af606e41
+        def cmd = 'git symbolic-ref --short -q HEAD'
+        return cmd.execute().text.trim() ?: "unknown"
+    } catch (ignored) {
+        return "error"
+    }
+}
+
+static def getGitLatestCommitHash() {
+    try {
+        // See https://www.cnblogs.com/fuyaozhishang/p/7675551.html
+        def cmd = 'git rev-parse HEAD'
+        return cmd.execute().text.trim()
+    } catch (ignored) {
+        return System.currentTimeMillis()
+    }
+}
+
+static def getGitLatestCommitHashShort() {
+    try {
+        // See https://www.jianshu.com/p/1f81af606e41
+        def cmd = 'git rev-parse --short HEAD'
+        return cmd.execute().text.trim()
+    } catch (ignored) {
+        return (int) (System.currentTimeMillis() / 1000)
+    }
+}
+
+static def getAppVersionCode() {
+    def base = 20210000
+    def grow = gitGitCommitNumber()
+    return base + grow
+}
+
+static def getAppVersionName() {
+    try {
+        def version = getGitLatestTag()
+        if (version.indexOf('-') != -1) {
+            version = version.split('-')[0]
+        } else if (version.indexOf('.') == -1) {
+            version = "0.1.0"
+        }
+        if (!version.matches(/\d+\.\d+(\.\d+)?(\.\d+)?/)) {
+            System.err.println("Git tags must follow the semver specification (don't add metadata)：https://semver.org/lang/zh-CN")
+            throw new IllegalArgumentException("Git TAG format: [Major].[Minor].[Patch]")
+        }
+        return version
+    } catch (ignored) {
+        return "0.0.0"
+    }
+}

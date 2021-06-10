@@ -1,0 +1,35 @@
+<!--
+  ~ Copyright (c) 2016-present 贵州纳雍穿青人李裕江<1032694760@qq.com>
+  ~
+  ~ The software is licensed under the Mulan PSL v2.
+  ~ You can use this software according to the terms and conditions of the Mulan PSL v2.
+  ~ You may obtain a copy of Mulan PSL v2 at:
+  ~     http://license.coscl.org.cn/MulanPSL2
+  ~ THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR
+  ~ PURPOSE.
+  ~ See the Mulan PSL v2 for more details.
+  -->
+
+<resources>
+
+    <style name="WheelDefault">
+        <item name="wheel_visibleItemCount">5</item>
+        <item name="wheel_itemTextAlign">center</item>
+        <item name="wheel_itemSpace">20dp</item>
+        <item name="wheel_itemTextColor">#FF999999</item>
+        <item name="wheel_itemTextColorSelected">#FF000000</item>
+        <item name="wheel_itemTextSize">16sp</item>
+        <item name="wheel_sameWidthEnabled">false</item>
+        <item name="wheel_atmosphericEnabled">true</item>
+        <item name="wheel_curtainEnabled">false</item>
+        <item name="wheel_curtainColor">#FFDEDEDE</item>
+        <item name="wheel_curvedEnabled">false</item>
+        <item name="wheel_curvedMaxAngle">90</item>
+        <item name="wheel_cyclicEnabled">false</item>
+        <item name="wheel_indicatorEnabled">true</item>
+        <item name="wheel_indicatorColor">#FFDEDEDE</item>
+        <item name="wheel_indicatorSize">1dp</item>
+    </style>
+
+</resources>

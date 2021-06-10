@@ -1,0 +1,144 @@
+<!--
+  ~ Copyright (c) 2016-present 贵州纳雍穿青人李裕江<1032694760@qq.com>
+  ~
+  ~ The software is licensed under the Mulan PSL v2.
+  ~ You can use this software according to the terms and conditions of the Mulan PSL v2.
+  ~ You may obtain a copy of Mulan PSL v2 at:
+  ~     http://license.coscl.org.cn/MulanPSL2
+  ~ THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR
+  ~ PURPOSE.
+  ~ See the Mulan PSL v2 for more details.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        style="?android:textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="选择器示例"
+        android:textColor="@android:color/black" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onDateTimePicker"
+                android:text="日期时间滚轮选择器"
+                android:textColor="#FF333333" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onSinglePicker"
+                android:text="单项滚轮选择器"
+                android:textColor="#FF333333" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onLinkagePicker"
+                android:text="二三级联动滚轮选择器"
+                android:textColor="#FF333333" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onAddressPicker"
+                android:text="省市区县滚轮选择器"
+                android:textColor="#FF333333" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onColorPicker"
+                android:text="颜色选择器"
+                android:textColor="#FF333333" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onFilePicker"
+                android:text="文件/目录选择器"
+                android:textColor="#FF333333" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onCalendarPicker"
+                android:text="日历日期选择器"
+                android:textColor="#FF333333" />
+
+            <com.github.gzuliyujiang.wheelpicker.widget.OptionWheelLayout
+                android:id="@+id/wheel_option"
+                android:layout_width="90dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                app:wheel_itemTextAlign="center" />
+
+            <com.github.gzuliyujiang.wheelpicker.widget.LinkageWheelLayout
+                android:id="@+id/wheel_linkage"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                app:wheel_curtainColor="#FFF1F1F1"
+                app:wheel_curtainEnabled="true"
+                app:wheel_indicatorEnabled="false" />
+
+            <com.github.gzuliyujiang.wheelpicker.widget.NumberWheelLayout
+                android:layout_width="90dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                app:wheel_curvedEnabled="true"
+                app:wheel_curvedMaxAngle="45"
+                app:wheel_label="个"
+                app:wheel_maxNumber="30"
+                app:wheel_minNumber="10"
+                app:wheel_stepNumber="5"
+                app:wheel_visibleItemCount="7" />
+
+            <com.github.gzuliyujiang.wheelpicker.widget.DatimeWheelLayout
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                app:wheel_dateMode="year_month_day"
+                app:wheel_indicatorColor="#FFEEEEEE"
+                app:wheel_indicatorSize="5dp"
+                app:wheel_timeMode="hour_12_no_second" />
+
+            <com.github.gzuliyujiang.wheelpicker.widget.DateWheelLayout
+                android:layout_width="120dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                app:wheel_dateMode="month_day"
+                app:wheel_dayLabel="日"
+                app:wheel_monthLabel="月" />
+
+            <com.github.gzuliyujiang.wheelpicker.widget.TimeWheelLayout
+                android:layout_width="95dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                app:wheel_curvedEnabled="true"
+                app:wheel_curvedMaxAngle="45"
+                app:wheel_hourLabel=":"
+                app:wheel_minuteLabel=":"
+                app:wheel_timeMode="hour_24_has_second" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
