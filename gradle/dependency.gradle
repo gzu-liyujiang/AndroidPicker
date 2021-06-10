@@ -1,0 +1,112 @@
+/*
+ * Copyright (c) 2016-present 贵州纳雍穿青人李裕江<1032694760@qq.com>
+ *
+ * The software is licensed under the Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *     http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR
+ * PURPOSE.
+ * See the Mulan PSL v2 for more details.
+ */
+
+ext {
+
+    // GitHub社区开源库
+    library = [
+            logger                    : "com.orhanobut:logger:2.2.0",
+            xcrash                    : "com.iqiyi.xcrash:xcrash-android-lib:3.0.0",
+            mmkv                      : "com.tencent:mmkv-static:1.2.7",
+            toast                     : "com.hjq:toast:8.8",
+            photoview                 : "com.bm.photoview:library:1.4.1",
+            material                  : "com.google.android.material:material:1.2.0",
+            flexbox                   : "com.google.android:flexbox:2.0.1",
+            glide                     : "com.github.bumptech.glide:glide:4.12.0",
+            picasso                   : "com.squareup.picasso:picasso:2.8",
+            universalimageloader      : "com.nostra13.universalimageloader:universal-image-loader:1.9.5",
+            gson                      : "com.google.code.gson:gson:2.8.6",
+            fastjson                  : "com.alibaba:fastjson:1.2.70",
+            okgo                      : "com.lzy.net:okgo:3.0.4",
+            FastNetworking            : "com.amitshekhar.android:android-networking:1.0.2",
+            PersistentCookieJar       : "com.github.franmontiel:PersistentCookieJar:v1.0.1",
+            SmartRefreshKernel        : "com.scwang.smart:refresh-layout-kernel:2.0.3",
+            SmartRefreshHeaderClassic : "com.scwang.smart:refresh-header-classics:2.0.3",
+            SmartRefreshHeaderMaterial: "com.scwang.smart:refresh-header-material:2.0.3",
+            SmartRefreshFooterClassic : "com.scwang.smart:refresh-footer-classics:2.0.3",
+            SmartRefreshFooterBall    : "com.scwang.smart:refresh-footer-ball:2.0.3",
+            GifDrawable               : "pl.droidsonroids.gif:android-gif-drawable:1.2.22",
+            aria                      : "com.arialyy.aria:core:3.8.15",
+            banner                    : "com.youth.banner:banner:2.1.0",
+            shimmer                   : "com.facebook.shimmer:shimmer:0.5.0",
+            shapeofview               : "com.github.florent37:shapeofview:1.4.7",
+            lcardview                 : "org.linwg1988:lcardview:1.5.4",
+            FlowLayoutManager         : "com.github.1002326270xc:LayoutManager-FlowLayout:v1.8",
+            FlexibleDivider           : "com.yqritc:recyclerview-flexibledivider:1.4.0",
+            wcdb                      : "com.tencent.wcdb:wcdb-android:1.0.8.2",
+            GSYVideoPlayer            : "com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer:v8.1.3-jitpack",
+            //noinspection GradleDependency 注意：zxing 3.4.0开始，扫码/二维码生成只支持API>=24，若要支持Android7.0以下则需降级到3.3.3版本
+            zxing                     : "com.google.zxing:core:3.3.3",
+            zip4j                     : "net.lingala.zip4j:zip4j:2.8.0",
+            OAID                      : "com.github.gzu-liyujiang:Android_CN_OAID:4.1.3",
+    ]
+
+    // 谷歌支持库 https://developer.android.google.cn/jetpack/androidx/versions/stable-channel?hl=zh-cn
+    androidxLibrary = [
+            annotation            : "androidx.annotation:annotation:1.1.0",
+            core                  : "androidx.core:core:1.5.0-rc01",
+            collection            : "androidx.collection:collection:1.1.0",
+            multidex              : "androidx.multidex:multidex:2.0.0",
+            fragment              : "androidx.fragment:fragment:1.3.0",
+            appcompat             : "androidx.appcompat:appcompat:1.2.0",
+            localbroadcastmanager : "androidx.localbroadcastmanager:localbroadcastmanager:1.0.0",
+            recyclerview          : "androidx.recyclerview:recyclerview:1.1.0",
+            recyclerview_selection: "androidx.recyclerview:recyclerview-selection:1.1.0",
+            webkit                : "androidx.webkit:webkit:1.4.0",
+            exifinterface         : "androidx.exifinterface:exifinterface:1.3.2",
+            documentfile          : "androidx.documentfile:documentfile:1.0.1",
+            viewpager             : "androidx.viewpager:viewpager:1.0.0",
+            viewpager2            : "androidx.viewpager2:viewpager2:1.0.0",
+            cardview              : "androidx.cardview:cardview:1.0.0",
+            drawerlayout          : "androidx.drawerlayout:drawerlayout:1.1.1",
+            coordinatorlayout     : "androidx.coordinatorlayout:coordinatorlayout:1.1.0",
+            navigation_ui         : "androidx.navigation:navigation-ui:2.3.3",
+            navigation_fragment   : "androidx.navigation:navigation-fragment:2.3.3",
+            constraintlayout      : "androidx.constraintlayout:constraintlayout:2.0.4",
+            swiperefreshlayout    : "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0",
+            slidingpanelayout     : "androidx.slidingpanelayout:slidingpanelayout:1.1.0",
+            preference            : "androidx.preference:preference:1.1.1",
+            room                  : "androidx.room:room-runtime:2.2.6",
+            biometric             : "androidx.biometric:biometric:1.1.0",
+            lifecycle             : "androidx.lifecycle:lifecycle-common:2.3.0",
+            livedata              : "androidx.lifecycle:lifecycle-livedata:2.3.0",
+            viewmodel             : "androidx.lifecycle:lifecycle-viewmodel:2.3.0",
+            paging                : "androidx.paging:paging-runtime:2.1.2",
+            startup               : "androidx.startup:startup-runtime:1.0.0",
+            emoji                 : "androidx.emoji:emoji:1.1.0",
+            work                  : "androidx.work:work-runtime:2.5.0",
+            futures               : "androidx.concurrent:concurrent-futures:1.1.0",
+            autofill              : "androidx.autofill:autofill:1.1.0",
+    ]
+
+    // 注解库
+    annotationLibrary = [
+            room : "androidx.room:room-compiler:2.2.6",
+            glide: "com.github.bumptech.glide:compiler:4.12.0",
+            aria : "com.arialyy.aria:compiler:3.8.15",
+    ]
+
+    // Java测试库
+    testLibrary = [
+            junit  : "junit:junit:4.13.1",
+            mockito: "org.mockito:mockito-core:3.6.0"
+    ]
+
+    // Android测试库
+    androidTestLibrary = [
+            junit_ext    : "androidx.test.ext:junit:1.1.2",
+            test_runner  : "androidx.test:runner:1.3.0",
+            espresso_core: "androidx.test.espresso:espresso-core:3.3.0"
+    ]
+
+}

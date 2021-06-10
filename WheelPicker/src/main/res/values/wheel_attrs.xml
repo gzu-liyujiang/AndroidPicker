@@ -1,0 +1,193 @@
+<!--
+  ~ Copyright (c) 2016-present 贵州纳雍穿青人李裕江<1032694760@qq.com>
+  ~
+  ~ The software is licensed under the Mulan PSL v2.
+  ~ You can use this software according to the terms and conditions of the Mulan PSL v2.
+  ~ You may obtain a copy of Mulan PSL v2 at:
+  ~     http://license.coscl.org.cn/MulanPSL2
+  ~ THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR
+  ~ PURPOSE.
+  ~ See the Mulan PSL v2 for more details.
+  -->
+
+<resources>
+
+    <attr name="wheel_label" format="string|reference" />
+    <attr name="wheel_minNumber" format="float|reference" />
+    <attr name="wheel_maxNumber" format="float|reference" />
+    <attr name="wheel_stepNumber" format="float|reference" />
+    <attr name="wheel_isDecimal" format="boolean|reference" />
+
+    <attr name="wheel_dateMode" format="enum">
+        <enum name="none" value="-1" />
+        <enum name="year_month_day" value="0" />
+        <enum name="year_month" value="1" />
+        <enum name="month_day" value="2" />
+    </attr>
+    <attr name="wheel_timeMode" format="enum">
+        <enum name="none" value="-1" />
+        <enum name="hour_24_no_second" value="0" />
+        <enum name="hour_24_has_second" value="1" />
+        <enum name="hour_12_no_second" value="2" />
+        <enum name="hour_12_has_second" value="3" />
+    </attr>
+    <attr name="wheel_yearLabel" format="string|reference" />
+    <attr name="wheel_monthLabel" format="string|reference" />
+    <attr name="wheel_dayLabel" format="string|reference" />
+    <attr name="wheel_hourLabel" format="string|reference" />
+    <attr name="wheel_minuteLabel" format="string|reference" />
+    <attr name="wheel_secondLabel" format="string|reference" />
+    <attr name="wheel_firstLabel" format="string|reference" />
+    <attr name="wheel_thirdLabel" format="string|reference" />
+    <attr name="wheel_firstVisible" format="boolean|reference" />
+    <attr name="wheel_thirdVisible" format="boolean|reference" />
+
+    <declare-styleable name="OptionWheelLayout">
+        <attr name="wheel_visibleItemCount" />
+        <attr name="wheel_itemTextSize" />
+        <attr name="wheel_itemTextColor" />
+        <attr name="wheel_itemTextColorSelected" />
+        <attr name="wheel_itemSpace" />
+        <attr name="wheel_itemTextAlign" />
+        <attr name="wheel_sameWidthEnabled" />
+        <attr name="wheel_maxWidthText" />
+        <attr name="wheel_cyclicEnabled" />
+        <attr name="wheel_indicatorEnabled" />
+        <attr name="wheel_indicatorColor" />
+        <attr name="wheel_indicatorSize" />
+        <attr name="wheel_curtainEnabled" />
+        <attr name="wheel_curtainColor" />
+        <attr name="wheel_atmosphericEnabled" />
+        <attr name="wheel_curvedEnabled" />
+        <attr name="wheel_curvedMaxAngle" />
+        <attr name="wheel_label" />
+    </declare-styleable>
+
+    <declare-styleable name="NumberWheelLayout">
+        <attr name="wheel_visibleItemCount" />
+        <attr name="wheel_itemTextSize" />
+        <attr name="wheel_itemTextColor" />
+        <attr name="wheel_itemTextColorSelected" />
+        <attr name="wheel_itemSpace" />
+        <attr name="wheel_itemTextAlign" />
+        <attr name="wheel_sameWidthEnabled" />
+        <attr name="wheel_maxWidthText" />
+        <attr name="wheel_cyclicEnabled" />
+        <attr name="wheel_indicatorEnabled" />
+        <attr name="wheel_indicatorColor" />
+        <attr name="wheel_indicatorSize" />
+        <attr name="wheel_curtainEnabled" />
+        <attr name="wheel_curtainColor" />
+        <attr name="wheel_atmosphericEnabled" />
+        <attr name="wheel_curvedEnabled" />
+        <attr name="wheel_curvedMaxAngle" />
+        <attr name="wheel_label" />
+        <attr name="wheel_minNumber" />
+        <attr name="wheel_maxNumber" />
+        <attr name="wheel_stepNumber" />
+        <attr name="wheel_isDecimal" />
+    </declare-styleable>
+
+    <declare-styleable name="DateWheelLayout">
+        <attr name="wheel_visibleItemCount" />
+        <attr name="wheel_itemTextSize" />
+        <attr name="wheel_itemTextColor" />
+        <attr name="wheel_itemTextColorSelected" />
+        <attr name="wheel_itemSpace" />
+        <attr name="wheel_itemTextAlign" />
+        <attr name="wheel_sameWidthEnabled" />
+        <attr name="wheel_maxWidthText" />
+        <attr name="wheel_cyclicEnabled" />
+        <attr name="wheel_indicatorEnabled" />
+        <attr name="wheel_indicatorColor" />
+        <attr name="wheel_indicatorSize" />
+        <attr name="wheel_curtainEnabled" />
+        <attr name="wheel_curtainColor" />
+        <attr name="wheel_atmosphericEnabled" />
+        <attr name="wheel_curvedEnabled" />
+        <attr name="wheel_curvedMaxAngle" />
+        <attr name="wheel_dateMode" />
+        <attr name="wheel_yearLabel" />
+        <attr name="wheel_monthLabel" />
+        <attr name="wheel_dayLabel" />
+    </declare-styleable>
+
+    <declare-styleable name="TimeWheelLayout">
+        <attr name="wheel_visibleItemCount" />
+        <attr name="wheel_itemTextSize" />
+        <attr name="wheel_itemTextColor" />
+        <attr name="wheel_itemTextColorSelected" />
+        <attr name="wheel_itemSpace" />
+        <attr name="wheel_itemTextAlign" />
+        <attr name="wheel_sameWidthEnabled" />
+        <attr name="wheel_maxWidthText" />
+        <attr name="wheel_cyclicEnabled" />
+        <attr name="wheel_indicatorEnabled" />
+        <attr name="wheel_indicatorColor" />
+        <attr name="wheel_indicatorSize" />
+        <attr name="wheel_curtainEnabled" />
+        <attr name="wheel_curtainColor" />
+        <attr name="wheel_atmosphericEnabled" />
+        <attr name="wheel_curvedEnabled" />
+        <attr name="wheel_curvedMaxAngle" />
+        <attr name="wheel_timeMode" />
+        <attr name="wheel_hourLabel" />
+        <attr name="wheel_minuteLabel" />
+        <attr name="wheel_secondLabel" />
+    </declare-styleable>
+
+    <declare-styleable name="DatimeWheelLayout">
+        <attr name="wheel_visibleItemCount" />
+        <attr name="wheel_itemTextSize" />
+        <attr name="wheel_itemTextColor" />
+        <attr name="wheel_itemTextColorSelected" />
+        <attr name="wheel_itemSpace" />
+        <attr name="wheel_itemTextAlign" />
+        <attr name="wheel_sameWidthEnabled" />
+        <attr name="wheel_maxWidthText" />
+        <attr name="wheel_cyclicEnabled" />
+        <attr name="wheel_indicatorEnabled" />
+        <attr name="wheel_indicatorColor" />
+        <attr name="wheel_indicatorSize" />
+        <attr name="wheel_curtainEnabled" />
+        <attr name="wheel_curtainColor" />
+        <attr name="wheel_atmosphericEnabled" />
+        <attr name="wheel_curvedEnabled" />
+        <attr name="wheel_curvedMaxAngle" />
+        <attr name="wheel_dateMode" />
+        <attr name="wheel_timeMode" />
+        <attr name="wheel_yearLabel" />
+        <attr name="wheel_monthLabel" />
+        <attr name="wheel_dayLabel" />
+        <attr name="wheel_hourLabel" />
+        <attr name="wheel_minuteLabel" />
+        <attr name="wheel_secondLabel" />
+    </declare-styleable>
+
+    <declare-styleable name="LinkageWheelLayout">
+        <attr name="wheel_visibleItemCount" />
+        <attr name="wheel_itemTextSize" />
+        <attr name="wheel_itemTextColor" />
+        <attr name="wheel_itemTextColorSelected" />
+        <attr name="wheel_itemSpace" />
+        <attr name="wheel_itemTextAlign" />
+        <attr name="wheel_sameWidthEnabled" />
+        <attr name="wheel_maxWidthText" />
+        <attr name="wheel_cyclicEnabled" />
+        <attr name="wheel_indicatorEnabled" />
+        <attr name="wheel_indicatorColor" />
+        <attr name="wheel_indicatorSize" />
+        <attr name="wheel_curtainEnabled" />
+        <attr name="wheel_curtainColor" />
+        <attr name="wheel_atmosphericEnabled" />
+        <attr name="wheel_curvedEnabled" />
+        <attr name="wheel_curvedMaxAngle" />
+        <attr name="wheel_firstVisible" />
+        <attr name="wheel_thirdVisible" />
+        <attr name="wheel_firstLabel" />
+        <attr name="wheel_secondLabel" />
+        <attr name="wheel_thirdLabel" />
+    </declare-styleable>
+
+</resources>

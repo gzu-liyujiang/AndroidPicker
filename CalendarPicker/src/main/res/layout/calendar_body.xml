@@ -1,4 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2016-present 贵州纳雍穿青人李裕江<1032694760@qq.com>
+  ~
+  ~ The software is licensed under the Mulan PSL v2.
+  ~ You can use this software according to the terms and conditions of the Mulan PSL v2.
+  ~ You may obtain a copy of Mulan PSL v2 at:
+  ~     http://license.coscl.org.cn/MulanPSL2
+  ~ THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR
+  ~ PURPOSE.
+  ~ See the Mulan PSL v2 for more details.
+  -->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,15 +18,15 @@
     android:orientation="vertical">
 
     <GridView
-        android:id="@+id/weekView"
+        android:id="@+id/calendar_body_week"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/calendar_background_week_color"
         android:numColumns="7"
         android:stretchMode="columnWidth" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/bodyView"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/calendar_body_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:overScrollMode="never"

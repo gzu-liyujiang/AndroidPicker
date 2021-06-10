@@ -1,4 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2016-present 贵州纳雍穿青人李裕江<1032694760@qq.com>
+  ~
+  ~ The software is licensed under the Mulan PSL v2.
+  ~ You can use this software according to the terms and conditions of the Mulan PSL v2.
+  ~ You may obtain a copy of Mulan PSL v2 at:
+  ~     http://license.coscl.org.cn/MulanPSL2
+  ~ THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR
+  ~ PURPOSE.
+  ~ See the Mulan PSL v2 for more details.
+  -->
+
 <resources>
     <!--calendar module-->
     <color name="calendar_background_color">#FFFFFF</color>
@@ -7,18 +19,18 @@
     <color name="calendar_text_decoration_color">#333333</color>
 
     <!--month module-->
-    <color name="month_divide_line_color">#FFFFFF</color>
-    <color name="month_background_color">#FFFFFF</color>
+    <color name="calendar_month_divide_line_color">#FFFFFF</color>
+    <color name="calendar_month_background_color">#FFFFFF</color>
 
     <!--day module-->
-    <color name="day_text_normal_color">#343434</color>
-    <color name="day_text_invalid_color">#CCCCCC</color>
-    <color name="day_text_select_color">#FFFFFF</color>
-    <color name="day_text_range_color">#FFFFFF</color>
-    <color name="day_text_stress_color">#FF6600</color>
+    <color name="calendar_day_text_normal_color">#343434</color>
+    <color name="calendar_day_text_invalid_color">#CCCCCC</color>
+    <color name="calendar_day_text_select_color">#FFFFFF</color>
+    <color name="calendar_day_text_range_color">#FFFFFF</color>
+    <color name="calendar_day_text_stress_color">#FF6600</color>
 
-    <color name="day_background_normal_color">#FFFFFF</color>
-    <color name="day_background_invalid_color">#FFFFFF</color>
-    <color name="day_background_range_color">#EEE75051</color>
-    <color name="day_background_bound_color">#FFE75051</color>
+    <color name="calendar_day_background_normal_color">#FFFFFF</color>
+    <color name="calendar_day_background_invalid_color">#FFFFFF</color>
+    <color name="calendar_day_background_range_color">#EEE75051</color>
+    <color name="calendar_day_background_bound_color">#FFE75051</color>
 </resources>
