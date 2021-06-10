@@ -13,7 +13,6 @@
 
 package com.github.gzuliyujiang.fallback.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -33,11 +32,6 @@ import java.util.Arrays;
  * @since 2021/6/3 18:18
  */
 public class MainActivity extends FragmentActivity {
-
-    public static void start(Context context) {
-        Intent starter = new Intent(context, MainActivity.class);
-        context.startActivity(starter);
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

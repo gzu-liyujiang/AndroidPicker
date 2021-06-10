@@ -14,6 +14,9 @@
 package com.github.gzuliyujiang.fallback;
 
 import android.app.Application;
+import android.content.Context;
+
+import androidx.multidex.MultiDex;
 
 import com.github.gzuliyujiang.basepicker.PickerLog;
 
@@ -24,6 +27,12 @@ import com.github.gzuliyujiang.basepicker.PickerLog;
  * @since 2016/7/20 20:28
  */
 public class DemoApp extends Application {
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
 
     @Override
     public void onCreate() {

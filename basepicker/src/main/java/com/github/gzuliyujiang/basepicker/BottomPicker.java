@@ -88,7 +88,9 @@ public abstract class BottomPicker extends Dialog implements DialogInterface.OnS
         }
         // 调用create或show才能触发onCreate
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            create();
+            super.create();
+        } else {
+            readyView();
         }
     }
 
@@ -100,6 +102,12 @@ public abstract class BottomPicker extends Dialog implements DialogInterface.OnS
     protected final void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         PickerLog.print("dialog onCreate");
+        if (contentView == null) {
+            readyView();
+        }
+    }
+
+    private void readyView() {
         contentView = createContentView(activity);
         contentView.setFocusable(true);
         contentView.setFocusableInTouchMode(true);
@@ -112,14 +120,14 @@ public abstract class BottomPicker extends Dialog implements DialogInterface.OnS
         setWidth(activity.getResources().getDisplayMetrics().widthPixels);
         setGravity(Gravity.BOTTOM);
         initView(contentView);
-        PickerLog.print("dialog initView");
     }
 
     @NonNull
     protected abstract View createContentView(@NonNull Activity activity);
 
+    @CallSuper
     protected void initView(@NonNull View contentView) {
-
+        PickerLog.print("dialog initView");
     }
 
     protected boolean enableMaskView() {
@@ -162,8 +170,9 @@ public abstract class BottomPicker extends Dialog implements DialogInterface.OnS
                 }
             });
             activity.getWindowManager().addView(maskView, params);
-        } catch (Exception ignore) {
-
+            PickerLog.print("dialog add mask view");
+        } catch (Exception e) {
+            PickerLog.print(e);
         }
     }
 
@@ -304,34 +313,39 @@ public abstract class BottomPicker extends Dialog implements DialogInterface.OnS
     @CallSuper
     @Override
     public void onAttachedToWindow() {
+        PickerLog.print("dialog attached to window");
         super.onAttachedToWindow();
         initData();
-        PickerLog.print("dialog initData");
     }
 
+    @CallSuper
     protected void initData() {
-
+        PickerLog.print("dialog initData");
     }
 
     @CallSuper
     @Override
     public void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        PickerLog.print("dialog detached from window");
     }
 
     /**
      * @see #onAttachedToWindow()
      */
+    @CallSuper
     @Override
     public void onShow(DialogInterface dialog) {
-
+        PickerLog.print("dialog onShow");
     }
 
     /**
      * @see #onDetachedFromWindow()
      */
+    @CallSuper
     @Override
     public void onDismiss(DialogInterface dialog) {
+        PickerLog.print("dialog onDismiss");
         removeMaskView();
     }
 
@@ -341,6 +355,7 @@ public abstract class BottomPicker extends Dialog implements DialogInterface.OnS
         }
         try {
             activity.getWindowManager().removeViewImmediate(maskView);
+            PickerLog.print("dialog remove mask view");
         } catch (Exception e) {
             PickerLog.print(e);
         }
