@@ -29,7 +29,7 @@ allprojects {
 
 ```groovy
 dependencies {
-    implementation 'com.github.gzu-liyujiang:AndroidPicker:BasePicker:<version>'
+    implementation 'com.github.gzu-liyujiang:AndroidPicker:Common:<version>'
 }
 ```
 

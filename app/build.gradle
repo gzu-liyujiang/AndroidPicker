@@ -17,7 +17,7 @@ dependencies {
     implementation androidxLibrary.multidex
     implementation androidxLibrary.appcompat
     implementation library.material
-    implementation project(':BasePicker')
+    implementation project(':Common')
     implementation project(':WheelView')
     implementation project(':WheelPicker')
     implementation project(':ColorPicker')

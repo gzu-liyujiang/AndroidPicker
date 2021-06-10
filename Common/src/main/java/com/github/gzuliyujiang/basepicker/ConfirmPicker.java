@@ -32,7 +32,7 @@ import androidx.annotation.StyleRes;
  * @since 2021/6/3 15:23
  */
 @SuppressWarnings("unused")
-public abstract class ConfirmPicker extends BottomPicker implements View.OnClickListener {
+public abstract class ConfirmPicker extends BottomDialog implements View.OnClickListener {
     protected View headerView;
     protected TextView cancelView;
     protected TextView titleView;
@@ -77,7 +77,7 @@ public abstract class ConfirmPicker extends BottomPicker implements View.OnClick
 
     @Nullable
     protected View createHeaderView(@NonNull Activity activity) {
-        return View.inflate(activity, R.layout.base_picker_header, null);
+        return View.inflate(activity, R.layout.confirm_picker_header, null);
     }
 
     @Nullable
@@ -99,14 +99,16 @@ public abstract class ConfirmPicker extends BottomPicker implements View.OnClick
     @CallSuper
     @Override
     protected void initView(@NonNull View contentView) {
-        cancelView = contentView.findViewById(R.id.base_picker_cancel);
-        titleView = contentView.findViewById(R.id.base_picker_title);
-        okView = contentView.findViewById(R.id.base_picker_ok);
+        super.initView(contentView);
+        cancelView = contentView.findViewById(R.id.confirm_picker_cancel);
+        titleView = contentView.findViewById(R.id.confirm_picker_title);
+        okView = contentView.findViewById(R.id.confirm_picker_ok);
     }
 
     @CallSuper
     @Override
     protected void initData() {
+        super.initData();
         if (cancelView != null) {
             cancelView.setOnClickListener(this);
         }
@@ -119,11 +121,11 @@ public abstract class ConfirmPicker extends BottomPicker implements View.OnClick
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.base_picker_cancel) {
+        if (id == R.id.confirm_picker_cancel) {
             PickerLog.print("cancel clicked");
             onCancel();
             dismiss();
-        } else if (id == R.id.base_picker_ok) {
+        } else if (id == R.id.confirm_picker_ok) {
             PickerLog.print("ok clicked");
             onOk();
             dismiss();

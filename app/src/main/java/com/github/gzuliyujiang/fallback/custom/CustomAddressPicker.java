@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.github.gzuliyujiang.basepicker.BottomPicker;
+import com.github.gzuliyujiang.basepicker.BottomDialog;
 import com.github.gzuliyujiang.fallback.R;
 import com.github.gzuliyujiang.wheelpicker.annotation.AddressMode;
 import com.github.gzuliyujiang.wheelpicker.contract.AddressLoader;
@@ -41,7 +41,7 @@ import java.util.List;
  * @author 贵州山野羡民（1032694760@qq.com）
  * @since 2021/6/7 16:03
  */
-public class CustomAddressPicker extends BottomPicker implements AddressReceiver {
+public class CustomAddressPicker extends BottomDialog implements AddressReceiver {
     private static final String ASSETS_JSON = "china_administrative_division.json";
     protected LinkageWheelLayout wheelLayout;
     private OnAddressPickedListener onAddressPickedListener;

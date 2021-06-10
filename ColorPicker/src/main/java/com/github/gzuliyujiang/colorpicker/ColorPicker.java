@@ -23,7 +23,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
 
-import com.github.gzuliyujiang.basepicker.BottomPicker;
+import com.github.gzuliyujiang.basepicker.BottomDialog;
 import com.github.gzuliyujiang.basepicker.PickerLog;
 
 import java.util.Locale;
@@ -33,7 +33,7 @@ import java.util.Locale;
  * @since 2021/6/10 10:54
  */
 @SuppressWarnings("unused")
-public class ColorPicker extends BottomPicker implements View.OnClickListener, OnColorChangedListener {
+public class ColorPicker extends BottomDialog implements View.OnClickListener, OnColorChangedListener {
     protected TextView cancelView;
     protected TextView hexView;
     protected TextView okView;

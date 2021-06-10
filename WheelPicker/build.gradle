@@ -16,6 +16,6 @@ apply from: "${rootDir}/gradle/publish.gradle"
 
 dependencies {
     implementation androidxLibrary.annotation
-    implementation project(':BasePicker')
+    implementation project(':Common')
     implementation project(':WheelView')
 }

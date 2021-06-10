@@ -49,19 +49,19 @@ import androidx.annotation.StyleRes;
  * @since 2017/4/12
  */
 @SuppressWarnings({"WeakerAccess", "unused"})
-public abstract class BottomPicker extends Dialog implements DialogInterface.OnShowListener, DialogInterface.OnDismissListener {
+public abstract class BottomDialog extends Dialog implements DialogInterface.OnShowListener, DialogInterface.OnDismissListener {
     public static final int MATCH_PARENT = ViewGroup.LayoutParams.MATCH_PARENT;
     public static final int WRAP_CONTENT = ViewGroup.LayoutParams.WRAP_CONTENT;
     protected Activity activity;
     protected View contentView;
     protected View maskView;
 
-    public BottomPicker(@NonNull Activity activity) {
+    public BottomDialog(@NonNull Activity activity) {
         super(activity);
         init(activity);
     }
 
-    public BottomPicker(@NonNull Activity activity, @StyleRes int themeResId) {
+    public BottomDialog(@NonNull Activity activity, @StyleRes int themeResId) {
         super(activity, themeResId);
         init(activity);
     }
