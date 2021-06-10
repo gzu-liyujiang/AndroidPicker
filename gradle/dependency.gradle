@@ -15,7 +15,7 @@ ext {
 
     // GitHub社区开源库
     library = [
-            logger                    : "com.orhanobut:logger:2.2.0",
+            orhanobut_logger          : "com.orhanobut:logger:2.2.0",
             xcrash                    : "com.iqiyi.xcrash:xcrash-android-lib:3.0.0",
             mmkv                      : "com.tencent:mmkv-static:1.2.7",
             toast                     : "com.hjq:toast:8.8",
@@ -49,6 +49,7 @@ ext {
             zxing                     : "com.google.zxing:core:3.3.3",
             zip4j                     : "net.lingala.zip4j:zip4j:2.8.0",
             OAID                      : "com.github.gzu-liyujiang:Android_CN_OAID:4.1.3",
+            Logger                    : "com.github.gzu-liyujiang:Logger:1.3.0",
     ]
 
     // 谷歌支持库 https://developer.android.google.cn/jetpack/androidx/versions/stable-channel?hl=zh-cn
