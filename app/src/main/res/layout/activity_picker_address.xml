@@ -25,36 +25,43 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onProvinceCityCounty"
-            android:textColor="#FF333333"
-            android:text="地址选择（省市县）" />
+            android:text="地址选择（省市县）"
+            android:textColor="#FF333333" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onProvinceCity"
-            android:textColor="#FF333333"
-            android:text="地址选择（省市）" />
+            android:text="地址选择（省市）"
+            android:textColor="#FF333333" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onCityCounty"
-            android:textColor="#FF333333"
-            android:text="地址选择（市县）" />
+            android:text="地址选择（市县）"
+            android:textColor="#FF333333" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onCustomUi"
-            android:textColor="#FF333333"
-            android:text="地址选择（自定义界面）" />
+            android:text="地址选择（自定义界面）"
+            android:textColor="#FF333333" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onCustomJson"
+            android:text="地址选择（自定义JSON数据）"
+            android:textColor="#FF333333" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onCustomData"
-            android:textColor="#FF333333"
-            android:text="地址选择（自定义数据源）" />
+            android:text="地址选择（自定义数据源）"
+            android:textColor="#FF333333" />
 
     </LinearLayout>
 

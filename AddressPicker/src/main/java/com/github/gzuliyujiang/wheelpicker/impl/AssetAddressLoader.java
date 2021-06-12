@@ -17,14 +17,15 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.WorkerThread;
 
 import com.github.gzuliyujiang.wheelpicker.contract.AddressLoader;
+import com.github.gzuliyujiang.wheelpicker.contract.AddressParser;
 import com.github.gzuliyujiang.wheelpicker.contract.AddressReceiver;
 import com.github.gzuliyujiang.wheelpicker.entity.ProvinceEntity;
-import com.github.gzuliyujiang.wheelpicker.utility.AddressParser;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -40,21 +41,27 @@ import java.util.concurrent.Executors;
  * @since 2019/6/17 17:15
  */
 @SuppressWarnings("unused")
-public class AssetsAddressLoader implements AddressLoader {
+public class AssetAddressLoader implements AddressLoader {
     private final Context context;
     private final String path;
 
-    public AssetsAddressLoader(@NonNull Context context, @NonNull String path) {
+    public AssetAddressLoader(@NonNull Context context, @NonNull String path) {
         this.context = context;
         this.path = path;
     }
 
     @Override
-    public void loadJson(@NonNull final AddressReceiver receiver) {
+    public void loadJson(@NonNull final AddressReceiver receiver, @NonNull final AddressParser parser) {
         Executors.newSingleThreadExecutor().execute(new Runnable() {
             @Override
             public void run() {
-                List<ProvinceEntity> data = loadFromAssets();
+                String text = loadFromAssets();
+                final List<ProvinceEntity> data;
+                if (TextUtils.isEmpty(text)) {
+                    data = new ArrayList<>();
+                } else {
+                    data = parser.parseData(text);
+                }
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
@@ -66,7 +73,7 @@ public class AssetsAddressLoader implements AddressLoader {
     }
 
     @WorkerThread
-    private List<ProvinceEntity> loadFromAssets() {
+    private String loadFromAssets() {
         StringBuilder stringBuilder = new StringBuilder();
         AssetManager am = context.getAssets();
         try (BufferedReader bf = new BufferedReader(new InputStreamReader(am.open(path)))) {
@@ -75,14 +82,9 @@ public class AssetsAddressLoader implements AddressLoader {
                 stringBuilder.append(line);
             }
         } catch (IOException e) {
-            return new ArrayList<>();
+            return "";
         }
-        String json = stringBuilder.toString();
-        try {
-            return AddressParser.parseData(json);
-        } catch (Exception e) {
-            return new ArrayList<>();
-        }
+        return stringBuilder.toString();
     }
 
 }

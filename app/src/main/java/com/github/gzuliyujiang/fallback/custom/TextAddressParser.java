@@ -13,8 +13,9 @@
 
 package com.github.gzuliyujiang.fallback.custom;
 
-import androidx.annotation.WorkerThread;
+import androidx.annotation.NonNull;
 
+import com.github.gzuliyujiang.wheelpicker.contract.AddressParser;
 import com.github.gzuliyujiang.wheelpicker.entity.CityEntity;
 import com.github.gzuliyujiang.wheelpicker.entity.CountyEntity;
 import com.github.gzuliyujiang.wheelpicker.entity.ProvinceEntity;
@@ -26,12 +27,14 @@ import java.util.List;
  * @author 贵州山野羡民（1032694760@qq.com）
  * @since 2021/6/7 16:30
  */
-public class TextAddressParser {
-    private final static List<ProvinceEntity> provinces = new ArrayList<>();
+public class TextAddressParser implements AddressParser {
+    private final List<ProvinceEntity> provinces = new ArrayList<>();
 
-    @WorkerThread
-    public static List<ProvinceEntity> parseData(String data) {
-        String[] fullCodeAndNames = data.split(";");
+    @NonNull
+    @Override
+    public List<ProvinceEntity> parseData(@NonNull String text) {
+        provinces.clear();
+        String[] fullCodeAndNames = text.split(";");
         for (String fullCodeAndName : fullCodeAndNames) {
             String[] codeAndName = fullCodeAndName.split(",");
             if (codeAndName.length != 2) {
@@ -70,7 +73,7 @@ public class TextAddressParser {
         return provinces;
     }
 
-    private static ProvinceEntity findProvinceByCode(String provinceCode) {
+    private ProvinceEntity findProvinceByCode(String provinceCode) {
         for (ProvinceEntity province : provinces) {
             if (province.getCode().substring(0, 2).equals(provinceCode)) {
                 return province;
@@ -79,7 +82,7 @@ public class TextAddressParser {
         return null;
     }
 
-    private static CityEntity findCityByCode(String provinceCode, String cityCode) {
+    private CityEntity findCityByCode(String provinceCode, String cityCode) {
         for (ProvinceEntity province : provinces) {
             List<CityEntity> cities = province.getCityList();
             for (CityEntity city : cities) {

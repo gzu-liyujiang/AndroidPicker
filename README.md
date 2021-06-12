@@ -4,7 +4,7 @@
 ![Gradle Package](https://github.com/gzu-liyujiang/AndroidPicker/workflows/Gradle%20Package/badge.svg) [![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
 [![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
 
-安卓选择器类库，包括日期及时间选择器（可用于出生日期、营业时间等）、单项选择器（可用于性别、职业、学历、星座等）、二三级联动选择器（可用于车牌号、基金定投日期等）、城市地址选择器（分省级、地市级及区县级）、数字选择器（可用于年龄、身高、体重、温度等）、日历选日期择器（可用于酒店及机票预定日期）、颜色选择器、文件及目录选择器等……
+安卓选择器类库，包括日期及时间选择器（可用于出生日期、营业时间等）、单项选择器（可用于性别、民族、职业、学历、星座等）、二三级联动选择器（可用于车牌号、基金定投日期等）、城市地址选择器（分省级、地市级及区县级）、数字选择器（可用于年龄、身高、体重、温度等）、日历选日期择器（可用于酒店及机票预定日期）、颜色选择器、文件及目录选择器等……
 
 欢迎大伙儿在[Issues](https://github.com/gzu-liyujiang/AndroidPicker/issues)提交你的意见或建议。欢迎 Fork & Pull requests 贡献您的代码，大家共同学习【[AndroidPicker 交流群 604235437](https://jq.qq.com/?_wv=1027&k=42bKOeD)】。
 
@@ -37,15 +37,27 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'com.github.gzu-liyujiang:AndroidPicker:WheelView:<version>'
+   implementation 'com.github.gzu-liyujiang:AndroidPicker:WheelView:<version>'
 }
 ```
 
-滚轮选择器：
+单项/数字、二三级联动、日期/时间等滚轮选择器：
 
 ```groovy
 dependencies {
+    implementation 'com.github.gzu-liyujiang:AndroidPicker:Common:<version>'
+    implementation 'com.github.gzu-liyujiang:AndroidPicker:WheelView:<version>'
     implementation 'com.github.gzu-liyujiang:AndroidPicker:WheelPicker:<version>'
+}
+```
+
+省市区地址选择器：
+
+```groovy
+dependencies {
+    implementation 'com.github.gzu-liyujiang:AndroidPicker:Common:<version>'
+    implementation 'com.github.gzu-liyujiang:AndroidPicker:WheelView:<version>'
+    implementation 'com.github.gzu-liyujiang:AndroidPicker:AddressPicker:<version>'
 }
 ```
 
@@ -53,6 +65,7 @@ dependencies {
 
 ```groovy
 dependencies {
+    implementation 'com.github.gzu-liyujiang:AndroidPicker:Common:<version>'
     implementation 'com.github.gzu-liyujiang:AndroidPicker:FilePicker:<version>'
 }
 ```
@@ -61,6 +74,7 @@ dependencies {
 
 ```groovy
 dependencies {
+    implementation 'com.github.gzu-liyujiang:AndroidPicker:Common:<version>'
     implementation 'com.github.gzu-liyujiang:AndroidPicker:ColorPicker:<version>'
 }
 ```
@@ -69,21 +83,25 @@ dependencies {
 
 ```groovy
 dependencies {
+    implementation 'com.github.gzu-liyujiang:AndroidPicker:Common:<version>'
     implementation 'com.github.gzu-liyujiang:AndroidPicker:CalendarPicker:<version>'
 }
 ```
 
 **注意**：Support 版本截止 1.5.6，从 2.0.0 开始为 AndroidX 版本，从 3.0.0 开始为全新重构版本。
 
-**Support 版本**依赖：
+**Support 稳定版本**依赖：
 
 ```groovy
 dependencies {
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:Common:1.5.6.20181018'
     implementation 'com.github.gzu-liyujiang.AndroidPicker:WheelPicker:1.5.6.20181018'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:FilePicker:1.5.6.20181018'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:ColorPicker:1.5.6.20181018'
 }
 ```
 
-**AndroidX 版本**依赖：
+**AndroidX 稳定版本**依赖：
 
 ```groovy
 dependencies {
@@ -93,6 +111,10 @@ dependencies {
     implementation 'com.github.gzu-liyujiang.AndroidPicker:ColorPicker:2.0.0'
 }
 ```
+
+## 混淆规则
+
+项目库已自带混淆规则，通过远程依赖的方式引用无需额外配置。
 
 ## 用法示例
 

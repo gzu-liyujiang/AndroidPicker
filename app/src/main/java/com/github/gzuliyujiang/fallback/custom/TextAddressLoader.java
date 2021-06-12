@@ -21,6 +21,7 @@ import android.os.Looper;
 import androidx.annotation.NonNull;
 
 import com.github.gzuliyujiang.wheelpicker.contract.AddressLoader;
+import com.github.gzuliyujiang.wheelpicker.contract.AddressParser;
 import com.github.gzuliyujiang.wheelpicker.contract.AddressReceiver;
 import com.github.gzuliyujiang.wheelpicker.entity.ProvinceEntity;
 
@@ -42,22 +43,22 @@ public class TextAddressLoader implements AddressLoader {
     }
 
     @Override
-    public void loadJson(@NonNull AddressReceiver receiver) {
+    public void loadJson(@NonNull final AddressReceiver receiver, @NonNull final AddressParser parser) {
         Executors.newSingleThreadExecutor().execute(new Runnable() {
             @Override
             public void run() {
-                StringBuilder stringBuilder = new StringBuilder();
+                StringBuilder sb = new StringBuilder();
                 AssetManager am = context.getAssets();
                 try (BufferedReader bf = new BufferedReader(new InputStreamReader(am.open("city.txt")))) {
                     String line;
                     while ((line = bf.readLine()) != null) {
-                        stringBuilder.append(line);
+                        sb.append(line);
                     }
                 } catch (IOException ignore) {
                 }
-                String json = stringBuilder.toString();
+                String json = sb.toString();
                 try {
-                    final List<ProvinceEntity> data = TextAddressParser.parseData(json);
+                    final List<ProvinceEntity> data = parser.parseData(json);
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
                         public void run() {

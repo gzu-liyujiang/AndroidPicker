@@ -11,11 +11,20 @@
  * See the Mulan PSL v2 for more details.
  */
 
-include ':app'
-include ':Common'
-include ':WheelView'
-include ':WheelPicker'
-include ':AddressPicker'
-include ':FilePicker'
-include ':ColorPicker'
-include ':CalendarPicker'
+package com.github.gzuliyujiang.wheelpicker.contract;
+
+import androidx.annotation.MainThread;
+import androidx.annotation.NonNull;
+
+/**
+ * 地址数据加载器
+ *
+ * @author 贵州山野羡民（1032694760@qq.com）
+ * @since 2019/6/17 16:42
+ */
+public interface AddressLoader {
+
+    @MainThread
+    void loadJson(@NonNull AddressReceiver receiver, @NonNull AddressParser parser);
+
+}

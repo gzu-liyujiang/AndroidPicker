@@ -59,7 +59,7 @@ public class AddressProvider implements LinkageProvider {
         if (data.size() == 0) {
             return new ArrayList<>();
         }
-        if (firstIndex == INDEX_NO_FOUND) {
+        if (firstIndex == LinkageProvider.INDEX_NO_FOUND) {
             firstIndex = 0;
         }
         return data.get(firstIndex).getCityList();
@@ -72,7 +72,7 @@ public class AddressProvider implements LinkageProvider {
         if (data.size() == 0) {
             return new ArrayList<>();
         }
-        if (secondIndex == INDEX_NO_FOUND) {
+        if (secondIndex == LinkageProvider.INDEX_NO_FOUND) {
             secondIndex = 0;
         }
         return data.get(secondIndex).getCountyList();
@@ -81,7 +81,7 @@ public class AddressProvider implements LinkageProvider {
     @Override
     public int findFirstIndex(Object firstValue) {
         if (firstValue == null) {
-            return INDEX_NO_FOUND;
+            return LinkageProvider.INDEX_NO_FOUND;
         }
         if (firstValue instanceof ProvinceEntity) {
             return data.indexOf(firstValue);
@@ -93,13 +93,13 @@ public class AddressProvider implements LinkageProvider {
                 return i;
             }
         }
-        return INDEX_NO_FOUND;
+        return LinkageProvider.INDEX_NO_FOUND;
     }
 
     @Override
     public int findSecondIndex(int firstIndex, Object secondValue) {
         if (secondValue == null) {
-            return INDEX_NO_FOUND;
+            return LinkageProvider.INDEX_NO_FOUND;
         }
         List<CityEntity> cityList = linkageSecondData(firstIndex);
         if (secondValue instanceof CityEntity) {
@@ -112,13 +112,13 @@ public class AddressProvider implements LinkageProvider {
                 return i;
             }
         }
-        return INDEX_NO_FOUND;
+        return LinkageProvider.INDEX_NO_FOUND;
     }
 
     @Override
     public int findThirdIndex(int firstIndex, int secondIndex, Object thirdValue) {
         if (thirdValue == null) {
-            return INDEX_NO_FOUND;
+            return LinkageProvider.INDEX_NO_FOUND;
         }
         List<CountyEntity> countyList = linkageThirdData(firstIndex, secondIndex);
         if (thirdValue instanceof CountyEntity) {
@@ -131,7 +131,7 @@ public class AddressProvider implements LinkageProvider {
                 return i;
             }
         }
-        return INDEX_NO_FOUND;
+        return LinkageProvider.INDEX_NO_FOUND;
     }
 
 }
