@@ -16,7 +16,7 @@
 
 ### 注意事项
 
-- 3.0.0 开始完全重构了底层代码，改进了性能，对 XML 布局更友好， 3.x 版本 的 API 和 1.x 及 2.x 版本的不大一样，**请请谨慎升级**。
+- 3.0.0 开始完全重构了底层代码，改进了性能，对 XML 布局更友好， 3.x 版本 的 API 和 1.x 及 2.x 版本的不大一样，**请谨慎升级**。
 - [1.x Support 版本封存分支](https://github.com/gzu-liyujiang/AndroidPicker/tree/1.x-support)
 - [2.0 androidx 版本封存分支](https://github.com/gzu-liyujiang/AndroidPicker/tree/2.0-androidx)
 
@@ -34,7 +34,7 @@ allprojects {
 
 ```groovy
 dependencies {
-    implementation 'com.github.gzu-liyujiang:AndroidPicker:Common:<version>'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:Common:<version>'
 }
 ```
 
@@ -42,7 +42,7 @@ dependencies {
 
 ```groovy
 dependencies {
-   implementation 'com.github.gzu-liyujiang:AndroidPicker:WheelView:<version>'
+   implementation 'com.github.gzu-liyujiang.AndroidPicker:WheelView:<version>'
 }
 ```
 
@@ -50,9 +50,9 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'com.github.gzu-liyujiang:AndroidPicker:Common:<version>'
-    implementation 'com.github.gzu-liyujiang:AndroidPicker:WheelView:<version>'
-    implementation 'com.github.gzu-liyujiang:AndroidPicker:WheelPicker:<version>'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:Common:<version>'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:WheelView:<version>'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:WheelPicker:<version>'
 }
 ```
 
@@ -60,10 +60,10 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'com.github.gzu-liyujiang:AndroidPicker:Common:<version>'
-    implementation 'com.github.gzu-liyujiang:AndroidPicker:WheelView:<version>'
-    implementation 'com.github.gzu-liyujiang:AndroidPicker:WheelPicker:<version>'
-    implementation 'com.github.gzu-liyujiang:AndroidPicker:AddressPicker:<version>'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:Common:<version>'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:WheelView:<version>'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:WheelPicker:<version>'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:AddressPicker:<version>'
 }
 ```
 
@@ -71,8 +71,8 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'com.github.gzu-liyujiang:AndroidPicker:Common:<version>'
-    implementation 'com.github.gzu-liyujiang:AndroidPicker:FilePicker:<version>'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:Common:<version>'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:FilePicker:<version>'
 }
 ```
 
@@ -80,8 +80,8 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'com.github.gzu-liyujiang:AndroidPicker:Common:<version>'
-    implementation 'com.github.gzu-liyujiang:AndroidPicker:ColorPicker:<version>'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:Common:<version>'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:ColorPicker:<version>'
 }
 ```
 
@@ -89,8 +89,8 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'com.github.gzu-liyujiang:AndroidPicker:Common:<version>'
-    implementation 'com.github.gzu-liyujiang:AndroidPicker:CalendarPicker:<version>'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:Common:<version>'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:CalendarPicker:<version>'
 }
 ```
 
@@ -114,6 +114,18 @@ dependencies {
     implementation 'com.github.gzu-liyujiang.AndroidPicker:FilePicker:2.0.0'
     implementation 'com.github.gzu-liyujiang.AndroidPicker:ColorPicker:2.0.0'
 }
+```
+
+代码同时托管在`GitHub`及`GitEE`，因此`3.x及以上版本`的依赖项也可以将`com.github.gzu-liyujiang`换成`com.gitee.li_yu_jiang`，即：
+
+```groovy
+    implementation 'com.gitee.li_yu_jiang.AndroidPicker:Common:<version>'
+    implementation 'com.gitee.li_yu_jiang.AndroidPicker:WheelView:<version>'
+    implementation 'com.gitee.li_yu_jiang.AndroidPicker:WheelPicker:<version>'
+    implementation 'com.gitee.li_yu_jiang.AndroidPicker:AddressPicker:<version>'
+    implementation 'com.gitee.li_yu_jiang.AndroidPicker:ColorPicker:<version>'
+    implementation 'com.gitee.li_yu_jiang.AndroidPicker:FilePicker:<version>'
+    implementation 'com.gitee.li_yu_jiang.AndroidPicker:CalendarPicker:<version>'
 ```
 
 ## 混淆规则
