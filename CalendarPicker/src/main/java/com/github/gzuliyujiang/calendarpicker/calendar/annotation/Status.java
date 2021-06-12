@@ -31,7 +31,7 @@ import static com.github.gzuliyujiang.calendarpicker.calendar.annotation.Status.
  */
 
 @IntDef(value = {NORMAL, INVALID, RANGE, BOUND_L, BOUND_M, BOUND_R, STRESS})
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.SOURCE)
 public @interface Status {
     //正常
     int NORMAL = 0;
