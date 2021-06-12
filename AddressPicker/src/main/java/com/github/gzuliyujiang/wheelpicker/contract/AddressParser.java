@@ -11,11 +11,25 @@
  * See the Mulan PSL v2 for more details.
  */
 
-include ':app'
-include ':Common'
-include ':WheelView'
-include ':WheelPicker'
-include ':AddressPicker'
-include ':FilePicker'
-include ':ColorPicker'
-include ':CalendarPicker'
+package com.github.gzuliyujiang.wheelpicker.contract;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.WorkerThread;
+
+import com.github.gzuliyujiang.wheelpicker.entity.ProvinceEntity;
+
+import java.util.List;
+
+/**
+ * 地址数据解析器
+ *
+ * @author 贵州山野羡民（1032694760@qq.com）
+ * @since 2021/6/12 16:53
+ */
+public interface AddressParser {
+
+    @WorkerThread
+    @NonNull
+    List<ProvinceEntity> parseData(@NonNull String text);
+
+}

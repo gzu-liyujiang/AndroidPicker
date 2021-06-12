@@ -11,20 +11,11 @@
  * See the Mulan PSL v2 for more details.
  */
 
-package com.github.gzuliyujiang.wheelpicker.contract;
+apply from: "${rootDir}/gradle/library.gradle"
 
-import androidx.annotation.MainThread;
-import androidx.annotation.NonNull;
-
-/**
- * 地址数据加载器
- *
- * @author 贵州山野羡民（1032694760@qq.com）
- * @since 2019/6/17 16:42
- */
-public interface AddressLoader {
-
-    @MainThread
-    void loadJson(@NonNull AddressReceiver receiver);
-
+dependencies {
+    implementation androidxLibrary.annotation
+    implementation project(':Common')
+    implementation project(':WheelView')
+    implementation project(':WheelPicker')
 }

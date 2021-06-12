@@ -23,12 +23,14 @@ import androidx.fragment.app.FragmentActivity;
 import com.github.gzuliyujiang.fallback.R;
 import com.github.gzuliyujiang.fallback.custom.CustomAddressPicker;
 import com.github.gzuliyujiang.fallback.custom.TextAddressLoader;
+import com.github.gzuliyujiang.fallback.custom.TextAddressParser;
 import com.github.gzuliyujiang.wheelpicker.AddressPicker;
 import com.github.gzuliyujiang.wheelpicker.annotation.AddressMode;
 import com.github.gzuliyujiang.wheelpicker.contract.OnAddressPickedListener;
 import com.github.gzuliyujiang.wheelpicker.entity.CityEntity;
 import com.github.gzuliyujiang.wheelpicker.entity.CountyEntity;
 import com.github.gzuliyujiang.wheelpicker.entity.ProvinceEntity;
+import com.github.gzuliyujiang.wheelpicker.utility.AddressJsonParser;
 
 /**
  * 地址滚轮选择器
@@ -37,7 +39,6 @@ import com.github.gzuliyujiang.wheelpicker.entity.ProvinceEntity;
  * @since 2019/6/23
  */
 public class AddressPickerActivity extends FragmentActivity implements OnAddressPickedListener {
-    private static final String ASSETS_JSON = "china_administrative_division.json";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,7 +53,7 @@ public class AddressPickerActivity extends FragmentActivity implements OnAddress
 
     public void onProvinceCityCounty(View view) {
         AddressPicker picker = new AddressPicker(this);
-        picker.setAddressMode(ASSETS_JSON, AddressMode.PROVINCE_CITY_COUNTY);
+        picker.setAddressMode(AddressMode.PROVINCE_CITY_COUNTY);
         picker.setDefaultValue("贵州省", "贵阳市", "观山湖区");
         picker.setOnAddressPickedListener(this);
         picker.show();
@@ -60,7 +61,7 @@ public class AddressPickerActivity extends FragmentActivity implements OnAddress
 
     public void onProvinceCity(View view) {
         AddressPicker picker = new AddressPicker(this);
-        picker.setAddressMode(ASSETS_JSON, AddressMode.PROVINCE_CITY);
+        picker.setAddressMode(AddressMode.PROVINCE_CITY);
         picker.setDefaultValue("520000", "520100", "520115");
         picker.setOnAddressPickedListener(this);
         picker.show();
@@ -68,7 +69,7 @@ public class AddressPickerActivity extends FragmentActivity implements OnAddress
 
     public void onCityCounty(View view) {
         AddressPicker picker = new AddressPicker(this);
-        picker.setAddressMode(ASSETS_JSON, AddressMode.CITY_COUNTY);
+        picker.setAddressMode(AddressMode.CITY_COUNTY);
         picker.setDefaultValue("贵州省", "毕节市", "纳雍县");
         picker.setOnAddressPickedListener(this);
         picker.show();
@@ -81,9 +82,27 @@ public class AddressPickerActivity extends FragmentActivity implements OnAddress
         picker.show();
     }
 
+    public void onCustomJson(View view) {
+        AddressPicker picker = new AddressPicker(this);
+        picker.setAddressMode("city.json", AddressMode.PROVINCE_CITY_COUNTY,
+                new AddressJsonParser.Builder()
+                        .provinceCodeField("code")
+                        .provinceNameField("name")
+                        .provinceChildField("city")
+                        .cityCodeField("code")
+                        .cityNameField("name")
+                        .cityChildField("area")
+                        .countyCodeField("code")
+                        .countyNameField("name")
+                        .build());
+        picker.setDefaultValue("贵州省", "毕节地区", "纳雍县");
+        picker.setOnAddressPickedListener(this);
+        picker.show();
+    }
+
     public void onCustomData(View view) {
         AddressPicker picker = new AddressPicker(this);
-        picker.setAddressLoader(new TextAddressLoader(this));
+        picker.setAddressLoader(new TextAddressLoader(this), new TextAddressParser());
         picker.setDefaultValue("贵州省", "毕节地区", "纳雍县");
         picker.setOnAddressPickedListener(this);
         picker.show();

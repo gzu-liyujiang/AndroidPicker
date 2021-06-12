@@ -72,7 +72,10 @@ class AddressEntity implements TextProvider, Serializable {
     @NonNull
     @Override
     public String toString() {
-        return name;
+        return "AddressEntity{" +
+                "code='" + code + '\'' +
+                ", name='" + name + '\'' +
+                '}';
     }
 
 }

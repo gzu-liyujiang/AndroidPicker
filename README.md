@@ -1,10 +1,9 @@
 ﻿# AndroidPicker
 
+[![API 19+](https://img.shields.io/badge/API-19%2B-green.svg)](https://github.com/gzu-liyujiang/AndroidPicker)
 ![Release APK](https://github.com/gzu-liyujiang/AndroidPicker/workflows/Release%20APK/badge.svg)
-![Gradle Package](https://github.com/gzu-liyujiang/AndroidPicker/workflows/Gradle%20Package/badge.svg) [![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
-[![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
 
-安卓选择器类库，包括日期及时间选择器（可用于出生日期、营业时间等）、单项选择器（可用于性别、职业、学历、星座等）、二三级联动选择器（可用于车牌号、基金定投日期等）、城市地址选择器（分省级、地市级及区县级）、数字选择器（可用于年龄、身高、体重、温度等）、日历选日期择器（可用于酒店及机票预定日期）、颜色选择器、文件及目录选择器等……
+安卓选择器类库，包括日期及时间选择器（可用于出生日期、营业时间等）、单项选择器（可用于性别、民族、职业、学历、星座等）、二三级联动选择器（可用于车牌号、基金定投日期等）、城市地址选择器（分省级、地市级及区县级）、数字选择器（可用于年龄、身高、体重、温度等）、日历选日期择器（可用于酒店及机票预定日期）、颜色选择器、文件及目录选择器等……
 
 欢迎大伙儿在[Issues](https://github.com/gzu-liyujiang/AndroidPicker/issues)提交你的意见或建议。欢迎 Fork & Pull requests 贡献您的代码，大家共同学习【[AndroidPicker 交流群 604235437](https://jq.qq.com/?_wv=1027&k=42bKOeD)】。
 
@@ -13,7 +12,13 @@
 
 ## 接入指引
 
-最新版本：[![jitpack](https://jitpack.io/v/gzu-liyujiang/AndroidPicker.svg)](https://jitpack.io/#gzu-liyujiang/AndroidPicker) （[更新日志](/ChangeLog.md)
+最新版本：[![jitpack](https://jitpack.io/v/gzu-liyujiang/AndroidPicker.svg)](https://jitpack.io/#gzu-liyujiang/AndroidPicker) （[更新日志](/ChangeLog.md)）
+
+### 注意事项
+
+- 3.0.0 开始完全重构了底层代码，改进了性能，对 XML 布局更友好， 3.x 版本 的 API 和 1.x 及 2.x 版本的不大一样，**请请谨慎升级**。
+- [1.x Support 版本封存分支](https://github.com/gzu-liyujiang/AndroidPicker/tree/1.x-support)
+- [2.0 androidx 版本封存分支](https://github.com/gzu-liyujiang/AndroidPicker/tree/2.0-androidx)
 
 ### 依赖配置
 
@@ -37,15 +42,28 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'com.github.gzu-liyujiang:AndroidPicker:WheelView:<version>'
+   implementation 'com.github.gzu-liyujiang:AndroidPicker:WheelView:<version>'
 }
 ```
 
-滚轮选择器：
+单项/数字、二三级联动、日期/时间等滚轮选择器：
 
 ```groovy
 dependencies {
+    implementation 'com.github.gzu-liyujiang:AndroidPicker:Common:<version>'
+    implementation 'com.github.gzu-liyujiang:AndroidPicker:WheelView:<version>'
     implementation 'com.github.gzu-liyujiang:AndroidPicker:WheelPicker:<version>'
+}
+```
+
+省市区地址选择器：
+
+```groovy
+dependencies {
+    implementation 'com.github.gzu-liyujiang:AndroidPicker:Common:<version>'
+    implementation 'com.github.gzu-liyujiang:AndroidPicker:WheelView:<version>'
+    implementation 'com.github.gzu-liyujiang:AndroidPicker:WheelPicker:<version>'
+    implementation 'com.github.gzu-liyujiang:AndroidPicker:AddressPicker:<version>'
 }
 ```
 
@@ -53,6 +71,7 @@ dependencies {
 
 ```groovy
 dependencies {
+    implementation 'com.github.gzu-liyujiang:AndroidPicker:Common:<version>'
     implementation 'com.github.gzu-liyujiang:AndroidPicker:FilePicker:<version>'
 }
 ```
@@ -61,6 +80,7 @@ dependencies {
 
 ```groovy
 dependencies {
+    implementation 'com.github.gzu-liyujiang:AndroidPicker:Common:<version>'
     implementation 'com.github.gzu-liyujiang:AndroidPicker:ColorPicker:<version>'
 }
 ```
@@ -69,21 +89,23 @@ dependencies {
 
 ```groovy
 dependencies {
+    implementation 'com.github.gzu-liyujiang:AndroidPicker:Common:<version>'
     implementation 'com.github.gzu-liyujiang:AndroidPicker:CalendarPicker:<version>'
 }
 ```
 
-**注意**：Support 版本截止 1.5.6，从 2.0.0 开始为 AndroidX 版本，从 3.0.0 开始为全新重构版本。
-
-**Support 版本**依赖：
+旧版本 **Support 稳定版本**：
 
 ```groovy
 dependencies {
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:Common:1.5.6.20181018'
     implementation 'com.github.gzu-liyujiang.AndroidPicker:WheelPicker:1.5.6.20181018'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:FilePicker:1.5.6.20181018'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:ColorPicker:1.5.6.20181018'
 }
 ```
 
-**AndroidX 版本**依赖：
+旧版本 **AndroidX 稳定版本**：
 
 ```groovy
 dependencies {
@@ -94,9 +116,13 @@ dependencies {
 }
 ```
 
+## 混淆规则
+
+项目库混淆无需额外配置。
+
 ## 用法示例
 
-常见用法[详见 demo ](/app)，建议拉取代码运行，对比查看实际效果。
+常见用法参阅 [demo](/app)，建议拉取代码运行，对比查看实际效果。
 
 ## 效果预览
 
@@ -117,11 +143,16 @@ dependencies {
 - [基于 ListView 的 WheelView](https://github.com/venshine/WheelView)
 - [基于 ScrollView 的 WheelView](https://github.com/wangjiegulu/WheelView)
 - [SingleDateAndTimePicker](https://github.com/florent37/SingleDateAndTimePicker)
+- [China_Province_City](https://github.com/small-dream/China_Province_City)
+- [AndroidColorPicker](https://github.com/jbruchanov/AndroidColorPicker)
+- [calendar](https://github.com/oxsource/calendar)
 
 ## 许可协议
 
+### 3.0.0 之后
+
 ```text
-Copyright (c) 2019-2021 gzu-liyujiang <1032694760@qq.com>
+Copyright (c) 2020-2021 gzu-liyujiang <1032694760@qq.com>
 
 The software is licensed under the Mulan PSL v2.
 You can use this software according to the terms and conditions of the Mulan PSL v2.
@@ -131,4 +162,30 @@ THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, E
 IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR
 PURPOSE.
 See the Mulan PSL v2 for more details.
+```
+
+### 3.0.0 之前
+
+```text
+MIT License
+
+Copyright (c) 穿青山魈人马<liyujiang_tk@yeah.net>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 ```
