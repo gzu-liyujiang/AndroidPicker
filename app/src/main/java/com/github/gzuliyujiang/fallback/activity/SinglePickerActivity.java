@@ -24,10 +24,12 @@ import androidx.fragment.app.FragmentActivity;
 import com.github.gzuliyujiang.fallback.R;
 import com.github.gzuliyujiang.fallback.bean.GoodsCategoryBean;
 import com.github.gzuliyujiang.wheelpicker.ConstellationPicker;
+import com.github.gzuliyujiang.wheelpicker.EthnicPicker;
 import com.github.gzuliyujiang.wheelpicker.NumberPicker;
 import com.github.gzuliyujiang.wheelpicker.OptionPicker;
 import com.github.gzuliyujiang.wheelpicker.PhoneCodePicker;
 import com.github.gzuliyujiang.wheelpicker.SexPicker;
+import com.github.gzuliyujiang.wheelpicker.annotation.EthnicSpec;
 import com.github.gzuliyujiang.wheelpicker.contract.OnNumberPickedListener;
 import com.github.gzuliyujiang.wheelpicker.contract.OnOptionPickedListener;
 import com.github.gzuliyujiang.wheelview.contract.WheelFormatter;
@@ -116,6 +118,13 @@ public class SinglePickerActivity extends FragmentActivity implements OnNumberPi
     public void onSex(View view) {
         SexPicker picker = new SexPicker(this);
         picker.setDefaultValue("女");
+        picker.setOnOptionPickedListener(this);
+        picker.show();
+    }
+
+    public void onEthnic(View view) {
+        EthnicPicker picker = new EthnicPicker(this);
+        picker.setEthnicSpec(EthnicSpec.SEVENTH_NATIONAL_CENSUS);
         picker.setOnOptionPickedListener(this);
         picker.show();
     }

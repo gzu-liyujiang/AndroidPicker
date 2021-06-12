@@ -93,6 +93,10 @@ public class OptionPicker extends ConfirmPicker {
         return null;
     }
 
+    public final boolean isInitialized() {
+        return initialized;
+    }
+
     public void setData(Object... data) {
         setData(Arrays.asList(data));
     }
