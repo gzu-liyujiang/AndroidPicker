@@ -1,8 +1,7 @@
 ﻿# AndroidPicker
 
+[![API 19+](https://img.shields.io/badge/API-19%2B-green.svg)](https://github.com/gzu-liyujiang/AndroidPicker)
 ![Release APK](https://github.com/gzu-liyujiang/AndroidPicker/workflows/Release%20APK/badge.svg)
-![Gradle Package](https://github.com/gzu-liyujiang/AndroidPicker/workflows/Gradle%20Package/badge.svg) [![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
-[![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
 
 安卓选择器类库，包括日期及时间选择器（可用于出生日期、营业时间等）、单项选择器（可用于性别、民族、职业、学历、星座等）、二三级联动选择器（可用于车牌号、基金定投日期等）、城市地址选择器（分省级、地市级及区县级）、数字选择器（可用于年龄、身高、体重、温度等）、日历选日期择器（可用于酒店及机票预定日期）、颜色选择器、文件及目录选择器等……
 
@@ -17,7 +16,7 @@
 
 ### 注意事项
 
-- **3.0.0 开始完全重构了底层代码，改进了性能，对 XML 布局更友好， 3.x 版本 的 API 和 1.x 及 2.x 版本的不大一样，请请谨慎升级**。
+- 3.0.0 开始完全重构了底层代码，改进了性能，对 XML 布局更友好， 3.x 版本 的 API 和 1.x 及 2.x 版本的不大一样，**请请谨慎升级**。
 - [1.x Support 版本封存分支](https://github.com/gzu-liyujiang/AndroidPicker/tree/1.x-support)
 - [2.0 androidx 版本封存分支](https://github.com/gzu-liyujiang/AndroidPicker/tree/2.0-androidx)
 
@@ -63,6 +62,7 @@ dependencies {
 dependencies {
     implementation 'com.github.gzu-liyujiang:AndroidPicker:Common:<version>'
     implementation 'com.github.gzu-liyujiang:AndroidPicker:WheelView:<version>'
+    implementation 'com.github.gzu-liyujiang:AndroidPicker:WheelPicker:<version>'
     implementation 'com.github.gzu-liyujiang:AndroidPicker:AddressPicker:<version>'
 }
 ```
@@ -94,9 +94,7 @@ dependencies {
 }
 ```
 
-**注意**：Support 版本截止 1.5.6，从 2.0.0 开始为 AndroidX 版本，从 3.0.0 开始为全新重构版本。
-
-**Support 稳定版本**依赖：
+旧版本 **Support 稳定版本**：
 
 ```groovy
 dependencies {
@@ -107,7 +105,7 @@ dependencies {
 }
 ```
 
-**AndroidX 稳定版本**依赖：
+旧版本 **AndroidX 稳定版本**：
 
 ```groovy
 dependencies {
@@ -120,11 +118,11 @@ dependencies {
 
 ## 混淆规则
 
-项目库已自带混淆规则，通过远程依赖的方式引用无需额外配置。
+项目库混淆无需额外配置。
 
 ## 用法示例
 
-常见用法[详见 demo ](/app)，建议拉取代码运行，对比查看实际效果。
+常见用法参阅 [demo](/app)，建议拉取代码运行，对比查看实际效果。
 
 ## 效果预览
 
@@ -145,6 +143,9 @@ dependencies {
 - [基于 ListView 的 WheelView](https://github.com/venshine/WheelView)
 - [基于 ScrollView 的 WheelView](https://github.com/wangjiegulu/WheelView)
 - [SingleDateAndTimePicker](https://github.com/florent37/SingleDateAndTimePicker)
+- [China_Province_City](https://github.com/small-dream/China_Province_City)
+- [AndroidColorPicker](https://github.com/jbruchanov/AndroidColorPicker)
+- [calendar](https://github.com/oxsource/calendar)
 
 ## 许可协议
 
