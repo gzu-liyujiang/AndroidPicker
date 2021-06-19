@@ -13,9 +13,9 @@
 
 ext {
 
-    //Android版本（4.4-19、5.0-21、6.0-23、7.0-24、8.0-26、9.0-28、10-29、11-30）
+    //Android版本（4.4-19、5.0-21、5.1-22、6.0-23、7.0-24、8.0-26、9.0-28、10-29、11-30）
     minSdkVersion = 19
-    targetSdkVersion = 30
+    targetSdkVersion = 29
     compileSdkVersion = 30
     buildToolsVersion = '30.0.3'
     //启用x86架构支持（模拟器运行时需要）
