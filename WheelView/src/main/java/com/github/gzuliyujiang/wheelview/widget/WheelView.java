@@ -319,18 +319,28 @@ public class WheelView extends View implements Runnable {
         if (value == null) {
             return;
         }
+        boolean found = false;
         int position = 0;
         for (Object item : data) {
             if (item.equals(value)) {
+                found = true;
+                break;
+            }
+            if (formatter != null && formatter.formatItem(item).equals(formatter.formatItem(value))) {
+                found = true;
                 break;
             }
             if (item instanceof TextProvider) {
                 String text = ((TextProvider) item).provideText();
                 if (text.equals(value)) {
+                    found = true;
                     break;
                 }
             }
             position++;
+        }
+        if (!found) {
+            position = 0;
         }
         setDefaultPosition(position);
     }
