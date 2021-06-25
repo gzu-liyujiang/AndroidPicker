@@ -16,7 +16,7 @@
 
 ### 注意事项
 
-- 3.0.0 开始完全重构了底层代码，改进了性能，对 XML 布局更友好， 3.x 版本 的 API 和 1.x 及 2.x 版本的不大一样，**请请谨慎升级**。
+- 3.0.0 开始完全重构了底层代码，改进了性能，对 XML 布局更友好， 3.x 版本 的 API 和 1.x 及 2.x 版本的不大一样，**请谨慎升级**。
 - [1.x Support 版本封存分支](https://github.com/gzu-liyujiang/AndroidPicker/tree/1.x-support)
 - [2.0 androidx 版本封存分支](https://github.com/gzu-liyujiang/AndroidPicker/tree/2.0-androidx)
 
@@ -34,7 +34,7 @@ allprojects {
 
 ```groovy
 dependencies {
-    implementation 'com.github.gzu-liyujiang:AndroidPicker:Common:<version>'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:Common:<version>'
 }
 ```
 
@@ -42,7 +42,7 @@ dependencies {
 
 ```groovy
 dependencies {
-   implementation 'com.github.gzu-liyujiang:AndroidPicker:WheelView:<version>'
+   implementation 'com.github.gzu-liyujiang.AndroidPicker:WheelView:<version>'
 }
 ```
 
@@ -50,9 +50,9 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'com.github.gzu-liyujiang:AndroidPicker:Common:<version>'
-    implementation 'com.github.gzu-liyujiang:AndroidPicker:WheelView:<version>'
-    implementation 'com.github.gzu-liyujiang:AndroidPicker:WheelPicker:<version>'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:Common:<version>'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:WheelView:<version>'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:WheelPicker:<version>'
 }
 ```
 
@@ -60,10 +60,10 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'com.github.gzu-liyujiang:AndroidPicker:Common:<version>'
-    implementation 'com.github.gzu-liyujiang:AndroidPicker:WheelView:<version>'
-    implementation 'com.github.gzu-liyujiang:AndroidPicker:WheelPicker:<version>'
-    implementation 'com.github.gzu-liyujiang:AndroidPicker:AddressPicker:<version>'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:Common:<version>'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:WheelView:<version>'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:WheelPicker:<version>'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:AddressPicker:<version>'
 }
 ```
 
@@ -71,8 +71,8 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'com.github.gzu-liyujiang:AndroidPicker:Common:<version>'
-    implementation 'com.github.gzu-liyujiang:AndroidPicker:FilePicker:<version>'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:Common:<version>'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:FilePicker:<version>'
 }
 ```
 
@@ -80,8 +80,8 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'com.github.gzu-liyujiang:AndroidPicker:Common:<version>'
-    implementation 'com.github.gzu-liyujiang:AndroidPicker:ColorPicker:<version>'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:Common:<version>'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:ColorPicker:<version>'
 }
 ```
 
@@ -89,8 +89,8 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'com.github.gzu-liyujiang:AndroidPicker:Common:<version>'
-    implementation 'com.github.gzu-liyujiang:AndroidPicker:CalendarPicker:<version>'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:Common:<version>'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:CalendarPicker:<version>'
 }
 ```
 
@@ -116,13 +116,111 @@ dependencies {
 }
 ```
 
+代码同时托管在`GitHub`及`GitEE`，因此`3.x及以上版本`的依赖项也可以将`com.github.gzu-liyujiang`换成`com.gitee.li_yu_jiang`，即：
+
+```groovy
+    implementation 'com.gitee.li_yu_jiang.AndroidPicker:Common:<version>'
+    implementation 'com.gitee.li_yu_jiang.AndroidPicker:WheelView:<version>'
+    implementation 'com.gitee.li_yu_jiang.AndroidPicker:WheelPicker:<version>'
+    implementation 'com.gitee.li_yu_jiang.AndroidPicker:AddressPicker:<version>'
+    implementation 'com.gitee.li_yu_jiang.AndroidPicker:ColorPicker:<version>'
+    implementation 'com.gitee.li_yu_jiang.AndroidPicker:FilePicker:<version>'
+    implementation 'com.gitee.li_yu_jiang.AndroidPicker:CalendarPicker:<version>'
+```
+
 ## 混淆规则
 
 项目库混淆无需额外配置。
 
 ## 用法示例
 
-常见用法参阅 [demo](/app)，建议拉取代码运行，对比查看实际效果。
+常见用法请参阅 [demo](/app)，高级用法请细读[源码](/WheelPicker)。强烈建议拉取代码运行，尝试修改 demo 对比查看实际效果以便加深理解。
+
+### 在 Java 中
+
+```groovy
+        OptionPicker picker = new OptionPicker(this);
+        picker.setBackgroundColor(true, 0xFFFFFFFF);
+        picker.setData("测试", "很长很长很长很长很长很长很长很长很长很长很长很长很长很长");
+        picker.setOnOptionPickedListener(this);
+        picker.getTitleView().setText("这是标题");
+        picker.getWheelView().setCyclicEnabled(true);
+        picker.getWheelView().setCurvedEnabled(true);
+        picker.getWheelView().setCurvedMaxAngle(60);
+        picker.show();
+```
+
+```groovy
+        AddressPicker picker = new AddressPicker(this);
+        picker.setAddressMode(AddressMode.PROVINCE_CITY_COUNTY);
+        picker.setDefaultValue("贵州省", "贵阳市", "观山湖区");
+        picker.setOnAddressPickedListener(this);
+        picker.show();
+```
+
+### 在 XML 中
+
+```xml
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.github.gzuliyujiang.wheelpicker.widget.OptionWheelLayout
+                android:id="@+id/wheel_option"
+                android:layout_width="90dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                app:wheel_itemTextAlign="center" />
+
+            <com.github.gzuliyujiang.wheelpicker.widget.LinkageWheelLayout
+                android:id="@+id/wheel_linkage"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                app:wheel_curtainColor="#FFF1F1F1"
+                app:wheel_curtainEnabled="true"
+                app:wheel_indicatorEnabled="false" />
+
+            <com.github.gzuliyujiang.wheelpicker.widget.NumberWheelLayout
+                android:layout_width="90dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                app:wheel_curvedEnabled="true"
+                app:wheel_curvedMaxAngle="45"
+                app:wheel_label="个"
+                app:wheel_maxNumber="30"
+                app:wheel_minNumber="10"
+                app:wheel_stepNumber="5"
+                app:wheel_visibleItemCount="7" />
+
+            <com.github.gzuliyujiang.wheelpicker.widget.DatimeWheelLayout
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                app:wheel_dateMode="year_month_day"
+                app:wheel_indicatorColor="#FFEEEEEE"
+                app:wheel_indicatorSize="5dp"
+                app:wheel_timeMode="hour_12_no_second" />
+
+            <com.github.gzuliyujiang.wheelpicker.widget.DateWheelLayout
+                android:layout_width="120dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                app:wheel_dateMode="month_day"
+                app:wheel_dayLabel="日"
+                app:wheel_monthLabel="月" />
+
+            <com.github.gzuliyujiang.wheelpicker.widget.TimeWheelLayout
+                android:layout_width="95dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                app:wheel_curvedEnabled="true"
+                app:wheel_curvedMaxAngle="45"
+                app:wheel_hourLabel=":"
+                app:wheel_minuteLabel=":"
+                app:wheel_timeMode="hour_24_has_second" />
+
+        </LinearLayout>
+```
 
 ## 效果预览
 
