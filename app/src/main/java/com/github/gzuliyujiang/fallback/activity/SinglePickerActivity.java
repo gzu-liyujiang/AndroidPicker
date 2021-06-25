@@ -34,6 +34,7 @@ import com.github.gzuliyujiang.wheelpicker.contract.OnNumberPickedListener;
 import com.github.gzuliyujiang.wheelpicker.contract.OnOptionPickedListener;
 import com.github.gzuliyujiang.wheelview.contract.WheelFormatter;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,8 +81,15 @@ public class SinglePickerActivity extends FragmentActivity implements OnNumberPi
         NumberPicker picker = new NumberPicker(this);
         picker.setBodyWidth(100);
         picker.setOnNumberPickedListener(this);
-        picker.setRange(-20f, 40f, 0.5f);
-        picker.setDefaultValue(10f);
+        picker.setFormatter(new WheelFormatter() {
+            @Override
+            public String formatItem(@NonNull Object item) {
+                DecimalFormat df = new DecimalFormat("0.00");
+                return df.format(item);
+            }
+        });
+        picker.setRange(-10f, 10f, 0.1f);
+        picker.setDefaultValue(5f);
         picker.getTitleView().setText("温度选择");
         picker.getLabelView().setText("℃");
         picker.show();
