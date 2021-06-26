@@ -242,6 +242,7 @@ dependencies {
 - [基于 ScrollView 的 WheelView](https://github.com/wangjiegulu/WheelView)
 - [SingleDateAndTimePicker](https://github.com/florent37/SingleDateAndTimePicker)
 - [China_Province_City](https://github.com/small-dream/China_Province_City)
+- [Administrative-divisions-of-China](https://github.com/modood/Administrative-divisions-of-China)
 - [AndroidColorPicker](https://github.com/jbruchanov/AndroidColorPicker)
 - [calendar](https://github.com/oxsource/calendar)
 

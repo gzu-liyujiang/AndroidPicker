@@ -83,15 +83,15 @@ public class CustomAddressPicker extends BottomDialog implements AddressReceiver
     @Override
     protected void initData() {
         super.initData();
-        AddressLoader addressLoader = new AssetAddressLoader(getContext(), "city.json");
+        AddressLoader addressLoader = new AssetAddressLoader(getContext(), "pca-code.json");
         addressLoader.loadJson(this,
                 new AddressJsonParser.Builder()
                         .provinceCodeField("code")
                         .provinceNameField("name")
-                        .provinceChildField("city")
+                        .provinceChildField("children")
                         .cityCodeField("code")
                         .cityNameField("name")
-                        .cityChildField("area")
+                        .cityChildField("children")
                         .countyCodeField("code")
                         .countyNameField("name")
                         .build());

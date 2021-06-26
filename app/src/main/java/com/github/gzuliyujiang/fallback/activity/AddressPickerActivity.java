@@ -82,7 +82,7 @@ public class AddressPickerActivity extends FragmentActivity implements OnAddress
         picker.show();
     }
 
-    public void onCustomJson(View view) {
+    public void onCustomDataByJson(View view) {
         AddressPicker picker = new AddressPicker(this);
         picker.setAddressMode("city.json", AddressMode.PROVINCE_CITY_COUNTY,
                 new AddressJsonParser.Builder()
@@ -100,7 +100,7 @@ public class AddressPickerActivity extends FragmentActivity implements OnAddress
         picker.show();
     }
 
-    public void onCustomData(View view) {
+    public void onCustomDataByText(View view) {
         AddressPicker picker = new AddressPicker(this);
         picker.setAddressLoader(new TextAddressLoader(this), new TextAddressParser());
         picker.setDefaultValue("贵州省", "毕节地区", "纳雍县");
