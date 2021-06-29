@@ -45,13 +45,14 @@ ext {
             FlexibleDivider           : "com.yqritc:recyclerview-flexibledivider:1.4.0",
             wcdb                      : "com.tencent.wcdb:wcdb-android:1.0.8.2",
             GSYVideoPlayer            : "com.github.CarGuo.GSYVideoPlayer:gsyVideoPlayer:v8.1.3-jitpack",
+            BasePopup                 : "io.github.razerdp:BasePopup:3.1.4",
             //noinspection GradleDependency 注意：zxing 3.4.0开始，扫码/二维码生成只支持API>=24，若要支持Android7.0以下则需降级到3.3.3版本
             zxing                     : "com.google.zxing:core:3.3.3",
             zip4j                     : "net.lingala.zip4j:zip4j:2.8.0",
-            OAID                      : "com.github.gzu-liyujiang:Android_CN_OAID:4.1.3",
+            OAID                      : "com.github.gzu-liyujiang:Android_CN_OAID:4.2.0",
             DebugLogger               : "com.github.gzu-liyujiang:Logger:1.3.0",
-            HttpRequest               : "com.github.gzu-liyujiang:HttpRequest:7.1.0",
-            ImageLoader               : "com.github.gzu-liyujiang:ImageLoader:2.0.2",
+            HttpRequest               : "com.github.gzu-liyujiang:HttpRequest:7.3.0",
+            ImageLoader               : "com.github.gzu-liyujiang:ImageLoader:3.0.1",
             Jsoner                    : "com.github.gzu-liyujiang:Jsoner:1.0.1",
     ]
 
