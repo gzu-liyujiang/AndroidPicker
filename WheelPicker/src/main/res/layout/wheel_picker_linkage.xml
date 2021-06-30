@@ -11,52 +11,66 @@
   ~ See the Mulan PSL v2 for more details.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:layout_height="wrap_content">
 
-    <com.github.gzuliyujiang.wheelview.widget.WheelView
-        android:id="@+id/wheel_picker_linkage_first_wheel"
-        style="@style/WheelDefault"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1.0" />
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/wheel_picker_linkage_first_label"
+        <com.github.gzuliyujiang.wheelview.widget.WheelView
+            android:id="@+id/wheel_picker_linkage_first_wheel"
+            style="@style/WheelDefault"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0" />
+
+        <TextView
+            android:id="@+id/wheel_picker_linkage_first_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="" />
+
+        <com.github.gzuliyujiang.wheelview.widget.WheelView
+            android:id="@+id/wheel_picker_linkage_second_wheel"
+            style="@style/WheelDefault"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0" />
+
+        <TextView
+            android:id="@+id/wheel_picker_linkage_second_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="" />
+
+        <com.github.gzuliyujiang.wheelview.widget.WheelView
+            android:id="@+id/wheel_picker_linkage_third_wheel"
+            style="@style/WheelDefault"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/wheel_picker_linkage_third_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="" />
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/wheel_picker_linkage_loading"
+        style="@android:style/Widget.ProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:text="" />
+        android:layout_gravity="center"
+        android:visibility="invisible" />
 
-    <com.github.gzuliyujiang.wheelview.widget.WheelView
-        android:id="@+id/wheel_picker_linkage_second_wheel"
-        style="@style/WheelDefault"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1.0" />
-
-    <TextView
-        android:id="@+id/wheel_picker_linkage_second_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:text="" />
-
-    <com.github.gzuliyujiang.wheelview.widget.WheelView
-        android:id="@+id/wheel_picker_linkage_third_wheel"
-        style="@style/WheelDefault"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1.0"
-        android:visibility="visible" />
-
-    <TextView
-        android:id="@+id/wheel_picker_linkage_third_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:text="" />
-
-</LinearLayout>
+</FrameLayout>

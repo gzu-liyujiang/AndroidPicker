@@ -23,6 +23,7 @@ import com.github.gzuliyujiang.wheelpicker.contract.AddressLoader;
 import com.github.gzuliyujiang.wheelpicker.contract.AddressParser;
 import com.github.gzuliyujiang.wheelpicker.contract.AddressReceiver;
 import com.github.gzuliyujiang.wheelpicker.contract.LinkageProvider;
+import com.github.gzuliyujiang.wheelpicker.contract.OnAddressLoadListener;
 import com.github.gzuliyujiang.wheelpicker.contract.OnAddressPickedListener;
 import com.github.gzuliyujiang.wheelpicker.contract.OnLinkagePickedListener;
 import com.github.gzuliyujiang.wheelpicker.entity.CityEntity;
@@ -53,6 +54,7 @@ public class AddressPicker extends LinkagePicker implements AddressReceiver {
     private AddressParser addressParser;
     private int addressMode;
     private OnAddressPickedListener onAddressPickedListener;
+    private OnAddressLoadListener onAddressLoadListener;
 
     public AddressPicker(@NonNull Activity activity) {
         super(activity);
@@ -68,11 +70,19 @@ public class AddressPicker extends LinkagePicker implements AddressReceiver {
         if (addressLoader == null || addressParser == null) {
             return;
         }
+        wheelLayout.showLoading();
+        if (onAddressLoadListener != null) {
+            onAddressLoadListener.onAddressLoadStarted();
+        }
         addressLoader.loadJson(this, addressParser);
     }
 
     @Override
     public void onAddressReceived(@NonNull List<ProvinceEntity> data) {
+        wheelLayout.hideLoading();
+        if (onAddressLoadListener != null) {
+            onAddressLoadListener.onAddressLoadFinished(data);
+        }
         wheelLayout.setData(new AddressProvider(data, addressMode));
     }
 
@@ -101,6 +111,10 @@ public class AddressPicker extends LinkagePicker implements AddressReceiver {
 
     public void setOnAddressPickedListener(@NonNull OnAddressPickedListener onAddressPickedListener) {
         this.onAddressPickedListener = onAddressPickedListener;
+    }
+
+    public void setOnAddressLoadListener(@NonNull OnAddressLoadListener onAddressLoadListener) {
+        this.onAddressLoadListener = onAddressLoadListener;
     }
 
     public void setAddressLoader(@NonNull AddressLoader loader, @NonNull AddressParser parser) {

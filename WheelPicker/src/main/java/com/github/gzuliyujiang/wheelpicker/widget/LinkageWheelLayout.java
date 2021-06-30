@@ -16,6 +16,7 @@ package com.github.gzuliyujiang.wheelpicker.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -40,6 +41,7 @@ import java.util.List;
 public class LinkageWheelLayout extends BaseWheelLayout {
     private WheelView firstWheelView, secondWheelView, thirdWheelView;
     private TextView firstLabelView, secondLabelView, thirdLabelView;
+    private ProgressBar loadingView;
     private Object firstValue, secondValue, thirdValue;
     private int firstIndex, secondIndex, thirdIndex;
     private LinkageProvider dataProvider;
@@ -84,6 +86,7 @@ public class LinkageWheelLayout extends BaseWheelLayout {
         firstLabelView = findViewById(R.id.wheel_picker_linkage_first_label);
         secondLabelView = findViewById(R.id.wheel_picker_linkage_second_label);
         thirdLabelView = findViewById(R.id.wheel_picker_linkage_third_label);
+        loadingView = findViewById(R.id.wheel_picker_linkage_loading);
     }
 
     @Override
@@ -171,32 +174,16 @@ public class LinkageWheelLayout extends BaseWheelLayout {
         thirdLabelView.setText(third);
     }
 
+    public void showLoading() {
+        loadingView.setVisibility(VISIBLE);
+    }
+
+    public void hideLoading() {
+        loadingView.setVisibility(GONE);
+    }
+
     public void setOnLinkageSelectedListener(OnLinkageSelectedListener onLinkageSelectedListener) {
         this.onLinkageSelectedListener = onLinkageSelectedListener;
-    }
-
-    public final WheelView getFirstWheelView() {
-        return firstWheelView;
-    }
-
-    public final WheelView getSecondWheelView() {
-        return secondWheelView;
-    }
-
-    public final WheelView getThirdWheelView() {
-        return thirdWheelView;
-    }
-
-    public final TextView getFirstLabelView() {
-        return firstLabelView;
-    }
-
-    public final TextView getSecondLabelView() {
-        return secondLabelView;
-    }
-
-    public final TextView getThirdLabelView() {
-        return thirdLabelView;
     }
 
     public void setFirstVisible(boolean visible) {
@@ -250,6 +237,34 @@ public class LinkageWheelLayout extends BaseWheelLayout {
         }
         thirdWheelView.setData(dataProvider.linkageThirdData(firstIndex, secondIndex));
         thirdWheelView.setDefaultPosition(thirdIndex);
+    }
+
+    public final WheelView getFirstWheelView() {
+        return firstWheelView;
+    }
+
+    public final WheelView getSecondWheelView() {
+        return secondWheelView;
+    }
+
+    public final WheelView getThirdWheelView() {
+        return thirdWheelView;
+    }
+
+    public final TextView getFirstLabelView() {
+        return firstLabelView;
+    }
+
+    public final TextView getSecondLabelView() {
+        return secondLabelView;
+    }
+
+    public final TextView getThirdLabelView() {
+        return thirdLabelView;
+    }
+
+    public final ProgressBar getLoadingView() {
+        return loadingView;
     }
 
 }

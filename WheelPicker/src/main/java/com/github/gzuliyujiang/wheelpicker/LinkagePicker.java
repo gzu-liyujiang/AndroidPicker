@@ -15,6 +15,7 @@ package com.github.gzuliyujiang.wheelpicker;
 
 import android.app.Activity;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -109,6 +110,10 @@ public class LinkagePicker extends ConfirmPicker {
 
     public final TextView getThirdLabelView() {
         return wheelLayout.getThirdLabelView();
+    }
+
+    public final ProgressBar getLoadingView() {
+        return wheelLayout.getLoadingView();
     }
 
 }

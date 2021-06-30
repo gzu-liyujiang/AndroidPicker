@@ -134,7 +134,7 @@ dependencies {
 
 ## 用法示例
 
-常见用法请参阅 [demo](/app)，高级用法请细读[源码](/WheelPicker)。强烈建议拉取代码运行，尝试修改 demo 对比查看实际效果以便加深理解。
+常见用法请参阅 [demo](/app)，高级用法请细读[源码](/WheelPicker)。代码是最好的老师，强烈建议拉取代码运行，尝试修改 demo 对比查看实际效果以便加深理解。
 
 ### 在 Java 中
 
@@ -149,7 +149,28 @@ dependencies {
         picker.getWheelView().setCurvedMaxAngle(60);
         picker.show();
 ```
-
+```groovy
+        DatePicker picker = new DatePicker(this);
+        picker.setOnDatePickedListener(this);
+        picker.setBodyWidth(240);
+        picker.setBackgroundColor(0xEEDDDDDD);
+        picker.getHeaderView().setBackgroundColor(0xFFCCCCCC);
+        DateWheelLayout wheelLayout = picker.getWheelLayout();
+        wheelLayout.setDateMode(DateMode.YEAR_MONTH_DAY);
+        wheelLayout.setDateLabel("年", "月", "日");
+        wheelLayout.setRange(DateEntity.today(), DateEntity.target(2020, 12, 31), DateEntity.today());
+        wheelLayout.setCurtainEnabled(true);
+        wheelLayout.setCurtainColor(0xFFCC0000);
+        wheelLayout.setIndicatorEnabled(true);
+        wheelLayout.setIndicatorColor(0xFFFF0000);
+        wheelLayout.setIndicatorSize(view.getResources().getDisplayMetrics().density * 2);
+        wheelLayout.setTextColor(0xCCCC0000);
+        wheelLayout.setSelectedTextColor(0xFF00FF00);
+        wheelLayout.getYearWheelView().setBackgroundColor(0x90CCCCCC);
+        wheelLayout.getMonthWheelView().setBackgroundColor(0x90CCCCCC);
+        wheelLayout.getDayWheelView().setBackgroundColor(0x90CCCCCC);
+        picker.show();
+```
 ```groovy
         AddressPicker picker = new AddressPicker(this);
         picker.setAddressMode(AddressMode.PROVINCE_CITY_COUNTY);

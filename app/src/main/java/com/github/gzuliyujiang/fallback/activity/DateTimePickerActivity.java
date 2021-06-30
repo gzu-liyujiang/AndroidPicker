@@ -35,6 +35,7 @@ import com.github.gzuliyujiang.wheelpicker.entity.DatimeEntity;
 import com.github.gzuliyujiang.wheelpicker.entity.TimeEntity;
 import com.github.gzuliyujiang.wheelpicker.impl.UnitDateFormatter;
 import com.github.gzuliyujiang.wheelpicker.impl.UnitTimeFormatter;
+import com.github.gzuliyujiang.wheelpicker.widget.DateWheelLayout;
 
 /**
  * 日期时间滚轮选择器
@@ -79,12 +80,25 @@ public class DateTimePickerActivity extends FragmentActivity implements OnDatePi
     }
 
     public void onYearMonthDay(View view) {
-        DateEntity today = DateEntity.today();
         DatePicker picker = new DatePicker(this);
         picker.setOnDatePickedListener(this);
-        picker.getWheelLayout().setDateMode(DateMode.YEAR_MONTH_DAY);
-        picker.getWheelLayout().setDateLabel("年", "月", "日");
-        picker.getWheelLayout().setRange(today, DateEntity.target(2020, 12, 31), today);
+        picker.setBodyWidth(240);
+        picker.setBackgroundColor(0xEEDDDDDD);
+        picker.getHeaderView().setBackgroundColor(0xFFCCCCCC);
+        DateWheelLayout wheelLayout = picker.getWheelLayout();
+        wheelLayout.setDateMode(DateMode.YEAR_MONTH_DAY);
+        wheelLayout.setDateLabel("年", "月", "日");
+        wheelLayout.setRange(DateEntity.today(), DateEntity.target(2020, 12, 31), DateEntity.today());
+        wheelLayout.setCurtainEnabled(true);
+        wheelLayout.setCurtainColor(0xFFCC0000);
+        wheelLayout.setIndicatorEnabled(true);
+        wheelLayout.setIndicatorColor(0xFFFF0000);
+        wheelLayout.setIndicatorSize(view.getResources().getDisplayMetrics().density * 2);
+        wheelLayout.setTextColor(0xCCCC0000);
+        wheelLayout.setSelectedTextColor(0xFF00FF00);
+        wheelLayout.getYearWheelView().setBackgroundColor(0x90CCCCCC);
+        wheelLayout.getMonthWheelView().setBackgroundColor(0x90CCCCCC);
+        wheelLayout.getDayWheelView().setBackgroundColor(0x90CCCCCC);
         picker.show();
     }
 

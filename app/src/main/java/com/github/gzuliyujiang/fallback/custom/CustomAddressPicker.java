@@ -15,6 +15,7 @@ package com.github.gzuliyujiang.fallback.custom;
 
 import android.app.Activity;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -83,6 +84,7 @@ public class CustomAddressPicker extends BottomDialog implements AddressReceiver
     @Override
     protected void initData() {
         super.initData();
+        wheelLayout.showLoading();
         AddressLoader addressLoader = new AssetAddressLoader(getContext(), "pca-code.json");
         addressLoader.loadJson(this,
                 new AddressJsonParser.Builder()
@@ -99,6 +101,7 @@ public class CustomAddressPicker extends BottomDialog implements AddressReceiver
 
     @Override
     public void onAddressReceived(@NonNull List<ProvinceEntity> data) {
+        wheelLayout.hideLoading();
         wheelLayout.setData(new AddressProvider(data, AddressMode.PROVINCE_CITY_COUNTY));
     }
 
@@ -136,6 +139,10 @@ public class CustomAddressPicker extends BottomDialog implements AddressReceiver
 
     public final TextView getCountyLabelView() {
         return wheelLayout.getThirdLabelView();
+    }
+
+    public final ProgressBar getLoadingView() {
+        return wheelLayout.getLoadingView();
     }
 
 }
