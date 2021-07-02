@@ -67,13 +67,11 @@ public class DateTimePickerActivity extends FragmentActivity implements OnDatePi
     }
 
     public void onYearMonthDayTime(View view) {
-        DatimeEntity now = DatimeEntity.now();
-        DatimeEntity last = DatimeEntity.yearOnFuture(10);
         DatimePicker picker = new DatimePicker(this);
         picker.setOnDatimePickedListener(this);
         picker.getWheelLayout().setDateMode(DateMode.YEAR_MONTH_DAY);
         picker.getWheelLayout().setTimeMode(TimeMode.HOUR_24_NO_SECOND);
-        picker.getWheelLayout().setRange(now, last, now);
+        picker.getWheelLayout().setRange(DatimeEntity.now(), DatimeEntity.yearOnFuture(10));
         picker.getWheelLayout().setDateLabel("年", "月", "日");
         picker.getWheelLayout().setTimeLabel("时", "分", "");
         picker.show();
@@ -88,7 +86,7 @@ public class DateTimePickerActivity extends FragmentActivity implements OnDatePi
         DateWheelLayout wheelLayout = picker.getWheelLayout();
         wheelLayout.setDateMode(DateMode.YEAR_MONTH_DAY);
         wheelLayout.setDateLabel("年", "月", "日");
-        wheelLayout.setRange(DateEntity.today(), DateEntity.target(2020, 12, 31), DateEntity.today());
+        wheelLayout.setRange(DateEntity.today(), DateEntity.yearOnFuture(30), DateEntity.yearOnFuture(10));
         wheelLayout.setCurtainEnabled(true);
         wheelLayout.setCurtainColor(0xFFCC0000);
         wheelLayout.setIndicatorEnabled(true);

@@ -159,7 +159,7 @@ dependencies {
         DateWheelLayout wheelLayout = picker.getWheelLayout();
         wheelLayout.setDateMode(DateMode.YEAR_MONTH_DAY);
         wheelLayout.setDateLabel("年", "月", "日");
-        wheelLayout.setRange(DateEntity.today(), DateEntity.target(2050, 12, 31), DateEntity.today());
+        wheelLayout.setRange(DateEntity.today(), DateEntity.yearOnFuture(30), DateEntity.yearOnFuture(10));
         //wheelLayout.setRange(DateEntity.target(1930, 1, 1), DateEntity.today(), DateEntity.target(1999, 1, 1));
         wheelLayout.setCurtainEnabled(true);
         wheelLayout.setCurtainColor(0xFFCC0000);

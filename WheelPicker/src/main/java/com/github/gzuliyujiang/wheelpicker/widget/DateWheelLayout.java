@@ -198,9 +198,16 @@ public class DateWheelLayout extends BaseWheelLayout {
      */
     public void setRange(@NonNull DateEntity startValue, @NonNull DateEntity endValue,
                          @Nullable DateEntity defaultValue) {
+        if (endValue.toTimeInMillis() < startValue.toTimeInMillis()) {
+            throw new IllegalArgumentException("Ensure the start date is less than the end date");
+        }
         this.startValue = startValue;
         this.endValue = endValue;
         if (defaultValue != null) {
+            if (defaultValue.toTimeInMillis() < startValue.toTimeInMillis() ||
+                    defaultValue.toTimeInMillis() > endValue.toTimeInMillis()) {
+                throw new IllegalArgumentException("The default date is out of range");
+            }
             selectedYear = defaultValue.getYear();
             selectedMonth = defaultValue.getMonth();
             selectedDay = defaultValue.getDay();

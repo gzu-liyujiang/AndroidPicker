@@ -16,6 +16,7 @@ package com.github.gzuliyujiang.wheelpicker.entity;
 import androidx.annotation.NonNull;
 
 import java.io.Serializable;
+import java.util.Calendar;
 
 /**
  * 日期时间数据实体。
@@ -95,6 +96,18 @@ public class DatimeEntity implements Serializable {
 
     public void setTime(TimeEntity time) {
         this.time = time;
+    }
+
+    public long toTimeInMillis() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, date.getYear());
+        calendar.set(Calendar.MONTH, date.getMonth() - 1);
+        calendar.set(Calendar.DAY_OF_MONTH, date.getDay());
+        calendar.set(Calendar.HOUR_OF_DAY, time.getHour());
+        calendar.set(Calendar.MINUTE, time.getMinute());
+        calendar.set(Calendar.SECOND, time.getSecond());
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTimeInMillis();
     }
 
     @NonNull

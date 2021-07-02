@@ -82,6 +82,15 @@ public class TimeEntity implements Serializable {
         this.second = second;
     }
 
+    public long toTimeInMillis() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, second);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTimeInMillis();
+    }
+
     @NonNull
     @Override
     public String toString() {

@@ -197,9 +197,16 @@ public class TimeWheelLayout extends BaseWheelLayout {
      */
     public void setRange(@NonNull TimeEntity startValue, @NonNull TimeEntity endValue,
                          @Nullable TimeEntity defaultValue) {
+        if (endValue.toTimeInMillis() < startValue.toTimeInMillis()) {
+            throw new IllegalArgumentException("Ensure the start time is less than the time date");
+        }
         this.startValue = startValue;
         this.endValue = endValue;
         if (defaultValue != null) {
+            if (defaultValue.toTimeInMillis() < startValue.toTimeInMillis() ||
+                    defaultValue.toTimeInMillis() > endValue.toTimeInMillis()) {
+                throw new IllegalArgumentException("The default time is out of range");
+            }
             selectedHour = defaultValue.getHour();
             selectedMinute = defaultValue.getMinute();
             selectedSecond = defaultValue.getSecond();
