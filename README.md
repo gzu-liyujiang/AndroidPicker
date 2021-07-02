@@ -149,6 +149,7 @@ dependencies {
         picker.getWheelView().setCurvedMaxAngle(60);
         picker.show();
 ```
+
 ```groovy
         DatePicker picker = new DatePicker(this);
         picker.setOnDatePickedListener(this);
@@ -158,7 +159,8 @@ dependencies {
         DateWheelLayout wheelLayout = picker.getWheelLayout();
         wheelLayout.setDateMode(DateMode.YEAR_MONTH_DAY);
         wheelLayout.setDateLabel("年", "月", "日");
-        wheelLayout.setRange(DateEntity.today(), DateEntity.target(2020, 12, 31), DateEntity.today());
+        wheelLayout.setRange(DateEntity.today(), DateEntity.target(2050, 12, 31), DateEntity.today());
+        //wheelLayout.setRange(DateEntity.target(1930, 1, 1), DateEntity.today(), DateEntity.target(1999, 1, 1));
         wheelLayout.setCurtainEnabled(true);
         wheelLayout.setCurtainColor(0xFFCC0000);
         wheelLayout.setIndicatorEnabled(true);
@@ -171,6 +173,7 @@ dependencies {
         wheelLayout.getDayWheelView().setBackgroundColor(0x90CCCCCC);
         picker.show();
 ```
+
 ```groovy
         AddressPicker picker = new AddressPicker(this);
         picker.setAddressMode(AddressMode.PROVINCE_CITY_COUNTY);
