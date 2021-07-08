@@ -168,6 +168,12 @@ public abstract class BaseWheelLayout extends LinearLayout implements OnWheelCha
         }
     }
 
+    public void setCurvedIndicatorSpace(@Px int space) {
+        for (WheelView wheelView : wheelViews) {
+            wheelView.setCurvedIndicatorSpace(space);
+        }
+    }
+
     public void setItemSpace(@Px int space) {
         for (WheelView wheelView : wheelViews) {
             wheelView.setItemSpace(space);

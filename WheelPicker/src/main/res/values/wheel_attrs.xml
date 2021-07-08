@@ -61,6 +61,7 @@
         <attr name="wheel_atmosphericEnabled" />
         <attr name="wheel_curvedEnabled" />
         <attr name="wheel_curvedMaxAngle" />
+        <attr name="wheel_curvedIndicatorSpace" />
         <attr name="wheel_label" />
     </declare-styleable>
 
@@ -82,6 +83,7 @@
         <attr name="wheel_atmosphericEnabled" />
         <attr name="wheel_curvedEnabled" />
         <attr name="wheel_curvedMaxAngle" />
+        <attr name="wheel_curvedIndicatorSpace" />
         <attr name="wheel_label" />
         <attr name="wheel_minNumber" />
         <attr name="wheel_maxNumber" />
@@ -107,6 +109,7 @@
         <attr name="wheel_atmosphericEnabled" />
         <attr name="wheel_curvedEnabled" />
         <attr name="wheel_curvedMaxAngle" />
+        <attr name="wheel_curvedIndicatorSpace" />
         <attr name="wheel_dateMode" />
         <attr name="wheel_yearLabel" />
         <attr name="wheel_monthLabel" />
@@ -131,6 +134,7 @@
         <attr name="wheel_atmosphericEnabled" />
         <attr name="wheel_curvedEnabled" />
         <attr name="wheel_curvedMaxAngle" />
+        <attr name="wheel_curvedIndicatorSpace" />
         <attr name="wheel_timeMode" />
         <attr name="wheel_hourLabel" />
         <attr name="wheel_minuteLabel" />
@@ -155,6 +159,7 @@
         <attr name="wheel_atmosphericEnabled" />
         <attr name="wheel_curvedEnabled" />
         <attr name="wheel_curvedMaxAngle" />
+        <attr name="wheel_curvedIndicatorSpace" />
         <attr name="wheel_dateMode" />
         <attr name="wheel_timeMode" />
         <attr name="wheel_yearLabel" />
@@ -183,6 +188,7 @@
         <attr name="wheel_atmosphericEnabled" />
         <attr name="wheel_curvedEnabled" />
         <attr name="wheel_curvedMaxAngle" />
+        <attr name="wheel_curvedIndicatorSpace" />
         <attr name="wheel_firstVisible" />
         <attr name="wheel_thirdVisible" />
         <attr name="wheel_firstLabel" />

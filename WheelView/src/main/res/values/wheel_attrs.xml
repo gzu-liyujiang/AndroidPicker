@@ -36,6 +36,7 @@
     <attr name="wheel_atmosphericEnabled" format="boolean|reference" />
     <attr name="wheel_curvedEnabled" format="boolean|reference" />
     <attr name="wheel_curvedMaxAngle" format="integer|reference" />
+    <attr name="wheel_curvedIndicatorSpace" format="dimension|reference" />
 
     <declare-styleable name="WheelView">
         <attr name="wheel_visibleItemCount" />
@@ -55,6 +56,7 @@
         <attr name="wheel_atmosphericEnabled" />
         <attr name="wheel_curvedEnabled" />
         <attr name="wheel_curvedMaxAngle" />
+        <attr name="wheel_curvedIndicatorSpace" />
     </declare-styleable>
 
 </resources>

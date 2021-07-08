@@ -24,6 +24,7 @@ import com.github.gzuliyujiang.fallback.R;
 import com.github.gzuliyujiang.fallback.custom.AntFortuneLikeProvider;
 import com.github.gzuliyujiang.wheelpicker.widget.LinkageWheelLayout;
 import com.github.gzuliyujiang.wheelpicker.widget.OptionWheelLayout;
+import com.github.gzuliyujiang.wheelview.widget.WheelView;
 
 import java.util.Arrays;
 
@@ -37,6 +38,9 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_picker_main);
+        WheelView wheelView = findViewById(R.id.wheel_view);
+        wheelView.setData(Arrays.asList("111", "222", "333", "444", "555", "666", "777", "888", "999",
+                "aaa", "bbb", "ccc", "ddd", "eee", "fff", "ggg"));
         OptionWheelLayout optionWheelLayout = findViewById(R.id.wheel_option);
         optionWheelLayout.getWheelView().setData(Arrays.asList("aaa", "bbb", "ccc", "123", "xxx", "yyy", "zzz"));
         LinkageWheelLayout linkageWheelLayout = findViewById(R.id.wheel_linkage);

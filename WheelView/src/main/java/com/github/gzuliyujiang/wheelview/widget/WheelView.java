@@ -37,6 +37,7 @@ import android.view.ViewConfiguration;
 import android.widget.Scroller;
 
 import androidx.annotation.ColorInt;
+import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Px;
 import androidx.annotation.StyleRes;
@@ -85,6 +86,7 @@ public class WheelView extends View implements Runnable {
     protected boolean cyclicEnabled;
     protected boolean curvedEnabled;
     protected int curvedMaxAngle = 90;
+    protected int curvedIndicatorSpace;
 
     private final Handler handler = new Handler();
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG | Paint.LINEAR_TEXT_FLAG);
@@ -152,18 +154,21 @@ public class WheelView extends View implements Runnable {
 
     private void initAttrs(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         if (attrs == null) {
-            textSize = (int) (15 * context.getResources().getDisplayMetrics().scaledDensity);
+            float density = context.getResources().getDisplayMetrics().density;
+            float scaledDensity = context.getResources().getDisplayMetrics().scaledDensity;
+            textSize = (int) (15 * scaledDensity);
             visibleItemCount = 5;
             defaultItemPosition = 0;
             sameWidthEnabled = false;
             maxWidthText = "";
             textColorSelected = 0xFF000000;
             textColor = 0xFF888888;
-            itemSpace = (int) (20 * context.getResources().getDisplayMetrics().density);
+            itemSpace = (int) (20 * density);
             cyclicEnabled = false;
             indicatorEnabled = true;
             indicatorColor = 0xFFC9C9C9;
-            indicatorSize = 1 * context.getResources().getDisplayMetrics().density;
+            indicatorSize = 1 * density;
+            curvedIndicatorSpace = (int) (1 * density);
             curtainEnabled = false;
             curtainColor = 0xFFFFFFFF;
             atmosphericEnabled = false;
@@ -193,6 +198,7 @@ public class WheelView extends View implements Runnable {
         indicatorEnabled = typedArray.getBoolean(R.styleable.WheelView_wheel_indicatorEnabled, true);
         indicatorColor = typedArray.getColor(R.styleable.WheelView_wheel_indicatorColor, 0xFFC9C9C9);
         indicatorSize = typedArray.getDimension(R.styleable.WheelView_wheel_indicatorSize, 1 * density);
+        curvedIndicatorSpace = typedArray.getDimensionPixelSize(R.styleable.WheelView_wheel_curvedIndicatorSpace, (int) (1 * density));
         curtainEnabled = typedArray.getBoolean(R.styleable.WheelView_wheel_curtainEnabled, false);
         curtainColor = typedArray.getColor(R.styleable.WheelView_wheel_curtainColor, 0xFFFFFFFF);
         atmosphericEnabled = typedArray.getBoolean(R.styleable.WheelView_wheel_atmosphericEnabled, false);
@@ -217,7 +223,7 @@ public class WheelView extends View implements Runnable {
         if (visibleItemCount < minCount) {
             throw new ArithmeticException("Visible item count can not be less than " + minCount);
         }
-
+        //可见条目只能是奇数个，设置可见条目时偶数个将自动矫正为奇数个
         int evenNumberFlag = 2;
         if (visibleItemCount % evenNumberFlag == 0) {
             visibleItemCount += 1;
@@ -279,7 +285,7 @@ public class WheelView extends View implements Runnable {
         return visibleItemCount;
     }
 
-    public void setVisibleItemCount(int count) {
+    public void setVisibleItemCount(@IntRange(from = 2) int count) {
         visibleItemCount = count;
         updateVisibleItemCount();
         requestLayout();
@@ -455,6 +461,17 @@ public class WheelView extends View implements Runnable {
 
     public void setIndicatorColor(@ColorInt int color) {
         indicatorColor = color;
+        invalidate();
+    }
+
+    @Px
+    public int getCurvedIndicatorSpace() {
+        return curvedIndicatorSpace;
+    }
+
+    public void setCurvedIndicatorSpace(@Px int space) {
+        curvedIndicatorSpace = space;
+        computeIndicatorRect();
         invalidate();
     }
 
@@ -647,9 +664,10 @@ public class WheelView extends View implements Runnable {
         if (!indicatorEnabled) {
             return;
         }
+        int indicatorSpace = curvedEnabled ? curvedIndicatorSpace : 0;
         int halfIndicatorSize = (int) (indicatorSize / 2f);
-        int indicatorHeadCenterYCoordinate = wheelCenterYCoordinate + halfItemHeight;
-        int indicatorFootCenterYCoordinate = wheelCenterYCoordinate - halfItemHeight;
+        int indicatorHeadCenterYCoordinate = wheelCenterYCoordinate + halfItemHeight + indicatorSpace;
+        int indicatorFootCenterYCoordinate = wheelCenterYCoordinate - halfItemHeight - indicatorSpace;
         rectIndicatorHead.set(rectDrawn.left, indicatorHeadCenterYCoordinate - halfIndicatorSize,
                 rectDrawn.right, indicatorHeadCenterYCoordinate + halfIndicatorSize);
         rectIndicatorFoot.set(rectDrawn.left, indicatorFootCenterYCoordinate - halfIndicatorSize,
