@@ -1,5 +1,9 @@
 # 更新日志
 
+## 3.0.7 - 2021.07.15
+
+- 时间选择器设置显示秒无效问题，参阅 [issues#249](https://github.com/gzu-liyujiang/AndroidPicker/issues/249)；
+
 ## 3.0.6 - 2021.07.08
 
 - 滚轮控件弯曲模式增加指示线间隔控制；
