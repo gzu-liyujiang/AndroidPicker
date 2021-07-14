@@ -20,7 +20,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
 
 import com.github.gzuliyujiang.basepicker.ConfirmPicker;
-import com.github.gzuliyujiang.wheelpicker.annotation.TimeMode;
 import com.github.gzuliyujiang.wheelpicker.contract.OnTimePickedListener;
 import com.github.gzuliyujiang.wheelpicker.widget.TimeWheelLayout;
 
@@ -55,14 +54,9 @@ public class TimePicker extends ConfirmPicker {
         super.initView(contentView);
     }
 
-    @Override
-    protected void initData() {
-        super.initData();
-        wheelLayout.setTimeMode(provideTimeMode());
-    }
-
+    @Deprecated
     protected int provideTimeMode() {
-        return TimeMode.HOUR_24_NO_SECOND;
+        throw new UnsupportedOperationException("Use `picker.getWheelLayout().setTimeMode()` instead");
     }
 
     @Override

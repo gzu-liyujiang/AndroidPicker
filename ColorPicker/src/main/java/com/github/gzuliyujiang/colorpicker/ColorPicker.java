@@ -60,6 +60,7 @@ public class ColorPicker extends BottomDialog implements View.OnClickListener, O
     @CallSuper
     @Override
     protected void initView(@NonNull View contentView) {
+        super.initView(contentView);
         cancelView = contentView.findViewById(R.id.color_picker_cancel);
         hexView = contentView.findViewById(R.id.color_picker_hex);
         okView = contentView.findViewById(R.id.color_picker_ok);
@@ -70,6 +71,7 @@ public class ColorPicker extends BottomDialog implements View.OnClickListener, O
     @CallSuper
     @Override
     protected void initData() {
+        super.initData();
         initialized = true;
         if (cancelView != null) {
             cancelView.setOnClickListener(this);

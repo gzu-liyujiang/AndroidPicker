@@ -20,8 +20,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
 
 import com.github.gzuliyujiang.basepicker.ConfirmPicker;
-import com.github.gzuliyujiang.wheelpicker.annotation.DateMode;
-import com.github.gzuliyujiang.wheelpicker.annotation.TimeMode;
 import com.github.gzuliyujiang.wheelpicker.contract.OnDatimePickedListener;
 import com.github.gzuliyujiang.wheelpicker.widget.DatimeWheelLayout;
 
@@ -51,19 +49,14 @@ public class DatimePicker extends ConfirmPicker {
         return wheelLayout;
     }
 
-    @Override
-    protected void initData() {
-        super.initData();
-        wheelLayout.setDateMode(provideDateMode());
-        wheelLayout.setTimeMode(provideTimeMode());
-    }
-
+    @Deprecated
     protected int provideDateMode() {
-        return DateMode.YEAR_MONTH_DAY;
+        throw new UnsupportedOperationException("Use `picker.getWheelLayout().setDateMode()` instead");
     }
 
+    @Deprecated
     protected int provideTimeMode() {
-        return TimeMode.HOUR_24_HAS_SECOND;
+        throw new UnsupportedOperationException("Use `picker.getWheelLayout().setTimeMode()` instead");
     }
 
     @Override
