@@ -157,7 +157,7 @@ android.applicationVariants.all { variant ->
     //APK构建完成后，备份release版本及其混淆信息到指定目录
     tasks.all { it ->
         def maybeNeedCopy = false
-        if (it.name.startsWith("assemble")) {
+        if (it.name.startsWith("assemble") && it.name.endsWith("Release")) {
             maybeNeedCopy = true
         }
         if (maybeNeedCopy) {
