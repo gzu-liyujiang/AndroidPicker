@@ -24,6 +24,7 @@ import androidx.annotation.Nullable;
 
 import com.github.gzuliyujiang.wheelpicker.R;
 import com.github.gzuliyujiang.wheelpicker.annotation.TimeMode;
+import com.github.gzuliyujiang.wheelpicker.contract.OnTimeMeridiemSelectedListener;
 import com.github.gzuliyujiang.wheelpicker.contract.OnTimeSelectedListener;
 import com.github.gzuliyujiang.wheelpicker.contract.TimeFormatter;
 import com.github.gzuliyujiang.wheelpicker.entity.TimeEntity;
@@ -50,13 +51,15 @@ public class TimeWheelLayout extends BaseWheelLayout {
     private TextView hourLabelView;
     private TextView minuteLabelView;
     private TextView secondLabelView;
+    private TextView meridiemLabelView;
     private TimeEntity startValue;
     private TimeEntity endValue;
     private Integer selectedHour;
     private Integer selectedMinute;
     private Integer selectedSecond;
-    private int timeMode = TimeMode.HOUR_24_HAS_SECOND;
+    private int timeMode;
     private OnTimeSelectedListener onTimeSelectedListener;
+    private OnTimeMeridiemSelectedListener onTimeMeridiemSelectedListener;
 
     public TimeWheelLayout(Context context) {
         super(context);
@@ -97,7 +100,9 @@ public class TimeWheelLayout extends BaseWheelLayout {
         hourLabelView = findViewById(R.id.wheel_picker_time_hour_label);
         minuteLabelView = findViewById(R.id.wheel_picker_time_minute_label);
         secondLabelView = findViewById(R.id.wheel_picker_time_second_label);
-        setTimeFormatter(new SimpleTimeFormatter());
+        meridiemLabelView = findViewById(R.id.wheel_picker_time_meridiem_label);
+        setTimeMode(TimeMode.HOUR_24_NO_SECOND);
+        setTimeFormatter(new SimpleTimeFormatter(this));
         setRange(TimeEntity.now(), TimeEntity.hourOnFuture(12));
     }
 
@@ -124,7 +129,7 @@ public class TimeWheelLayout extends BaseWheelLayout {
         setCurvedEnabled(typedArray.getBoolean(R.styleable.TimeWheelLayout_wheel_curvedEnabled, false));
         setCurvedMaxAngle(typedArray.getInteger(R.styleable.TimeWheelLayout_wheel_curvedMaxAngle, 90));
         setTextAlign(typedArray.getInt(R.styleable.TimeWheelLayout_wheel_itemTextAlign, ItemTextAlign.CENTER));
-        setTimeMode(typedArray.getInt(R.styleable.TimeWheelLayout_wheel_timeMode, TimeMode.HOUR_24_NO_SECOND));
+        setTimeMode(typedArray.getInt(R.styleable.TimeWheelLayout_wheel_timeMode, timeMode));
         String hourLabel = typedArray.getString(R.styleable.TimeWheelLayout_wheel_hourLabel);
         String minuteLabel = typedArray.getString(R.styleable.TimeWheelLayout_wheel_minuteLabel);
         String secondLabel = typedArray.getString(R.styleable.TimeWheelLayout_wheel_secondLabel);
@@ -138,6 +143,7 @@ public class TimeWheelLayout extends BaseWheelLayout {
             selectedHour = (Integer) hourWheelView.getItem(position);
             selectedMinute = null;
             selectedSecond = null;
+            changeMeridiem();
             changeMinute(selectedHour);
             timeSelectedCallback();
             return;
@@ -155,19 +161,53 @@ public class TimeWheelLayout extends BaseWheelLayout {
         }
     }
 
-    private void timeSelectedCallback() {
-        if (onTimeSelectedListener == null) {
+    @Override
+    public void onWheelScrollStateChanged(WheelView view, int state) {
+        int id = view.getId();
+        if (id == R.id.wheel_picker_time_hour_wheel) {
+            minuteWheelView.setEnabled(state == WheelView.SCROLL_STATE_IDLE);
+            secondWheelView.setEnabled(state == WheelView.SCROLL_STATE_IDLE);
             return;
         }
-        secondWheelView.post(new Runnable() {
-            @Override
-            public void run() {
-                onTimeSelectedListener.onTimeSelected(selectedHour, selectedMinute, selectedSecond);
-            }
-        });
+        if (id == R.id.wheel_picker_time_minute_wheel) {
+            hourWheelView.setEnabled(state == WheelView.SCROLL_STATE_IDLE);
+            secondWheelView.setEnabled(state == WheelView.SCROLL_STATE_IDLE);
+            return;
+        }
+        if (id == R.id.wheel_picker_time_second_wheel) {
+            hourWheelView.setEnabled(state == WheelView.SCROLL_STATE_IDLE);
+            minuteWheelView.setEnabled(state == WheelView.SCROLL_STATE_IDLE);
+        }
     }
 
-    public void setTimeMode(int timeMode) {
+    private void timeSelectedCallback() {
+        if (onTimeSelectedListener != null) {
+            secondWheelView.post(new Runnable() {
+                @Override
+                public void run() {
+                    onTimeSelectedListener.onTimeSelected(selectedHour, selectedMinute, selectedSecond);
+                }
+            });
+        }
+        if (onTimeMeridiemSelectedListener != null) {
+            secondWheelView.post(new Runnable() {
+                @Override
+                public void run() {
+                    onTimeMeridiemSelectedListener.onTimeSelected(selectedHour, selectedMinute, selectedSecond, isAnteMeridiem());
+                }
+            });
+        }
+    }
+
+    public void setTimeMode(@TimeMode int timeMode) {
+        this.timeMode = timeMode;
+        hourWheelView.setVisibility(View.VISIBLE);
+        hourLabelView.setVisibility(View.VISIBLE);
+        minuteWheelView.setVisibility(View.VISIBLE);
+        minuteLabelView.setVisibility(View.VISIBLE);
+        secondWheelView.setVisibility(View.VISIBLE);
+        secondLabelView.setVisibility(View.VISIBLE);
+        meridiemLabelView.setVisibility(View.GONE);
         if (timeMode == TimeMode.NONE) {
             hourWheelView.setVisibility(View.GONE);
             hourLabelView.setVisibility(View.GONE);
@@ -178,12 +218,19 @@ public class TimeWheelLayout extends BaseWheelLayout {
             this.timeMode = timeMode;
             return;
         }
-        if (timeMode == TimeMode.HOUR_24_NO_SECOND
-                || timeMode == TimeMode.HOUR_12_NO_SECOND) {
+        if (timeMode == TimeMode.HOUR_12_NO_SECOND
+                || timeMode == TimeMode.HOUR_24_NO_SECOND) {
             secondWheelView.setVisibility(View.GONE);
             secondLabelView.setVisibility(View.GONE);
         }
-        this.timeMode = timeMode;
+        if (isHour12Mode()) {
+            meridiemLabelView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public boolean isHour12Mode() {
+        return timeMode == TimeMode.HOUR_12_NO_SECOND
+                || timeMode == TimeMode.HOUR_12_HAS_SECOND;
     }
 
     /**
@@ -259,6 +306,10 @@ public class TimeWheelLayout extends BaseWheelLayout {
         this.onTimeSelectedListener = onTimeSelectedListener;
     }
 
+    public void setOnTimeMeridiemSelectedListener(OnTimeMeridiemSelectedListener onTimeMeridiemSelectedListener) {
+        this.onTimeMeridiemSelectedListener = onTimeMeridiemSelectedListener;
+    }
+
     public final TimeEntity getStartValue() {
         return startValue;
     }
@@ -291,8 +342,20 @@ public class TimeWheelLayout extends BaseWheelLayout {
         return secondLabelView;
     }
 
+    public final TextView getMeridiemLabelView() {
+        return meridiemLabelView;
+    }
+
+    public final boolean isAnteMeridiem() {
+        return (int) hourWheelView.getCurrentItem() <= 12;
+    }
+
     public final int getSelectedHour() {
-        return (int) hourWheelView.getCurrentItem();
+        int hour = (int) hourWheelView.getCurrentItem();
+        if (isHour12Mode() && hour > 12) {
+            hour = hour - 12;
+        }
+        return hour;
     }
 
     public final int getSelectedMinute() {
@@ -300,40 +363,37 @@ public class TimeWheelLayout extends BaseWheelLayout {
     }
 
     public final int getSelectedSecond() {
+        if (timeMode == TimeMode.HOUR_12_NO_SECOND
+                || timeMode == TimeMode.HOUR_24_NO_SECOND) {
+            return 0;
+        }
         return (int) secondWheelView.getCurrentItem();
     }
 
     private void changeHour() {
-        int timeHourMax = isHour12Mode() ? 12 : 23;
         int min = Math.min(startValue.getHour(), endValue.getHour());
-        if (isHour12Mode() && min > 12) {
-            min = min - 12;
-        }
         int max = Math.max(startValue.getHour(), endValue.getHour());
-        if (isHour12Mode() && max > 12) {
-            max = max - 12;
-        }
-        min = Math.min(timeHourMax, min);
-        max = Math.min(timeHourMax, max);
+        int minHour = isHour12Mode() ? 1 : 0;
+        int maxHour = isHour12Mode() ? 24 : 23;
+        min = Math.max(minHour, min);
+        max = Math.min(maxHour, max);
         if (selectedHour == null) {
             selectedHour = min;
         }
-        if (isHour12Mode()) {
-            if (selectedHour > 12) {
-                selectedHour = selectedHour - 12;
-                minuteLabelView.setText(String.format("%s", "PM"));
-            } else {
-                minuteLabelView.setText(String.format("%s", "AM"));
-            }
-        }
         hourWheelView.setRange(min, max, 1);
         hourWheelView.setDefaultValue(selectedHour);
+        changeMeridiem();
         changeMinute(selectedHour);
     }
 
-    private boolean isHour12Mode() {
-        return timeMode == TimeMode.HOUR_12_NO_SECOND
-                || timeMode == TimeMode.HOUR_12_HAS_SECOND;
+    private void changeMeridiem() {
+        if (isHour12Mode()) {
+            if (selectedHour > 12) {
+                meridiemLabelView.setText(String.format("%s", "PM"));
+            } else {
+                meridiemLabelView.setText(String.format("%s", "AM"));
+            }
+        }
     }
 
     private void changeMinute(int hour) {
@@ -367,6 +427,10 @@ public class TimeWheelLayout extends BaseWheelLayout {
     private void changeSecond() {
         if (selectedSecond == null) {
             selectedSecond = 0;
+        }
+        if (timeMode == TimeMode.HOUR_12_NO_SECOND
+                || timeMode == TimeMode.HOUR_24_NO_SECOND) {
+            return;
         }
         secondWheelView.setRange(0, 59, 1);
         secondWheelView.setDefaultValue(selectedSecond);

@@ -145,6 +145,25 @@ public class LinkageWheelLayout extends BaseWheelLayout {
         }
     }
 
+    @Override
+    public void onWheelScrollStateChanged(WheelView view, int state) {
+        int id = view.getId();
+        if (id == R.id.wheel_picker_linkage_first_wheel) {
+            secondWheelView.setEnabled(state == WheelView.SCROLL_STATE_IDLE);
+            thirdWheelView.setEnabled(state == WheelView.SCROLL_STATE_IDLE);
+            return;
+        }
+        if (id == R.id.wheel_picker_linkage_second_wheel) {
+            firstWheelView.setEnabled(state == WheelView.SCROLL_STATE_IDLE);
+            thirdWheelView.setEnabled(state == WheelView.SCROLL_STATE_IDLE);
+            return;
+        }
+        if (id == R.id.wheel_picker_linkage_third_wheel) {
+            firstWheelView.setEnabled(state == WheelView.SCROLL_STATE_IDLE);
+            secondWheelView.setEnabled(state == WheelView.SCROLL_STATE_IDLE);
+        }
+    }
+
     public void setData(@NonNull LinkageProvider provider) {
         dataProvider = provider;
         setFirstVisible(provider.firstLevelVisible());

@@ -21,41 +21,47 @@
         style="@style/WheelDefault"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1.2" />
+        android:layout_weight="1.2"
+        android:visibility="visible" />
 
     <TextView
         android:id="@+id/wheel_picker_date_year_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:text="" />
+        android:text=""
+        android:visibility="visible" />
 
     <com.github.gzuliyujiang.wheelview.widget.NumberWheelView
         android:id="@+id/wheel_picker_date_month_wheel"
         style="@style/WheelDefault"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1.0" />
+        android:layout_weight="1.0"
+        android:visibility="visible" />
 
     <TextView
         android:id="@+id/wheel_picker_date_month_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:text="" />
+        android:text=""
+        android:visibility="visible" />
 
     <com.github.gzuliyujiang.wheelview.widget.NumberWheelView
         android:id="@+id/wheel_picker_date_day_wheel"
         style="@style/WheelDefault"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1.0" />
+        android:layout_weight="1.0"
+        android:visibility="visible" />
 
     <TextView
         android:id="@+id/wheel_picker_date_day_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:text="" />
+        android:text=""
+        android:visibility="visible" />
 
 </LinearLayout>

@@ -154,6 +154,25 @@ public class DateWheelLayout extends BaseWheelLayout {
         }
     }
 
+    @Override
+    public void onWheelScrollStateChanged(WheelView view, int state) {
+        int id = view.getId();
+        if (id == R.id.wheel_picker_date_year_wheel) {
+            monthWheelView.setEnabled(state == WheelView.SCROLL_STATE_IDLE);
+            dayWheelView.setEnabled(state == WheelView.SCROLL_STATE_IDLE);
+            return;
+        }
+        if (id == R.id.wheel_picker_date_month_wheel) {
+            yearWheelView.setEnabled(state == WheelView.SCROLL_STATE_IDLE);
+            dayWheelView.setEnabled(state == WheelView.SCROLL_STATE_IDLE);
+            return;
+        }
+        if (id == R.id.wheel_picker_date_day_wheel) {
+            yearWheelView.setEnabled(state == WheelView.SCROLL_STATE_IDLE);
+            monthWheelView.setEnabled(state == WheelView.SCROLL_STATE_IDLE);
+        }
+    }
+
     private void dateSelectedCallback() {
         if (onDateSelectedListener == null) {
             return;
@@ -166,7 +185,13 @@ public class DateWheelLayout extends BaseWheelLayout {
         });
     }
 
-    public void setDateMode(int dateMode) {
+    public void setDateMode(@DateMode int dateMode) {
+        yearWheelView.setVisibility(View.VISIBLE);
+        yearLabelView.setVisibility(View.VISIBLE);
+        monthWheelView.setVisibility(View.VISIBLE);
+        monthLabelView.setVisibility(View.VISIBLE);
+        dayWheelView.setVisibility(View.VISIBLE);
+        dayLabelView.setVisibility(View.VISIBLE);
         if (dateMode == DateMode.NONE) {
             yearWheelView.setVisibility(View.GONE);
             yearLabelView.setVisibility(View.GONE);
@@ -223,13 +248,7 @@ public class DateWheelLayout extends BaseWheelLayout {
         if (endValue == null) {
             endValue = DateEntity.yearOnFuture(30);
         }
-        postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                setRange(startValue, endValue, defaultValue);
-            }
-        }, 200);
-
+        setRange(startValue, endValue, defaultValue);
     }
 
     public void setDateFormatter(final DateFormatter dateFormatter) {

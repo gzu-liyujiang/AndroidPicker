@@ -112,7 +112,7 @@ public abstract class BaseWheelLayout extends LinearLayout implements OnWheelCha
         onAttributeSet(getContext(), a);
         a.recycle();
         requestLayout();
-        postInvalidate();
+        invalidate();
     }
 
     @Override

@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
 
 import com.github.gzuliyujiang.basepicker.ConfirmPicker;
+import com.github.gzuliyujiang.wheelpicker.contract.OnTimeMeridiemPickedListener;
 import com.github.gzuliyujiang.wheelpicker.contract.OnTimePickedListener;
 import com.github.gzuliyujiang.wheelpicker.widget.TimeWheelLayout;
 
@@ -33,6 +34,7 @@ import com.github.gzuliyujiang.wheelpicker.widget.TimeWheelLayout;
 public class TimePicker extends ConfirmPicker {
     protected TimeWheelLayout wheelLayout;
     private OnTimePickedListener onTimePickedListener;
+    private OnTimeMeridiemPickedListener onTimeMeridiemPickedListener;
 
     public TimePicker(@NonNull Activity activity) {
         super(activity);
@@ -66,16 +68,23 @@ public class TimePicker extends ConfirmPicker {
 
     @Override
     protected void onOk() {
+        int hour = wheelLayout.getSelectedHour();
+        int minute = wheelLayout.getSelectedMinute();
+        int second = wheelLayout.getSelectedSecond();
         if (onTimePickedListener != null) {
-            int hour = wheelLayout.getSelectedHour();
-            int minute = wheelLayout.getSelectedMinute();
-            int second = wheelLayout.getSelectedSecond();
             onTimePickedListener.onTimePicked(hour, minute, second);
+        }
+        if (onTimeMeridiemPickedListener != null) {
+            onTimeMeridiemPickedListener.onTimePicked(hour, minute, second, wheelLayout.isAnteMeridiem());
         }
     }
 
     public void setOnTimePickedListener(OnTimePickedListener onTimePickedListener) {
         this.onTimePickedListener = onTimePickedListener;
+    }
+
+    public void setOnTimeMeridiemPickedListener(OnTimeMeridiemPickedListener onTimeMeridiemPickedListener) {
+        this.onTimeMeridiemPickedListener = onTimeMeridiemPickedListener;
     }
 
     public final TimeWheelLayout getWheelLayout() {

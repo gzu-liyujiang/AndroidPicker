@@ -29,6 +29,7 @@ import com.github.gzuliyujiang.wheelpicker.annotation.DateMode;
 import com.github.gzuliyujiang.wheelpicker.annotation.TimeMode;
 import com.github.gzuliyujiang.wheelpicker.contract.OnDatePickedListener;
 import com.github.gzuliyujiang.wheelpicker.contract.OnDatimePickedListener;
+import com.github.gzuliyujiang.wheelpicker.contract.OnTimeMeridiemPickedListener;
 import com.github.gzuliyujiang.wheelpicker.contract.OnTimePickedListener;
 import com.github.gzuliyujiang.wheelpicker.entity.DateEntity;
 import com.github.gzuliyujiang.wheelpicker.entity.DatimeEntity;
@@ -36,6 +37,8 @@ import com.github.gzuliyujiang.wheelpicker.entity.TimeEntity;
 import com.github.gzuliyujiang.wheelpicker.impl.UnitDateFormatter;
 import com.github.gzuliyujiang.wheelpicker.impl.UnitTimeFormatter;
 import com.github.gzuliyujiang.wheelpicker.widget.DateWheelLayout;
+import com.github.gzuliyujiang.wheelpicker.widget.DatimeWheelLayout;
+import com.github.gzuliyujiang.wheelpicker.widget.TimeWheelLayout;
 
 /**
  * 日期时间滚轮选择器
@@ -69,11 +72,12 @@ public class DateTimePickerActivity extends FragmentActivity implements OnDatePi
     public void onYearMonthDayTime(View view) {
         DatimePicker picker = new DatimePicker(this);
         picker.setOnDatimePickedListener(this);
-        picker.getWheelLayout().setDateMode(DateMode.YEAR_MONTH_DAY);
-        picker.getWheelLayout().setTimeMode(TimeMode.HOUR_24_NO_SECOND);
-        picker.getWheelLayout().setRange(DatimeEntity.now(), DatimeEntity.yearOnFuture(10));
-        picker.getWheelLayout().setDateLabel("年", "月", "日");
-        picker.getWheelLayout().setTimeLabel("时", "分", "");
+        DatimeWheelLayout wheelLayout = picker.getWheelLayout();
+        wheelLayout.setDateMode(DateMode.YEAR_MONTH_DAY);
+        wheelLayout.setTimeMode(TimeMode.HOUR_12_HAS_SECOND);
+        wheelLayout.setRange(DatimeEntity.now(), DatimeEntity.yearOnFuture(10));
+        wheelLayout.setDateLabel("年", "月", "日");
+        wheelLayout.setTimeLabel("时", "分", "秒");
         picker.show();
     }
 
@@ -121,10 +125,17 @@ public class DateTimePickerActivity extends FragmentActivity implements OnDatePi
     public void onTime12(View view) {
         TimePicker picker = new TimePicker(this);
         picker.setBodyWidth(140);
-        picker.setOnTimePickedListener(this);
-        picker.getWheelLayout().setTimeMode(TimeMode.HOUR_12_NO_SECOND);
-        picker.getWheelLayout().setTimeLabel(":", "", "");
-        picker.getWheelLayout().setDefaultValue(TimeEntity.now());
+        picker.setOnTimeMeridiemPickedListener(new OnTimeMeridiemPickedListener() {
+            @Override
+            public void onTimePicked(int hour, int minute, int second, boolean isAnteMeridiem) {
+                Toast.makeText(getApplication(), hour + ":" + minute + ":" + second + "," + isAnteMeridiem, Toast.LENGTH_SHORT).show();
+            }
+        });
+        TimeWheelLayout wheelLayout = picker.getWheelLayout();
+        wheelLayout.setRange(TimeEntity.target(1, 0, 0), TimeEntity.target(24, 59, 59));
+        wheelLayout.setTimeMode(TimeMode.HOUR_12_NO_SECOND);
+        wheelLayout.setTimeLabel(":", "", "");
+        wheelLayout.setDefaultValue(TimeEntity.now());
         picker.show();
     }
 

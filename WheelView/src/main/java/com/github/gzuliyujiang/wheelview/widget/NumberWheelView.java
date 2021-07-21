@@ -51,7 +51,11 @@ public class NumberWheelView extends WheelView {
     @Deprecated
     @Override
     public void setData(List<?> data) {
-        throw new UnsupportedOperationException("Use setRange instead");
+        if (isInEditMode()) {
+            super.setData(generatePreviewData());
+        } else {
+            throw new UnsupportedOperationException("Use setRange instead");
+        }
     }
 
     public void setRange(int min, int max, int step) {

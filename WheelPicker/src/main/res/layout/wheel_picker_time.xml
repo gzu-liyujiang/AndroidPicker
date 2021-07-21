@@ -21,8 +21,7 @@
         style="@style/WheelDefault"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1.0"
-        android:visibility="visible" />
+        android:layout_weight="1.0" />
 
     <TextView
         android:id="@+id/wheel_picker_time_hour_label"
@@ -36,8 +35,7 @@
         style="@style/WheelDefault"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1.0"
-        android:visibility="visible" />
+        android:layout_weight="1.0" />
 
     <TextView
         android:id="@+id/wheel_picker_time_minute_label"
@@ -51,8 +49,7 @@
         style="@style/WheelDefault"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1.0"
-        android:visibility="visible" />
+        android:layout_weight="1.0" />
 
     <TextView
         android:id="@+id/wheel_picker_time_second_label"
@@ -60,5 +57,15 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:text="" />
+
+    <TextView
+        android:id="@+id/wheel_picker_time_meridiem_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1.0"
+        android:gravity="center"
+        android:text=""
+        android:visibility="gone" />
 
 </LinearLayout>
