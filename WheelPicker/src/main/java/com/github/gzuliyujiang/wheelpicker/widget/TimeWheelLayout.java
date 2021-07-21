@@ -222,12 +222,7 @@ public class TimeWheelLayout extends BaseWheelLayout {
         if (endValue == null) {
             endValue = TimeEntity.hourOnFuture(12);
         }
-        postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                setRange(startValue, endValue, defaultValue);
-            }
-        }, 200);
+        setRange(startValue, endValue, defaultValue);
     }
 
     public void setTimeFormatter(final TimeFormatter timeFormatter) {
@@ -309,22 +304,36 @@ public class TimeWheelLayout extends BaseWheelLayout {
     }
 
     private void changeHour() {
-        int timeHourMax;
-        if (timeMode == TimeMode.HOUR_12_NO_SECOND || timeMode == TimeMode.HOUR_12_HAS_SECOND) {
-            timeHourMax = 12;
-        } else {
-            timeHourMax = 23;
-        }
+        int timeHourMax = isHour12Mode() ? 12 : 23;
         int min = Math.min(startValue.getHour(), endValue.getHour());
+        if (isHour12Mode() && min > 12) {
+            min = min - 12;
+        }
         int max = Math.max(startValue.getHour(), endValue.getHour());
+        if (isHour12Mode() && max > 12) {
+            max = max - 12;
+        }
         min = Math.min(timeHourMax, min);
         max = Math.min(timeHourMax, max);
         if (selectedHour == null) {
             selectedHour = min;
         }
+        if (isHour12Mode()) {
+            if (selectedHour > 12) {
+                selectedHour = selectedHour - 12;
+                minuteLabelView.setText(String.format("%s", "PM"));
+            } else {
+                minuteLabelView.setText(String.format("%s", "AM"));
+            }
+        }
         hourWheelView.setRange(min, max, 1);
         hourWheelView.setDefaultValue(selectedHour);
         changeMinute(selectedHour);
+    }
+
+    private boolean isHour12Mode() {
+        return timeMode == TimeMode.HOUR_12_NO_SECOND
+                || timeMode == TimeMode.HOUR_12_HAS_SECOND;
     }
 
     private void changeMinute(int hour) {
