@@ -19,7 +19,6 @@ ext {
             xcrash                    : "com.iqiyi.xcrash:xcrash-android-lib:3.0.0",
             mmkv                      : "com.tencent:mmkv-static:1.2.7",
             ToastUtils                : "com.github.getActivity:ToastUtils:9.5",
-            ShapeView                 : "com.github.getActivity:ShapeView:2.2",
             GsonFactory               : "com.github.getActivity:GsonFactory:5.2",
             photoview                 : "com.bm.photoview:library:1.4.1",
             material                  : "com.google.android.material:material:1.2.0",
