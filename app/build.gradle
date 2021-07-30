@@ -24,7 +24,9 @@ dependencies {
     implementation project(':ColorPicker')
     implementation project(':FilePicker')
     implementation project(':CalendarPicker')
-    debugRuntimeOnly library.logger
+    implementation project(':ImagePicker')
+    debugRuntimeOnly library.orhanobut_logger
+    implementation library.XPopup
 }
 
 android {

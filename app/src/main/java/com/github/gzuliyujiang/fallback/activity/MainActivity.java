@@ -79,4 +79,8 @@ public class MainActivity extends FragmentActivity {
         startActivity(CalendarPickerActivity.class);
     }
 
+    public void onImagePicker(View view) {
+        startActivity(ImagePickerActivity.class);
+    }
+
 }

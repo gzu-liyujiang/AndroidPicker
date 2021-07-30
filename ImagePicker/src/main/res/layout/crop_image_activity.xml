@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/crop_image_back"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:contentDescription="返回"
+            android:padding="15dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/crop_image_back"
+            android:tooltipText="返回"
+            tools:ignore="UnusedAttribute" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1.0" />
+
+        <ImageView
+            android:id="@+id/crop_image_rotate"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:contentDescription="旋转"
+            android:padding="15dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/crop_image_rotate"
+            android:tooltipText="顺时针旋转"
+            tools:ignore="UnusedAttribute" />
+
+        <ImageView
+            android:id="@+id/crop_image_done"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:contentDescription="裁剪"
+            android:padding="15dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/crop_image_done"
+            android:tooltipText="确认裁剪"
+            tools:ignore="UnusedAttribute" />
+
+    </LinearLayout>
+
+    <com.github.gzuliyujiang.imagepicker.CropImageView
+        android:id="@+id/crop_image_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>
