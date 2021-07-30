@@ -18,5 +18,5 @@ dependencies {
     implementation androidxLibrary.annotation
     implementation androidxLibrary.core
     implementation androidxLibrary.recyclerview
-    implementation project(':Common')
+    api project(':Common')
 }

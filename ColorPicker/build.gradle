@@ -16,5 +16,5 @@ apply from: "${rootDir}/gradle/publish.gradle"
 
 dependencies {
     implementation androidxLibrary.annotation
-    implementation project(':Common')
+    api project(':Common')
 }

@@ -37,7 +37,8 @@ android {
             assets.srcDirs = ['src/main/assets']
             aidl.srcDirs = ['src/main/aidl']
             jni.srcDirs = ['cpp', 'jni', 'src/main/cpp', 'src/main/jni']
-            jniLibs.srcDirs = ['libs', 'src/main/jniLibs']
+            // See https://developer.android.google.cn/studio/releases/gradle-plugin#cmake-imported-targets
+            jniLibs.srcDirs = ['src/main/jniLibs']
         }
     }
 

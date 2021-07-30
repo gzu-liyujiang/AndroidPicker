@@ -84,6 +84,13 @@
                 android:text="日历日期选择器"
                 android:textColor="#FF333333" />
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onImagePicker"
+                android:text="图片选择器（相机+相册+裁剪）"
+                android:textColor="#FF333333" />
+
             <com.github.gzuliyujiang.wheelview.widget.WheelView
                 android:id="@+id/wheel_view"
                 android:layout_width="117dp"
