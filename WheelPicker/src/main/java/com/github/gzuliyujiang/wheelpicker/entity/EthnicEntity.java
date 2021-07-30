@@ -19,6 +19,7 @@ import com.github.gzuliyujiang.wheelview.contract.TextProvider;
 
 import java.io.Serializable;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * @author 贵州山野羡民（1032694760@qq.com）
@@ -64,6 +65,25 @@ public class EthnicEntity implements TextProvider, Serializable {
             return name;
         }
         return spelling;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        EthnicEntity that = (EthnicEntity) o;
+        return Objects.equals(code, that.code) ||
+                Objects.equals(name, that.name) ||
+                Objects.equals(spelling, that.spelling);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(code, name, spelling);
     }
 
     @NonNull

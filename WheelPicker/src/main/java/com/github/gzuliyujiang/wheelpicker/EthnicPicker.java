@@ -104,9 +104,25 @@ public class EthnicPicker extends OptionPicker {
 
     public void setEthnicSpec(@EthnicSpec int ethnicSpec) {
         this.ethnicSpec = ethnicSpec;
-        if (isInitialized()) {
-            setData(provideData());
-        }
+        setData(provideData());
+    }
+
+    public void setDefaultValueByCode(String code) {
+        EthnicEntity entity = new EthnicEntity();
+        entity.setCode(code);
+        setDefaultValue(entity);
+    }
+
+    public void setDefaultValueByName(String name) {
+        EthnicEntity entity = new EthnicEntity();
+        entity.setName(name);
+        setDefaultValue(entity);
+    }
+
+    public void setDefaultValueBySpelling(String spelling) {
+        EthnicEntity entity = new EthnicEntity();
+        entity.setSpelling(spelling);
+        setDefaultValue(entity);
     }
 
     @Override
