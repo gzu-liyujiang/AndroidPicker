@@ -753,7 +753,10 @@ public class WheelView extends View implements Runnable {
             String data = obtainItemText(drawnDataPosition);
             if (paint.measureText(data) - getMeasuredWidth() > 0) {
                 // 超出控件宽度则省略部分文字
-                data = data.substring(0, data.length() - 4) + "...";
+                int length = data.length();
+                if (length > 5) {
+                    data = data.substring(0, length - 4) + "...";
+                }
             }
             drawItemText(canvas, data, drawCenterYCoordinate);
         }

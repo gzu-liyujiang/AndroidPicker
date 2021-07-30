@@ -48,6 +48,9 @@ public abstract class BaseWheelLayout extends LinearLayout implements OnWheelCha
     public BaseWheelLayout(Context context) {
         super(context);
         init(context, null);
+        TypedArray a = context.obtainStyledAttributes(null, provideStyleableRes(),
+                R.attr.WheelStyle, R.style.WheelDefault);
+        onAttributeSet(context, a);
     }
 
     public BaseWheelLayout(Context context, @Nullable AttributeSet attrs) {

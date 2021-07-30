@@ -133,6 +133,9 @@ public class SinglePickerActivity extends FragmentActivity implements OnNumberPi
     public void onEthnic(View view) {
         EthnicPicker picker = new EthnicPicker(this);
         picker.setEthnicSpec(EthnicSpec.SEVENTH_NATIONAL_CENSUS);
+        picker.setDefaultValueByCode("97");
+        //picker.setDefaultValueByName("未定族称人口");
+        //picker.setDefaultValueBySpelling("Unrecognized");
         picker.setOnOptionPickedListener(this);
         picker.show();
     }

@@ -46,7 +46,7 @@ import com.github.gzuliyujiang.wheelpicker.widget.TimeWheelLayout;
  * @author 贵州山野羡民（1032694760@qq.com）
  * @since 2019/6/23
  */
-public class DateTimePickerActivity extends FragmentActivity implements OnDatePickedListener, OnTimePickedListener, OnDatimePickedListener {
+public class DateTimePickerActivity extends FragmentActivity implements OnDatePickedListener, OnTimePickedListener {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,15 +64,17 @@ public class DateTimePickerActivity extends FragmentActivity implements OnDatePi
         Toast.makeText(this, hour + ":" + minute + ":" + second, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void onDatimePicked(int year, int month, int day, int hour, int minute, int second) {
-        Toast.makeText(this, year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second, Toast.LENGTH_SHORT).show();
-    }
-
     public void onYearMonthDayTime(View view) {
         DatimePicker picker = new DatimePicker(this);
-        picker.setOnDatimePickedListener(this);
-        DatimeWheelLayout wheelLayout = picker.getWheelLayout();
+        final DatimeWheelLayout wheelLayout = picker.getWheelLayout();
+        picker.setOnDatimePickedListener(new OnDatimePickedListener() {
+            @Override
+            public void onDatimePicked(int year, int month, int day, int hour, int minute, int second) {
+                String text = year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
+                text += wheelLayout.getTimeWheelLayout().isAnteMeridiem() ? " 上午" : " 下午";
+                Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+            }
+        });
         wheelLayout.setDateMode(DateMode.YEAR_MONTH_DAY);
         wheelLayout.setTimeMode(TimeMode.HOUR_12_HAS_SECOND);
         wheelLayout.setRange(DatimeEntity.now(), DatimeEntity.yearOnFuture(10));
@@ -128,13 +130,15 @@ public class DateTimePickerActivity extends FragmentActivity implements OnDatePi
         picker.setOnTimeMeridiemPickedListener(new OnTimeMeridiemPickedListener() {
             @Override
             public void onTimePicked(int hour, int minute, int second, boolean isAnteMeridiem) {
-                Toast.makeText(getApplication(), hour + ":" + minute + ":" + second + "," + isAnteMeridiem, Toast.LENGTH_SHORT).show();
+                String text = hour + ":" + minute + ":" + second;
+                text += isAnteMeridiem ? " 上午" : " 下午";
+                Toast.makeText(getApplication(), text, Toast.LENGTH_SHORT).show();
             }
         });
         TimeWheelLayout wheelLayout = picker.getWheelLayout();
-        wheelLayout.setRange(TimeEntity.target(1, 0, 0), TimeEntity.target(24, 59, 59));
+        wheelLayout.setRange(TimeEntity.target(1, 0, 0), TimeEntity.target(12, 59, 59));
         wheelLayout.setTimeMode(TimeMode.HOUR_12_NO_SECOND);
-        wheelLayout.setTimeLabel(":", "", "");
+        wheelLayout.setTimeLabel(":", " ", "");
         wheelLayout.setDefaultValue(TimeEntity.now());
         picker.show();
     }

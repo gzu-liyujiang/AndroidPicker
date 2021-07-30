@@ -146,14 +146,15 @@
                 app:wheel_monthLabel="月" />
 
             <com.github.gzuliyujiang.wheelpicker.widget.TimeWheelLayout
-                android:layout_width="95dp"
+                android:layout_width="110dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center_horizontal"
                 app:wheel_curvedEnabled="true"
                 app:wheel_curvedMaxAngle="45"
                 app:wheel_hourLabel=":"
                 app:wheel_minuteLabel=":"
-                app:wheel_timeMode="hour_24_has_second" />
+                app:wheel_secondLabel=" "
+                app:wheel_timeMode="hour_12_has_second" />
 
         </LinearLayout>
 

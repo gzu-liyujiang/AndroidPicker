@@ -20,7 +20,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.github.gzuliyujiang.wheelpicker.R;
 import com.github.gzuliyujiang.wheelpicker.annotation.TimeMode;
@@ -51,12 +50,13 @@ public class TimeWheelLayout extends BaseWheelLayout {
     private TextView hourLabelView;
     private TextView minuteLabelView;
     private TextView secondLabelView;
-    private TextView meridiemLabelView;
+    private WheelView meridiemWheelView;
     private TimeEntity startValue;
     private TimeEntity endValue;
     private Integer selectedHour;
     private Integer selectedMinute;
     private Integer selectedSecond;
+    private boolean isAnteMeridiem;
     private int timeMode;
     private OnTimeSelectedListener onTimeSelectedListener;
     private OnTimeMeridiemSelectedListener onTimeMeridiemSelectedListener;
@@ -89,7 +89,7 @@ public class TimeWheelLayout extends BaseWheelLayout {
 
     @Override
     protected List<WheelView> provideWheelViews() {
-        return Arrays.asList(hourWheelView, minuteWheelView, secondWheelView);
+        return Arrays.asList(hourWheelView, minuteWheelView, secondWheelView, meridiemWheelView);
     }
 
     @Override
@@ -100,10 +100,7 @@ public class TimeWheelLayout extends BaseWheelLayout {
         hourLabelView = findViewById(R.id.wheel_picker_time_hour_label);
         minuteLabelView = findViewById(R.id.wheel_picker_time_minute_label);
         secondLabelView = findViewById(R.id.wheel_picker_time_second_label);
-        meridiemLabelView = findViewById(R.id.wheel_picker_time_meridiem_label);
-        setTimeMode(TimeMode.HOUR_24_NO_SECOND);
-        setTimeFormatter(new SimpleTimeFormatter(this));
-        setRange(TimeEntity.now(), TimeEntity.hourOnFuture(12));
+        meridiemWheelView = findViewById(R.id.wheel_picker_time_meridiem_wheel);
     }
 
     @Override
@@ -129,11 +126,14 @@ public class TimeWheelLayout extends BaseWheelLayout {
         setCurvedEnabled(typedArray.getBoolean(R.styleable.TimeWheelLayout_wheel_curvedEnabled, false));
         setCurvedMaxAngle(typedArray.getInteger(R.styleable.TimeWheelLayout_wheel_curvedMaxAngle, 90));
         setTextAlign(typedArray.getInt(R.styleable.TimeWheelLayout_wheel_itemTextAlign, ItemTextAlign.CENTER));
-        setTimeMode(typedArray.getInt(R.styleable.TimeWheelLayout_wheel_timeMode, timeMode));
+        setTimeMode(typedArray.getInt(R.styleable.TimeWheelLayout_wheel_timeMode, TimeMode.HOUR_24_NO_SECOND));
         String hourLabel = typedArray.getString(R.styleable.TimeWheelLayout_wheel_hourLabel);
         String minuteLabel = typedArray.getString(R.styleable.TimeWheelLayout_wheel_minuteLabel);
         String secondLabel = typedArray.getString(R.styleable.TimeWheelLayout_wheel_secondLabel);
         setTimeLabel(hourLabel, minuteLabel, secondLabel);
+        setTimeFormatter(new SimpleTimeFormatter(this));
+        setRange(TimeEntity.target(0, 0, 0),
+                TimeEntity.target(23, 59, 59), TimeEntity.now());
     }
 
     @Override
@@ -143,7 +143,6 @@ public class TimeWheelLayout extends BaseWheelLayout {
             selectedHour = (Integer) hourWheelView.getItem(position);
             selectedMinute = null;
             selectedSecond = null;
-            changeMeridiem();
             changeMinute(selectedHour);
             timeSelectedCallback();
             return;
@@ -207,7 +206,7 @@ public class TimeWheelLayout extends BaseWheelLayout {
         minuteLabelView.setVisibility(View.VISIBLE);
         secondWheelView.setVisibility(View.VISIBLE);
         secondLabelView.setVisibility(View.VISIBLE);
-        meridiemLabelView.setVisibility(View.GONE);
+        meridiemWheelView.setVisibility(View.GONE);
         if (timeMode == TimeMode.NONE) {
             hourWheelView.setVisibility(View.GONE);
             hourLabelView.setVisibility(View.GONE);
@@ -224,7 +223,8 @@ public class TimeWheelLayout extends BaseWheelLayout {
             secondLabelView.setVisibility(View.GONE);
         }
         if (isHour12Mode()) {
-            meridiemLabelView.setVisibility(View.VISIBLE);
+            meridiemWheelView.setVisibility(View.VISIBLE);
+            meridiemWheelView.setData(Arrays.asList("AM", "PM"));
         }
     }
 
@@ -236,39 +236,37 @@ public class TimeWheelLayout extends BaseWheelLayout {
     /**
      * 设置日期时间范围
      */
-    public void setRange(@NonNull TimeEntity startValue, @NonNull TimeEntity endValue) {
+    public void setRange(TimeEntity startValue, TimeEntity endValue) {
         setRange(startValue, endValue, null);
     }
 
     /**
      * 设置日期时间范围
      */
-    public void setRange(@NonNull TimeEntity startValue, @NonNull TimeEntity endValue,
-                         @Nullable TimeEntity defaultValue) {
+    public void setRange(TimeEntity startValue, TimeEntity endValue, TimeEntity defaultValue) {
+        if (startValue == null) {
+            startValue = TimeEntity.target(isHour12Mode() ? 1 : 0, 0, 0);
+        }
+        if (endValue == null) {
+            endValue = TimeEntity.target(isHour12Mode() ? 12 : 23, 59, 59);
+        }
         if (endValue.toTimeInMillis() < startValue.toTimeInMillis()) {
             throw new IllegalArgumentException("Ensure the start time is less than the time date");
         }
         this.startValue = startValue;
         this.endValue = endValue;
         if (defaultValue != null) {
-            if (defaultValue.toTimeInMillis() < startValue.toTimeInMillis() ||
-                    defaultValue.toTimeInMillis() > endValue.toTimeInMillis()) {
-                throw new IllegalArgumentException("The default time is out of range");
-            }
+            isAnteMeridiem = defaultValue.getHour() <= 12;
+            defaultValue.setHour(wrapHour(defaultValue.getHour()));
             selectedHour = defaultValue.getHour();
             selectedMinute = defaultValue.getMinute();
             selectedSecond = defaultValue.getSecond();
         }
         changeHour();
+        changeAnteMeridiem();
     }
 
     public void setDefaultValue(@NonNull final TimeEntity defaultValue) {
-        if (startValue == null) {
-            startValue = TimeEntity.now();
-        }
-        if (endValue == null) {
-            endValue = TimeEntity.hourOnFuture(12);
-        }
         setRange(startValue, endValue, defaultValue);
     }
 
@@ -342,16 +340,21 @@ public class TimeWheelLayout extends BaseWheelLayout {
         return secondLabelView;
     }
 
-    public final TextView getMeridiemLabelView() {
-        return meridiemLabelView;
+    public final WheelView getMeridiemWheelView() {
+        return meridiemWheelView;
     }
 
-    public final boolean isAnteMeridiem() {
-        return (int) hourWheelView.getCurrentItem() <= 12;
+    @Deprecated
+    public final TextView getMeridiemLabelView() {
+        throw new UnsupportedOperationException("Use getMeridiemWheelView instead");
     }
 
     public final int getSelectedHour() {
         int hour = (int) hourWheelView.getCurrentItem();
+        return wrapHour(hour);
+    }
+
+    private int wrapHour(int hour) {
         if (isHour12Mode() && hour > 12) {
             hour = hour - 12;
         }
@@ -370,11 +373,15 @@ public class TimeWheelLayout extends BaseWheelLayout {
         return (int) secondWheelView.getCurrentItem();
     }
 
+    public final boolean isAnteMeridiem() {
+        return meridiemWheelView.getCurrentItem().toString().equalsIgnoreCase("AM");
+    }
+
     private void changeHour() {
         int min = Math.min(startValue.getHour(), endValue.getHour());
         int max = Math.max(startValue.getHour(), endValue.getHour());
         int minHour = isHour12Mode() ? 1 : 0;
-        int maxHour = isHour12Mode() ? 24 : 23;
+        int maxHour = isHour12Mode() ? 12 : 23;
         min = Math.max(minHour, min);
         max = Math.min(maxHour, max);
         if (selectedHour == null) {
@@ -382,18 +389,7 @@ public class TimeWheelLayout extends BaseWheelLayout {
         }
         hourWheelView.setRange(min, max, 1);
         hourWheelView.setDefaultValue(selectedHour);
-        changeMeridiem();
         changeMinute(selectedHour);
-    }
-
-    private void changeMeridiem() {
-        if (isHour12Mode()) {
-            if (selectedHour > 12) {
-                meridiemLabelView.setText(String.format("%s", "PM"));
-            } else {
-                meridiemLabelView.setText(String.format("%s", "AM"));
-            }
-        }
     }
 
     private void changeMinute(int hour) {
@@ -428,12 +424,12 @@ public class TimeWheelLayout extends BaseWheelLayout {
         if (selectedSecond == null) {
             selectedSecond = 0;
         }
-        if (timeMode == TimeMode.HOUR_12_NO_SECOND
-                || timeMode == TimeMode.HOUR_24_NO_SECOND) {
-            return;
-        }
         secondWheelView.setRange(0, 59, 1);
         secondWheelView.setDefaultValue(selectedSecond);
+    }
+
+    private void changeAnteMeridiem() {
+        meridiemWheelView.setDefaultValue(isAnteMeridiem ? "AM" : "PM");
     }
 
 }

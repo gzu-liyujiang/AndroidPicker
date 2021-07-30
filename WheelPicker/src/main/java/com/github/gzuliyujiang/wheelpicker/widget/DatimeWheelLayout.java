@@ -19,7 +19,6 @@ import android.util.AttributeSet;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.github.gzuliyujiang.wheelpicker.R;
 import com.github.gzuliyujiang.wheelpicker.annotation.DateMode;
@@ -28,7 +27,6 @@ import com.github.gzuliyujiang.wheelpicker.contract.DateFormatter;
 import com.github.gzuliyujiang.wheelpicker.contract.OnDatimeSelectedListener;
 import com.github.gzuliyujiang.wheelpicker.contract.TimeFormatter;
 import com.github.gzuliyujiang.wheelpicker.entity.DatimeEntity;
-import com.github.gzuliyujiang.wheelpicker.entity.TimeEntity;
 import com.github.gzuliyujiang.wheelpicker.impl.SimpleDateFormatter;
 import com.github.gzuliyujiang.wheelpicker.impl.SimpleTimeFormatter;
 import com.github.gzuliyujiang.wheelview.annotation.ItemTextAlign;
@@ -90,9 +88,6 @@ public class DatimeWheelLayout extends BaseWheelLayout {
     protected void onInit(@NonNull Context context) {
         dateWheelLayout = findViewById(R.id.wheel_picker_date_wheel);
         timeWheelLayout = findViewById(R.id.wheel_picker_time_wheel);
-        setDateFormatter(new SimpleDateFormatter());
-        setTimeFormatter(new SimpleTimeFormatter(timeWheelLayout));
-        setRange(DatimeEntity.now(), DatimeEntity.yearOnFuture(30));
     }
 
     @Override
@@ -128,6 +123,9 @@ public class DatimeWheelLayout extends BaseWheelLayout {
         String minuteLabel = typedArray.getString(R.styleable.DatimeWheelLayout_wheel_minuteLabel);
         String secondLabel = typedArray.getString(R.styleable.DatimeWheelLayout_wheel_secondLabel);
         setTimeLabel(hourLabel, minuteLabel, secondLabel);
+        setDateFormatter(new SimpleDateFormatter());
+        setTimeFormatter(new SimpleTimeFormatter(timeWheelLayout));
+        setRange(DatimeEntity.now(), DatimeEntity.yearOnFuture(30), DatimeEntity.now());
     }
 
     @Override
@@ -159,34 +157,35 @@ public class DatimeWheelLayout extends BaseWheelLayout {
     /**
      * 设置日期时间范围
      */
-    public void setRange(@NonNull DatimeEntity startValue, @NonNull DatimeEntity endValue) {
+    public void setRange(DatimeEntity startValue, DatimeEntity endValue) {
         setRange(startValue, endValue, null);
     }
 
     /**
      * 设置日期时间范围
      */
-    public void setRange(@NonNull DatimeEntity startValue, @NonNull DatimeEntity endValue,
-                         @Nullable DatimeEntity defaultValue) {
-        if (defaultValue == null) {
-            defaultValue = startValue;
-        }
-        dateWheelLayout.setRange(startValue.getDate(), endValue.getDate(), defaultValue.getDate());
-        TimeEntity startTime = TimeEntity.target(0, 0, 0);
-        TimeEntity endTime = TimeEntity.target(timeWheelLayout.isHour12Mode() ? 24 : 23, 59, 59);
-        timeWheelLayout.setRange(startTime, endTime, defaultValue.getTime());
-        this.startValue = startValue;
-        this.endValue = endValue;
-    }
-
-    public void setDefaultValue(@NonNull final DatimeEntity defaultValue) {
+    public void setRange(DatimeEntity startValue, DatimeEntity endValue, DatimeEntity defaultValue) {
         if (startValue == null) {
             startValue = DatimeEntity.now();
         }
         if (endValue == null) {
-            endValue = DatimeEntity.yearOnFuture(30);
+            endValue = DatimeEntity.yearOnFuture(10);
         }
-        setRange(startValue, endValue, defaultValue);
+        if (defaultValue == null) {
+            defaultValue = startValue;
+        }
+        dateWheelLayout.setRange(startValue.getDate(), endValue.getDate(), defaultValue.getDate());
+        timeWheelLayout.setRange(null, null, defaultValue.getTime());
+        this.startValue = startValue;
+        this.endValue = endValue;
+    }
+
+    public void setDefaultValue(DatimeEntity defaultValue) {
+        if (defaultValue == null) {
+            defaultValue = DatimeEntity.now();
+        }
+        dateWheelLayout.setDefaultValue(defaultValue.getDate());
+        timeWheelLayout.setDefaultValue(defaultValue.getTime());
     }
 
     public void setDateFormatter(DateFormatter dateFormatter) {
@@ -217,6 +216,14 @@ public class DatimeWheelLayout extends BaseWheelLayout {
         return endValue;
     }
 
+    public final DateWheelLayout getDateWheelLayout() {
+        return dateWheelLayout;
+    }
+
+    public final TimeWheelLayout getTimeWheelLayout() {
+        return timeWheelLayout;
+    }
+
     public final NumberWheelView getYearWheelView() {
         return dateWheelLayout.getYearWheelView();
     }
@@ -239,6 +246,10 @@ public class DatimeWheelLayout extends BaseWheelLayout {
 
     public final NumberWheelView getSecondWheelView() {
         return timeWheelLayout.getSecondWheelView();
+    }
+
+    public final WheelView getMeridiemWheelView() {
+        return timeWheelLayout.getMeridiemWheelView();
     }
 
     public final TextView getYearLabelView() {

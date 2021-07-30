@@ -20,7 +20,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.github.gzuliyujiang.wheelpicker.R;
 import com.github.gzuliyujiang.wheelpicker.annotation.DateMode;
@@ -96,8 +95,6 @@ public class DateWheelLayout extends BaseWheelLayout {
         yearLabelView = findViewById(R.id.wheel_picker_date_year_label);
         monthLabelView = findViewById(R.id.wheel_picker_date_month_label);
         dayLabelView = findViewById(R.id.wheel_picker_date_day_label);
-        setDateFormatter(new SimpleDateFormatter());
-        setRange(DateEntity.today(), DateEntity.yearOnFuture(30));
     }
 
     @Override
@@ -128,6 +125,8 @@ public class DateWheelLayout extends BaseWheelLayout {
         String monthLabel = typedArray.getString(R.styleable.DateWheelLayout_wheel_monthLabel);
         String dayLabel = typedArray.getString(R.styleable.DateWheelLayout_wheel_dayLabel);
         setDateLabel(yearLabel, monthLabel, dayLabel);
+        setDateFormatter(new SimpleDateFormatter());
+        setRange(DateEntity.today(), DateEntity.yearOnFuture(30), DateEntity.today());
     }
 
     @Override
@@ -215,25 +214,26 @@ public class DateWheelLayout extends BaseWheelLayout {
     /**
      * 设置日期时间范围
      */
-    public void setRange(@NonNull DateEntity startValue, @NonNull DateEntity endValue) {
+    public void setRange(DateEntity startValue, DateEntity endValue) {
         setRange(startValue, endValue, null);
     }
 
     /**
      * 设置日期时间范围
      */
-    public void setRange(@NonNull DateEntity startValue, @NonNull DateEntity endValue,
-                         @Nullable DateEntity defaultValue) {
+    public void setRange(DateEntity startValue, DateEntity endValue, DateEntity defaultValue) {
+        if (startValue == null) {
+            startValue = DateEntity.today();
+        }
+        if (endValue == null) {
+            endValue = DateEntity.yearOnFuture(30);
+        }
         if (endValue.toTimeInMillis() < startValue.toTimeInMillis()) {
             throw new IllegalArgumentException("Ensure the start date is less than the end date");
         }
         this.startValue = startValue;
         this.endValue = endValue;
         if (defaultValue != null) {
-            if (defaultValue.toTimeInMillis() < startValue.toTimeInMillis() ||
-                    defaultValue.toTimeInMillis() > endValue.toTimeInMillis()) {
-                throw new IllegalArgumentException("The default date is out of range");
-            }
             selectedYear = defaultValue.getYear();
             selectedMonth = defaultValue.getMonth();
             selectedDay = defaultValue.getDay();
@@ -241,13 +241,7 @@ public class DateWheelLayout extends BaseWheelLayout {
         changeYear();
     }
 
-    public void setDefaultValue(@NonNull final DateEntity defaultValue) {
-        if (startValue == null) {
-            startValue = DateEntity.today();
-        }
-        if (endValue == null) {
-            endValue = DateEntity.yearOnFuture(30);
-        }
+    public void setDefaultValue(DateEntity defaultValue) {
         setRange(startValue, endValue, defaultValue);
     }
 

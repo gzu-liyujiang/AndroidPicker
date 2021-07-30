@@ -12,6 +12,7 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
@@ -58,14 +59,13 @@
         android:layout_gravity="center_vertical"
         android:text="" />
 
-    <TextView
-        android:id="@+id/wheel_picker_time_meridiem_label"
+    <com.github.gzuliyujiang.wheelview.widget.WheelView
+        android:id="@+id/wheel_picker_time_meridiem_wheel"
+        style="@style/WheelDefault"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
         android:layout_weight="1.0"
-        android:gravity="center"
-        android:text=""
-        android:visibility="gone" />
+        android:visibility="gone"
+        tools:visibility="visible" />
 
 </LinearLayout>
