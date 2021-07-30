@@ -86,7 +86,7 @@ dependencies {
 }
 ```
 
-图片选择器：
+图片选择器（[README.md](/ImagePicker/README.md)）：
 
 ```groovy
 dependencies {
@@ -283,6 +283,7 @@ dependencies {
 - [Administrative-divisions-of-China](https://github.com/modood/Administrative-divisions-of-China)
 - [AndroidColorPicker](https://github.com/jbruchanov/AndroidColorPicker)
 - [calendar](https://github.com/oxsource/calendar)
+- [Android-Image-Cropper](https://github.com/ArthurHub/Android-Image-Cropper)
 
 ## 许可协议
 
