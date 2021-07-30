@@ -1,5 +1,12 @@
 # 更新日志
 
+## 3.1.0 - 2021.07.30
+
+- 新增图片选择器（相机+相册+裁剪），可用于头像选择裁剪；
+- 修复个别已知的可能的异常；
+- 改进12小时制的上下午选择，参阅 [252#issuecomment-888115423](https://github.com/gzu-liyujiang/AndroidPicker/issues/252#issuecomment-888115423)；
+- 民族选择器支持按民族代码、民族中文名及罗马拼写设置默认值；
+
 ## 3.0.8 - 2021.07.21
 
 - 联动/日期/时间选择器有滚轮在滑动中时不允许另外的滚轮滑动，参阅 [issues#251](https://github.com/gzu-liyujiang/AndroidPicker/issues/251);

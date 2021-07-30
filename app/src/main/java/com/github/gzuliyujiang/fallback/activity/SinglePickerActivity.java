@@ -124,7 +124,7 @@ public class SinglePickerActivity extends FragmentActivity implements OnNumberPi
     }
 
     public void onSex(View view) {
-        SexPicker picker = new SexPicker(this);
+        SexPicker picker = new SexPicker(this, true);
         picker.setDefaultValue("女");
         picker.setOnOptionPickedListener(this);
         picker.show();

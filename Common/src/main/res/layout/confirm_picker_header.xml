@@ -40,7 +40,7 @@
         android:singleLine="true"
         android:textColor="#FF666666"
         android:textSize="14sp"
-        tools:text="这是标题" />
+        tools:text="@android:string/untitled" />
 
     <TextView
         android:id="@+id/confirm_picker_ok"

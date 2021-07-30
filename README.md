@@ -30,6 +30,14 @@ allprojects {
 }
 ```
 
+所有选择器的基础窗体：
+
+```groovy
+dependencies {
+   implementation 'com.github.gzu-liyujiang.AndroidPicker:Common:<version>'
+}
+```
+
 滚轮选择器的滚轮控件：
 
 ```groovy
@@ -42,8 +50,6 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'com.github.gzu-liyujiang.AndroidPicker:Common:<version>'
-    implementation 'com.github.gzu-liyujiang.AndroidPicker:WheelView:<version>'
     implementation 'com.github.gzu-liyujiang.AndroidPicker:WheelPicker:<version>'
 }
 ```
@@ -52,9 +58,6 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'com.github.gzu-liyujiang.AndroidPicker:Common:<version>'
-    implementation 'com.github.gzu-liyujiang.AndroidPicker:WheelView:<version>'
-    implementation 'com.github.gzu-liyujiang.AndroidPicker:WheelPicker:<version>'
     implementation 'com.github.gzu-liyujiang.AndroidPicker:AddressPicker:<version>'
 }
 ```
@@ -63,7 +66,6 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'com.github.gzu-liyujiang.AndroidPicker:Common:<version>'
     implementation 'com.github.gzu-liyujiang.AndroidPicker:FilePicker:<version>'
 }
 ```
@@ -72,7 +74,6 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'com.github.gzu-liyujiang.AndroidPicker:Common:<version>'
     implementation 'com.github.gzu-liyujiang.AndroidPicker:ColorPicker:<version>'
 }
 ```
@@ -81,19 +82,15 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'com.github.gzu-liyujiang.AndroidPicker:Common:<version>'
     implementation 'com.github.gzu-liyujiang.AndroidPicker:CalendarPicker:<version>'
 }
 ```
 
-旧版本 **Support 稳定版本**：
+图片选择器：
 
 ```groovy
 dependencies {
-    implementation 'com.github.gzu-liyujiang.AndroidPicker:Common:1.5.6.20181018'
-    implementation 'com.github.gzu-liyujiang.AndroidPicker:WheelPicker:1.5.6.20181018'
-    implementation 'com.github.gzu-liyujiang.AndroidPicker:FilePicker:1.5.6.20181018'
-    implementation 'com.github.gzu-liyujiang.AndroidPicker:ColorPicker:1.5.6.20181018'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:ImagePicker:<version>'
 }
 ```
 
@@ -108,6 +105,17 @@ dependencies {
 }
 ```
 
+旧版本 **Support 稳定版本**：
+
+```groovy
+dependencies {
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:Common:1.5.6.20181018'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:WheelPicker:1.5.6.20181018'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:FilePicker:1.5.6.20181018'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:ColorPicker:1.5.6.20181018'
+}
+```
+
 代码同时托管在`GitHub`及`GitEE`，因此`3.x及以上版本`的依赖项也可以将`com.github.gzu-liyujiang`换成`com.gitee.li_yu_jiang`，即：
 
 ```groovy
@@ -118,6 +126,7 @@ dependencies {
     implementation 'com.gitee.li_yu_jiang.AndroidPicker:ColorPicker:<version>'
     implementation 'com.gitee.li_yu_jiang.AndroidPicker:FilePicker:<version>'
     implementation 'com.gitee.li_yu_jiang.AndroidPicker:CalendarPicker:<version>'
+    implementation 'com.gitee.li_yu_jiang.AndroidPicker:ImagePicker:<version>'
 ```
 
 ## 混淆规则
@@ -262,6 +271,7 @@ dependencies {
 - ![效果图](/screenshots/6.gif)
 - ![效果图](/screenshots/7.gif)
 - ![效果图](/screenshots/8.gif)
+- ![效果图](/screenshots/9.gif)
 
 ## 特别鸣谢
 
