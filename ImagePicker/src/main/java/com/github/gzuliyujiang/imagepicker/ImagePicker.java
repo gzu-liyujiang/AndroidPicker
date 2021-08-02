@@ -59,8 +59,10 @@ public class ImagePicker {
         this.cropEnabled = cropEnabled;
         this.callback = callback;
         if (HybridityUtils.isExplicitCameraPermissionRequired(fragment.requireActivity())) {
+            //noinspection deprecation
             fragment.requestPermissions(new String[]{Manifest.permission.CAMERA}, CropImageConsts.CAMERA_CAPTURE_PERMISSIONS_REQUEST_CODE);
         } else {
+            //noinspection deprecation
             fragment.startActivityForResult(HybridityUtils.getCameraIntent(fragment.requireActivity()), CropImageConsts.PICK_IMAGE_CHOOSER_REQUEST_CODE);
         }
     }
@@ -80,7 +82,27 @@ public class ImagePicker {
     public void startGallery(Fragment fragment, boolean cropEnabled, @NonNull PickCallback callback) {
         this.cropEnabled = cropEnabled;
         this.callback = callback;
+        //noinspection deprecation
         fragment.startActivityForResult(HybridityUtils.getGalleryIntent(), CropImageConsts.PICK_IMAGE_CHOOSER_REQUEST_CODE);
+    }
+
+    /**
+     * 启动文件选择器
+     */
+    public void startChooser(Activity activity, String mime, @NonNull PickCallback callback) {
+        this.cropEnabled = false;
+        this.callback = callback;
+        activity.startActivityForResult(HybridityUtils.getChooserIntent(mime), CropImageConsts.PICK_IMAGE_CHOOSER_REQUEST_CODE);
+    }
+
+    /**
+     * 启动文件选择器
+     */
+    public void startChooser(Fragment fragment, String mime, @NonNull PickCallback callback) {
+        this.cropEnabled = false;
+        this.callback = callback;
+        //noinspection deprecation
+        fragment.startActivityForResult(HybridityUtils.getChooserIntent(mime), CropImageConsts.PICK_IMAGE_CHOOSER_REQUEST_CODE);
     }
 
     /**
@@ -99,37 +121,41 @@ public class ImagePicker {
     }
 
     private void onActivityResultInner(Activity activity, Fragment fragment, int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK) {
-            Context context;
-            if (activity != null) {
-                context = activity;
-            } else {
-                context = fragment.getActivity();
+        if (resultCode != Activity.RESULT_OK) {
+            if (callback != null) {
+                callback.onCanceled();
             }
-
-            if (context != null && requestCode == CropImageConsts.PICK_IMAGE_CHOOSER_REQUEST_CODE) {
-                Uri pickImageUri = HybridityUtils.getPickImageResultUri(context, data);
-                // 检查读取文件权限
-                if (HybridityUtils.isReadExternalStoragePermissionsRequired(context, pickImageUri)) {
-                    if (activity != null) {
-                        ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                                CropImageConsts.PICK_IMAGE_PERMISSIONS_REQUEST_CODE);
-                    } else {
-                        fragment.requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                                CropImageConsts.PICK_IMAGE_PERMISSIONS_REQUEST_CODE);
-                    }
+            return;
+        }
+        Context context;
+        if (activity != null) {
+            context = activity;
+        } else {
+            context = fragment.getActivity();
+        }
+        if (context != null && requestCode == CropImageConsts.PICK_IMAGE_CHOOSER_REQUEST_CODE) {
+            Uri pickImageUri = HybridityUtils.getPickImageResultUri(context, data);
+            // 检查读取文件权限
+            if (HybridityUtils.isReadExternalStoragePermissionsRequired(context, pickImageUri)) {
+                if (activity != null) {
+                    ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            CropImageConsts.PICK_IMAGE_PERMISSIONS_REQUEST_CODE);
                 } else {
-                    // 选择图片回调
-                    if (activity != null) {
-                        handlePickImage(activity, null, pickImageUri);
-                    } else {
-                        handlePickImage(null, fragment, pickImageUri);
-                    }
+                    //noinspection deprecation
+                    fragment.requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            CropImageConsts.PICK_IMAGE_PERMISSIONS_REQUEST_CODE);
                 }
-            } else if (requestCode == CropImageConsts.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-                // 裁剪图片回调
-                handleCropResult(context, data);
+            } else {
+                // 选择图片回调
+                if (activity != null) {
+                    handlePickImage(activity, null, pickImageUri);
+                } else {
+                    handlePickImage(null, fragment, pickImageUri);
+                }
             }
+        } else if (requestCode == CropImageConsts.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            // 裁剪图片回调
+            handleCropResult(context, data);
         }
     }
 

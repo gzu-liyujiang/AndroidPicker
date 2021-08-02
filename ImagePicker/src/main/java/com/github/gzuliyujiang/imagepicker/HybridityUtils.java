@@ -31,9 +31,13 @@ final class HybridityUtils {
     }
 
     public static Intent getGalleryIntent() {
+        return getChooserIntent("image/*");
+    }
+
+    public static Intent getChooserIntent(String mime) {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("image/*");
+        intent.setType(mime);
         return intent;
     }
 

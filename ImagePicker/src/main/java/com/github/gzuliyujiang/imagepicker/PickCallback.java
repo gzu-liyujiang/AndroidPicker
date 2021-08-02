@@ -12,6 +12,13 @@ import androidx.annotation.Nullable;
 public abstract class PickCallback {
 
     /**
+     * 用户取消回调
+     */
+    public void onCanceled() {
+
+    }
+
+    /**
      * 用户拒绝授权回调
      */
     public void onPermissionDenied(String[] permissions, String message) {
