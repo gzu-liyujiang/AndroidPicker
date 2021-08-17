@@ -338,10 +338,14 @@ public class WheelView extends View implements Runnable {
             }
             if (item instanceof TextProvider) {
                 String text = ((TextProvider) item).provideText();
-                if (text.equals(value)) {
+                if (text.equals(value.toString())) {
                     found = true;
                     break;
                 }
+            }
+            if (item.toString().equals(value.toString())) {
+                found = true;
+                break;
             }
             position++;
         }
