@@ -16,6 +16,7 @@ package com.github.gzuliyujiang.calendarpicker;
 import android.app.Activity;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
@@ -39,6 +40,7 @@ import java.util.Locale;
 @SuppressWarnings("unused")
 public class CalendarPicker extends ConfirmPicker implements OnCalendarSelectListener {
     private CalendarView calendarView;
+    private FrameLayout bottomView;
     private CalendarAdapter calendarAdapter;
     private boolean rangePick = true;
     private Date minDate, maxDate;
@@ -61,6 +63,7 @@ public class CalendarPicker extends ConfirmPicker implements OnCalendarSelectLis
     protected View createBodyView(@NonNull Activity activity) {
         View view = View.inflate(activity, R.layout.calendar_picker, null);
         calendarView = view.findViewById(R.id.calendar_picker_body);
+        bottomView = view.findViewById(R.id.calendar_picker_bottom);
         return view;
     }
 
@@ -108,6 +111,9 @@ public class CalendarPicker extends ConfirmPicker implements OnCalendarSelectLis
         endDate = after;
     }
 
+    /**
+     * 设置日期范围选择回调
+     */
     public void setOnRangeDatePickListener(OnRangeDatePickListener onRangeDatePickListener) {
         this.rangePick = true;
         this.onRangeDatePickListener = onRangeDatePickListener;
@@ -116,6 +122,9 @@ public class CalendarPicker extends ConfirmPicker implements OnCalendarSelectLis
         }
     }
 
+    /**
+     * 设置单个日期选择回调
+     */
     public void setOnSingleDatePickListener(OnSingleDatePickListener onSingleDatePickListener) {
         this.rangePick = false;
         this.onSingleDatePickListener = onSingleDatePickListener;
@@ -124,6 +133,9 @@ public class CalendarPicker extends ConfirmPicker implements OnCalendarSelectLis
         }
     }
 
+    /**
+     * 设置日期范围
+     */
     public void setRangeDate(Date minDate, Date maxDate) {
         this.minDate = DateUtils.min(minDate, maxDate);
         this.maxDate = DateUtils.max(minDate, maxDate);
@@ -132,10 +144,16 @@ public class CalendarPicker extends ConfirmPicker implements OnCalendarSelectLis
         }
     }
 
+    /**
+     * 设置日期范围为当前年月之后的几个月
+     */
     public void setRangeDateOnFuture(int offsetMonth) {
+        if (offsetMonth < 0) {
+            offsetMonth = 0;
+        }
         minDate = new Date(System.currentTimeMillis());
         Calendar calendar = Calendar.getInstance(Locale.CHINA);
-        calendar.setTime(minDate);
+        calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.add(Calendar.MONTH, offsetMonth);
         calendar.set(Calendar.DAY_OF_MONTH, DateUtils.maxDaysOfMonth(calendar.getTime()));
         maxDate = calendar.getTime();
@@ -144,21 +162,45 @@ public class CalendarPicker extends ConfirmPicker implements OnCalendarSelectLis
         }
     }
 
+    /**
+     * 设置默认选择的日期时间戳（单个日期选择模式）
+     */
     public void setSelectedDate(long timeInMillis) {
-        this.selectDate = new Date(timeInMillis);
+        setSelectedDate(new Date(timeInMillis));
+    }
+
+    /**
+     * 设置默认选择的日期（单个日期选择模式）
+     */
+    public void setSelectedDate(Date date) {
+        this.selectDate = date;
         if (initialized) {
             refreshData();
         }
     }
 
+    /**
+     * 设置默认选择的日期时间戳（日期范围选择模式）
+     */
     public void setSelectedDate(long timeInMillisStart, long timeInMillisEnd) {
-        this.startDate = new Date(Math.min(timeInMillisStart, timeInMillisEnd));
-        this.endDate = new Date(Math.max(timeInMillisStart, timeInMillisEnd));
+        setSelectedDate(new Date(Math.min(timeInMillisStart, timeInMillisEnd)),
+                new Date(Math.max(timeInMillisStart, timeInMillisEnd)));
+    }
+
+    /**
+     * 设置默认选择的日期（日期范围选择模式）
+     */
+    public void setSelectedDate(Date startDate, Date endDate) {
+        this.startDate = startDate;
+        this.endDate = endDate;
         if (initialized) {
             refreshData();
         }
     }
 
+    /**
+     * 设置选择区间提示语
+     */
     public void setIntervalNotes(String noteFrom, String noteTo) {
         this.noteFrom = noteFrom;
         this.noteTo = noteTo;
@@ -178,6 +220,14 @@ public class CalendarPicker extends ConfirmPicker implements OnCalendarSelectLis
         calendarAdapter.setRange(minDate, maxDate, true, false);
         calendarAdapter.valid(minDate, maxDate);
         calendarAdapter.select(startDate, endDate);
+    }
+
+    public final CalendarView getCalendarView() {
+        return calendarView;
+    }
+
+    public final FrameLayout getBottomView() {
+        return bottomView;
     }
 
 }

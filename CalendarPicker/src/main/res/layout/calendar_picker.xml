@@ -17,17 +17,6 @@
     android:background="@android:color/white"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/calendar_picker_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
-        android:text="选择日期"
-        android:textColor="#666666"
-        android:textSize="16sp" />
-
     <com.github.gzuliyujiang.calendarpicker.calendar.view.CalendarView
         android:id="@+id/calendar_picker_body"
         android:layout_width="match_parent"

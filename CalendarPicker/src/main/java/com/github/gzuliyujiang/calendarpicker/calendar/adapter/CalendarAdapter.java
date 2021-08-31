@@ -13,6 +13,7 @@
 
 package com.github.gzuliyujiang.calendarpicker.calendar.adapter;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.ViewGroup;
 
@@ -27,11 +28,9 @@ import com.github.gzuliyujiang.calendarpicker.calendar.utils.DateUtils;
 import com.github.gzuliyujiang.calendarpicker.calendar.utils.TimeUtils;
 import com.github.gzuliyujiang.calendarpicker.calendar.view.MonthView;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * 日历适配器
@@ -41,10 +40,9 @@ import java.util.Locale;
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> implements OnMonthClickListener {
     private final String TAG = CalendarAdapter.class.getSimpleName();
     private final List<Date> dates = new ArrayList<>();
-    private Interval<Date> valid = new Interval<>();
-    private Interval<Date> select = new Interval<>();
-    private Interval<String> selectNote = new Interval<>();
-    //单选标记
+    private final Interval<Date> valid = new Interval<>();
+    private final Interval<Date> select = new Interval<>();
+    private final Interval<String> selectNote = new Interval<>();
     private boolean singleFlag = false;
 
     public CalendarAdapter() {
@@ -53,26 +51,15 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> im
     /**
      * 设置选择日期范围
      *
-     * @param sDate 开始时间
-     * @param eDate 结束时间
+     * @param startDate 开始时间
+     * @param endDate   结束时间
      */
-    public void setRange(Date sDate, Date eDate, boolean clean, boolean notify) {
-        List<Date> dates = DateUtils.fillMonths(sDate, eDate);
+    public void setRange(Date startDate, Date endDate, boolean clean, boolean notify) {
+        List<Date> dates = DateUtils.fillMonths(startDate, endDate);
         setRange(dates, clean, notify);
     }
 
-    public void setRange(String sTime, String eTime, String format, boolean clean, boolean notify) {
-        Date[] dates = new Date[2];
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.SIMPLIFIED_CHINESE);
-            dates[0] = sdf.parse(sTime);
-            dates[1] = sdf.parse(eTime);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        setRange(dates[0], dates[1], clean, notify);
-    }
-
+    @SuppressLint("NotifyDataSetChanged")
     public void setRange(List<Date> list, boolean clean, boolean notify) {
         if (clean) {
             dates.clear();
@@ -90,6 +77,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> im
         singleFlag = value;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void valid(String fromDay, String toDay) {
         try {
             Date from = TimeUtils.date(fromDay, TimeUtils.YY_MD);
@@ -106,6 +94,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> im
         notifyDataSetChanged();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void valid(Date from, Date to) {
         valid.left(from);
         valid.right(to);
@@ -129,6 +118,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> im
      * @param fromDay 开始时间
      * @param toDay   结束时间
      */
+    @SuppressLint("NotifyDataSetChanged")
     public void select(String fromDay, String toDay) {
         try {
             Date from = TimeUtils.date(fromDay, TimeUtils.YY_MD);
@@ -147,6 +137,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> im
      * @param from 开始日期
      * @param to   结束日期
      */
+    @SuppressLint("NotifyDataSetChanged")
     public void select(Date from, Date to) {
         select.left(from);
         select.right(to);

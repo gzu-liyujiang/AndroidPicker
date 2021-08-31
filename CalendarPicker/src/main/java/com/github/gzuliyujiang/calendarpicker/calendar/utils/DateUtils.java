@@ -25,10 +25,9 @@ import java.util.Locale;
 /**
  * Created by peng on 2017/8/2.
  */
-
 public class DateUtils {
 
-    private static Calendar calendar(Date date) {
+    public static Calendar calendar(Date date) {
         Calendar calendar = Calendar.getInstance(Locale.CHINA);
         calendar.setTime(date);
         return calendar;
@@ -121,13 +120,11 @@ public class DateUtils {
         if (null == sDate || null == eDate) {
             dates.add(new Date());
         } else {
-            int months = months(sDate, eDate);
             Calendar calendar = calendar(min(sDate, eDate));
+            int months = months(sDate, eDate);
             for (int i = 0; i <= months; i++) {
                 dates.add(calendar.getTime());
-                int month = calendar.get(Calendar.MONTH);
-                month += 1;
-                calendar.set(Calendar.MONTH, month);
+                calendar.add(Calendar.MONTH, 1);
             }
         }
         return dates;

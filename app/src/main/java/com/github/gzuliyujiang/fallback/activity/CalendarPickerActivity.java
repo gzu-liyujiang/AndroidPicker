@@ -31,7 +31,6 @@ import com.github.gzuliyujiang.fallback.R;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 /**
  * 日历日期选择器
@@ -49,12 +48,11 @@ public class CalendarPickerActivity extends FragmentActivity {
         CalendarAdapter calendarAdapter = calendarView.getAdapter();
         calendarAdapter.single(false);
         Date minDate = new Date(System.currentTimeMillis());
-        Calendar calendar = Calendar.getInstance(Locale.CHINA);
-        calendar.setTime(minDate);
+        Calendar calendar = DateUtils.calendar(minDate);
         calendar.add(Calendar.MONTH, 3);
-        calendar.set(Calendar.DAY_OF_MONTH, DateUtils.maxDaysOfMonth(calendar.getTime()));
         Date maxDate = calendar.getTime();
         calendarAdapter.setRange(minDate, maxDate, true, false);
+        calendarAdapter.valid(minDate, maxDate);
     }
 
     public void onCalendarDateRange(View view) {
