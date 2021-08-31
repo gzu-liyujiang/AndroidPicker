@@ -146,6 +146,24 @@ public class DatimeWheelLayout extends BaseWheelLayout {
         });
     }
 
+    @Override
+    public void onWheelScrolled(WheelView view, int offset) {
+        dateWheelLayout.onWheelScrolled(view, offset);
+        timeWheelLayout.onWheelScrolled(view, offset);
+    }
+
+    @Override
+    public void onWheelScrollStateChanged(WheelView view, int state) {
+        dateWheelLayout.onWheelScrollStateChanged(view, state);
+        timeWheelLayout.onWheelScrollStateChanged(view, state);
+    }
+
+    @Override
+    public void onWheelLoopFinished(WheelView view) {
+        dateWheelLayout.onWheelLoopFinished(view);
+        timeWheelLayout.onWheelLoopFinished(view);
+    }
+
     public void setDateMode(@DateMode int dateMode) {
         dateWheelLayout.setDateMode(dateMode);
     }
