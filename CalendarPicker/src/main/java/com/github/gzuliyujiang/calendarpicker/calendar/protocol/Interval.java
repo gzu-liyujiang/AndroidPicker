@@ -36,7 +36,7 @@ public class Interval<T> {
         return left;
     }
 
-    public Interval left(T left) {
+    public Interval<T> left(T left) {
         this.left = left;
         return this;
     }
@@ -53,7 +53,7 @@ public class Interval<T> {
         return right;
     }
 
-    public Interval right(T right) {
+    public Interval<T> right(T right) {
         this.right = right;
         return this;
     }

@@ -35,7 +35,6 @@ import java.util.Date;
  * 月份控件
  * Created by peng on 2017/8/2.
  */
-
 public class MonthView extends ViewGroup {
     private final DayView[] dayViews = new DayView[MonthEntity.MAX_DAYS_OF_MONTH];
     private final View[] lines = new View[MonthEntity.MAX_HORIZONTAL_LINES];
@@ -111,8 +110,8 @@ public class MonthView extends ViewGroup {
     private static class SplitLinesLayoutControl {
         private final int width;
         private final int height;
+        private final View[] view;
         private int count = 0;
-        private View[] view;
 
         SplitLinesLayoutControl(@NonNull View[] views) {
             this.view = views;
@@ -170,9 +169,8 @@ public class MonthView extends ViewGroup {
                             dayEntity.status(Status.BOUND_R).note(monthEntity.selectNote().right());
                         } else {
                             dayEntity.status(Status.RANGE);
-                            if (dayEntity.valueStatus() == Status.NORMAL) {
-                                dayEntity.valueStatus(Status.RANGE);
-                            }
+                            dayEntity.valueStatus(Status.RANGE);
+                            dayEntity.descStatus(Status.RANGE);
                         }
                     }
                 } else {

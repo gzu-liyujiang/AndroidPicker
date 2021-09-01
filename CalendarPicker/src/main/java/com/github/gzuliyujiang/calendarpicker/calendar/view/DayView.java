@@ -30,7 +30,6 @@ import com.github.gzuliyujiang.calendarpicker.calendar.protocol.DayEntity;
  * 日期控件
  * Created by peng on 2017/8/2.
  */
-
 public final class DayView extends LinearLayout {
     private TextView tvDesc;
     private TextView tvDay;
@@ -103,15 +102,17 @@ public final class DayView extends LinearLayout {
             case Status.RANGE:
                 tv.setTextColor(ContextCompat.getColor(getContext(), R.color.calendar_day_text_range_color));
                 break;
+            //强调
+            case Status.STRESS:
+                tv.setTextColor(ContextCompat.getColor(getContext(), R.color.calendar_day_text_stress_color));
+                break;
             //左边界
             case Status.BOUND_L:
             case Status.BOUND_M:
             case Status.BOUND_R:
                 tv.setTextColor(ContextCompat.getColor(getContext(), R.color.calendar_day_text_select_color));
                 break;
-            //强调
-            case Status.STRESS:
-                tv.setTextColor(ContextCompat.getColor(getContext(), R.color.calendar_day_text_stress_color));
+            default:
                 break;
         }
     }
@@ -134,8 +135,9 @@ public final class DayView extends LinearLayout {
                 setTextStatusColor(tvDay, entity.status());
                 setEnabled(false);
                 break;
-            //范围内
+            //范围内、强调
             case Status.RANGE:
+            case Status.STRESS:
                 setBackgroundColor(ContextCompat.getColor(getContext(), R.color.calendar_day_background_range_color));
                 setEnabled(true);
                 break;
@@ -160,10 +162,7 @@ public final class DayView extends LinearLayout {
                 tvDesc.setText(entity.note());
                 setBackgroundResource(R.drawable.calendar_shape_day_range_right);
                 break;
-            //强调
-            case Status.STRESS:
-                setBackgroundColor(ContextCompat.getColor(getContext(), R.color.calendar_day_background_range_color));
-                setEnabled(true);
+            default:
                 break;
         }
     }

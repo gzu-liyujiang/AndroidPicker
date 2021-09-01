@@ -26,7 +26,7 @@ public class MonthEntity {
     public static final int MAX_HORIZONTAL_LINES = 6;
     public static final int MAX_DAYS_OF_MONTH = 31;
     public static final String STR_TODAY = "今天";
-
+    private final static List<MonthEntity> pools = new ArrayList<>();
     private Date date;
     private Interval<Date> valid;
     private Interval<Date> select;
@@ -80,8 +80,6 @@ public class MonthEntity {
         this.selectNote = selectNote;
         return this;
     }
-
-    private final static List<MonthEntity> pools = new ArrayList<>();
 
     public static MonthEntity obtain(Interval<Date> valid, Interval<Date> select) {
         MonthEntity entity = pools.size() == 0 ? new MonthEntity() : pools.remove(0);

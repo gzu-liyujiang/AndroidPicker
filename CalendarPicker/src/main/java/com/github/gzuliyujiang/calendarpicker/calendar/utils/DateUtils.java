@@ -27,6 +27,10 @@ import java.util.Locale;
  */
 public class DateUtils {
 
+    public static Calendar calendar(long timeInMillis) {
+        return calendar(new Date(timeInMillis));
+    }
+
     public static Calendar calendar(Date date) {
         Calendar calendar = Calendar.getInstance(Locale.CHINA);
         calendar.setTime(date);

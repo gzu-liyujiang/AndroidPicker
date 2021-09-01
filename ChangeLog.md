@@ -1,5 +1,8 @@
 # 更新日志
 
+-
+日历日期选择器默认选中项设置优化，参阅 [CSDN#comments_18122565](https://blog.csdn.net/waplyj/article/details/117857191#comments_18122565)；
+
 ## 3.1.1 - 2021.08.31
 
 - 图片选择器增加自定义文件类型选择及取消回调；
@@ -11,8 +14,7 @@
 
 - 新增图片选择器（相机+相册+裁剪），可用于头像选择裁剪；
 - 修复个别已知的可能的异常；
--
-改进12小时制的上下午选择，参阅 [252#issuecomment-888115423](https://github.com/gzu-liyujiang/AndroidPicker/issues/252#issuecomment-888115423)；
+- 改进12小时制的上下午选择，参阅 [252#issuecomment-888115423](https://github.com/gzu-liyujiang/AndroidPicker/issues/252#issuecomment-888115423)；
 - 民族选择器支持按民族代码、民族中文名及罗马拼写设置默认值；
 
 ## 3.0.8 - 2021.07.21

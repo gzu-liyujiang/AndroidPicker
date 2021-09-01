@@ -45,9 +45,9 @@ import java.util.Map;
  * 日历控件
  * Created by peng on 2017/8/3.
  */
-
 public class CalendarView extends LinearLayout {
     private final CalendarAdapter calendarAdapter = new CalendarAdapter();
+    private final GridView weekView;
     private final RecyclerView bodyView;
     private final LinearLayoutManager mLayoutManager;
 
@@ -63,6 +63,7 @@ public class CalendarView extends LinearLayout {
         super(context, attrs, defStyleAttr);
         setOrientation(VERTICAL);
         inflate(context, R.layout.calendar_body, this);
+        weekView = findViewById(R.id.calendar_body_week);
         //初始化星期标头
         initWeekGridView(context);
         //月份列表
@@ -86,14 +87,25 @@ public class CalendarView extends LinearLayout {
             weeks.add(map);
         }
         ListAdapter adapter = new SimpleAdapter(context, weeks, R.layout.calendar_week_item, from, to);
-        GridView weekView = findViewById(R.id.calendar_body_week);
         weekView.setNumColumns(adapter.getCount());
         weekView.setAdapter(adapter);
         weekView.setSelector(new ColorDrawable(Color.TRANSPARENT));
     }
 
-    public LinearLayoutManager getLayoutManager() {
+    public final GridView getWeekView() {
+        return weekView;
+    }
+
+    public final RecyclerView getBodyView() {
+        return bodyView;
+    }
+
+    public final LinearLayoutManager getLayoutManager() {
         return mLayoutManager;
+    }
+
+    public final CalendarAdapter getAdapter() {
+        return calendarAdapter;
     }
 
     public void initDecoration(RecyclerView bodyView) {
@@ -116,23 +128,10 @@ public class CalendarView extends LinearLayout {
                 //字体颜色
                 .setTypeface(Typeface.defaultFromStyle(Typeface.BOLD)) //加粗
                 .setGroupTextSize((int) getResources().getDimension(R.dimen.calendar_decoration_text_size))   //字体大小
-                .setTextSideMargin(dp2px(10))  //边距   靠左时为左边距  靠右时为右边距
+                .setTextSideMargin((int) ((float) 10 * getResources().getDisplayMetrics().density + 0.5f))  //边距   靠左时为左边距  靠右时为右边距
                 .setTextAlign(Paint.Align.CENTER)                      //居中显示
                 .build();
         bodyView.addItemDecoration(decoration);
-    }
-
-    public CalendarAdapter getAdapter() {
-        return calendarAdapter;
-    }
-
-    public RecyclerView bodyView() {
-        return bodyView;
-    }
-
-    private int dp2px(float dpValue) {
-        final float scale = getResources().getDisplayMetrics().density;
-        return (int) (dpValue * scale + 0.5f);
     }
 
 }

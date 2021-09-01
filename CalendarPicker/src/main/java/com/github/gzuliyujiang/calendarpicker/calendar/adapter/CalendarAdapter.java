@@ -25,7 +25,6 @@ import com.github.gzuliyujiang.calendarpicker.calendar.protocol.MonthEntity;
 import com.github.gzuliyujiang.calendarpicker.calendar.protocol.OnCalendarSelectListener;
 import com.github.gzuliyujiang.calendarpicker.calendar.protocol.OnMonthClickListener;
 import com.github.gzuliyujiang.calendarpicker.calendar.utils.DateUtils;
-import com.github.gzuliyujiang.calendarpicker.calendar.utils.TimeUtils;
 import com.github.gzuliyujiang.calendarpicker.calendar.view.MonthView;
 
 import java.util.ArrayList;
@@ -36,7 +35,6 @@ import java.util.List;
  * 日历适配器
  * Created by peng on 2017/8/3.
  */
-
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> implements OnMonthClickListener {
     private final String TAG = CalendarAdapter.class.getSimpleName();
     private final List<Date> dates = new ArrayList<>();
@@ -44,9 +42,6 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> im
     private final Interval<Date> select = new Interval<>();
     private final Interval<String> selectNote = new Interval<>();
     private boolean singleFlag = false;
-
-    public CalendarAdapter() {
-    }
 
     /**
      * 设置选择日期范围
@@ -72,26 +67,8 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> im
         }
     }
 
-    //是否选择单个日期
     public void single(boolean value) {
         singleFlag = value;
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    public void valid(String fromDay, String toDay) {
-        try {
-            Date from = TimeUtils.date(fromDay, TimeUtils.YY_MD);
-            valid.left(from);
-        } catch (Exception e) {
-            valid.left(null);
-        }
-        try {
-            Date to = TimeUtils.date(toDay, TimeUtils.YY_MD);
-            valid.right(to);
-        } catch (Exception e) {
-            valid.right(null);
-        }
-        notifyDataSetChanged();
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -115,20 +92,11 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> im
     /**
      * 设置选择范围
      *
-     * @param fromDay 开始时间
-     * @param toDay   结束时间
+     * @param fromInMillis 开始日期
+     * @param toInMillis   结束日期
      */
-    @SuppressLint("NotifyDataSetChanged")
-    public void select(String fromDay, String toDay) {
-        try {
-            Date from = TimeUtils.date(fromDay, TimeUtils.YY_MD);
-            Date to = TimeUtils.date(toDay, TimeUtils.YY_MD);
-            select(from, to);
-        } catch (Exception e) {
-            select.left(null);
-            select.right(null);
-            notifyDataSetChanged();
-        }
+    public void select(long fromInMillis, long toInMillis) {
+        select(new Date(fromInMillis), new Date(toInMillis));
     }
 
     /**
@@ -175,7 +143,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> im
         return dates.size();
     }
 
-    public int getDatePosition(Date date) {
+    public final int getDatePosition(Date date) {
         int position = -1;
         if (dates.size() > 1) {
             if (date.getTime() <= dates.get(0).getTime()) {

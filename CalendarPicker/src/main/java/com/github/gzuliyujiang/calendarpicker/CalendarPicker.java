@@ -20,6 +20,7 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.gzuliyujiang.basepicker.ConfirmPicker;
 import com.github.gzuliyujiang.calendarpicker.calendar.adapter.CalendarAdapter;
@@ -32,7 +33,7 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * 日历日期选择器
+ * 日历日期选择器，基于`https://github.com/oxsource/calendar`
  *
  * @author 贵州山野羡民（1032694760@qq.com）
  * @since 2019/4/30 13:36
@@ -216,10 +217,23 @@ public class CalendarPicker extends ConfirmPicker implements OnCalendarSelectLis
         calendarAdapter.single(!rangePick);
         if (!rangePick) {
             startDate = selectDate;
+            endDate = selectDate;
         }
         calendarAdapter.setRange(minDate, maxDate, true, false);
         calendarAdapter.valid(minDate, maxDate);
         calendarAdapter.select(startDate, endDate);
+        final Calendar startCalendar = DateUtils.calendar(startDate);
+        final RecyclerView bodyView = calendarView.getBodyView();
+        bodyView.post(new Runnable() {
+            @Override
+            public void run() {
+                int position = calendarAdapter.getDatePosition(startCalendar.getTime());
+                if (startCalendar.get(Calendar.DAY_OF_MONTH) > 15) {
+                    position++;
+                }
+                bodyView.scrollToPosition(Math.min(position, calendarAdapter.getItemCount() - 1));
+            }
+        });
     }
 
     public final CalendarView getCalendarView() {

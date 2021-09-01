@@ -23,8 +23,8 @@ import java.util.List;
  * 日期单元实体信息
  * Created by peng on 2017/8/4.
  */
-
 public class DayEntity {
+    private static final List<DayEntity> pools = new ArrayList<>();
     @Status
     private int status;
     private int value;
@@ -36,6 +36,7 @@ public class DayEntity {
     private String note;
 
     private DayEntity() {
+        super();
     }
 
     @Status
@@ -110,8 +111,6 @@ public class DayEntity {
             pools.add(this);
         }
     }
-
-    private static final List<DayEntity> pools = new ArrayList<>();
 
     public static DayEntity obtain(@Status int status, int value, String desc) {
         DayEntity entity = 0 == pools.size() ? new DayEntity() : pools.remove(0);
