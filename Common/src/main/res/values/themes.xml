@@ -13,7 +13,7 @@
 
 <resources>
 
-    <style name="PickerTheme" parent="Theme.MaterialComponents.Dialog">
+    <style name="PickerTheme" parent="@android:style/Theme.Dialog">
         <item name="android:windowAnimationStyle">@style/PickerAnimation</item>
         <item name="android:backgroundDimEnabled">false</item>
     </style>
