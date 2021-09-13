@@ -17,6 +17,7 @@ import android.app.Activity;
 
 import androidx.annotation.NonNull;
 
+import com.github.gzuliyujiang.fallback.R;
 import com.github.gzuliyujiang.wheelpicker.LinkagePicker;
 
 /**
@@ -26,7 +27,7 @@ import com.github.gzuliyujiang.wheelpicker.LinkagePicker;
 public class AntFortuneLikePicker extends LinkagePicker {
 
     public AntFortuneLikePicker(@NonNull Activity activity) {
-        super(activity);
+        super(activity, R.style.SheetDialog);
     }
 
     @Override

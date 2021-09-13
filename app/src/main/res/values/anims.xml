@@ -13,16 +13,14 @@
 
 <resources>
 
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="android:textAllCaps">false</item>
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="FadeAnimation">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
 
-    <style name="SheetDialog" parent="Theme.MaterialComponents.Dialog">
-        <item name="android:windowAnimationStyle">@style/SheetAnimation</item>
-        <item name="android:backgroundDimEnabled">false</item>
+    <style name="SheetAnimation">
+        <item name="android:windowEnterAnimation">@anim/sheet_enter</item>
+        <item name="android:windowExitAnimation">@anim/sheet_exit</item>
     </style>
 
 </resources>

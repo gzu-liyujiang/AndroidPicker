@@ -15,6 +15,9 @@ package com.github.gzuliyujiang.wheelpicker;
 
 import android.app.Activity;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.StyleRes;
+
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -40,6 +43,16 @@ public class ConstellationPicker extends OptionPicker {
 
     public ConstellationPicker(Activity activity) {
         this(activity, false);
+    }
+
+    public ConstellationPicker(@NonNull Activity activity, @StyleRes int themeResId) {
+        super(activity, themeResId);
+        this.includeUnlimited = false;
+    }
+
+    public ConstellationPicker(@NonNull Activity activity, @StyleRes int themeResId, boolean includeUnlimited) {
+        super(activity, themeResId);
+        this.includeUnlimited = includeUnlimited;
     }
 
     public ConstellationPicker(Activity activity, boolean includeUnlimited) {

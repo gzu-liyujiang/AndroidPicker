@@ -91,10 +91,10 @@ public class ImagePickerActivity extends FragmentActivity implements OnSelectLis
     public void onSelect(int position, String text) {
         switch (position) {
             case 0:
-                ImagePicker.getInstance().startCamera(this, false, pickCallback);
+                ImagePicker.getInstance().startCamera(this, true, pickCallback);
                 break;
             case 1:
-                ImagePicker.getInstance().startGallery(this, false, pickCallback);
+                ImagePicker.getInstance().startGallery(this, true, pickCallback);
                 break;
             default:
                 break;

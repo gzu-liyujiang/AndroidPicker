@@ -65,7 +65,7 @@ public class DateTimePickerActivity extends FragmentActivity implements OnDatePi
     }
 
     public void onYearMonthDayTime(View view) {
-        DatimePicker picker = new DatimePicker(this);
+        DatimePicker picker = new DatimePicker(this, R.style.SheetDialog);
         final DatimeWheelLayout wheelLayout = picker.getWheelLayout();
         picker.setOnDatimePickedListener(new OnDatimePickedListener() {
             @Override
@@ -84,7 +84,7 @@ public class DateTimePickerActivity extends FragmentActivity implements OnDatePi
     }
 
     public void onYearMonthDay(View view) {
-        DatePicker picker = new DatePicker(this);
+        DatePicker picker = new DatePicker(this, R.style.SheetDialog);
         picker.setOnDatePickedListener(this);
         picker.setBodyWidth(240);
         picker.setBackgroundColor(0xEEDDDDDD);
@@ -107,7 +107,7 @@ public class DateTimePickerActivity extends FragmentActivity implements OnDatePi
     }
 
     public void onYearMonth(View view) {
-        DatePicker picker = new DatePicker(this);
+        DatePicker picker = new DatePicker(this, R.style.SheetDialog);
         picker.setBodyWidth(240);
         picker.setOnDatePickedListener(this);
         picker.getWheelLayout().setDateMode(DateMode.YEAR_MONTH);
@@ -116,7 +116,7 @@ public class DateTimePickerActivity extends FragmentActivity implements OnDatePi
     }
 
     public void onMonthDay(View view) {
-        DatePicker picker = new DatePicker(this);
+        DatePicker picker = new DatePicker(this, R.style.SheetDialog);
         picker.setBodyWidth(200);
         picker.setOnDatePickedListener(this);
         picker.getWheelLayout().setDateMode(DateMode.MONTH_DAY);
@@ -125,7 +125,7 @@ public class DateTimePickerActivity extends FragmentActivity implements OnDatePi
     }
 
     public void onTime12(View view) {
-        TimePicker picker = new TimePicker(this);
+        TimePicker picker = new TimePicker(this, R.style.SheetDialog);
         picker.setBodyWidth(140);
         picker.setOnTimeMeridiemPickedListener(new OnTimeMeridiemPickedListener() {
             @Override
@@ -144,7 +144,7 @@ public class DateTimePickerActivity extends FragmentActivity implements OnDatePi
     }
 
     public void onTime24(View view) {
-        TimePicker picker = new TimePicker(this);
+        TimePicker picker = new TimePicker(this, R.style.SheetDialog);
         picker.setOnTimePickedListener(this);
         picker.getWheelLayout().setTimeMode(TimeMode.HOUR_24_HAS_SECOND);
         picker.getWheelLayout().setTimeFormatter(new UnitTimeFormatter());
@@ -153,7 +153,7 @@ public class DateTimePickerActivity extends FragmentActivity implements OnDatePi
     }
 
     public void onBirthday(View view) {
-        BirthdayPicker picker = new BirthdayPicker(this);
+        BirthdayPicker picker = new BirthdayPicker(this, R.style.SheetDialog);
         picker.setOnDatePickedListener(this);
         picker.setDefaultValue(1991, 11, 11);
         picker.show();

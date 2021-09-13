@@ -58,7 +58,7 @@ public class CalendarPickerActivity extends FragmentActivity {
     }
 
     public void onCalendarDateRange(View view) {
-        CalendarPicker picker = new CalendarPicker(this);
+        CalendarPicker picker = new CalendarPicker(this, R.style.SheetDialog);
         Date currentDate = new Date(System.currentTimeMillis());
         Calendar calendar1 = Calendar.getInstance(Locale.CHINA);
         calendar1.setTime(currentDate);
@@ -84,7 +84,7 @@ public class CalendarPickerActivity extends FragmentActivity {
     }
 
     public void onCalendarDateSingle(View view) {
-        CalendarPicker picker = new CalendarPicker(this);
+        CalendarPicker picker = new CalendarPicker(this, R.style.SheetDialog);
         picker.setRangeDateOnFuture(3);
         picker.setSelectedDate(System.currentTimeMillis());
         picker.setOnSingleDatePickListener(new OnSingleDatePickListener() {

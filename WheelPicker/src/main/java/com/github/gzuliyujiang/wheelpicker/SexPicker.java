@@ -15,6 +15,9 @@ package com.github.gzuliyujiang.wheelpicker;
 
 import android.app.Activity;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.StyleRes;
+
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -40,8 +43,18 @@ public class SexPicker extends OptionPicker {
         this(activity, false);
     }
 
+    public SexPicker(@NonNull Activity activity, @StyleRes int themeResId) {
+        super(activity, themeResId);
+        this.includeSecrecy = false;
+    }
+
     public SexPicker(Activity activity, boolean includeSecrecy) {
         super(activity);
+        this.includeSecrecy = includeSecrecy;
+    }
+
+    public SexPicker(@NonNull Activity activity, @StyleRes int themeResId, boolean includeSecrecy) {
+        super(activity, themeResId);
         this.includeSecrecy = includeSecrecy;
     }
 
