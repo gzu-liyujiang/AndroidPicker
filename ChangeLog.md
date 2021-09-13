@@ -2,7 +2,7 @@
 
 ## 3.1.2 - 2021.09.13
 
-- 修正联动选择器当第二三级数据为空时滑动一下会导致滑动失效问题，参阅 [issues#263](https://github.com/gzu-liyujiang/AndroidPicker/issues/263]；
+- 修正联动选择器当第二三级数据为空时滑动一下会导致滑动失效问题，参阅 [issues#263](https://github.com/gzu-liyujiang/AndroidPicker/issues/263)；
 - `Demo`选择器自定义弹窗样式示例；
 - 日历日期选择器默认选中项设置优化，参阅 [CSDN#comments_18122565](https://blog.csdn.net/waplyj/article/details/117857191#comments_18122565)；
 
