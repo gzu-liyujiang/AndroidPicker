@@ -77,7 +77,7 @@ public abstract class ConfirmPicker extends BottomDialog implements View.OnClick
 
     @Nullable
     protected View createHeaderView(@NonNull Activity activity) {
-        return View.inflate(activity, R.layout.confirm_picker_header, null);
+        return View.inflate(activity, R.layout.picker_confirm_header, null);
     }
 
     @Nullable

@@ -48,7 +48,7 @@ public class CustomAddressPicker extends BottomDialog implements AddressReceiver
     private OnAddressPickedListener onAddressPickedListener;
 
     public CustomAddressPicker(@NonNull Activity activity) {
-        super(activity, R.style.SheetDialog);
+        super(activity);
     }
 
     @NonNull

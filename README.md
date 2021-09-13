@@ -135,7 +135,11 @@ dependencies {
 
 ## 用法示例
 
-常见用法请参阅 [demo](/app)，高级用法请细读[源码](/WheelPicker)。代码是最好的老师，强烈建议拉取代码运行，尝试修改 demo 对比查看实际效果以便加深理解。
+常见用法请参阅 [demo](/app)，高级用法请细读[源码](/WheelPicker)，
+诸如可以在自己的项目里重写同名的`res/layout/picker_confirm_header.xml`来自定义个性化弹窗头部，
+重写同名的`assets/china_address.json`来自定义省市区数据，
+重写同名的`PickerAnimation`来自定义弹窗动画……。
+代码是最好的老师，强烈建议拉取代码运行，尝试修改 demo 对比查看实际效果以便加深理解。
 
 ### 在 Java 中
 
@@ -147,10 +151,9 @@ dependencies {
         data.add(new GoodsCategoryBean(4, "医疗保健"));
         data.add(new GoodsCategoryBean(5, "酒水饮料"));
         data.add(new GoodsCategoryBean(6, "图书音像"));
-        OptionPicker picker = new OptionPicker(this, R.style.SheetDialog);
+        OptionPicker picker = new OptionPicker(this);
+        picker.enableRoundCorner();
         picker.setBodyWidth(140);
-        picker.setBackgroundResource(R.drawable.shape_corner_top_white);
-        picker.getHeaderView().setPadding(0, (int) (getResources().getDisplayMetrics().density * 10), 0, 0);
         picker.getOkView().setTextColor(0xFFFF0000);
         picker.getTopLineView().setBackgroundColor(0xFFFF0000);
         picker.setOnOptionPickedListener(this);
@@ -161,7 +164,7 @@ dependencies {
 
 ```groovy
         DatePicker picker = new DatePicker(this);
-        picker.setOnDatePickedListener(this);
+        picker.enableRoundCorner();
         picker.setBodyWidth(240);
         picker.setBackgroundColor(0xEEDDDDDD);
         picker.getHeaderView().setBackgroundColor(0xFFCCCCCC);
@@ -180,11 +183,13 @@ dependencies {
         wheelLayout.getYearWheelView().setBackgroundColor(0x90CCCCCC);
         wheelLayout.getMonthWheelView().setBackgroundColor(0x90CCCCCC);
         wheelLayout.getDayWheelView().setBackgroundColor(0x90CCCCCC);
+        picker.setOnDatePickedListener(this);
         picker.show();
 ```
 
 ```groovy
-        AddressPicker picker = new AddressPicker(this, R.style.SheetDialog);
+        AddressPicker picker = new AddressPicker(this);
+        picker.enableRoundCorner();
         picker.setAddressMode("city.json", AddressMode.PROVINCE_CITY_COUNTY,
                 new AddressJsonParser.Builder()
                        .provinceCodeField("code")
@@ -276,7 +281,6 @@ dependencies {
 
         </LinearLayout>
 ```
-
 ## 效果预览
 
 以下图片显示的效果可能已修改过，实际效果请运行 demo 查看。

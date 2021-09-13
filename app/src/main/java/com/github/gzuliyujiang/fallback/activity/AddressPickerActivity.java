@@ -52,7 +52,8 @@ public class AddressPickerActivity extends FragmentActivity implements OnAddress
     }
 
     public void onProvinceCityCounty(View view) {
-        AddressPicker picker = new AddressPicker(this, R.style.SheetDialog);
+        AddressPicker picker = new AddressPicker(this);
+        picker.enableRoundCorner();
         picker.setAddressMode(AddressMode.PROVINCE_CITY_COUNTY);
         picker.setDefaultValue("贵州省", "贵阳市", "观山湖区");
         picker.setOnAddressPickedListener(this);
@@ -60,7 +61,8 @@ public class AddressPickerActivity extends FragmentActivity implements OnAddress
     }
 
     public void onProvinceCity(View view) {
-        AddressPicker picker = new AddressPicker(this, R.style.SheetDialog);
+        AddressPicker picker = new AddressPicker(this);
+        picker.enableRoundCorner();
         picker.setAddressMode(AddressMode.PROVINCE_CITY);
         picker.setDefaultValue("520000", "520100", "520115");
         picker.setOnAddressPickedListener(this);
@@ -68,7 +70,8 @@ public class AddressPickerActivity extends FragmentActivity implements OnAddress
     }
 
     public void onCityCounty(View view) {
-        AddressPicker picker = new AddressPicker(this, R.style.SheetDialog);
+        AddressPicker picker = new AddressPicker(this);
+        picker.enableRoundCorner();
         picker.setAddressMode(AddressMode.CITY_COUNTY);
         picker.setDefaultValue("贵州省", "毕节市", "纳雍县");
         picker.setOnAddressPickedListener(this);
@@ -83,7 +86,8 @@ public class AddressPickerActivity extends FragmentActivity implements OnAddress
     }
 
     public void onCustomDataByJson(View view) {
-        AddressPicker picker = new AddressPicker(this, R.style.SheetDialog);
+        AddressPicker picker = new AddressPicker(this);
+        picker.enableRoundCorner();
         picker.setAddressMode("city.json", AddressMode.PROVINCE_CITY_COUNTY,
                 new AddressJsonParser.Builder()
                         .provinceCodeField("code")
@@ -101,7 +105,8 @@ public class AddressPickerActivity extends FragmentActivity implements OnAddress
     }
 
     public void onCustomDataByText(View view) {
-        AddressPicker picker = new AddressPicker(this, R.style.SheetDialog);
+        AddressPicker picker = new AddressPicker(this);
+        picker.enableRoundCorner();
         picker.setAddressLoader(new TextAddressLoader(this), new TextAddressParser());
         picker.setDefaultValue("贵州省", "毕节地区", "纳雍县");
         picker.setOnAddressPickedListener(this);

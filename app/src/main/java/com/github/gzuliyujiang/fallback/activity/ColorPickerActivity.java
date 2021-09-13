@@ -54,7 +54,8 @@ public class ColorPickerActivity extends FragmentActivity implements View.OnClic
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.color_picker_button) {
-            ColorPicker picker = new ColorPicker(this, R.style.SheetDialog);
+            ColorPicker picker = new ColorPicker(this);
+            picker.enableRoundCorner();
             picker.setInitColor(0xFF7FF7FF);
             picker.setOnColorPickListener(new OnColorPickedListener() {
                 @Override

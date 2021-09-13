@@ -13,11 +13,9 @@
 
 <resources>
 
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="android:textAllCaps">false</item>
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="PickerTheme" parent="Theme.MaterialComponents.Dialog">
+        <item name="android:windowAnimationStyle">@style/PickerAnimation</item>
+        <item name="android:backgroundDimEnabled">false</item>
     </style>
 
 </resources>

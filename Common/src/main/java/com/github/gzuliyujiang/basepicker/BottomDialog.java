@@ -57,7 +57,7 @@ public abstract class BottomDialog extends Dialog implements DialogInterface.OnS
     protected View maskView;
 
     public BottomDialog(@NonNull Activity activity) {
-        super(activity);
+        super(activity, R.style.PickerTheme);
         init(activity);
     }
 
@@ -182,6 +182,10 @@ public abstract class BottomDialog extends Dialog implements DialogInterface.OnS
 
     public final View getContentView() {
         return contentView;
+    }
+
+    public final void enableRoundCorner() {
+        setBackgroundResource(R.drawable.picker_corner_bg);
     }
 
     public final void setBackground(Drawable background) {

@@ -63,7 +63,8 @@ public class SinglePickerActivity extends FragmentActivity implements OnNumberPi
     }
 
     public void onInteger(View view) {
-        NumberPicker picker = new NumberPicker(this, R.style.SheetDialog);
+        NumberPicker picker = new NumberPicker(this);
+        picker.enableRoundCorner();
         picker.setOnNumberPickedListener(this);
         picker.setFormatter(new WheelFormatter() {
             @Override
@@ -78,7 +79,8 @@ public class SinglePickerActivity extends FragmentActivity implements OnNumberPi
     }
 
     public void onFloat(View view) {
-        NumberPicker picker = new NumberPicker(this, R.style.SheetDialog);
+        NumberPicker picker = new NumberPicker(this);
+        picker.enableRoundCorner();
         picker.setBodyWidth(120);
         picker.setOnNumberPickedListener(this);
         picker.setFormatter(new WheelFormatter() {
@@ -96,7 +98,8 @@ public class SinglePickerActivity extends FragmentActivity implements OnNumberPi
     }
 
     public void onOptionText(View view) {
-        OptionPicker picker = new OptionPicker(this, R.style.SheetDialog);
+        OptionPicker picker = new OptionPicker(this);
+        picker.enableRoundCorner();
         picker.setBackgroundColor(true, 0xFFFFFFFF);
         picker.setData("测试", "很长很长很长很长很长很长很长很长很长很长很长很长很长很长");
         picker.setOnOptionPickedListener(this);
@@ -115,10 +118,9 @@ public class SinglePickerActivity extends FragmentActivity implements OnNumberPi
         data.add(new GoodsCategoryBean(4, "医疗保健"));
         data.add(new GoodsCategoryBean(5, "酒水饮料"));
         data.add(new GoodsCategoryBean(6, "图书音像"));
-        OptionPicker picker = new OptionPicker(this, R.style.SheetDialog);
+        OptionPicker picker = new OptionPicker(this);
+        picker.enableRoundCorner();
         picker.setBodyWidth(140);
-        picker.setBackgroundResource(R.drawable.shape_corner_top_white);
-        picker.getHeaderView().setPadding(0, (int) (getResources().getDisplayMetrics().density * 10), 0, 0);
         picker.getOkView().setTextColor(0xFFFF0000);
         picker.getTopLineView().setBackgroundColor(0xFFFF0000);
         picker.setOnOptionPickedListener(this);
@@ -128,7 +130,8 @@ public class SinglePickerActivity extends FragmentActivity implements OnNumberPi
     }
 
     public void onSex(View view) {
-        SexPicker picker = new SexPicker(this, R.style.SheetDialog, true);
+        SexPicker picker = new SexPicker(this, true);
+        picker.enableRoundCorner();
         picker.setBodyWidth(140);
         picker.setDefaultValue("女");
         picker.setOnOptionPickedListener(this);
@@ -136,7 +139,8 @@ public class SinglePickerActivity extends FragmentActivity implements OnNumberPi
     }
 
     public void onEthnic(View view) {
-        EthnicPicker picker = new EthnicPicker(this, R.style.SheetDialog);
+        EthnicPicker picker = new EthnicPicker(this);
+        picker.enableRoundCorner();
         picker.setBodyWidth(140);
         picker.setEthnicSpec(EthnicSpec.SEVENTH_NATIONAL_CENSUS);
         picker.setDefaultValueByCode("97");
@@ -147,7 +151,8 @@ public class SinglePickerActivity extends FragmentActivity implements OnNumberPi
     }
 
     public void onConstellation(View view) {
-        ConstellationPicker picker = new ConstellationPicker(this, R.style.SheetDialog, true);
+        ConstellationPicker picker = new ConstellationPicker(this, true);
+        picker.enableRoundCorner();
         picker.setBodyWidth(140);
         picker.setDefaultValue("射手座");
         picker.setOnOptionPickedListener(this);
@@ -155,7 +160,8 @@ public class SinglePickerActivity extends FragmentActivity implements OnNumberPi
     }
 
     public void onPhoneCode(View view) {
-        PhoneCodePicker picker = new PhoneCodePicker(this, R.style.SheetDialog);
+        PhoneCodePicker picker = new PhoneCodePicker(this);
+        picker.enableRoundCorner();
         picker.setBodyWidth(140);
         picker.setDefaultPosition(2);
         picker.setOnOptionPickedListener(this);

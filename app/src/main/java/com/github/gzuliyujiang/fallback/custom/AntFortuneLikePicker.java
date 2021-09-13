@@ -17,7 +17,6 @@ import android.app.Activity;
 
 import androidx.annotation.NonNull;
 
-import com.github.gzuliyujiang.fallback.R;
 import com.github.gzuliyujiang.wheelpicker.LinkagePicker;
 
 /**
@@ -27,12 +26,13 @@ import com.github.gzuliyujiang.wheelpicker.LinkagePicker;
 public class AntFortuneLikePicker extends LinkagePicker {
 
     public AntFortuneLikePicker(@NonNull Activity activity) {
-        super(activity, R.style.SheetDialog);
+        super(activity);
     }
 
     @Override
     protected void initData() {
         super.initData();
+        enableRoundCorner();
         cancelView.setText("取消");
         cancelView.setTextColor(0xFF3355E5);
         okView.setTextColor(0xFF3355E5);

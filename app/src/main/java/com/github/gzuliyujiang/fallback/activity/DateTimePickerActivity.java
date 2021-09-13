@@ -65,7 +65,8 @@ public class DateTimePickerActivity extends FragmentActivity implements OnDatePi
     }
 
     public void onYearMonthDayTime(View view) {
-        DatimePicker picker = new DatimePicker(this, R.style.SheetDialog);
+        DatimePicker picker = new DatimePicker(this);
+        picker.enableRoundCorner();
         final DatimeWheelLayout wheelLayout = picker.getWheelLayout();
         picker.setOnDatimePickedListener(new OnDatimePickedListener() {
             @Override
@@ -84,8 +85,8 @@ public class DateTimePickerActivity extends FragmentActivity implements OnDatePi
     }
 
     public void onYearMonthDay(View view) {
-        DatePicker picker = new DatePicker(this, R.style.SheetDialog);
-        picker.setOnDatePickedListener(this);
+        DatePicker picker = new DatePicker(this);
+        picker.enableRoundCorner();
         picker.setBodyWidth(240);
         picker.setBackgroundColor(0xEEDDDDDD);
         picker.getHeaderView().setBackgroundColor(0xFFCCCCCC);
@@ -103,30 +104,39 @@ public class DateTimePickerActivity extends FragmentActivity implements OnDatePi
         wheelLayout.getYearWheelView().setBackgroundColor(0x90CCCCCC);
         wheelLayout.getMonthWheelView().setBackgroundColor(0x90CCCCCC);
         wheelLayout.getDayWheelView().setBackgroundColor(0x90CCCCCC);
+        picker.setOnDatePickedListener(this);
         picker.show();
     }
 
     public void onYearMonth(View view) {
-        DatePicker picker = new DatePicker(this, R.style.SheetDialog);
+        DatePicker picker = new DatePicker(this);
+        picker.enableRoundCorner();
         picker.setBodyWidth(240);
-        picker.setOnDatePickedListener(this);
         picker.getWheelLayout().setDateMode(DateMode.YEAR_MONTH);
         picker.getWheelLayout().setDateLabel("年", "月", "");
+        picker.setOnDatePickedListener(this);
         picker.show();
     }
 
     public void onMonthDay(View view) {
-        DatePicker picker = new DatePicker(this, R.style.SheetDialog);
+        DatePicker picker = new DatePicker(this);
+        picker.enableRoundCorner();
         picker.setBodyWidth(200);
-        picker.setOnDatePickedListener(this);
         picker.getWheelLayout().setDateMode(DateMode.MONTH_DAY);
         picker.getWheelLayout().setDateFormatter(new UnitDateFormatter());
+        picker.setOnDatePickedListener(this);
         picker.show();
     }
 
     public void onTime12(View view) {
-        TimePicker picker = new TimePicker(this, R.style.SheetDialog);
+        TimePicker picker = new TimePicker(this);
+        picker.enableRoundCorner();
         picker.setBodyWidth(140);
+        TimeWheelLayout wheelLayout = picker.getWheelLayout();
+        wheelLayout.setRange(TimeEntity.target(1, 0, 0), TimeEntity.target(12, 59, 59));
+        wheelLayout.setTimeMode(TimeMode.HOUR_12_NO_SECOND);
+        wheelLayout.setTimeLabel(":", " ", "");
+        wheelLayout.setDefaultValue(TimeEntity.now());
         picker.setOnTimeMeridiemPickedListener(new OnTimeMeridiemPickedListener() {
             @Override
             public void onTimePicked(int hour, int minute, int second, boolean isAnteMeridiem) {
@@ -135,27 +145,24 @@ public class DateTimePickerActivity extends FragmentActivity implements OnDatePi
                 Toast.makeText(getApplication(), text, Toast.LENGTH_SHORT).show();
             }
         });
-        TimeWheelLayout wheelLayout = picker.getWheelLayout();
-        wheelLayout.setRange(TimeEntity.target(1, 0, 0), TimeEntity.target(12, 59, 59));
-        wheelLayout.setTimeMode(TimeMode.HOUR_12_NO_SECOND);
-        wheelLayout.setTimeLabel(":", " ", "");
-        wheelLayout.setDefaultValue(TimeEntity.now());
         picker.show();
     }
 
     public void onTime24(View view) {
-        TimePicker picker = new TimePicker(this, R.style.SheetDialog);
-        picker.setOnTimePickedListener(this);
+        TimePicker picker = new TimePicker(this);
+        picker.enableRoundCorner();
         picker.getWheelLayout().setTimeMode(TimeMode.HOUR_24_HAS_SECOND);
         picker.getWheelLayout().setTimeFormatter(new UnitTimeFormatter());
         picker.getWheelLayout().setDefaultValue(TimeEntity.now());
+        picker.setOnTimePickedListener(this);
         picker.show();
     }
 
     public void onBirthday(View view) {
-        BirthdayPicker picker = new BirthdayPicker(this, R.style.SheetDialog);
-        picker.setOnDatePickedListener(this);
+        BirthdayPicker picker = new BirthdayPicker(this);
+        picker.enableRoundCorner();
         picker.setDefaultValue(1991, 11, 11);
+        picker.setOnDatePickedListener(this);
         picker.show();
     }
 

@@ -49,7 +49,8 @@ public class LinkagePickerActivity extends FragmentActivity implements OnCarNumb
     }
 
     public void onCarNumber(View view) {
-        CarNumberPicker picker = new CarNumberPicker(this, R.style.SheetDialog);
+        CarNumberPicker picker = new CarNumberPicker(this);
+        picker.enableRoundCorner();
         picker.setBodyWidth(90);
         picker.setOnCarNumberPickedListener(this);
         picker.show();
