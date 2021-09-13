@@ -1040,6 +1040,9 @@ public class WheelView extends View implements Runnable {
         }
         int itemCount = getItemCount();
         if (itemCount == 0) {
+            if (null != onWheelChangedListener) {
+                onWheelChangedListener.onWheelScrollStateChanged(this, SCROLL_STATE_IDLE);
+            }
             return;
         }
         if (scroller.isFinished() && !isForceFinishScroll) {
