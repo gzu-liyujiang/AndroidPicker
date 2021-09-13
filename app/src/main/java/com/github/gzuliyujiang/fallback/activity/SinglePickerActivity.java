@@ -118,8 +118,9 @@ public class SinglePickerActivity extends FragmentActivity implements OnNumberPi
         OptionPicker picker = new OptionPicker(this, R.style.SheetDialog);
         picker.setBodyWidth(140);
         picker.setBackgroundResource(R.drawable.shape_corner_top_white);
-        picker.getContentView().setPadding(0, (int) (getResources().getDisplayMetrics().density * 10), 0, 0);
+        picker.getHeaderView().setPadding(0, (int) (getResources().getDisplayMetrics().density * 10), 0, 0);
         picker.getOkView().setTextColor(0xFFFF0000);
+        picker.getTopLineView().setBackgroundColor(0xFFFF0000);
         picker.setOnOptionPickedListener(this);
         picker.setData(data);
         picker.setDefaultPosition(2);

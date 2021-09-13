@@ -140,14 +140,22 @@ dependencies {
 ### 在 Java 中
 
 ```groovy
-        OptionPicker picker = new OptionPicker(this);
-        picker.setBackgroundColor(true, 0xFFFFFFFF);
-        picker.setData("测试", "很长很长很长很长很长很长很长很长很长很长很长很长很长很长");
+        List<GoodsCategoryBean> data = new ArrayList<>();
+        data.add(new GoodsCategoryBean(1, "食品生鲜"));
+        data.add(new GoodsCategoryBean(2, "家用电器"));
+        data.add(new GoodsCategoryBean(3, "家居生活"));
+        data.add(new GoodsCategoryBean(4, "医疗保健"));
+        data.add(new GoodsCategoryBean(5, "酒水饮料"));
+        data.add(new GoodsCategoryBean(6, "图书音像"));
+        OptionPicker picker = new OptionPicker(this, R.style.SheetDialog);
+        picker.setBodyWidth(140);
+        picker.setBackgroundResource(R.drawable.shape_corner_top_white);
+        picker.getHeaderView().setPadding(0, (int) (getResources().getDisplayMetrics().density * 10), 0, 0);
+        picker.getOkView().setTextColor(0xFFFF0000);
+        picker.getTopLineView().setBackgroundColor(0xFFFF0000);
         picker.setOnOptionPickedListener(this);
-        picker.getTitleView().setText("这是标题");
-        picker.getWheelView().setCyclicEnabled(true);
-        picker.getWheelView().setCurvedEnabled(true);
-        picker.getWheelView().setCurvedMaxAngle(60);
+        picker.setData(data);
+        picker.setDefaultPosition(2);
         picker.show();
 ```
 
@@ -176,9 +184,19 @@ dependencies {
 ```
 
 ```groovy
-        AddressPicker picker = new AddressPicker(this);
-        picker.setAddressMode(AddressMode.PROVINCE_CITY_COUNTY);
-        picker.setDefaultValue("贵州省", "贵阳市", "观山湖区");
+        AddressPicker picker = new AddressPicker(this, R.style.SheetDialog);
+        picker.setAddressMode("city.json", AddressMode.PROVINCE_CITY_COUNTY,
+                new AddressJsonParser.Builder()
+                       .provinceCodeField("code")
+                        .provinceNameField("name")
+                        .provinceChildField("city")
+                        .cityCodeField("code")
+                        .cityNameField("name")
+                        .cityChildField("area")
+                        .countyCodeField("code")
+                        .countyNameField("name")
+                        .build());
+        picker.setDefaultValue("贵州省", "毕节地区", "纳雍县");
         picker.setOnAddressPickedListener(this);
         picker.show();
 ```
