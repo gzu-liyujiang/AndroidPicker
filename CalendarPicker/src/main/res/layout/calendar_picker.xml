@@ -21,7 +21,8 @@
         android:id="@+id/calendar_picker_body"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1.0" />
+        android:layout_weight="1.0"
+        android:padding="10dp" />
 
     <FrameLayout
         android:id="@+id/calendar_picker_bottom"

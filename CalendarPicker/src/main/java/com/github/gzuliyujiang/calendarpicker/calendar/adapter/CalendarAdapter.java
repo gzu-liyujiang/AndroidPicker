@@ -134,11 +134,6 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> im
     }
 
     @Override
-    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
-        super.onDetachedFromRecyclerView(recyclerView);
-    }
-
-    @Override
     public int getItemCount() {
         return dates.size();
     }

@@ -20,7 +20,6 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.gzuliyujiang.basepicker.ConfirmPicker;
 import com.github.gzuliyujiang.calendarpicker.calendar.adapter.CalendarAdapter;
@@ -222,16 +221,23 @@ public class CalendarPicker extends ConfirmPicker implements OnCalendarSelectLis
         calendarAdapter.setRange(minDate, maxDate, true, false);
         calendarAdapter.valid(minDate, maxDate);
         calendarAdapter.select(startDate, endDate);
-        final Calendar startCalendar = DateUtils.calendar(startDate);
-        final RecyclerView bodyView = calendarView.getBodyView();
-        bodyView.post(new Runnable() {
+        scrollToSelectedPosition();
+    }
+
+    private void scrollToSelectedPosition() {
+        calendarView.post(new Runnable() {
             @Override
             public void run() {
-                int position = calendarAdapter.getDatePosition(startCalendar.getTime());
-                if (startCalendar.get(Calendar.DAY_OF_MONTH) > 15) {
-                    position++;
+                final Calendar selectedCalendar = DateUtils.calendar(startDate.getTime() + (endDate.getTime() - startDate.getTime()) / 2);
+                int position = calendarAdapter.getDatePosition(selectedCalendar.getTime());
+                position = Math.max(position, 0);
+                position = Math.min(position, calendarAdapter.getItemCount() - 1);
+                if (position == 0) {
+                    calendarView.getBodyView().scrollToPosition(0);
+                    return;
                 }
-                bodyView.scrollToPosition(Math.min(position, calendarAdapter.getItemCount() - 1));
+                int offset = (int) (-60 * calendarView.getResources().getDisplayMetrics().density);
+                calendarView.getLayoutManager().scrollToPositionWithOffset(position, offset);
             }
         });
     }

@@ -36,7 +36,8 @@
         <com.github.gzuliyujiang.calendarpicker.calendar.view.CalendarView
             android:id="@+id/calendar_picker_body"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:padding="10dp" />
 
     </LinearLayout>
 
