@@ -160,7 +160,7 @@ public class MonthView extends ViewGroup {
                 if (validRange.contain(index)) {
                     if (null != selectRange && selectRange.contain(index)) {
                         if (index == selectRange.lBound()) {
-                            if (monthEntity.singleFlag()) {
+                            if (monthEntity.singleMode()) {
                                 dayEntity.status(Status.BOUND_M).note(monthEntity.selectNote().left());
                             } else {
                                 dayEntity.status(Status.BOUND_L).note(monthEntity.selectNote().left());

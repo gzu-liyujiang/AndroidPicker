@@ -18,14 +18,13 @@ import androidx.annotation.NonNull;
 import java.util.Date;
 
 /**
- * 日历选择监听器
- * Created by peng on 2017/8/4.
+ * @author 贵州山野羡民（1032694760@qq.com）
+ * @since 2021/9/16 10:38
  */
-@Deprecated
-public interface OnCalendarSelectListener {
+public interface OnCalendarSelectedListener {
 
-    void onSingleSelect(@NonNull Date date);
+    void onSingleSelected(@NonNull Date date);
 
-    void onDoubleSelect(@NonNull Date before, @NonNull Date after);
+    void onRangeSelected(@NonNull Date start, @NonNull Date end);
 
 }

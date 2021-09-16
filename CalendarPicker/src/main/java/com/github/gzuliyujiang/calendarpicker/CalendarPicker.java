@@ -24,6 +24,7 @@ import androidx.annotation.StyleRes;
 import com.github.gzuliyujiang.basepicker.ConfirmPicker;
 import com.github.gzuliyujiang.calendarpicker.calendar.adapter.CalendarAdapter;
 import com.github.gzuliyujiang.calendarpicker.calendar.protocol.OnCalendarSelectListener;
+import com.github.gzuliyujiang.calendarpicker.calendar.protocol.OnCalendarSelectedListener;
 import com.github.gzuliyujiang.calendarpicker.calendar.utils.DateUtils;
 import com.github.gzuliyujiang.calendarpicker.calendar.view.CalendarView;
 
@@ -37,12 +38,12 @@ import java.util.Locale;
  * @author 贵州山野羡民（1032694760@qq.com）
  * @since 2019/4/30 13:36
  */
-@SuppressWarnings("unused")
-public class CalendarPicker extends ConfirmPicker implements OnCalendarSelectListener {
+@SuppressWarnings({"unused", "deprecation"})
+public class CalendarPicker extends ConfirmPicker implements OnCalendarSelectedListener, OnCalendarSelectListener {
     private CalendarView calendarView;
     private FrameLayout bottomView;
     private CalendarAdapter calendarAdapter;
-    private boolean rangePick = true;
+    private boolean singleMode = false;
     private Date minDate, maxDate;
     private Date selectDate, startDate, endDate;
     private String noteFrom, noteTo;
@@ -73,7 +74,7 @@ public class CalendarPicker extends ConfirmPicker implements OnCalendarSelectLis
         initialized = true;
         setHeight((int) (calendarView.getResources().getDisplayMetrics().heightPixels * 0.6));
         calendarAdapter = calendarView.getAdapter();
-        calendarAdapter.setOnCalendarSelectListener(this);
+        calendarAdapter.setOnCalendarSelectedListener(this);
         refreshData();
     }
 
@@ -84,11 +85,11 @@ public class CalendarPicker extends ConfirmPicker implements OnCalendarSelectLis
 
     @Override
     protected void onOk() {
-        if (!rangePick && selectDate == null) {
+        if (singleMode && selectDate == null) {
             return;
         }
         boolean rangeNotSelected = startDate == null || endDate == null;
-        if (rangePick && rangeNotSelected) {
+        if (!singleMode && rangeNotSelected) {
             return;
         }
         dismiss();
@@ -98,6 +99,17 @@ public class CalendarPicker extends ConfirmPicker implements OnCalendarSelectLis
         if (onRangeDatePickListener != null) {
             onRangeDatePickListener.onRangeDatePicked(startDate, endDate);
         }
+    }
+
+    @Override
+    public void onSingleSelected(@NonNull Date date) {
+        selectDate = date;
+    }
+
+    @Override
+    public void onRangeSelected(@NonNull Date start, @NonNull Date end) {
+        startDate = start;
+        endDate = end;
     }
 
     @Override
@@ -115,7 +127,7 @@ public class CalendarPicker extends ConfirmPicker implements OnCalendarSelectLis
      * 设置日期范围选择回调
      */
     public void setOnRangeDatePickListener(OnRangeDatePickListener onRangeDatePickListener) {
-        this.rangePick = true;
+        this.singleMode = false;
         this.onRangeDatePickListener = onRangeDatePickListener;
         if (initialized) {
             refreshData();
@@ -126,7 +138,7 @@ public class CalendarPicker extends ConfirmPicker implements OnCalendarSelectLis
      * 设置单个日期选择回调
      */
     public void setOnSingleDatePickListener(OnSingleDatePickListener onSingleDatePickListener) {
-        this.rangePick = false;
+        this.singleMode = true;
         this.onSingleDatePickListener = onSingleDatePickListener;
         if (initialized) {
             refreshData();
@@ -210,17 +222,19 @@ public class CalendarPicker extends ConfirmPicker implements OnCalendarSelectLis
     }
 
     private void refreshData() {
+        calendarAdapter.notify(false);
         if (!TextUtils.isEmpty(noteFrom) && !TextUtils.isEmpty(noteTo)) {
             calendarAdapter.intervalNotes(noteFrom, noteTo);
         }
-        calendarAdapter.single(!rangePick);
-        if (!rangePick) {
+        calendarAdapter.single(singleMode);
+        if (singleMode) {
             startDate = selectDate;
             endDate = selectDate;
         }
-        calendarAdapter.setRange(minDate, maxDate, true, false);
         calendarAdapter.valid(minDate, maxDate);
         calendarAdapter.select(startDate, endDate);
+        calendarAdapter.range(minDate, maxDate);
+        calendarAdapter.refresh();
         scrollToSelectedPosition();
     }
 

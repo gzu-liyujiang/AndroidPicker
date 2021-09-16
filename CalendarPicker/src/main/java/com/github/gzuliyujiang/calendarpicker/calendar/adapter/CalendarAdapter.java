@@ -14,7 +14,6 @@
 package com.github.gzuliyujiang.calendarpicker.calendar.adapter;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -23,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.github.gzuliyujiang.calendarpicker.calendar.protocol.Interval;
 import com.github.gzuliyujiang.calendarpicker.calendar.protocol.MonthEntity;
 import com.github.gzuliyujiang.calendarpicker.calendar.protocol.OnCalendarSelectListener;
+import com.github.gzuliyujiang.calendarpicker.calendar.protocol.OnCalendarSelectedListener;
 import com.github.gzuliyujiang.calendarpicker.calendar.protocol.OnMonthClickListener;
 import com.github.gzuliyujiang.calendarpicker.calendar.utils.DateUtils;
 import com.github.gzuliyujiang.calendarpicker.calendar.view.MonthView;
@@ -35,47 +35,39 @@ import java.util.List;
  * 日历适配器
  * Created by peng on 2017/8/3.
  */
+@SuppressWarnings("UnusedReturnValue")
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> implements OnMonthClickListener {
-    private final String TAG = CalendarAdapter.class.getSimpleName();
+    private boolean notify = true;
     private final List<Date> dates = new ArrayList<>();
     private final Interval<Date> valid = new Interval<>();
     private final Interval<Date> select = new Interval<>();
     private final Interval<String> selectNote = new Interval<>();
-    private boolean singleFlag = false;
+    private boolean singleMode = false;
+    private Date lastClickDate = null;
+    @SuppressWarnings("deprecation")
+    private OnCalendarSelectListener calendarSelectListener;
+    private OnCalendarSelectedListener onCalendarSelectedListener;
 
-    /**
-     * 设置选择日期范围
-     *
-     * @param startDate 开始时间
-     * @param endDate   结束时间
-     */
-    public void setRange(Date startDate, Date endDate, boolean clean, boolean notify) {
-        List<Date> dates = DateUtils.fillMonths(startDate, endDate);
-        setRange(dates, clean, notify);
+    public CalendarAdapter notify(boolean notify) {
+        this.notify = notify;
+        return this;
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    public void setRange(List<Date> list, boolean clean, boolean notify) {
-        if (clean) {
-            dates.clear();
-        }
-        if (null != list && list.size() > 0) {
-            dates.addAll(list);
-        }
+    public CalendarAdapter single(boolean value) {
+        singleMode = value;
         if (notify) {
-            notifyDataSetChanged();
+            refresh();
         }
+        return this;
     }
 
-    public void single(boolean value) {
-        singleFlag = value;
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    public void valid(Date from, Date to) {
+    public CalendarAdapter valid(Date from, Date to) {
         valid.left(from);
         valid.right(to);
-        notifyDataSetChanged();
+        if (notify) {
+            refresh();
+        }
+        return this;
     }
 
     /**
@@ -84,9 +76,13 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> im
      * @param noteFrom 开始日期提示语
      * @param noteTo   结束日期提示语
      */
-    public void intervalNotes(String noteFrom, String noteTo) {
+    public CalendarAdapter intervalNotes(String noteFrom, String noteTo) {
         selectNote.left(noteFrom);
         selectNote.right(noteTo);
+        if (notify) {
+            refresh();
+        }
+        return this;
     }
 
     /**
@@ -95,8 +91,8 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> im
      * @param fromInMillis 开始日期
      * @param toInMillis   结束日期
      */
-    public void select(long fromInMillis, long toInMillis) {
-        select(new Date(fromInMillis), new Date(toInMillis));
+    public CalendarAdapter select(long fromInMillis, long toInMillis) {
+        return select(new Date(fromInMillis), new Date(toInMillis));
     }
 
     /**
@@ -105,11 +101,78 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> im
      * @param from 开始日期
      * @param to   结束日期
      */
-    @SuppressLint("NotifyDataSetChanged")
-    public void select(Date from, Date to) {
+    public CalendarAdapter select(Date from, Date to) {
         select.left(from);
         select.right(to);
+        if (notify) {
+            refresh();
+        }
+        return this;
+    }
+
+    /**
+     * 设置选择日期范围
+     *
+     * @param startDate 开始时间
+     * @param endDate   结束时间
+     */
+    public CalendarAdapter range(Date startDate, Date endDate) {
+        return range(startDate, endDate, true);
+    }
+
+    public CalendarAdapter range(Date startDate, Date endDate, boolean clear) {
+        List<Date> dates = DateUtils.fillMonths(startDate, endDate);
+        return range(dates, clear);
+    }
+
+    public CalendarAdapter range(List<Date> list, boolean clear) {
+        if (clear) {
+            dates.clear();
+        }
+        if (null != list && list.size() > 0) {
+            dates.addAll(list);
+        }
+        if (notify) {
+            refresh();
+        }
+        return this;
+    }
+
+    /**
+     * @deprecated 使用 {@link #notify(boolean)} 及 {@link #range(Date, Date, boolean)} 代替
+     */
+    @Deprecated
+    public CalendarAdapter setRange(Date startDate, Date endDate, boolean clear, boolean notify) {
+        List<Date> dates = DateUtils.fillMonths(startDate, endDate);
+        this.notify = notify;
+        return range(dates, clear);
+    }
+
+    /**
+     * @deprecated 使用 {@link #notify(boolean)} 及 {@link #range(List, boolean)} 代替
+     */
+    @Deprecated
+    public CalendarAdapter setRange(List<Date> list, boolean clear, boolean notify) {
+        this.notify = notify;
+        return range(list, clear);
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void refresh() {
         notifyDataSetChanged();
+    }
+
+    public void setOnCalendarSelectedListener(OnCalendarSelectedListener onCalendarSelectedListener) {
+        this.onCalendarSelectedListener = onCalendarSelectedListener;
+    }
+
+    /**
+     * @deprecated 使用 {@link #setOnCalendarSelectedListener(OnCalendarSelectedListener)} 代替
+     */
+    @Deprecated
+    @SuppressWarnings("deprecation")
+    public void setOnCalendarSelectListener(OnCalendarSelectListener listener) {
+        calendarSelectListener = listener;
     }
 
     @NonNull
@@ -128,7 +191,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> im
     public void onBindViewHolder(@NonNull CalendarViewHolder holder, int position) {
         MonthEntity entity = MonthEntity.obtain(valid, select)
                 .date(dates.get(position))
-                .singleFlag(singleFlag)
+                .singleMode(singleMode)
                 .selectNote(selectNote);
         holder.view().value(entity);
     }
@@ -164,37 +227,39 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> im
         return new Date(0);
     }
 
-
-    private Date lastClickDate = null;
-    private OnCalendarSelectListener calendarSelectListener;
-
-    public void setOnCalendarSelectListener(OnCalendarSelectListener listener) {
-        calendarSelectListener = listener;
-    }
-
     @Override
     public void onMonthClick(Date date) {
-        if (null == calendarSelectListener) {
-            return;
-        }
         if (null == date) {
-            Log.d(TAG, "onDayInMonthClick error,receive null date");
             return;
         }
-        if (null == lastClickDate || singleFlag) {
+        if (null == lastClickDate || singleMode) {
             lastClickDate = date;
-            select(date, date);
-            calendarSelectListener.onSingleSelect(date);
+            select(date, date).refresh();
+            if (null != calendarSelectListener) {
+                calendarSelectListener.onSingleSelect(date);
+            }
+            if (null != onCalendarSelectedListener) {
+                onCalendarSelectedListener.onSingleSelected(date);
+            }
             return;
         }
         if (lastClickDate.getTime() >= date.getTime()) {
             lastClickDate = date;
-            select(date, date);
-            calendarSelectListener.onSingleSelect(date);
+            select(date, date).refresh();
+            if (null != calendarSelectListener) {
+                calendarSelectListener.onSingleSelect(date);
+            }
+            if (null != onCalendarSelectedListener) {
+                onCalendarSelectedListener.onSingleSelected(date);
+            }
         } else {
-            select(lastClickDate, date);
-            calendarSelectListener.onDoubleSelect(lastClickDate, date);
-            Log.d(TAG, "onDayInMonthClick:" + lastClickDate.getTime() + "," + date.getTime());
+            select(lastClickDate, date).refresh();
+            if (null != calendarSelectListener) {
+                calendarSelectListener.onDoubleSelect(lastClickDate, date);
+            }
+            if (null != onCalendarSelectedListener) {
+                onCalendarSelectedListener.onRangeSelected(lastClickDate, date);
+            }
             lastClickDate = null;
         }
     }

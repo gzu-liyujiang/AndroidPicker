@@ -31,7 +31,7 @@ public class MonthEntity {
     private Interval<Date> valid;
     private Interval<Date> select;
     private Interval<String> selectNote;
-    private boolean singleFlag = false;
+    private boolean singleMode = false;
 
     private MonthEntity() {
     }
@@ -63,13 +63,13 @@ public class MonthEntity {
         return this;
     }
 
-    public MonthEntity singleFlag(boolean single) {
-        this.singleFlag = single;
+    public MonthEntity singleMode(boolean single) {
+        this.singleMode = single;
         return this;
     }
 
-    public boolean singleFlag() {
-        return this.singleFlag;
+    public boolean singleMode() {
+        return this.singleMode;
     }
 
     public Interval<String> selectNote() {

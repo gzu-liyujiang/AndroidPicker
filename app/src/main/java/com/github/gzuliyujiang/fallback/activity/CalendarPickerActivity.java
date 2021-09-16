@@ -24,11 +24,11 @@ import androidx.fragment.app.FragmentActivity;
 import com.github.gzuliyujiang.calendarpicker.CalendarPicker;
 import com.github.gzuliyujiang.calendarpicker.OnRangeDatePickListener;
 import com.github.gzuliyujiang.calendarpicker.OnSingleDatePickListener;
-import com.github.gzuliyujiang.calendarpicker.calendar.adapter.CalendarAdapter;
 import com.github.gzuliyujiang.calendarpicker.calendar.utils.DateUtils;
 import com.github.gzuliyujiang.calendarpicker.calendar.view.CalendarView;
 import com.github.gzuliyujiang.fallback.R;
 
+import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -40,21 +40,25 @@ import java.util.Locale;
  * @since 2019/6/23
  */
 public class CalendarPickerActivity extends FragmentActivity {
+    private long startTimeInMillis, endTimeInMillis, singleTimeInMillis;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_picker_calendar);
         CalendarView calendarView = findViewById(R.id.calendar_picker_body);
-        CalendarAdapter calendarAdapter = calendarView.getAdapter();
-        calendarAdapter.single(false);
-        Date minDate = new Date(System.currentTimeMillis());
+        Date minDate = new Date(System.currentTimeMillis() - 5 * android.text.format.DateUtils.DAY_IN_MILLIS);
         Calendar calendar = DateUtils.calendar(minDate);
         calendar.add(Calendar.MONTH, 3);
         Date maxDate = calendar.getTime();
-        calendarAdapter.setRange(minDate, maxDate, true, false);
-        calendarAdapter.valid(minDate, maxDate);
-        calendarAdapter.select(minDate.getTime(), minDate.getTime() + 5 * android.text.format.DateUtils.DAY_IN_MILLIS);
+        calendarView.getAdapter()
+                .notify(false)
+                .single(false)
+                .valid(minDate, maxDate)
+                .intervalNotes("开始", "结束")
+                .select(minDate.getTime(), minDate.getTime() + 5 * android.text.format.DateUtils.DAY_IN_MILLIS)
+                .range(minDate, maxDate)
+                .refresh();
     }
 
     public void onCalendarDateRange(View view) {
@@ -72,13 +76,18 @@ public class CalendarPickerActivity extends FragmentActivity {
         calendar.set(Calendar.DAY_OF_MONTH, DateUtils.maxDaysOfMonth(calendar.getTime()));
         Date maxDate = calendar.getTime();
         picker.setRangeDate(minDate, maxDate);
-        long startTimeInMillis = currentDate.getTime() - 3 * android.text.format.DateUtils.DAY_IN_MILLIS;
-        long endTimeInMillis = currentDate.getTime() + 3 * android.text.format.DateUtils.DAY_IN_MILLIS;
+        if (startTimeInMillis == 0 && endTimeInMillis == 0) {
+            startTimeInMillis = currentDate.getTime() - 3 * android.text.format.DateUtils.DAY_IN_MILLIS;
+            endTimeInMillis = currentDate.getTime() + 3 * android.text.format.DateUtils.DAY_IN_MILLIS;
+        }
         picker.setSelectedDate(startTimeInMillis, endTimeInMillis);
         picker.setOnRangeDatePickListener(new OnRangeDatePickListener() {
             @Override
             public void onRangeDatePicked(@NonNull Date startDate, @NonNull Date endDate) {
-                Toast.makeText(getApplicationContext(), startDate + "\n" + endDate, Toast.LENGTH_SHORT).show();
+                startTimeInMillis = startDate.getTime();
+                endTimeInMillis = endDate.getTime();
+                Toast.makeText(getApplicationContext(), DateFormat.getDateTimeInstance().format(startDate)
+                        + "\n" + DateFormat.getDateTimeInstance().format(endDate), Toast.LENGTH_SHORT).show();
             }
         });
         picker.show();
@@ -88,11 +97,15 @@ public class CalendarPickerActivity extends FragmentActivity {
         CalendarPicker picker = new CalendarPicker(this);
         picker.enableRoundCorner();
         picker.setRangeDateOnFuture(3);
-        picker.setSelectedDate(System.currentTimeMillis());
+        if (singleTimeInMillis == 0) {
+            singleTimeInMillis = System.currentTimeMillis();
+        }
+        picker.setSelectedDate(singleTimeInMillis);
         picker.setOnSingleDatePickListener(new OnSingleDatePickListener() {
             @Override
             public void onSingleDatePicked(@NonNull Date date) {
-                Toast.makeText(getApplicationContext(), date.toString(), Toast.LENGTH_SHORT).show();
+                singleTimeInMillis = date.getTime();
+                Toast.makeText(getApplicationContext(), DateFormat.getDateTimeInstance().format(date), Toast.LENGTH_SHORT).show();
             }
         });
         picker.show();
