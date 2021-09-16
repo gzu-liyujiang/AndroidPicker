@@ -14,6 +14,7 @@
 package com.github.gzuliyujiang.wheelpicker.widget;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
 
 import androidx.annotation.NonNull;
@@ -25,6 +26,7 @@ import com.github.gzuliyujiang.wheelpicker.impl.CarNumberProvider;
  * @since 2021/6/9 11:57
  */
 public class CarNumberWheelLayout extends LinkageWheelLayout {
+    private CarNumberProvider provider;
 
     public CarNumberWheelLayout(Context context) {
         super(context);
@@ -45,7 +47,15 @@ public class CarNumberWheelLayout extends LinkageWheelLayout {
     @Override
     protected void onInit(@NonNull Context context) {
         super.onInit(context);
-        setData(new CarNumberProvider());
+        provider = new CarNumberProvider();
+        setData(provider);
+    }
+
+    @Override
+    protected void onAttributeSet(@NonNull Context context, @NonNull TypedArray typedArray) {
+        super.onAttributeSet(context, typedArray);
+        setFirstVisible(provider.firstLevelVisible());
+        setThirdVisible(provider.thirdLevelVisible());
     }
 
 }
