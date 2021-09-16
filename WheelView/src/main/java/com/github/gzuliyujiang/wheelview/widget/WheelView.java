@@ -318,7 +318,7 @@ public class WheelView extends View implements Runnable {
             newData = new ArrayList<>();
         }
         data = newData;
-        notifyDataSetChanged();
+        notifyDataSetChanged(0);
     }
 
     public void setDefaultValue(Object value) {
@@ -356,15 +356,7 @@ public class WheelView extends View implements Runnable {
     }
 
     public void setDefaultPosition(int position) {
-        position = Math.min(position, getItemCount() - 1);
-        position = Math.max(position, 0);
-        defaultItem = getItem(position);
-        defaultItemPosition = position;
-        currentPosition = position;
-        scrollOffsetYCoordinate = 0;
-        computeFlingLimitYCoordinate();
-        requestLayout();
-        invalidate();
+        notifyDataSetChanged(position);
     }
 
     public boolean isSameWidthEnabled() {
@@ -572,16 +564,19 @@ public class WheelView extends View implements Runnable {
         invalidate();
     }
 
-    public void notifyDataSetChanged() {
-        defaultItem = getItem(0);
-        defaultItemPosition = 0;
-        currentPosition = 0;
+    private void notifyDataSetChanged(int position) {
+        position = Math.min(position, getItemCount() - 1);
+        position = Math.max(position, 0);
+        defaultItem = getItem(position);
+        defaultItemPosition = position;
+        currentPosition = position;
         scrollOffsetYCoordinate = 0;
         updatePaintTextAlign();
         computeTextWidthAndHeight();
         computeFlingLimitYCoordinate();
         requestLayout();
         invalidate();
+        handler.post(this);
     }
 
     @Override

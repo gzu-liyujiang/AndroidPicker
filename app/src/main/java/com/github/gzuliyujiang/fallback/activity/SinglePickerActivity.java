@@ -31,7 +31,9 @@ import com.github.gzuliyujiang.wheelpicker.PhoneCodePicker;
 import com.github.gzuliyujiang.wheelpicker.SexPicker;
 import com.github.gzuliyujiang.wheelpicker.annotation.EthnicSpec;
 import com.github.gzuliyujiang.wheelpicker.contract.OnNumberPickedListener;
+import com.github.gzuliyujiang.wheelpicker.contract.OnNumberSelectedListener;
 import com.github.gzuliyujiang.wheelpicker.contract.OnOptionPickedListener;
+import com.github.gzuliyujiang.wheelpicker.contract.OnOptionSelectedListener;
 import com.github.gzuliyujiang.wheelview.contract.WheelFormatter;
 
 import java.text.DecimalFormat;
@@ -66,6 +68,12 @@ public class SinglePickerActivity extends FragmentActivity implements OnNumberPi
         NumberPicker picker = new NumberPicker(this);
         picker.enableRoundCorner();
         picker.setOnNumberPickedListener(this);
+        picker.getWheelLayout().setOnNumberSelectedListener(new OnNumberSelectedListener() {
+            @Override
+            public void onNumberSelected(int position, Number item) {
+                picker.getTitleView().setText(picker.getWheelView().formatItem(position));
+            }
+        });
         picker.setFormatter(new WheelFormatter() {
             @Override
             public String formatItem(@NonNull Object item) {
@@ -83,6 +91,12 @@ public class SinglePickerActivity extends FragmentActivity implements OnNumberPi
         picker.enableRoundCorner();
         picker.setBodyWidth(120);
         picker.setOnNumberPickedListener(this);
+        picker.getWheelLayout().setOnNumberSelectedListener(new OnNumberSelectedListener() {
+            @Override
+            public void onNumberSelected(int position, Number item) {
+                picker.getTitleView().setText(picker.getWheelView().formatItem(position));
+            }
+        });
         picker.setFormatter(new WheelFormatter() {
             @Override
             public String formatItem(@NonNull Object item) {
@@ -103,7 +117,12 @@ public class SinglePickerActivity extends FragmentActivity implements OnNumberPi
         picker.setBackgroundColor(true, 0xFFFFFFFF);
         picker.setData("测试", "很长很长很长很长很长很长很长很长很长很长很长很长很长很长");
         picker.setOnOptionPickedListener(this);
-        picker.getTitleView().setText("这是标题");
+        picker.getWheelLayout().setOnOptionSelectedListener(new OnOptionSelectedListener() {
+            @Override
+            public void onOptionSelected(int position, Object item) {
+                picker.getTitleView().setText(picker.getWheelView().formatItem(position));
+            }
+        });
         picker.getWheelView().setCyclicEnabled(true);
         picker.getWheelView().setCurvedEnabled(true);
         picker.getWheelView().setCurvedMaxAngle(60);
@@ -124,6 +143,12 @@ public class SinglePickerActivity extends FragmentActivity implements OnNumberPi
         picker.getOkView().setTextColor(0xFFFF0000);
         picker.getTopLineView().setBackgroundColor(0xFFFF0000);
         picker.setOnOptionPickedListener(this);
+        picker.getWheelLayout().setOnOptionSelectedListener(new OnOptionSelectedListener() {
+            @Override
+            public void onOptionSelected(int position, Object item) {
+                picker.getTitleView().setText(picker.getWheelView().formatItem(position));
+            }
+        });
         picker.setData(data);
         picker.setDefaultPosition(2);
         picker.show();
@@ -135,6 +160,12 @@ public class SinglePickerActivity extends FragmentActivity implements OnNumberPi
         picker.setBodyWidth(140);
         picker.setDefaultValue("女");
         picker.setOnOptionPickedListener(this);
+        picker.getWheelLayout().setOnOptionSelectedListener(new OnOptionSelectedListener() {
+            @Override
+            public void onOptionSelected(int position, Object item) {
+                picker.getTitleView().setText(picker.getWheelView().formatItem(position));
+            }
+        });
         picker.show();
     }
 
@@ -147,6 +178,12 @@ public class SinglePickerActivity extends FragmentActivity implements OnNumberPi
         //picker.setDefaultValueByName("未定族称人口");
         //picker.setDefaultValueBySpelling("Unrecognized");
         picker.setOnOptionPickedListener(this);
+        picker.getWheelLayout().setOnOptionSelectedListener(new OnOptionSelectedListener() {
+            @Override
+            public void onOptionSelected(int position, Object item) {
+                picker.getTitleView().setText(picker.getWheelView().formatItem(position));
+            }
+        });
         picker.show();
     }
 
@@ -156,6 +193,12 @@ public class SinglePickerActivity extends FragmentActivity implements OnNumberPi
         picker.setBodyWidth(140);
         picker.setDefaultValue("射手座");
         picker.setOnOptionPickedListener(this);
+        picker.getWheelLayout().setOnOptionSelectedListener(new OnOptionSelectedListener() {
+            @Override
+            public void onOptionSelected(int position, Object item) {
+                picker.getTitleView().setText(picker.getWheelView().formatItem(position));
+            }
+        });
         picker.show();
     }
 
@@ -165,6 +208,12 @@ public class SinglePickerActivity extends FragmentActivity implements OnNumberPi
         picker.setBodyWidth(140);
         picker.setDefaultPosition(2);
         picker.setOnOptionPickedListener(this);
+        picker.getWheelLayout().setOnOptionSelectedListener(new OnOptionSelectedListener() {
+            @Override
+            public void onOptionSelected(int position, Object item) {
+                picker.getTitleView().setText(picker.getWheelView().formatItem(position));
+            }
+        });
         picker.show();
     }
 

@@ -102,12 +102,18 @@ public class NumberWheelLayout extends OptionWheelLayout {
         }
     }
 
+    /**
+     * @deprecated 使用 {@link #setRange(float, float, float)} 代替
+     */
     @Deprecated
     @Override
     public void setData(List<?> data) {
         throw new UnsupportedOperationException("Use setRange instead");
     }
 
+    /**
+     * @deprecated 使用 {@link #setOnNumberSelectedListener(OnNumberSelectedListener)} 代替
+     */
     @Deprecated
     @Override
     public void setOnOptionSelectedListener(OnOptionSelectedListener onOptionSelectedListener) {
