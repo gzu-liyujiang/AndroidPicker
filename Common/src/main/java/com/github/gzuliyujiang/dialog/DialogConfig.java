@@ -11,16 +11,26 @@
  * See the Mulan PSL v2 for more details.
  */
 
-package com.github.gzuliyujiang.calendarpicker.calendar.protocol;
-
-import java.util.Date;
+package com.github.gzuliyujiang.dialog;
 
 /**
- * 月份中日期点击回调
- * Created by peng on 2017/8/4.
+ * @author 贵州山魈羡民 (1032694760@qq.com)
+ * @since 2021/9/16 15:55
  */
-public interface OnMonthClickListener {
+public final class DialogConfig {
+    private static int dialogStyle = DialogStyle.Default;
 
-    void onMonthClick(Date date);
+    private DialogConfig() {
+        super();
+    }
+
+    public static void setDialogStyle(@DialogStyle int style) {
+        dialogStyle = style;
+    }
+
+    @DialogStyle
+    public static int getDialogStyle() {
+        return dialogStyle;
+    }
 
 }

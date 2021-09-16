@@ -6,7 +6,6 @@
 
 ```groovy
         CalendarPicker picker = new CalendarPicker(this);
-        picker.enableRoundCorner();
         picker.setRangeDateOnFuture(3);
         if (singleTimeInMillis == 0) {
             singleTimeInMillis = System.currentTimeMillis();

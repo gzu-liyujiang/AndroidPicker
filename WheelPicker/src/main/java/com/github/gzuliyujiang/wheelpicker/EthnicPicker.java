@@ -17,7 +17,7 @@ import android.app.Activity;
 
 import androidx.annotation.NonNull;
 
-import com.github.gzuliyujiang.basepicker.PickerLog;
+import com.github.gzuliyujiang.dialog.DialogLog;
 import com.github.gzuliyujiang.wheelpicker.annotation.EthnicSpec;
 import com.github.gzuliyujiang.wheelpicker.entity.EthnicEntity;
 
@@ -102,6 +102,12 @@ public class EthnicPicker extends OptionPicker {
         super(activity, themeResId);
     }
 
+    @Override
+    protected void initData() {
+        super.initData();
+        titleView.setText("民族选择");
+    }
+
     public void setEthnicSpec(@EthnicSpec int ethnicSpec) {
         this.ethnicSpec = ethnicSpec;
         setData(provideData());
@@ -139,7 +145,7 @@ public class EthnicPicker extends OptionPicker {
                 data.add(entity);
             }
         } catch (JSONException e) {
-            PickerLog.print(e);
+            DialogLog.print(e);
         }
         switch (ethnicSpec) {
             case EthnicSpec.DEFAULT:

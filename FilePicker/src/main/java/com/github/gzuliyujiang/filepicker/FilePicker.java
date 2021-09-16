@@ -21,8 +21,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.github.gzuliyujiang.basepicker.ConfirmPicker;
-import com.github.gzuliyujiang.basepicker.PickerLog;
+import com.github.gzuliyujiang.dialog.DialogLog;
+import com.github.gzuliyujiang.dialog.ModalDialog;
 import com.github.gzuliyujiang.filepicker.annotation.ExplorerMode;
 import com.github.gzuliyujiang.filepicker.contract.OnFileClickedListener;
 import com.github.gzuliyujiang.filepicker.contract.OnFilePickedListener;
@@ -36,7 +36,7 @@ import java.io.File;
  * @since 2015/9/29
  */
 @SuppressWarnings("unused")
-public class FilePicker extends ConfirmPicker {
+public class FilePicker extends ModalDialog {
     private int explorerMode = ExplorerMode.FILE;
     private File initDir;
     private FileExplorer fileExplorer;
@@ -53,7 +53,7 @@ public class FilePicker extends ConfirmPicker {
 
     @NonNull
     @Override
-    protected View createBodyView(@NonNull Activity activity) {
+    protected View createBodyView() {
         fileExplorer = new FileExplorer(activity);
         return fileExplorer;
     }
@@ -63,10 +63,11 @@ public class FilePicker extends ConfirmPicker {
         super.initData();
         initialized = true;
         if (explorerMode == ExplorerMode.FILE) {
-            okView.setVisibility(View.INVISIBLE);
+            okView.setVisibility(View.GONE);
         }
-        setBodyHeight(300);
+        setHeight((int) (activity.getResources().getDisplayMetrics().heightPixels * 0.6f));
         setInitDir(explorerMode, initDir);
+        titleView.setText(explorerMode == ExplorerMode.FILE ? "选择文件" : "选择目录");
     }
 
     @Override
@@ -77,7 +78,7 @@ public class FilePicker extends ConfirmPicker {
     @Override
     protected void onOk() {
         File currentFile = fileExplorer.getCurrentFile();
-        PickerLog.print("picked directory: " + currentFile);
+        DialogLog.print("picked directory: " + currentFile);
         if (onFilePickedListener != null) {
             onFilePickedListener.onFilePicked(currentFile);
         }
@@ -118,10 +119,6 @@ public class FilePicker extends ConfirmPicker {
 
     public final TextView getEmptyHintView() {
         return fileExplorer.getEmptyHintView();
-    }
-
-    public final View getBottomLineView() {
-        return fileExplorer.getBottomLineView();
     }
 
     public final RecyclerView getPathListView() {

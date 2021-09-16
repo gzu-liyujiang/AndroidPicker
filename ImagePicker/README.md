@@ -3,7 +3,7 @@
 图片选择（相机+相册+裁剪），改自 [ImagePicker](https://github.com/linchaolong/ImagePicker)
 及 [Android-Image-Cropper](https://github.com/ArthurHub/Android-Image-Cropper) 。
 
-注意合规性，调用之前要确保已获得用户授予相机权限及存储权限（CAMERA、READ_EXTERNAL_STORAGE、WRITE_EXTERNAL_STORAGE）。
+注意合规性，允许APP使用摄像头，允许APP读取/写入外置存储器，调用之前要确保已获得用户授予`CAMERA`、`READ_EXTERNAL_STORAGE`、`WRITE_EXTERNAL_STORAGE`权限。
 
 ## 简单用法
 

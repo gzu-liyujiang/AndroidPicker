@@ -11,4 +11,18 @@
   ~ See the Mulan PSL v2 for more details.
   -->
 
-<manifest package="com.github.gzuliyujiang.dialog" />
+<resources>
+
+    <style name="DialogTheme.Base" parent="@android:style/Theme.Dialog" />
+
+    <style name="DialogTheme.Fade" parent="DialogTheme.Base">
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowAnimationStyle">@style/DialogFadeAnimation</item>
+    </style>
+
+    <style name="DialogTheme.Sheet" parent="DialogTheme.Base">
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowAnimationStyle">@style/DialogSheetAnimation</item>
+    </style>
+
+</resources>

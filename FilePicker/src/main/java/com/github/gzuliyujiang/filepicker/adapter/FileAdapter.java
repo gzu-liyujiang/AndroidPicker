@@ -30,7 +30,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.github.gzuliyujiang.basepicker.PickerLog;
+import com.github.gzuliyujiang.dialog.DialogLog;
 import com.github.gzuliyujiang.filepicker.R;
 import com.github.gzuliyujiang.filepicker.annotation.FileSort;
 import com.github.gzuliyujiang.filepicker.contract.OnPathClickedListener;
@@ -265,14 +265,14 @@ public class FileAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     public void loadData(File dir) {
         if (dir == null) {
-            PickerLog.print("current directory is null");
+            DialogLog.print("current directory is null");
             return;
         }
         List<FileEntity> entities = new ArrayList<>();
         if (rootDir == null) {
             rootDir = dir;
         }
-        PickerLog.print("current directory path: " + dir);
+        DialogLog.print("current directory path: " + dir);
         currentFile = dir;
         if (showHomeDir) {
             //添加“返回主目录”
@@ -351,7 +351,7 @@ public class FileAdapter extends RecyclerView.Adapter<ViewHolder> {
      * 列出指定目录下的所有子目录
      */
     private List<File> listFiles(File startDir, FileFilter fileFilter) {
-        PickerLog.print(String.format("list dir %s", startDir));
+        DialogLog.print(String.format("list dir %s", startDir));
         if (!startDir.isDirectory()) {
             return new ArrayList<>();
         }

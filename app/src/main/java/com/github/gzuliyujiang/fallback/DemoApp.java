@@ -18,7 +18,9 @@ import android.content.Context;
 
 import androidx.multidex.MultiDex;
 
-import com.github.gzuliyujiang.basepicker.PickerLog;
+import com.github.gzuliyujiang.dialog.DialogConfig;
+import com.github.gzuliyujiang.dialog.DialogLog;
+import com.github.gzuliyujiang.dialog.DialogStyle;
 
 import org.json.JSONObject;
 
@@ -42,7 +44,8 @@ public class DemoApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        PickerLog.enable();
+        DialogLog.enable();
+        DialogConfig.setDialogStyle(DialogStyle.Default);
         initXCrash(this);
     }
 

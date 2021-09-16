@@ -21,7 +21,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
 
-import com.github.gzuliyujiang.basepicker.ConfirmPicker;
+import com.github.gzuliyujiang.dialog.ModalDialog;
 import com.github.gzuliyujiang.wheelpicker.contract.LinkageProvider;
 import com.github.gzuliyujiang.wheelpicker.contract.OnLinkagePickedListener;
 import com.github.gzuliyujiang.wheelpicker.widget.LinkageWheelLayout;
@@ -38,7 +38,7 @@ import com.github.gzuliyujiang.wheelview.widget.WheelView;
  * @since 2019/6/17 11:21
  */
 @SuppressWarnings({"WeakerAccess", "unused"})
-public class LinkagePicker extends ConfirmPicker {
+public class LinkagePicker extends ModalDialog {
     protected LinkageWheelLayout wheelLayout;
     private OnLinkagePickedListener onLinkagePickedListener;
 
@@ -52,9 +52,15 @@ public class LinkagePicker extends ConfirmPicker {
 
     @NonNull
     @Override
-    protected View createBodyView(@NonNull Activity activity) {
+    protected View createBodyView() {
         wheelLayout = new LinkageWheelLayout(activity);
         return wheelLayout;
+    }
+
+    @Override
+    protected void initData() {
+        super.initData();
+        titleView.setText("请选择");
     }
 
     @Override

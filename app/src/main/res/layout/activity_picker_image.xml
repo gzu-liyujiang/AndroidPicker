@@ -36,13 +36,6 @@
             android:text="相册选取"
             android:textColor="#FF333333" />
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="onXPopup"
-            android:text="XPopup"
-            android:textColor="#FF333333" />
-
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

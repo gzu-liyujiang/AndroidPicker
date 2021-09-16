@@ -55,7 +55,6 @@ public class ColorPickerActivity extends FragmentActivity implements View.OnClic
     public void onClick(View v) {
         if (v.getId() == R.id.color_picker_button) {
             ColorPicker picker = new ColorPicker(this);
-            picker.enableRoundCorner();
             picker.setInitColor(0xFF7FF7FF);
             picker.setOnColorPickListener(new OnColorPickedListener() {
                 @Override

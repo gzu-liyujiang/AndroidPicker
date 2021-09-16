@@ -13,19 +13,14 @@
 
 package com.github.gzuliyujiang.calendarpicker.calendar.protocol;
 
-import androidx.annotation.NonNull;
-
 import java.util.Date;
 
 /**
- * 日历选择监听器
+ * 月份中日期点击回调
  * Created by peng on 2017/8/4.
  */
-@Deprecated
-public interface OnCalendarSelectListener {
+public interface OnCalendarDayClickListener {
 
-    void onSingleSelect(@NonNull Date date);
-
-    void onDoubleSelect(@NonNull Date before, @NonNull Date after);
+    void onCalendarDayClick(Date date);
 
 }

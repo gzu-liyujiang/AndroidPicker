@@ -20,8 +20,12 @@ import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
+import com.github.gzuliyujiang.dialog.DialogConfig;
+import com.github.gzuliyujiang.dialog.DialogStyle;
 import com.github.gzuliyujiang.fallback.R;
 import com.github.gzuliyujiang.fallback.custom.AntFortuneLikeProvider;
+import com.github.gzuliyujiang.wheelpicker.OptionPicker;
+import com.github.gzuliyujiang.wheelpicker.contract.OnOptionPickedListener;
 import com.github.gzuliyujiang.wheelpicker.widget.LinkageWheelLayout;
 import com.github.gzuliyujiang.wheelpicker.widget.OptionWheelLayout;
 import com.github.gzuliyujiang.wheelview.widget.WheelView;
@@ -49,6 +53,32 @@ public class MainActivity extends FragmentActivity {
 
     private void startActivity(Class<?> cls) {
         startActivity(new Intent(this, cls));
+    }
+
+    public void onDialogStyle(View view) {
+        OptionPicker picker = new OptionPicker(this);
+        picker.setData("默认-屏幕底部弹窗", "样式1-屏幕底部弹窗", "样式2-屏幕底部弹窗", "样式3-屏幕中间弹窗");
+        picker.setOnOptionPickedListener(new OnOptionPickedListener() {
+            @Override
+            public void onOptionPicked(int position, Object item) {
+                switch (position) {
+                    case 1:
+                        DialogConfig.setDialogStyle(DialogStyle.One);
+                        break;
+                    case 2:
+                        DialogConfig.setDialogStyle(DialogStyle.Two);
+                        break;
+                    case 3:
+                        DialogConfig.setDialogStyle(DialogStyle.Three);
+                        break;
+                    case 0:
+                    default:
+                        DialogConfig.setDialogStyle(DialogStyle.Default);
+                        break;
+                }
+            }
+        });
+        picker.show();
     }
 
     public void onDateTimePicker(View view) {

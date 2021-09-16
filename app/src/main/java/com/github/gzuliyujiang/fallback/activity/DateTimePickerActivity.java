@@ -66,7 +66,6 @@ public class DateTimePickerActivity extends FragmentActivity implements OnDatePi
 
     public void onYearMonthDayTime(View view) {
         DatimePicker picker = new DatimePicker(this);
-        picker.enableRoundCorner();
         final DatimeWheelLayout wheelLayout = picker.getWheelLayout();
         picker.setOnDatimePickedListener(new OnDatimePickedListener() {
             @Override
@@ -86,10 +85,7 @@ public class DateTimePickerActivity extends FragmentActivity implements OnDatePi
 
     public void onYearMonthDay(View view) {
         DatePicker picker = new DatePicker(this);
-        picker.enableRoundCorner();
         picker.setBodyWidth(240);
-        picker.setBackgroundColor(0xEEDDDDDD);
-        picker.getHeaderView().setBackgroundColor(0xFFCCCCCC);
         DateWheelLayout wheelLayout = picker.getWheelLayout();
         wheelLayout.setDateMode(DateMode.YEAR_MONTH_DAY);
         wheelLayout.setDateLabel("年", "月", "日");
@@ -100,17 +96,16 @@ public class DateTimePickerActivity extends FragmentActivity implements OnDatePi
         wheelLayout.setIndicatorColor(0xFFFF0000);
         wheelLayout.setIndicatorSize(view.getResources().getDisplayMetrics().density * 2);
         wheelLayout.setTextColor(0xCCCC0000);
-        wheelLayout.setSelectedTextColor(0xFF00FF00);
-        wheelLayout.getYearWheelView().setBackgroundColor(0x90CCCCCC);
-        wheelLayout.getMonthWheelView().setBackgroundColor(0x90CCCCCC);
-        wheelLayout.getDayWheelView().setBackgroundColor(0x90CCCCCC);
+        wheelLayout.setSelectedTextColor(0xFFFF0000);
+        wheelLayout.getYearLabelView().setTextColor(0xFF999999);
+        wheelLayout.getMonthLabelView().setTextColor(0xFF999999);
+        wheelLayout.getDayLabelView().setTextColor(0xFF999999);
         picker.setOnDatePickedListener(this);
         picker.show();
     }
 
     public void onYearMonth(View view) {
         DatePicker picker = new DatePicker(this);
-        picker.enableRoundCorner();
         picker.setBodyWidth(240);
         picker.getWheelLayout().setDateMode(DateMode.YEAR_MONTH);
         picker.getWheelLayout().setDateLabel("年", "月", "");
@@ -120,7 +115,6 @@ public class DateTimePickerActivity extends FragmentActivity implements OnDatePi
 
     public void onMonthDay(View view) {
         DatePicker picker = new DatePicker(this);
-        picker.enableRoundCorner();
         picker.setBodyWidth(200);
         picker.getWheelLayout().setDateMode(DateMode.MONTH_DAY);
         picker.getWheelLayout().setDateFormatter(new UnitDateFormatter());
@@ -130,7 +124,6 @@ public class DateTimePickerActivity extends FragmentActivity implements OnDatePi
 
     public void onTime12(View view) {
         TimePicker picker = new TimePicker(this);
-        picker.enableRoundCorner();
         picker.setBodyWidth(140);
         TimeWheelLayout wheelLayout = picker.getWheelLayout();
         wheelLayout.setRange(TimeEntity.target(1, 0, 0), TimeEntity.target(12, 59, 59));
@@ -150,7 +143,6 @@ public class DateTimePickerActivity extends FragmentActivity implements OnDatePi
 
     public void onTime24(View view) {
         TimePicker picker = new TimePicker(this);
-        picker.enableRoundCorner();
         picker.getWheelLayout().setTimeMode(TimeMode.HOUR_24_HAS_SECOND);
         picker.getWheelLayout().setTimeFormatter(new UnitTimeFormatter());
         picker.getWheelLayout().setDefaultValue(TimeEntity.now());
@@ -160,7 +152,6 @@ public class DateTimePickerActivity extends FragmentActivity implements OnDatePi
 
     public void onBirthday(View view) {
         BirthdayPicker picker = new BirthdayPicker(this);
-        picker.enableRoundCorner();
         picker.setDefaultValue(1991, 11, 11);
         picker.setOnDatePickedListener(this);
         picker.show();

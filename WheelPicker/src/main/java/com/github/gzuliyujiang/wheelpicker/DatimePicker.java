@@ -19,7 +19,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
 
-import com.github.gzuliyujiang.basepicker.ConfirmPicker;
+import com.github.gzuliyujiang.dialog.ModalDialog;
 import com.github.gzuliyujiang.wheelpicker.contract.OnDatimePickedListener;
 import com.github.gzuliyujiang.wheelpicker.widget.DatimeWheelLayout;
 
@@ -30,7 +30,7 @@ import com.github.gzuliyujiang.wheelpicker.widget.DatimeWheelLayout;
  * @since 2021/6/5 18:21
  */
 @SuppressWarnings({"unused", "WeakerAccess"})
-public class DatimePicker extends ConfirmPicker {
+public class DatimePicker extends ModalDialog {
     protected DatimeWheelLayout wheelLayout;
     private OnDatimePickedListener onDatimePickedListener;
 
@@ -44,19 +44,15 @@ public class DatimePicker extends ConfirmPicker {
 
     @NonNull
     @Override
-    protected View createBodyView(@NonNull Activity activity) {
+    protected View createBodyView() {
         wheelLayout = new DatimeWheelLayout(activity);
         return wheelLayout;
     }
 
-    @Deprecated
-    protected int provideDateMode() {
-        throw new UnsupportedOperationException("Use `picker.getWheelLayout().setDateMode()` instead");
-    }
-
-    @Deprecated
-    protected int provideTimeMode() {
-        throw new UnsupportedOperationException("Use `picker.getWheelLayout().setTimeMode()` instead");
+    @Override
+    protected void initData() {
+        super.initData();
+        titleView.setText("日期时间选择");
     }
 
     @Override

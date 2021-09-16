@@ -21,13 +21,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.gzuliyujiang.calendarpicker.calendar.protocol.Interval;
 import com.github.gzuliyujiang.calendarpicker.calendar.protocol.MonthEntity;
-import com.github.gzuliyujiang.calendarpicker.calendar.protocol.OnCalendarSelectListener;
+import com.github.gzuliyujiang.calendarpicker.calendar.protocol.OnCalendarDayClickListener;
 import com.github.gzuliyujiang.calendarpicker.calendar.protocol.OnCalendarSelectedListener;
-import com.github.gzuliyujiang.calendarpicker.calendar.protocol.OnMonthClickListener;
 import com.github.gzuliyujiang.calendarpicker.calendar.utils.DateUtils;
 import com.github.gzuliyujiang.calendarpicker.calendar.view.MonthView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -36,7 +36,7 @@ import java.util.List;
  * Created by peng on 2017/8/3.
  */
 @SuppressWarnings("UnusedReturnValue")
-public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> implements OnMonthClickListener {
+public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> implements OnCalendarDayClickListener {
     private boolean notify = true;
     private final List<Date> dates = new ArrayList<>();
     private final Interval<Date> valid = new Interval<>();
@@ -44,8 +44,6 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> im
     private final Interval<String> selectNote = new Interval<>();
     private boolean singleMode = false;
     private Date lastClickDate = null;
-    @SuppressWarnings("deprecation")
-    private OnCalendarSelectListener calendarSelectListener;
     private OnCalendarSelectedListener onCalendarSelectedListener;
 
     public CalendarAdapter notify(boolean notify) {
@@ -121,7 +119,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> im
     }
 
     public CalendarAdapter range(Date startDate, Date endDate, boolean clear) {
-        List<Date> dates = DateUtils.fillMonths(startDate, endDate);
+        List<Date> dates = DateUtils.fillDates(startDate, endDate);
         return range(dates, clear);
     }
 
@@ -143,7 +141,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> im
      */
     @Deprecated
     public CalendarAdapter setRange(Date startDate, Date endDate, boolean clear, boolean notify) {
-        List<Date> dates = DateUtils.fillMonths(startDate, endDate);
+        List<Date> dates = DateUtils.fillDates(startDate, endDate);
         this.notify = notify;
         return range(dates, clear);
     }
@@ -164,15 +162,6 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> im
 
     public void setOnCalendarSelectedListener(OnCalendarSelectedListener onCalendarSelectedListener) {
         this.onCalendarSelectedListener = onCalendarSelectedListener;
-    }
-
-    /**
-     * @deprecated 使用 {@link #setOnCalendarSelectedListener(OnCalendarSelectedListener)} 代替
-     */
-    @Deprecated
-    @SuppressWarnings("deprecation")
-    public void setOnCalendarSelectListener(OnCalendarSelectListener listener) {
-        calendarSelectListener = listener;
     }
 
     @NonNull
@@ -202,22 +191,34 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> im
     }
 
     public final int getDatePosition(Date date) {
-        int position = -1;
-        if (dates.size() > 1) {
-            if (date.getTime() <= dates.get(0).getTime()) {
-                position = 0;
-            } else if (date.getTime() >= dates.get(dates.size() - 1).getTime()) {
-                position = dates.size() - 1;
-            } else {
-                for (int i = 0; i < dates.size() - 1; i++) {
-                    if (date.getTime() >= dates.get(i).getTime() && date.getTime() <= dates.get(i + 1).getTime()) {
-                        position = i;
-                        break;
-                    }
-                }
+        int size = dates.size();
+        if (size <= 1) {
+            return 0;
+        }
+        long time = date.getTime();
+        if (time <= dates.get(0).getTime()) {
+            return 0;
+        }
+        int lastPosition = size - 1;
+        if (time >= dates.get(lastPosition).getTime()) {
+            return lastPosition;
+        }
+        for (int i = 0; i < lastPosition; i++) {
+            Calendar minDate = DateUtils.calendar(dates.get(i).getTime());
+            minDate.set(Calendar.DAY_OF_MONTH, 1);
+            minDate.set(Calendar.HOUR_OF_DAY, 0);
+            minDate.set(Calendar.MINUTE, 0);
+            minDate.set(Calendar.SECOND, 0);
+            Calendar maxDate = DateUtils.calendar(dates.get(i).getTime());
+            maxDate.set(Calendar.DAY_OF_MONTH, DateUtils.maxDaysOfMonth(maxDate.getTime()));
+            maxDate.set(Calendar.HOUR_OF_DAY, 23);
+            maxDate.set(Calendar.MINUTE, 59);
+            maxDate.set(Calendar.SECOND, 59);
+            if (time >= minDate.getTime().getTime() && time <= maxDate.getTime().getTime()) {
+                return i;
             }
         }
-        return position;
+        return -1;
     }
 
     public Date value(int position) {
@@ -228,16 +229,13 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> im
     }
 
     @Override
-    public void onMonthClick(Date date) {
+    public void onCalendarDayClick(Date date) {
         if (null == date) {
             return;
         }
         if (null == lastClickDate || singleMode) {
             lastClickDate = date;
             select(date, date).refresh();
-            if (null != calendarSelectListener) {
-                calendarSelectListener.onSingleSelect(date);
-            }
             if (null != onCalendarSelectedListener) {
                 onCalendarSelectedListener.onSingleSelected(date);
             }
@@ -246,17 +244,11 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> im
         if (lastClickDate.getTime() >= date.getTime()) {
             lastClickDate = date;
             select(date, date).refresh();
-            if (null != calendarSelectListener) {
-                calendarSelectListener.onSingleSelect(date);
-            }
             if (null != onCalendarSelectedListener) {
                 onCalendarSelectedListener.onSingleSelected(date);
             }
         } else {
             select(lastClickDate, date).refresh();
-            if (null != calendarSelectListener) {
-                calendarSelectListener.onDoubleSelect(lastClickDate, date);
-            }
             if (null != onCalendarSelectedListener) {
                 onCalendarSelectedListener.onRangeSelected(lastClickDate, date);
             }

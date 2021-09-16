@@ -144,6 +144,8 @@ dependencies {
 ### 在 Java 中
 
 ```groovy
+        DialogConfig.setDialogStyle(DialogStyle.XiaoMi);
+        ...
         List<GoodsCategoryBean> data = new ArrayList<>();
         data.add(new GoodsCategoryBean(1, "食品生鲜"));
         data.add(new GoodsCategoryBean(2, "家用电器"));
@@ -152,44 +154,49 @@ dependencies {
         data.add(new GoodsCategoryBean(5, "酒水饮料"));
         data.add(new GoodsCategoryBean(6, "图书音像"));
         OptionPicker picker = new OptionPicker(this);
-        picker.enableRoundCorner();
         picker.setBodyWidth(140);
-        picker.getOkView().setTextColor(0xFFFF0000);
-        picker.getTopLineView().setBackgroundColor(0xFFFF0000);
+        picker.getWheelView().setIndicatorColor(0xFFFF0000);
+        picker.getWheelView().setTextColor(0xFFFF00FF);
+        picker.getWheelView().setSelectedTextColor(0xFFFF0000);
         picker.setOnOptionPickedListener(this);
+        picker.getWheelLayout().setOnOptionSelectedListener(new OnOptionSelectedListener() {
+            @Override
+            public void onOptionSelected(int position, Object item) {
+                picker.getTitleView().setText(picker.getWheelView().formatItem(position));
+            }
+        });
         picker.setData(data);
         picker.setDefaultPosition(2);
         picker.show();
 ```
 
 ```groovy
+        DialogConfig.setDialogStyle(DialogStyle.Default);
+        ...
         DatePicker picker = new DatePicker(this);
-        picker.enableRoundCorner();
         picker.setBodyWidth(240);
-        picker.setBackgroundColor(0xEEDDDDDD);
-        picker.getHeaderView().setBackgroundColor(0xFFCCCCCC);
         DateWheelLayout wheelLayout = picker.getWheelLayout();
         wheelLayout.setDateMode(DateMode.YEAR_MONTH_DAY);
         wheelLayout.setDateLabel("年", "月", "日");
         wheelLayout.setRange(DateEntity.today(), DateEntity.yearOnFuture(30), DateEntity.yearOnFuture(10));
-        //wheelLayout.setRange(DateEntity.target(1930, 1, 1), DateEntity.today(), DateEntity.target(1999, 1, 1));
         wheelLayout.setCurtainEnabled(true);
         wheelLayout.setCurtainColor(0xFFCC0000);
         wheelLayout.setIndicatorEnabled(true);
         wheelLayout.setIndicatorColor(0xFFFF0000);
         wheelLayout.setIndicatorSize(view.getResources().getDisplayMetrics().density * 2);
         wheelLayout.setTextColor(0xCCCC0000);
-        wheelLayout.setSelectedTextColor(0xFF00FF00);
-        wheelLayout.getYearWheelView().setBackgroundColor(0x90CCCCCC);
-        wheelLayout.getMonthWheelView().setBackgroundColor(0x90CCCCCC);
-        wheelLayout.getDayWheelView().setBackgroundColor(0x90CCCCCC);
+        wheelLayout.setSelectedTextColor(0xFFFF0000);
+        wheelLayout.getYearLabelView().setTextColor(0xFF999999);
+        wheelLayout.getMonthLabelView().setTextColor(0xFF999999);
+        wheelLayout.getDayLabelView().setTextColor(0xFF999999);
         picker.setOnDatePickedListener(this);
         picker.show();
 ```
 
 ```groovy
+        DialogConfig.setDialogStyle(DialogStyle.IOS);
+        ...
         AddressPicker picker = new AddressPicker(this);
-        picker.enableRoundCorner();
         picker.setAddressMode("city.json", AddressMode.PROVINCE_CITY_COUNTY,
                 new AddressJsonParser.Builder()
                        .provinceCodeField("code")
@@ -280,6 +287,84 @@ dependencies {
                 app:wheel_timeMode="hour_24_has_second" />
 
         </LinearLayout>
+```
+
+###  定制样式
+
+#### 在Java中集成重写
+
+```java
+//仿蚂蚁财富APP定投周期选择弹窗样式
+public class AntFortuneLikePicker extends LinkagePicker {
+    private int lastDialogStyle;
+
+    public AntFortuneLikePicker(@NonNull Activity activity) {
+        super(activity);
+    }
+
+    @Override
+    protected void onInit(@NonNull Context context) {
+        super.onInit(context);
+        lastDialogStyle = DialogConfig.getDialogStyle();
+        DialogConfig.setDialogStyle(DialogStyle.Default);
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        DialogConfig.setDialogStyle(lastDialogStyle);
+    }
+
+    @Override
+    protected void initData() {
+        super.initData();
+        setBackgroundColor(0xFFFFFFFF);
+        cancelView.setText("取消");
+        cancelView.setTextSize(16);
+        cancelView.setTextColor(0xFF0081FF);
+        okView.setTextColor(0xFF0081FF);
+        okView.setText("确定");
+        okView.setTextSize(16);
+        titleView.setTextColor(0xFF333333);
+        titleView.setText("定投周期");
+        titleView.setTextSize(16);
+        wheelLayout.setData(new AntFortuneLikeProvider());
+        wheelLayout.setAtmosphericEnabled(true);
+        wheelLayout.setVisibleItemCount(7);
+        wheelLayout.setCyclicEnabled(false);
+        wheelLayout.setIndicatorEnabled(true);
+        wheelLayout.setIndicatorColor(0xFFDDDDDD);
+        wheelLayout.setIndicatorSize((int) (contentView.getResources().getDisplayMetrics().density * 1));
+        wheelLayout.setTextColor(0xFF999999);
+        wheelLayout.setSelectedTextColor(0xFF333333);
+        wheelLayout.setCurtainEnabled(false);
+        wheelLayout.setCurvedEnabled(false);
+    }
+
+}
+````
+
+#### 在``app/.../res/values/styles.xml`中重写覆盖
+
+```xml
+    <style name="WheelDefault">
+        <item name="wheel_visibleItemCount">5</item>
+        <item name="wheel_itemTextAlign">center</item>
+        <item name="wheel_itemSpace">20dp</item>
+        <item name="wheel_itemTextColor">#FF999999</item>
+        <item name="wheel_itemTextColorSelected">#FF000000</item>
+        <item name="wheel_itemTextSize">16sp</item>
+        <item name="wheel_sameWidthEnabled">false</item>
+        <item name="wheel_atmosphericEnabled">true</item>
+        <item name="wheel_curtainEnabled">false</item>
+        <item name="wheel_curtainColor">#FFDEDEDE</item>
+        <item name="wheel_curvedEnabled">false</item>
+        <item name="wheel_curvedMaxAngle">90</item>
+        <item name="wheel_cyclicEnabled">false</item>
+        <item name="wheel_indicatorEnabled">true</item>
+        <item name="wheel_indicatorColor">#FFDEDEDE</item>
+        <item name="wheel_indicatorSize">1dp</item>
+    </style>
 ```
 ## 效果预览
 

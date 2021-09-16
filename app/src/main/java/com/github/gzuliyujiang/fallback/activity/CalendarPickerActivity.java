@@ -63,7 +63,6 @@ public class CalendarPickerActivity extends FragmentActivity {
 
     public void onCalendarDateRange(View view) {
         CalendarPicker picker = new CalendarPicker(this);
-        picker.enableRoundCorner();
         Date currentDate = new Date(System.currentTimeMillis());
         Calendar calendar1 = Calendar.getInstance(Locale.CHINA);
         calendar1.setTime(currentDate);
@@ -95,7 +94,6 @@ public class CalendarPickerActivity extends FragmentActivity {
 
     public void onCalendarDateSingle(View view) {
         CalendarPicker picker = new CalendarPicker(this);
-        picker.enableRoundCorner();
         picker.setRangeDateOnFuture(3);
         if (singleTimeInMillis == 0) {
             singleTimeInMillis = System.currentTimeMillis();

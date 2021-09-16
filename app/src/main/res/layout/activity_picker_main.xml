@@ -38,6 +38,13 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="onDialogStyle"
+                android:text="切换弹窗样式"
+                android:textColor="#FFFF0000" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:onClick="onDateTimePicker"
                 android:text="日期时间滚轮选择器"
                 android:textColor="#FF333333" />

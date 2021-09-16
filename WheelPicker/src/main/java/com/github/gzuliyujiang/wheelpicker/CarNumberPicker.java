@@ -56,9 +56,15 @@ public class CarNumberPicker extends LinkagePicker {
 
     @NonNull
     @Override
-    protected View createBodyView(@NonNull Activity activity) {
+    protected View createBodyView() {
         wheelLayout = new CarNumberWheelLayout(activity);
         return wheelLayout;
+    }
+
+    @Override
+    protected void initData() {
+        super.initData();
+        titleView.setText("车牌选择");
     }
 
     @Override

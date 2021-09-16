@@ -11,16 +11,13 @@
  * See the Mulan PSL v2 for more details.
  */
 
-package com.github.gzuliyujiang.basepicker;
+package com.github.gzuliyujiang.dialog;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PixelFormat;
-import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
@@ -28,7 +25,6 @@ import android.graphics.drawable.shapes.RoundRectShape;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -49,27 +45,27 @@ import androidx.annotation.StyleRes;
  * @since 2017/4/12
  */
 @SuppressWarnings({"WeakerAccess", "unused"})
-public abstract class BottomDialog extends Dialog implements DialogInterface.OnShowListener, DialogInterface.OnDismissListener {
+public abstract class BaseDialog extends Dialog implements DialogInterface.OnShowListener, DialogInterface.OnDismissListener {
     public static final int MATCH_PARENT = ViewGroup.LayoutParams.MATCH_PARENT;
     public static final int WRAP_CONTENT = ViewGroup.LayoutParams.WRAP_CONTENT;
     protected Activity activity;
     protected View contentView;
-    protected View maskView;
 
-    public BottomDialog(@NonNull Activity activity) {
-        super(activity, R.style.PickerTheme);
-        init(activity);
+    public BaseDialog(@NonNull Activity activity) {
+        this(activity, R.style.DialogTheme_Base);
     }
 
-    public BottomDialog(@NonNull Activity activity, @StyleRes int themeResId) {
+    public BaseDialog(@NonNull Activity activity, @StyleRes int themeResId) {
         super(activity, themeResId);
         init(activity);
     }
 
+    public final View getContentView() {
+        return contentView;
+    }
+
     private void init(Activity activity) {
         this.activity = activity;
-        onInit(activity);
-        PickerLog.print("dialog onInit");
         setOwnerActivity(activity);
         //触摸屏幕取消窗体
         setCanceledOnTouchOutside(false);
@@ -86,6 +82,7 @@ public abstract class BottomDialog extends Dialog implements DialogInterface.OnS
             window.setGravity(Gravity.CENTER);
             window.getDecorView().setPadding(0, 0, 0, 0);
         }
+        onInit(activity, null);
         // 调用create或show才能触发onCreate
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             super.create();
@@ -94,98 +91,43 @@ public abstract class BottomDialog extends Dialog implements DialogInterface.OnS
         }
     }
 
-    protected void onInit(@NonNull Context context) {
-
+    @CallSuper
+    protected void onInit(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
+        DialogLog.print("dialog onInit");
     }
 
     @Override
     protected final void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        PickerLog.print("dialog onCreate");
+        DialogLog.print("dialog onCreate");
         if (contentView == null) {
             readyView();
         }
     }
 
     private void readyView() {
-        contentView = createContentView(activity);
+        contentView = createContentView();
         contentView.setFocusable(true);
         contentView.setFocusableInTouchMode(true);
         setContentView(contentView);
-        if (enableMaskView()) {
-            addMaskView();
-        }
-        setCancelable(true);
-        setCanceledOnTouchOutside(true);
-        setWidth(activity.getResources().getDisplayMetrics().widthPixels);
-        setGravity(Gravity.BOTTOM);
         initView(contentView);
     }
 
     @NonNull
-    protected abstract View createContentView(@NonNull Activity activity);
+    protected abstract View createContentView();
 
     @CallSuper
-    protected void initView(@NonNull View contentView) {
-        PickerLog.print("dialog initView");
+    protected void initView(View contentView) {
+        DialogLog.print("dialog initView");
     }
 
-    protected boolean enableMaskView() {
-        return true;
-    }
-
-    private void addMaskView() {
-        try {
-            // 取消弹窗遮罩效果，通过自定义遮罩层视图解决自带弹窗遮罩致使系统导航栏亮度突兀问题
-            setDimAmount(0);
-            WindowManager.LayoutParams params = new WindowManager.LayoutParams();
-            params.width = WindowManager.LayoutParams.MATCH_PARENT;
-            Point screenRealSize = new Point();
-            activity.getWindowManager().getDefaultDisplay().getRealSize(screenRealSize);
-            int navBarIdentifier = activity.getResources().getIdentifier("navigation_bar_height", "dimen", "android");
-            params.height = screenRealSize.y - activity.getResources().getDimensionPixelSize(navBarIdentifier);
-            params.gravity = Gravity.TOP;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                // 取消弹窗遮罩效果后，异形屏的状态栏没法被自定义的遮罩试图挡住，需结合systemUiVisibility
-                params.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
-            }
-            params.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                params.flags = WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS;
-            }
-            params.type = WindowManager.LayoutParams.TYPE_APPLICATION_PANEL;
-            params.format = PixelFormat.TRANSLUCENT;
-            params.token = activity.getWindow().getDecorView().getWindowToken();
-            maskView = new View(activity);
-            maskView.setBackgroundColor(0x7F000000);
-            maskView.setFitsSystemWindows(false);
-            maskView.setOnKeyListener(new View.OnKeyListener() {
-                @Override
-                public boolean onKey(View view, int keyCode, KeyEvent event) {
-                    if (keyCode == KeyEvent.KEYCODE_BACK) {
-                        dismiss();
-                        return true;
-                    }
-                    return false;
-                }
-            });
-            activity.getWindowManager().addView(maskView, params);
-            PickerLog.print("dialog add mask view");
-        } catch (Exception e) {
-            PickerLog.print(e);
-        }
-    }
-
-    public final Activity getActivity() {
-        return activity;
-    }
-
-    public final View getContentView() {
-        return contentView;
+    public final void disableCancel() {
+        setCancelable(false);
+        setCanceledOnTouchOutside(false);
     }
 
     public final void enableRoundCorner() {
-        setBackgroundResource(R.drawable.picker_corner_bg);
+        setBackgroundResource(R.drawable.dialog_corner_round_top_white);
     }
 
     public final void setBackground(Drawable background) {
@@ -257,12 +199,9 @@ public abstract class BottomDialog extends Dialog implements DialogInterface.OnS
             return;
         }
         final OnShowListener current = this;
-        super.setOnShowListener(new OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                current.onShow(dialog);
-                listener.onShow(dialog);
-            }
+        super.setOnShowListener(dialog -> {
+            current.onShow(dialog);
+            listener.onShow(dialog);
         });
     }
 
@@ -272,12 +211,9 @@ public abstract class BottomDialog extends Dialog implements DialogInterface.OnS
             return;
         }
         final OnDismissListener current = this;
-        super.setOnDismissListener(new OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                current.onDismiss(dialog);
-                listener.onDismiss(dialog);
-            }
+        super.setOnDismissListener(dialog -> {
+            current.onDismiss(dialog);
+            listener.onDismiss(dialog);
         });
     }
 
@@ -289,12 +225,12 @@ public abstract class BottomDialog extends Dialog implements DialogInterface.OnS
         }
         try {
             super.show();
-            PickerLog.print("dialog show");
+            DialogLog.print("dialog show");
         } catch (Exception e) {
             //...not attached to window manager
             //...Unable to add window...is your activity running?
             //...Activity...has leaked window...that was originally added here
-            PickerLog.print(e);
+            DialogLog.print(e);
         }
     }
 
@@ -306,32 +242,32 @@ public abstract class BottomDialog extends Dialog implements DialogInterface.OnS
         }
         try {
             super.dismiss();
-            PickerLog.print("dialog dismiss");
+            DialogLog.print("dialog dismiss");
         } catch (Exception e) {
             //...not attached to window manager
             //...Activity...has leaked window...that was originally added here
-            PickerLog.print(e);
+            DialogLog.print(e);
         }
     }
 
     @CallSuper
     @Override
     public void onAttachedToWindow() {
-        PickerLog.print("dialog attached to window");
+        DialogLog.print("dialog attached to window");
         super.onAttachedToWindow();
         initData();
     }
 
     @CallSuper
     protected void initData() {
-        PickerLog.print("dialog initData");
+        DialogLog.print("dialog initData");
     }
 
     @CallSuper
     @Override
     public void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        PickerLog.print("dialog detached from window");
+        DialogLog.print("dialog detached from window");
     }
 
     /**
@@ -340,7 +276,7 @@ public abstract class BottomDialog extends Dialog implements DialogInterface.OnS
     @CallSuper
     @Override
     public void onShow(DialogInterface dialog) {
-        PickerLog.print("dialog onShow");
+        DialogLog.print("dialog onShow");
     }
 
     /**
@@ -349,20 +285,7 @@ public abstract class BottomDialog extends Dialog implements DialogInterface.OnS
     @CallSuper
     @Override
     public void onDismiss(DialogInterface dialog) {
-        PickerLog.print("dialog onDismiss");
-        removeMaskView();
-    }
-
-    private void removeMaskView() {
-        if (maskView == null) {
-            return;
-        }
-        try {
-            activity.getWindowManager().removeViewImmediate(maskView);
-            PickerLog.print("dialog remove mask view");
-        } catch (Exception e) {
-            PickerLog.print(e);
-        }
+        DialogLog.print("dialog onDismiss");
     }
 
 }

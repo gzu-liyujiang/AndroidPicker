@@ -61,6 +61,12 @@ public class ConstellationPicker extends OptionPicker {
     }
 
     @Override
+    protected void initData() {
+        super.initData();
+        titleView.setText("星座选择");
+    }
+
+    @Override
     protected List<?> provideData() {
         boolean isChinese = Locale.getDefault().getDisplayLanguage().contains("中文");
         LinkedList<String> data = new LinkedList<>();

@@ -19,7 +19,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
 
-import com.github.gzuliyujiang.basepicker.ConfirmPicker;
+import com.github.gzuliyujiang.dialog.ModalDialog;
 import com.github.gzuliyujiang.wheelpicker.contract.OnDatePickedListener;
 import com.github.gzuliyujiang.wheelpicker.widget.DateWheelLayout;
 
@@ -30,7 +30,7 @@ import com.github.gzuliyujiang.wheelpicker.widget.DateWheelLayout;
  * @since 2021/6/5 18:17
  */
 @SuppressWarnings("unused")
-public class DatePicker extends ConfirmPicker {
+public class DatePicker extends ModalDialog {
     protected DateWheelLayout wheelLayout;
     private OnDatePickedListener onDatePickedListener;
 
@@ -44,7 +44,7 @@ public class DatePicker extends ConfirmPicker {
 
     @NonNull
     @Override
-    protected View createBodyView(@NonNull Activity activity) {
+    protected View createBodyView() {
         wheelLayout = new DateWheelLayout(activity);
         return wheelLayout;
     }
@@ -54,9 +54,10 @@ public class DatePicker extends ConfirmPicker {
         super.initView(contentView);
     }
 
-    @Deprecated
-    protected int provideDateMode() {
-        throw new UnsupportedOperationException("Use `picker.getWheelLayout().setDateMode()` instead");
+    @Override
+    protected void initData() {
+        super.initData();
+        titleView.setText("日期选择");
     }
 
     @Override

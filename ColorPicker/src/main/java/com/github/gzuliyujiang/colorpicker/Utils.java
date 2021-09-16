@@ -18,7 +18,7 @@ import android.graphics.Color;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 
-import com.github.gzuliyujiang.basepicker.PickerLog;
+import com.github.gzuliyujiang.dialog.DialogLog;
 
 /**
  * @author 贵州山野羡民（1032694760@qq.com）
@@ -59,10 +59,10 @@ class Utils {
         String colorString;
         if (includeAlpha) {
             colorString = alpha + red + green + blue;
-            PickerLog.print(String.format("%s to color string is %s", color, colorString));
+            DialogLog.print(String.format("%s to color string is %s", color, colorString));
         } else {
             colorString = red + green + blue;
-            PickerLog.print(String.format("%s to color string is %s%s%s%s, exclude alpha is %s", color, alpha, red, green, blue, colorString));
+            DialogLog.print(String.format("%s to color string is %s%s%s%s, exclude alpha is %s", color, alpha, red, green, blue, colorString));
         }
         return colorString;
     }

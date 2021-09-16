@@ -15,6 +15,7 @@ package com.github.gzuliyujiang.filepicker;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -23,9 +24,10 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.github.gzuliyujiang.basepicker.PickerLog;
+import com.github.gzuliyujiang.dialog.DialogLog;
 import com.github.gzuliyujiang.filepicker.adapter.FileAdapter;
 import com.github.gzuliyujiang.filepicker.adapter.FileEntity;
 import com.github.gzuliyujiang.filepicker.adapter.PathAdapter;
@@ -51,7 +53,6 @@ public class FileExplorer extends FrameLayout {
     private PathAdapter pathAdapter;
     private RecyclerView fileListView;
     private TextView emptyHintView;
-    private View bottomLineView;
     private RecyclerView pathListView;
     private OnFileClickedListener onFileClickedListener;
 
@@ -70,6 +71,7 @@ public class FileExplorer extends FrameLayout {
         init(context);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public FileExplorer(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context);
@@ -83,7 +85,6 @@ public class FileExplorer extends FrameLayout {
         emptyHint = Locale.getDefault().getDisplayLanguage().contains("中文") ? "<空>" : "<Empty>";
         emptyHintView = contentView.findViewById(R.id.file_picker_empty_hint);
         emptyHintView.setText(emptyHint);
-        bottomLineView = contentView.findViewById(R.id.file_picker_bottom_line);
         pathAdapter = new PathAdapter(context);
         pathListView = contentView.findViewById(R.id.file_picker_path_list);
         pathListView.setAdapter(pathAdapter);
@@ -97,7 +98,7 @@ public class FileExplorer extends FrameLayout {
             @Override
             public void onPathClicked(int position, @NonNull String path) {
                 FileEntity entity = fileAdapter.getItem(position);
-                PickerLog.print("clicked file item: " + entity);
+                DialogLog.print("clicked file item: " + entity);
                 File file = entity.getFile();
                 if (file.isDirectory()) {
                     refreshCurrent(file);
@@ -111,7 +112,7 @@ public class FileExplorer extends FrameLayout {
         pathAdapter.setOnPathClickedListener(new OnPathClickedListener() {
             @Override
             public void onPathClicked(int position, @NonNull String path) {
-                PickerLog.print("clicked path name: " + path);
+                DialogLog.print("clicked path name: " + path);
                 refreshCurrent(new File(path));
             }
         });
@@ -167,11 +168,11 @@ public class FileExplorer extends FrameLayout {
             itemCount--;
         }
         if (itemCount < 1) {
-            PickerLog.print("no files, or dir is empty");
+            DialogLog.print("no files, or dir is empty");
             emptyHintView.setVisibility(View.VISIBLE);
             emptyHintView.setText(emptyHint);
         } else {
-            PickerLog.print("files or dirs count: " + itemCount);
+            DialogLog.print("files or dirs count: " + itemCount);
             emptyHintView.setVisibility(View.GONE);
         }
     }
@@ -238,10 +239,6 @@ public class FileExplorer extends FrameLayout {
 
     public final TextView getEmptyHintView() {
         return emptyHintView;
-    }
-
-    public final View getBottomLineView() {
-        return bottomLineView;
     }
 
     public final RecyclerView getPathListView() {

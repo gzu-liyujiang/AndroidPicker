@@ -14,17 +14,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="bottom"
-    android:orientation="vertical">
+    android:gravity="center_horizontal"
+    android:orientation="horizontal">
 
-    <com.github.gzuliyujiang.colorpicker.BrightnessGradientView
-        android:id="@+id/color_picker_bright"
-        android:layout_width="match_parent"
-        android:layout_height="20dp" />
-
-    <com.github.gzuliyujiang.colorpicker.ColorGradientView
-        android:id="@+id/color_picker_panel"
-        android:layout_width="match_parent"
-        android:layout_height="200dp" />
+    <TextView
+        android:id="@+id/dialog_modal_ok"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="25dp"
+        android:background="@drawable/dialog_ellipse_blue"
+        android:gravity="center"
+        android:paddingTop="13dp"
+        android:paddingBottom="13dp"
+        android:singleLine="true"
+        android:text="@android:string/ok"
+        android:textColor="#FFFFFFFF"
+        android:textSize="15sp" />
 
 </LinearLayout>

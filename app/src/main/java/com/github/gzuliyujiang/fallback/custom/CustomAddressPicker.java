@@ -15,12 +15,10 @@ package com.github.gzuliyujiang.fallback.custom;
 
 import android.app.Activity;
 import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.github.gzuliyujiang.basepicker.BottomDialog;
+import com.github.gzuliyujiang.dialog.BottomDialog;
 import com.github.gzuliyujiang.fallback.R;
 import com.github.gzuliyujiang.wheelpicker.annotation.AddressMode;
 import com.github.gzuliyujiang.wheelpicker.contract.AddressLoader;
@@ -33,7 +31,6 @@ import com.github.gzuliyujiang.wheelpicker.impl.AddressProvider;
 import com.github.gzuliyujiang.wheelpicker.impl.AssetAddressLoader;
 import com.github.gzuliyujiang.wheelpicker.utility.AddressJsonParser;
 import com.github.gzuliyujiang.wheelpicker.widget.LinkageWheelLayout;
-import com.github.gzuliyujiang.wheelview.widget.WheelView;
 
 import java.util.List;
 
@@ -53,7 +50,7 @@ public class CustomAddressPicker extends BottomDialog implements AddressReceiver
 
     @NonNull
     @Override
-    protected View createContentView(@NonNull Activity activity) {
+    protected View createContentView() {
         return View.inflate(activity, R.layout.wheel_picker_custom_ui_address, null);
     }
 
@@ -111,38 +108,6 @@ public class CustomAddressPicker extends BottomDialog implements AddressReceiver
 
     public void setOnAddressPickedListener(OnAddressPickedListener onAddressPickedListener) {
         this.onAddressPickedListener = onAddressPickedListener;
-    }
-
-    public final LinkageWheelLayout getWheelLayout() {
-        return wheelLayout;
-    }
-
-    public final WheelView getProvinceWheelView() {
-        return wheelLayout.getFirstWheelView();
-    }
-
-    public final WheelView getCityWheelView() {
-        return wheelLayout.getSecondWheelView();
-    }
-
-    public final WheelView getCountyWheelView() {
-        return wheelLayout.getThirdWheelView();
-    }
-
-    public final TextView getProvinceLabelView() {
-        return wheelLayout.getFirstLabelView();
-    }
-
-    public final TextView getCityLabelView() {
-        return wheelLayout.getSecondLabelView();
-    }
-
-    public final TextView getCountyLabelView() {
-        return wheelLayout.getThirdLabelView();
-    }
-
-    public final ProgressBar getLoadingView() {
-        return wheelLayout.getLoadingView();
     }
 
 }

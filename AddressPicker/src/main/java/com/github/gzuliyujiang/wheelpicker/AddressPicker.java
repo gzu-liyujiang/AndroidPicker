@@ -67,6 +67,7 @@ public class AddressPicker extends LinkagePicker implements AddressReceiver {
     @Override
     protected void initData() {
         super.initData();
+        titleView.setText("地址选择");
         if (addressLoader == null || addressParser == null) {
             return;
         }

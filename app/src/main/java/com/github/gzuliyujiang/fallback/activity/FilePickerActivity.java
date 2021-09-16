@@ -52,7 +52,6 @@ public class FilePickerActivity extends FragmentActivity implements OnFilePicked
 
     public void onFilePick(View view) {
         FilePicker picker = new FilePicker(this);
-        picker.enableRoundCorner();
         picker.setInitDir(ExplorerMode.FILE, getExternalFilesDir(null));
         picker.setOnFilePickedListener(this);
         picker.show();
@@ -60,7 +59,6 @@ public class FilePickerActivity extends FragmentActivity implements OnFilePicked
 
     public void onDirPick(View view) {
         FilePicker picker = new FilePicker(this);
-        picker.enableRoundCorner();
         picker.setInitDir(ExplorerMode.DIRECTORY, getFilesDir());
         picker.setOnFilePickedListener(this);
         picker.show();

@@ -46,6 +46,7 @@ public class BirthdayPicker extends DatePicker {
     @Override
     protected void initData() {
         super.initData();
+        titleView.setText("生日选择");
         Calendar calendar = Calendar.getInstance();
         int currentYear = calendar.get(Calendar.YEAR);
         int currentMonth = calendar.get(Calendar.MONTH) + 1;

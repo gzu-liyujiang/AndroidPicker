@@ -23,8 +23,8 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
 
-import com.github.gzuliyujiang.basepicker.BottomDialog;
-import com.github.gzuliyujiang.basepicker.PickerLog;
+import com.github.gzuliyujiang.dialog.DialogLog;
+import com.github.gzuliyujiang.dialog.ModalDialog;
 
 import java.util.Locale;
 
@@ -33,10 +33,7 @@ import java.util.Locale;
  * @since 2021/6/10 10:54
  */
 @SuppressWarnings("unused")
-public class ColorPicker extends BottomDialog implements View.OnClickListener, OnColorChangedListener {
-    protected TextView cancelView;
-    protected TextView hexView;
-    protected TextView okView;
+public class ColorPicker extends ModalDialog implements OnColorChangedListener {
     protected ColorGradientView colorGradientView;
     protected BrightnessGradientView brightnessGradientView;
     private boolean initialized = false;
@@ -53,7 +50,7 @@ public class ColorPicker extends BottomDialog implements View.OnClickListener, O
 
     @NonNull
     @Override
-    protected View createContentView(@NonNull Activity activity) {
+    protected View createBodyView() {
         return View.inflate(activity, R.layout.color_picker_content, null);
     }
 
@@ -61,9 +58,6 @@ public class ColorPicker extends BottomDialog implements View.OnClickListener, O
     @Override
     protected void initView(@NonNull View contentView) {
         super.initView(contentView);
-        cancelView = contentView.findViewById(R.id.color_picker_cancel);
-        hexView = contentView.findViewById(R.id.color_picker_hex);
-        okView = contentView.findViewById(R.id.color_picker_ok);
         colorGradientView = contentView.findViewById(R.id.color_picker_panel);
         brightnessGradientView = contentView.findViewById(R.id.color_picker_bright);
     }
@@ -79,7 +73,6 @@ public class ColorPicker extends BottomDialog implements View.OnClickListener, O
         if (okView != null) {
             okView.setOnClickListener(this);
         }
-        hexView.getPaint().setStrokeWidth(hexView.getResources().getDisplayMetrics().density * 3);
         colorGradientView.setOnColorChangedListener(this);
         brightnessGradientView.setOnColorChangedListener(this);
         colorGradientView.setBrightnessGradientView(brightnessGradientView);
@@ -87,18 +80,15 @@ public class ColorPicker extends BottomDialog implements View.OnClickListener, O
         colorGradientView.setColor(initColor);
     }
 
-    @CallSuper
     @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        if (id == R.id.color_picker_cancel) {
-            PickerLog.print("cancel clicked");
-            onCancel();
-            dismiss();
-        } else if (id == R.id.color_picker_ok) {
-            PickerLog.print("ok clicked");
-            onOk();
-            dismiss();
+    protected void onCancel() {
+
+    }
+
+    @Override
+    protected void onOk() {
+        if (onColorPickedListener != null) {
+            onColorPickedListener.onColorPicked(getCurrentColor());
         }
     }
 
@@ -107,21 +97,10 @@ public class ColorPicker extends BottomDialog implements View.OnClickListener, O
         updateCurrentColor(color);
     }
 
-    protected void onCancel() {
-
-    }
-
-    protected void onOk() {
-        if (onColorPickedListener != null) {
-            onColorPickedListener.onColorPicked(getCurrentColor());
-        }
-    }
-
     private void updateCurrentColor(@ColorInt int color) {
-        String hexString = Utils.toHexString(color, false).toUpperCase(Locale.PRC);
-        hexView.setText(hexString);
-        hexView.setTextColor(Utils.reverseColor(color));
-        hexView.setBackgroundColor(color);
+        titleView.setText(Utils.toHexString(color, false).toUpperCase(Locale.PRC));
+        titleView.setTextColor(color);
+        titleView.setShadowLayer(10, 5, 5, Utils.reverseColor(color));
     }
 
     /**
@@ -143,23 +122,15 @@ public class ColorPicker extends BottomDialog implements View.OnClickListener, O
     @ColorInt
     public final int getCurrentColor() {
         try {
-            return Color.parseColor("#" + hexView.getText());
+            return Color.parseColor("#" + titleView.getText());
         } catch (Exception e) {
-            PickerLog.print(e);
+            DialogLog.print(e);
             return initColor;
         }
     }
 
-    public final TextView getOkView() {
-        return okView;
-    }
-
     public final TextView getHexView() {
-        return hexView;
-    }
-
-    public final TextView getCancelView() {
-        return cancelView;
+        return getTitleView();
     }
 
     public final ColorGradientView getColorGradientView() {

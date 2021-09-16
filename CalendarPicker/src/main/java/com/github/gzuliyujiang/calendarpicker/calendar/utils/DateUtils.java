@@ -119,7 +119,7 @@ public class DateUtils {
      * @param eDate 结束日期
      * @return 区间内各月的Date
      */
-    public static List<Date> fillMonths(Date sDate, Date eDate) {
+    public static List<Date> fillDates(Date sDate, Date eDate) {
         List<Date> dates = new ArrayList<>();
         if (null == sDate || null == eDate) {
             dates.add(new Date());

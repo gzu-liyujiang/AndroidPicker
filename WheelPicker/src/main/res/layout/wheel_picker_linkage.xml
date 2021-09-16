@@ -53,8 +53,7 @@
             style="@style/WheelDefault"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1.0"
-            android:visibility="visible" />
+            android:layout_weight="1.0" />
 
         <TextView
             android:id="@+id/wheel_picker_linkage_third_label"

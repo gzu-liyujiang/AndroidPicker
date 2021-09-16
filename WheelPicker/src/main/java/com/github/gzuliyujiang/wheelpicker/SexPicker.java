@@ -59,6 +59,12 @@ public class SexPicker extends OptionPicker {
     }
 
     @Override
+    protected void initData() {
+        super.initData();
+        titleView.setText("性别选择");
+    }
+
+    @Override
     protected List<?> provideData() {
         boolean isChinese = Locale.getDefault().getDisplayLanguage().contains("中文");
         LinkedList<String> data = new LinkedList<>();

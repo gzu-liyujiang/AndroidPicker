@@ -66,7 +66,6 @@ public class SinglePickerActivity extends FragmentActivity implements OnNumberPi
 
     public void onInteger(View view) {
         NumberPicker picker = new NumberPicker(this);
-        picker.enableRoundCorner();
         picker.setOnNumberPickedListener(this);
         picker.getWheelLayout().setOnNumberSelectedListener(new OnNumberSelectedListener() {
             @Override
@@ -88,7 +87,6 @@ public class SinglePickerActivity extends FragmentActivity implements OnNumberPi
 
     public void onFloat(View view) {
         NumberPicker picker = new NumberPicker(this);
-        picker.enableRoundCorner();
         picker.setBodyWidth(120);
         picker.setOnNumberPickedListener(this);
         picker.getWheelLayout().setOnNumberSelectedListener(new OnNumberSelectedListener() {
@@ -113,7 +111,6 @@ public class SinglePickerActivity extends FragmentActivity implements OnNumberPi
 
     public void onOptionText(View view) {
         OptionPicker picker = new OptionPicker(this);
-        picker.enableRoundCorner();
         picker.setBackgroundColor(true, 0xFFFFFFFF);
         picker.setData("测试", "很长很长很长很长很长很长很长很长很长很长很长很长很长很长");
         picker.setOnOptionPickedListener(this);
@@ -138,10 +135,10 @@ public class SinglePickerActivity extends FragmentActivity implements OnNumberPi
         data.add(new GoodsCategoryBean(5, "酒水饮料"));
         data.add(new GoodsCategoryBean(6, "图书音像"));
         OptionPicker picker = new OptionPicker(this);
-        picker.enableRoundCorner();
         picker.setBodyWidth(140);
-        picker.getOkView().setTextColor(0xFFFF0000);
-        picker.getTopLineView().setBackgroundColor(0xFFFF0000);
+        picker.getWheelView().setIndicatorColor(0xFFFF0000);
+        picker.getWheelView().setTextColor(0xFFFF00FF);
+        picker.getWheelView().setSelectedTextColor(0xFFFF0000);
         picker.setOnOptionPickedListener(this);
         picker.getWheelLayout().setOnOptionSelectedListener(new OnOptionSelectedListener() {
             @Override
@@ -156,7 +153,6 @@ public class SinglePickerActivity extends FragmentActivity implements OnNumberPi
 
     public void onSex(View view) {
         SexPicker picker = new SexPicker(this, true);
-        picker.enableRoundCorner();
         picker.setBodyWidth(140);
         picker.setDefaultValue("女");
         picker.setOnOptionPickedListener(this);
@@ -171,7 +167,6 @@ public class SinglePickerActivity extends FragmentActivity implements OnNumberPi
 
     public void onEthnic(View view) {
         EthnicPicker picker = new EthnicPicker(this);
-        picker.enableRoundCorner();
         picker.setBodyWidth(140);
         picker.setEthnicSpec(EthnicSpec.SEVENTH_NATIONAL_CENSUS);
         picker.setDefaultValueByCode("97");
@@ -189,7 +184,6 @@ public class SinglePickerActivity extends FragmentActivity implements OnNumberPi
 
     public void onConstellation(View view) {
         ConstellationPicker picker = new ConstellationPicker(this, true);
-        picker.enableRoundCorner();
         picker.setBodyWidth(140);
         picker.setDefaultValue("射手座");
         picker.setOnOptionPickedListener(this);
@@ -204,7 +198,6 @@ public class SinglePickerActivity extends FragmentActivity implements OnNumberPi
 
     public void onPhoneCode(View view) {
         PhoneCodePicker picker = new PhoneCodePicker(this);
-        picker.enableRoundCorner();
         picker.setBodyWidth(140);
         picker.setDefaultPosition(2);
         picker.setOnOptionPickedListener(this);

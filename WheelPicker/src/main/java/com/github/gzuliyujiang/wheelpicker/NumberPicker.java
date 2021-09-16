@@ -20,7 +20,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
 
-import com.github.gzuliyujiang.basepicker.ConfirmPicker;
+import com.github.gzuliyujiang.dialog.ModalDialog;
 import com.github.gzuliyujiang.wheelpicker.contract.OnNumberPickedListener;
 import com.github.gzuliyujiang.wheelpicker.widget.NumberWheelLayout;
 import com.github.gzuliyujiang.wheelview.contract.WheelFormatter;
@@ -33,7 +33,7 @@ import com.github.gzuliyujiang.wheelview.widget.WheelView;
  * @since 2015/10/24
  */
 @SuppressWarnings("unused")
-public class NumberPicker extends ConfirmPicker {
+public class NumberPicker extends ModalDialog {
     protected NumberWheelLayout wheelLayout;
     private OnNumberPickedListener onNumberPickedListener;
 
@@ -47,9 +47,15 @@ public class NumberPicker extends ConfirmPicker {
 
     @NonNull
     @Override
-    protected View createBodyView(@NonNull Activity activity) {
+    protected View createBodyView() {
         wheelLayout = new NumberWheelLayout(activity);
         return wheelLayout;
+    }
+
+    @Override
+    protected void initData() {
+        super.initData();
+        titleView.setText("请选择");
     }
 
     @Override

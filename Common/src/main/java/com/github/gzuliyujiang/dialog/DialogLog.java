@@ -11,7 +11,7 @@
  * See the Mulan PSL v2 for more details.
  */
 
-package com.github.gzuliyujiang.basepicker;
+package com.github.gzuliyujiang.dialog;
 
 import android.util.Log;
 
@@ -23,11 +23,11 @@ import androidx.annotation.NonNull;
  * @author 贵州山魈羡民 (1032694760@qq.com)
  * @since 2021/3/26 21:34
  */
-public final class PickerLog {
+public final class DialogLog {
     private static final String TAG = "AndroidPicker";
     private static boolean enable = false;
 
-    private PickerLog() {
+    private DialogLog() {
         super();
     }
 

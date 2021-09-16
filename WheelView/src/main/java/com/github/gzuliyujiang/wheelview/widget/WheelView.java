@@ -832,7 +832,13 @@ public class WheelView extends View implements Runnable {
     }
 
     public String formatItem(int position) {
-        Object item = getItem(position);
+        return formatItem(getItem(position));
+    }
+
+    public String formatItem(Object item) {
+        if (item == null) {
+            return "";
+        }
         if (item instanceof TextProvider) {
             return ((TextProvider) item).provideText();
         }

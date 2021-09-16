@@ -124,7 +124,7 @@ public class CalendarView extends LinearLayout {
                 .setDivideColor(ContextCompat.getColor(getContext(), R.color.calendar_month_divide_line_color))           //分割线颜色
                 .setDivideHeight((int) getResources().getDimension(R.dimen.calendar_decoration_divide_line_height))
                 //分割线高度 (默认没有分割线)
-                .setGroupTextColor(ContextCompat.getColor(getContext(), R.color.calendar_text_decoration_color))
+                .setGroupTextColor(ContextCompat.getColor(getContext(), R.color.calendar_decoration_text_color))
                 //字体颜色
                 .setTypeface(Typeface.defaultFromStyle(Typeface.BOLD)) //加粗
                 .setGroupTextSize((int) getResources().getDimension(R.dimen.calendar_decoration_text_size))   //字体大小

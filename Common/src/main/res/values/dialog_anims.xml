@@ -11,4 +11,16 @@
   ~ See the Mulan PSL v2 for more details.
   -->
 
-<manifest package="com.github.gzuliyujiang.dialog" />
+<resources>
+
+    <style name="DialogFadeAnimation">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
+
+    <style name="DialogSheetAnimation">
+        <item name="android:windowEnterAnimation">@anim/dialog_sheet_enter</item>
+        <item name="android:windowExitAnimation">@anim/dialog_sheet_exit</item>
+    </style>
+
+</resources>

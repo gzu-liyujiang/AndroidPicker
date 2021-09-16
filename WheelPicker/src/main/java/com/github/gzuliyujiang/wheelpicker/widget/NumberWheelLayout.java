@@ -74,7 +74,7 @@ public class NumberWheelLayout extends OptionWheelLayout {
         setCyclicEnabled(typedArray.getBoolean(R.styleable.NumberWheelLayout_wheel_cyclicEnabled, false));
         setIndicatorEnabled(typedArray.getBoolean(R.styleable.NumberWheelLayout_wheel_indicatorEnabled, false));
         setIndicatorColor(typedArray.getColor(R.styleable.NumberWheelLayout_wheel_indicatorColor, 0xFFEE3333));
-        setIndicatorSize(typedArray.getDimension(R.styleable.NumberWheelLayout_wheel_indicatorSize, 1 * density));
+        setIndicatorSize(typedArray.getDimensionPixelSize(R.styleable.NumberWheelLayout_wheel_indicatorSize, (int) (1 * density)));
         setCurvedIndicatorSpace(typedArray.getDimensionPixelSize(R.styleable.NumberWheelLayout_wheel_curvedIndicatorSpace, (int) (1 * density)));
         setCurtainEnabled(typedArray.getBoolean(R.styleable.NumberWheelLayout_wheel_curtainEnabled, false));
         setCurtainColor(typedArray.getColor(R.styleable.NumberWheelLayout_wheel_curtainColor, 0x88FFFFFF));
@@ -103,7 +103,7 @@ public class NumberWheelLayout extends OptionWheelLayout {
     }
 
     /**
-     * @deprecated 使用 {@link #setRange(float, float, float)} 代替
+     * @deprecated 使用 {@link #setRange} 代替
      */
     @Deprecated
     @Override
@@ -112,7 +112,7 @@ public class NumberWheelLayout extends OptionWheelLayout {
     }
 
     /**
-     * @deprecated 使用 {@link #setOnNumberSelectedListener(OnNumberSelectedListener)} 代替
+     * @deprecated 使用 {@link #setOnNumberSelectedListener} 代替
      */
     @Deprecated
     @Override

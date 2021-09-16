@@ -11,22 +11,7 @@
   ~ See the Mulan PSL v2 for more details.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.github.gzuliyujiang.calendarpicker.calendar.view.CalendarView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/calendar_picker_body"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@android:color/white"
-    android:orientation="vertical">
-
-    <com.github.gzuliyujiang.calendarpicker.calendar.view.CalendarView
-        android:id="@+id/calendar_picker_body"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1.0"
-        android:padding="10dp" />
-
-    <FrameLayout
-        android:id="@+id/calendar_picker_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-</LinearLayout>
+    android:layout_height="match_parent" />

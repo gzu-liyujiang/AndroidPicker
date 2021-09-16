@@ -48,6 +48,9 @@ public class NumberWheelView extends WheelView {
         return data;
     }
 
+    /**
+     * @deprecated 使用 {@link #setRange} 代替
+     */
     @Deprecated
     @Override
     public void setData(List<?> data) {

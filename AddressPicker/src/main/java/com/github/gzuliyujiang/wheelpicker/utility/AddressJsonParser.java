@@ -17,7 +17,7 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import com.github.gzuliyujiang.basepicker.PickerLog;
+import com.github.gzuliyujiang.dialog.DialogLog;
 import com.github.gzuliyujiang.wheelpicker.contract.AddressParser;
 import com.github.gzuliyujiang.wheelpicker.entity.CityEntity;
 import com.github.gzuliyujiang.wheelpicker.entity.CountyEntity;
@@ -54,7 +54,7 @@ public class AddressJsonParser implements AddressParser {
             JSONArray provinceArray = new JSONArray(text);
             return parseProvince(provinceArray);
         } catch (JSONException e) {
-            PickerLog.print(e);
+            DialogLog.print(e);
         }
         return new ArrayList<>();
     }

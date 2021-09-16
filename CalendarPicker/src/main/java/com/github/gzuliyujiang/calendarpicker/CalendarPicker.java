@@ -16,17 +16,17 @@ package com.github.gzuliyujiang.calendarpicker;
 import android.app.Activity;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
 
-import com.github.gzuliyujiang.basepicker.ConfirmPicker;
 import com.github.gzuliyujiang.calendarpicker.calendar.adapter.CalendarAdapter;
-import com.github.gzuliyujiang.calendarpicker.calendar.protocol.OnCalendarSelectListener;
 import com.github.gzuliyujiang.calendarpicker.calendar.protocol.OnCalendarSelectedListener;
 import com.github.gzuliyujiang.calendarpicker.calendar.utils.DateUtils;
 import com.github.gzuliyujiang.calendarpicker.calendar.view.CalendarView;
+import com.github.gzuliyujiang.dialog.DialogConfig;
+import com.github.gzuliyujiang.dialog.DialogStyle;
+import com.github.gzuliyujiang.dialog.ModalDialog;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -39,9 +39,8 @@ import java.util.Locale;
  * @since 2019/4/30 13:36
  */
 @SuppressWarnings({"unused", "deprecation"})
-public class CalendarPicker extends ConfirmPicker implements OnCalendarSelectedListener, OnCalendarSelectListener {
+public class CalendarPicker extends ModalDialog implements OnCalendarSelectedListener {
     private CalendarView calendarView;
-    private FrameLayout bottomView;
     private CalendarAdapter calendarAdapter;
     private boolean singleMode = false;
     private Date minDate, maxDate;
@@ -61,18 +60,27 @@ public class CalendarPicker extends ConfirmPicker implements OnCalendarSelectedL
 
     @NonNull
     @Override
-    protected View createBodyView(@NonNull Activity activity) {
-        View view = View.inflate(activity, R.layout.calendar_picker, null);
-        calendarView = view.findViewById(R.id.calendar_picker_body);
-        bottomView = view.findViewById(R.id.calendar_picker_bottom);
-        return view;
+    protected View createBodyView() {
+        return View.inflate(activity, R.layout.calendar_picker, null);
+    }
+
+    @Override
+    protected void initView(@NonNull View contentView) {
+        super.initView(contentView);
+        if (DialogConfig.getDialogStyle() == DialogStyle.Two) {
+            headerView.setVisibility(View.VISIBLE);
+            titleView.setText("日期选择");
+        } else {
+            headerView.setVisibility(View.GONE);
+        }
+        calendarView = contentView.findViewById(R.id.calendar_picker_body);
     }
 
     @Override
     protected void initData() {
         super.initData();
         initialized = true;
-        setHeight((int) (calendarView.getResources().getDisplayMetrics().heightPixels * 0.6));
+        setHeight((int) (activity.getResources().getDisplayMetrics().heightPixels * 0.6f));
         calendarAdapter = calendarView.getAdapter();
         calendarAdapter.setOnCalendarSelectedListener(this);
         refreshData();
@@ -110,17 +118,6 @@ public class CalendarPicker extends ConfirmPicker implements OnCalendarSelectedL
     public void onRangeSelected(@NonNull Date start, @NonNull Date end) {
         startDate = start;
         endDate = end;
-    }
-
-    @Override
-    public void onSingleSelect(@NonNull Date date) {
-        selectDate = date;
-    }
-
-    @Override
-    public void onDoubleSelect(@NonNull Date before, @NonNull Date after) {
-        startDate = before;
-        endDate = after;
     }
 
     /**
@@ -242,26 +239,16 @@ public class CalendarPicker extends ConfirmPicker implements OnCalendarSelectedL
         calendarView.post(new Runnable() {
             @Override
             public void run() {
-                final Calendar selectedCalendar = DateUtils.calendar(startDate.getTime() + (endDate.getTime() - startDate.getTime()) / 2);
-                int position = calendarAdapter.getDatePosition(selectedCalendar.getTime());
+                int position = calendarAdapter.getDatePosition(startDate);
                 position = Math.max(position, 0);
                 position = Math.min(position, calendarAdapter.getItemCount() - 1);
-                if (position == 0) {
-                    calendarView.getBodyView().scrollToPosition(0);
-                    return;
-                }
-                int offset = (int) (-60 * calendarView.getResources().getDisplayMetrics().density);
-                calendarView.getLayoutManager().scrollToPositionWithOffset(position, offset);
+                calendarView.getLayoutManager().scrollToPositionWithOffset(position, 0);
             }
         });
     }
 
     public final CalendarView getCalendarView() {
         return calendarView;
-    }
-
-    public final FrameLayout getBottomView() {
-        return bottomView;
     }
 
 }

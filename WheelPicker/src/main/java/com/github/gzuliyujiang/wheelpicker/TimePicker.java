@@ -19,7 +19,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
 
-import com.github.gzuliyujiang.basepicker.ConfirmPicker;
+import com.github.gzuliyujiang.dialog.ModalDialog;
 import com.github.gzuliyujiang.wheelpicker.contract.OnTimeMeridiemPickedListener;
 import com.github.gzuliyujiang.wheelpicker.contract.OnTimePickedListener;
 import com.github.gzuliyujiang.wheelpicker.widget.TimeWheelLayout;
@@ -31,7 +31,7 @@ import com.github.gzuliyujiang.wheelpicker.widget.TimeWheelLayout;
  * @since 2021/6/5 18:19
  */
 @SuppressWarnings("unused")
-public class TimePicker extends ConfirmPicker {
+public class TimePicker extends ModalDialog {
     protected TimeWheelLayout wheelLayout;
     private OnTimePickedListener onTimePickedListener;
     private OnTimeMeridiemPickedListener onTimeMeridiemPickedListener;
@@ -46,7 +46,7 @@ public class TimePicker extends ConfirmPicker {
 
     @NonNull
     @Override
-    protected View createBodyView(@NonNull Activity activity) {
+    protected View createBodyView() {
         wheelLayout = new TimeWheelLayout(activity);
         return wheelLayout;
     }
@@ -56,9 +56,10 @@ public class TimePicker extends ConfirmPicker {
         super.initView(contentView);
     }
 
-    @Deprecated
-    protected int provideTimeMode() {
-        throw new UnsupportedOperationException("Use `picker.getWheelLayout().setTimeMode()` instead");
+    @Override
+    protected void initData() {
+        super.initData();
+        titleView.setText("时间选择");
     }
 
     @Override

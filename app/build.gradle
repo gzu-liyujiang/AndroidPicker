@@ -26,7 +26,6 @@ dependencies {
     implementation project(':CalendarPicker')
     implementation project(':ImagePicker')
     debugRuntimeOnly library.orhanobut_logger
-    implementation library.XPopup
     debugRuntimeOnly library.xcrash
     compileOnly library.xcrash
 }

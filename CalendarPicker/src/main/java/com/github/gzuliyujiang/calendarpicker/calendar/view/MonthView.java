@@ -26,7 +26,7 @@ import com.github.gzuliyujiang.calendarpicker.calendar.annotation.Status;
 import com.github.gzuliyujiang.calendarpicker.calendar.protocol.DayEntity;
 import com.github.gzuliyujiang.calendarpicker.calendar.protocol.MonthEntity;
 import com.github.gzuliyujiang.calendarpicker.calendar.protocol.NInterval;
-import com.github.gzuliyujiang.calendarpicker.calendar.protocol.OnMonthClickListener;
+import com.github.gzuliyujiang.calendarpicker.calendar.protocol.OnCalendarDayClickListener;
 import com.github.gzuliyujiang.calendarpicker.calendar.utils.DateUtils;
 
 import java.util.Date;
@@ -213,9 +213,9 @@ public class MonthView extends ViewGroup {
         return monthEntity;
     }
 
-    private OnMonthClickListener onDayInMonthClickListener;
+    private OnCalendarDayClickListener onDayInMonthClickListener;
 
-    public void setOnDayInMonthClickListener(OnMonthClickListener listener) {
+    public void setOnDayInMonthClickListener(OnCalendarDayClickListener listener) {
         onDayInMonthClickListener = listener;
     }
 
@@ -233,7 +233,7 @@ public class MonthView extends ViewGroup {
                 DayEntity entity = dayView.value();
                 Date month = new Date(monthEntity.date().getTime());
                 Date dayDate = DateUtils.specialDayInMonth(month, entity.intValue());
-                onDayInMonthClickListener.onMonthClick(dayDate);
+                onDayInMonthClickListener.onCalendarDayClick(dayDate);
             } catch (Exception e) {
                 e.printStackTrace();
             }

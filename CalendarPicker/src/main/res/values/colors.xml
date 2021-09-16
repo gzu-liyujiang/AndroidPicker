@@ -14,16 +14,17 @@
 <resources>
 
     <!--calendar module-->
-    <color name="calendar_background_color">#FFFFFF</color>
-    <color name="calendar_background_week_color">#FFFFFF</color>
+    <eat-comment />
+    <color name="calendar_background_color">@android:color/transparent</color>
+    <color name="calendar_background_week_color">@android:color/transparent</color>
     <color name="calendar_background_decoration_color">#FFFFFF</color>
-    <color name="calendar_text_decoration_color">#333333</color>
-
+    <color name="calendar_decoration_text_color">#333333</color>
     <!--month module-->
+    <eat-comment />
     <color name="calendar_month_divide_line_color">#FFFFFF</color>
     <color name="calendar_month_background_color">#FFFFFF</color>
-
     <!--day module-->
+    <eat-comment />
     <color name="calendar_day_text_normal_color">#343434</color>
     <color name="calendar_day_text_invalid_color">#CCCCCC</color>
     <color name="calendar_day_text_select_color">#FFFFFF</color>

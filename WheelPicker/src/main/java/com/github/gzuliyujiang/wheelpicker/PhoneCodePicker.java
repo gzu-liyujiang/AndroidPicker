@@ -41,6 +41,12 @@ public class PhoneCodePicker extends OptionPicker {
     }
 
     @Override
+    protected void initData() {
+        super.initData();
+        titleView.setText("请选择");
+    }
+
+    @Override
     protected List<?> provideData() {
         List<PhoneCodeEntity> data = new ArrayList<>();
         data.add(new PhoneCodeEntity("大陆+86", "+86"));
