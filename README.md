@@ -5,14 +5,16 @@
 
 安卓选择器类库，包括日期及时间选择器（可用于出生日期、营业时间等）、单项选择器（可用于性别、民族、职业、学历、星座等）、二三级联动选择器（可用于车牌号、基金定投日期等）、城市地址选择器（分省级、地市级及区县级）、数字选择器（可用于年龄、身高、体重、温度等）、日历选日期择器（可用于酒店及机票预定日期）、颜色选择器、文件及目录选择器等……
 
-欢迎大伙儿在[Issues](https://github.com/gzu-liyujiang/AndroidPicker/issues)提交你的意见或建议。欢迎 Fork & Pull requests 贡献您的代码，大家共同学习【[AndroidPicker 交流群 604235437](https://jq.qq.com/?_wv=1027&k=42bKOeD)】。
+欢迎大伙儿在[Issues](https://github.com/gzu-liyujiang/AndroidPicker/issues)提交你的意见或建议。欢迎 Fork & Pull
+requests 贡献您的代码，大家共同学习【[AndroidPicker 交流群 604235437](https://jq.qq.com/?_wv=1027&k=42bKOeD)】。
 
 - GitHub：https://github.com/gzu-liyujiang/AndroidPicker
 - 码云(GitEE)：https://gitee.com/li_yu_jiang/AndroidPicker
 
 ## 接入指引
 
-最新版本：[![jitpack](https://jitpack.io/v/gzu-liyujiang/AndroidPicker.svg)](https://jitpack.io/#gzu-liyujiang/AndroidPicker) （[更新日志](/ChangeLog.md)）
+最新版本：[![jitpack](https://jitpack.io/v/gzu-liyujiang/AndroidPicker.svg)](https://jitpack.io/#gzu-liyujiang/AndroidPicker)
+（[更新日志](/ChangeLog.md)）
 
 ### 注意事项
 
@@ -34,7 +36,7 @@ allprojects {
 
 ```groovy
 dependencies {
-   implementation 'com.github.gzu-liyujiang.AndroidPicker:Common:<version>'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:Common:<version>'
 }
 ```
 
@@ -42,7 +44,7 @@ dependencies {
 
 ```groovy
 dependencies {
-   implementation 'com.github.gzu-liyujiang.AndroidPicker:WheelView:<version>'
+    implementation 'com.github.gzu-liyujiang.AndroidPicker:WheelView:<version>'
 }
 ```
 
@@ -123,130 +125,115 @@ dependencies {
 ## 用法示例
 
 常见用法请参阅 [demo](/app)，高级用法请细读[源码](/WheelPicker)，
-诸如可以在自己的项目里重写同名的`res/layout/picker_confirm_header.xml`来自定义个性化弹窗头部，
-重写同名的`assets/china_address.json`来自定义省市区数据，
-重写同名的`PickerAnimation`来自定义弹窗动画……。
-代码是最好的老师，强烈建议拉取代码运行，尝试修改 demo 对比查看实际效果以便加深理解。
+诸如可以在自己的项目里重写同名的`res/layout/picker_confirm_header.xml`来自定义个性化弹窗头部， 重写同名的`assets/china_address.json`
+来自定义省市区数据， 重写同名的`PickerAnimation`来自定义弹窗动画……。 代码是最好的老师，强烈建议拉取代码运行，尝试修改 demo 对比查看实际效果以便加深理解。
 
 ### 在 Java 中
 
 ```groovy
         DialogConfig.setDialogStyle(DialogStyle.One);
-        ...
-        List<GoodsCategoryBean> data = new ArrayList<>();
-        data.add(new GoodsCategoryBean(1, "食品生鲜"));
-        data.add(new GoodsCategoryBean(2, "家用电器"));
-        data.add(new GoodsCategoryBean(3, "家居生活"));
-        data.add(new GoodsCategoryBean(4, "医疗保健"));
-        data.add(new GoodsCategoryBean(5, "酒水饮料"));
-        data.add(new GoodsCategoryBean(6, "图书音像"));
-        OptionPicker picker = new OptionPicker(this);
-        picker.setBodyWidth(140);
-        picker.getWheelView().setIndicatorColor(0xFFFF0000);
-        picker.getWheelView().setTextColor(0xFFFF00FF);
-        picker.getWheelView().setSelectedTextColor(0xFFFF0000);
-        picker.setOnOptionPickedListener(this);
-        picker.getWheelLayout().setOnOptionSelectedListener(new OnOptionSelectedListener() {
-            @Override
-            public void onOptionSelected(int position, Object item) {
-                picker.getTitleView().setText(picker.getWheelView().formatItem(position));
-            }
-        });
-        picker.setData(data);
-        picker.setDefaultPosition(2);
-        picker.show();
+...
+List<GoodsCategoryBean> data = new ArrayList<>();
+data.add(new GoodsCategoryBean(1, "食品生鲜"));
+data.add(new GoodsCategoryBean(2, "家用电器"));
+data.add(new GoodsCategoryBean(3, "家居生活"));
+data.add(new GoodsCategoryBean(4, "医疗保健"));
+data.add(new GoodsCategoryBean(5, "酒水饮料"));
+data.add(new GoodsCategoryBean(6, "图书音像"));
+OptionPicker picker = new OptionPicker(this);
+picker.setBodyWidth(140);
+picker.getWheelView().setIndicatorColor(0xFFFF0000);
+picker.getWheelView().setTextColor(0xFFFF00FF);
+picker.getWheelView().setSelectedTextColor(0xFFFF0000);
+picker.setOnOptionPickedListener(this);
+picker.getWheelLayout().setOnOptionSelectedListener(new OnOptionSelectedListener() {
+    @Override
+    public void onOptionSelected(int position, Object item) {
+        picker.getTitleView().setText(picker.getWheelView().formatItem(position));
+    }
+});
+picker.setData(data);
+picker.setDefaultPosition(2);
+picker.show();
 ```
 
 ```groovy
         DialogConfig.setDialogStyle(DialogStyle.Default);
-        ...
-        DatePicker picker = new DatePicker(this);
-        picker.setBodyWidth(240);
-        DateWheelLayout wheelLayout = picker.getWheelLayout();
-        wheelLayout.setDateMode(DateMode.YEAR_MONTH_DAY);
-        wheelLayout.setDateLabel("年", "月", "日");
-        wheelLayout.setRange(DateEntity.today(), DateEntity.yearOnFuture(30), DateEntity.yearOnFuture(10));
-        wheelLayout.setCurtainEnabled(true);
-        wheelLayout.setCurtainColor(0xFFCC0000);
-        wheelLayout.setIndicatorEnabled(true);
-        wheelLayout.setIndicatorColor(0xFFFF0000);
-        wheelLayout.setIndicatorSize(view.getResources().getDisplayMetrics().density * 2);
-        wheelLayout.setTextColor(0xCCCC0000);
-        wheelLayout.setSelectedTextColor(0xFFFF0000);
-        wheelLayout.getYearLabelView().setTextColor(0xFF999999);
-        wheelLayout.getMonthLabelView().setTextColor(0xFF999999);
-        wheelLayout.getDayLabelView().setTextColor(0xFF999999);
-        picker.setOnDatePickedListener(this);
-        picker.show();
+...
+DatePicker picker = new DatePicker(this);
+picker.setBodyWidth(240);
+DateWheelLayout wheelLayout = picker.getWheelLayout();
+wheelLayout.setDateMode(DateMode.YEAR_MONTH_DAY);
+wheelLayout.setDateLabel("年", "月", "日");
+wheelLayout.setRange(DateEntity.today(), DateEntity.yearOnFuture(30), DateEntity.yearOnFuture(10));
+wheelLayout.setCurtainEnabled(true);
+wheelLayout.setCurtainColor(0xFFCC0000);
+wheelLayout.setIndicatorEnabled(true);
+wheelLayout.setIndicatorColor(0xFFFF0000);
+wheelLayout.setIndicatorSize(view.getResources().getDisplayMetrics().density * 2);
+wheelLayout.setTextColor(0xCCCC0000);
+wheelLayout.setSelectedTextColor(0xFFFF0000);
+wheelLayout.getYearLabelView().setTextColor(0xFF999999);
+wheelLayout.getMonthLabelView().setTextColor(0xFF999999);
+wheelLayout.getDayLabelView().setTextColor(0xFF999999);
+picker.setOnDatePickedListener(this);
+picker.show();
 ```
 
 ```groovy
         DialogConfig.setDialogStyle(DialogStyle.Three);
-        ...
-        AddressPicker picker = new AddressPicker(this);
-        picker.setAddressMode("city.json", AddressMode.PROVINCE_CITY_COUNTY,
-                new AddressJsonParser.Builder()
-                       .provinceCodeField("code")
-                        .provinceNameField("name")
-                        .provinceChildField("city")
-                        .cityCodeField("code")
-                        .cityNameField("name")
-                        .cityChildField("area")
-                        .countyCodeField("code")
-                        .countyNameField("name")
-                        .build());
-        picker.setDefaultValue("贵州省", "毕节地区", "纳雍县");
-        picker.setOnAddressPickedListener(this);
-        picker.show();
+...
+AddressPicker picker = new AddressPicker(this);
+picker.setAddressMode("city.json", AddressMode.PROVINCE_CITY_COUNTY,
+        new AddressJsonParser.Builder()
+                .provinceCodeField("code")
+                .provinceNameField("name")
+                .provinceChildField("city")
+                .cityCodeField("code")
+                .cityNameField("name")
+                .cityChildField("area")
+                .countyCodeField("code")
+                .countyNameField("name")
+                .build());
+picker.setDefaultValue("贵州省", "毕节地区", "纳雍县");
+picker.setOnAddressPickedListener(this);
+picker.show();
 ```
 
 ### 在 XML 中
 
 ```xml
-            <com.github.gzuliyujiang.wheelview.widget.WheelView
-                android:id="@+id/wheel_view"
-                android:layout_width="117dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                app:wheel_atmosphericEnabled="true"
-                app:wheel_curvedEnabled="true"
-                app:wheel_curvedIndicatorSpace="4dp"
-                app:wheel_curvedMaxAngle="60"
-                app:wheel_indicatorColor="#FF0081FF"
-                app:wheel_itemSpace="50dp"
-                app:wheel_itemTextColor="#FF474747"
-                app:wheel_itemTextColorSelected="#FF0081FF"
-                app:wheel_itemTextSize="20sp" />
+
+<com.github.gzuliyujiang.wheelview.widget.WheelView android:id="@+id/wheel_view"
+    android:layout_width="117dp" android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal" app:wheel_atmosphericEnabled="true"
+    app:wheel_curvedEnabled="true" app:wheel_curvedIndicatorSpace="4dp"
+    app:wheel_curvedMaxAngle="60" app:wheel_indicatorColor="#FF0081FF" app:wheel_itemSpace="50dp"
+    app:wheel_itemTextColor="#FF474747" app:wheel_itemTextColorSelected="#FF0081FF"
+    app:wheel_itemTextSize="20sp" />
 ```
+
 ```xml
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
 
-            <com.github.gzuliyujiang.wheelpicker.widget.OptionWheelLayout
-                android:id="@+id/wheel_option"
-                android:layout_width="90dp"
-                android:layout_height="150dp"
-                android:layout_gravity="center_horizontal"
-                app:wheel_itemTextAlign="center" />
+<LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-            <com.github.gzuliyujiang.wheelpicker.widget.DateWheelLayout
-                android:layout_width="120dp"
-                android:layout_height="150dp"
-                android:layout_gravity="center_horizontal"
-                app:wheel_dateMode="month_day"
-                app:wheel_dayLabel="日"
-                app:wheel_monthLabel="月" />
-    
-                ...
-    
-        </LinearLayout>
+    <com.github.gzuliyujiang.wheelpicker.widget.OptionWheelLayout android:id="@+id/wheel_option"
+        android:layout_width="90dp" android:layout_height="150dp"
+        android:layout_gravity="center_horizontal" app:wheel_itemTextAlign="center" />
+
+    <com.github.gzuliyujiang.wheelpicker.widget.DateWheelLayout android:layout_width="120dp"
+        android:layout_height="150dp" android:layout_gravity="center_horizontal"
+        app:wheel_dateMode="month_day" app:wheel_dayLabel="日" app:wheel_monthLabel="月" />
+
+    ...
+
+</LinearLayout>
 ```
 
-###  定制样式
+### 定制样式
 
-####  全局配置所有选择器样式及配色
+#### 全局配置所有选择器样式及配色
 
 ```java
 //内置支持四种弹窗样式（Default、One、Two、Three），效果可运行Demo查看
@@ -263,27 +250,29 @@ public class DemoApp extends Application {
 
 }
 ```
+
 #### 在`app/.../res/values/styles.xml`中重写`WheelDefault`覆盖
 
 ```xml
-    <style name="WheelDefault">
-        <item name="wheel_visibleItemCount">5</item>
-        <item name="wheel_itemTextAlign">center</item>
-        <item name="wheel_itemSpace">20dp</item>
-        <item name="wheel_itemTextColor">#FF999999</item>
-        <item name="wheel_itemTextColorSelected">#FF000000</item>
-        <item name="wheel_itemTextSize">16sp</item>
-        <item name="wheel_sameWidthEnabled">false</item>
-        <item name="wheel_atmosphericEnabled">true</item>
-        <item name="wheel_curtainEnabled">false</item>
-        <item name="wheel_curtainColor">#FFDEDEDE</item>
-        <item name="wheel_curvedEnabled">false</item>
-        <item name="wheel_curvedMaxAngle">90</item>
-        <item name="wheel_cyclicEnabled">false</item>
-        <item name="wheel_indicatorEnabled">true</item>
-        <item name="wheel_indicatorColor">#FFDEDEDE</item>
-        <item name="wheel_indicatorSize">1dp</item>
-    </style>
+
+<style name="WheelDefault">
+    <item name="wheel_visibleItemCount">5</item>
+    <item name="wheel_itemTextAlign">center</item>
+    <item name="wheel_itemSpace">20dp</item>
+    <item name="wheel_itemTextColor">#FF999999</item>
+    <item name="wheel_itemTextColorSelected">#FF000000</item>
+    <item name="wheel_itemTextSize">16sp</item>
+    <item name="wheel_sameWidthEnabled">false</item>
+    <item name="wheel_atmosphericEnabled">true</item>
+    <item name="wheel_curtainEnabled">false</item>
+    <item name="wheel_curtainColor">#FFDEDEDE</item>
+    <item name="wheel_curvedEnabled">false</item>
+    <item name="wheel_curvedMaxAngle">90</item>
+    <item name="wheel_cyclicEnabled">false</item>
+    <item name="wheel_indicatorEnabled">true</item>
+    <item name="wheel_indicatorColor">#FFDEDEDE</item>
+    <item name="wheel_indicatorSize">1dp</item>
+</style>
 ```
 
 #### 在Java中集成重写某一选择器样式及配色
@@ -343,14 +332,14 @@ public class AntFortuneLikePicker extends LinkagePicker {
 
 以下图片显示的效果可能已修改过，实际效果请运行 demo 查看。
 
-- ![效果图](/screenshots/1.gif)
-- ![效果图](/screenshots/2.gif)
-- ![效果图](/screenshots/3.gif)
-- ![效果图](/screenshots/4.gif)
-- ![效果图](/screenshots/5.gif)
+- ![效果图](/screenshots/1.webp)
+- ![效果图](/screenshots/2.webp)
+- ![效果图](/screenshots/3.webp)
+- ![效果图](/screenshots/4.webp)
+- ![效果图](/screenshots/5.webp)
 - ![效果图](/screenshots/6.gif)
 - ![效果图](/screenshots/7.gif)
-- ![效果图](/screenshots/8.gif)
+- ![效果图](/screenshots/8.webp)
 - ![效果图](/screenshots/9.gif)
 
 ## 特别鸣谢
