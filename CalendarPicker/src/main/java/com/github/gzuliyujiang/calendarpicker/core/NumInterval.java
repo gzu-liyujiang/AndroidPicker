@@ -11,13 +11,21 @@
  * See the Mulan PSL v2 for more details.
  */
 
-package com.github.gzuliyujiang.calendarpicker.calendar.view.decoration;
+package com.github.gzuliyujiang.calendarpicker.core;
 
 /**
- * Group监听器，用于获取Group的标题
- * Created by peng on 2017/8/3.
+ * Created by peng on 2017/8/4.
  */
+public class NumInterval extends Interval<Integer> {
 
-public interface GroupListener {
-    String getGroupName(int position);
+    public NumInterval() {
+        left(-1);
+        lBound(-1);
+        right(-1);
+        rBound(-1);
+    }
+
+    public boolean contain(int index) {
+        return index >= left() && index <= right();
+    }
 }

@@ -11,8 +11,9 @@
  * See the Mulan PSL v2 for more details.
  */
 
-package com.github.gzuliyujiang.calendarpicker.calendar.protocol;
+package com.github.gzuliyujiang.calendarpicker.core;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,8 +21,7 @@ import java.util.List;
 /**
  * Created by peng on 2017/8/4.
  */
-
-public class MonthEntity {
+public class MonthEntity implements Serializable {
     public static final int WEEK_DAYS = 7;
     public static final int MAX_HORIZONTAL_LINES = 6;
     public static final int MAX_DAYS_OF_MONTH = 31;
@@ -30,10 +30,18 @@ public class MonthEntity {
     private Date date;
     private Interval<Date> valid;
     private Interval<Date> select;
-    private Interval<String> selectNote;
+    private Interval<String> note;
     private boolean singleMode = false;
 
+    public static MonthEntity obtain(Interval<Date> valid, Interval<Date> select) {
+        MonthEntity entity = pools.size() == 0 ? new MonthEntity() : pools.remove(0);
+        entity.valid = valid;
+        entity.select = select;
+        return entity;
+    }
+
     private MonthEntity() {
+        super();
     }
 
     public Date date() {
@@ -72,20 +80,13 @@ public class MonthEntity {
         return this.singleMode;
     }
 
-    public Interval<String> selectNote() {
-        return selectNote;
+    public Interval<String> note() {
+        return note;
     }
 
-    public MonthEntity selectNote(Interval<String> selectNote) {
-        this.selectNote = selectNote;
+    public MonthEntity note(Interval<String> note) {
+        this.note = note;
         return this;
-    }
-
-    public static MonthEntity obtain(Interval<Date> valid, Interval<Date> select) {
-        MonthEntity entity = pools.size() == 0 ? new MonthEntity() : pools.remove(0);
-        entity.valid = valid;
-        entity.select = select;
-        return entity;
     }
 
     public void recycle() {
@@ -93,7 +94,7 @@ public class MonthEntity {
             date = null;
             valid = null;
             select = null;
-            selectNote = null;
+            note = null;
             pools.add(this);
         }
     }

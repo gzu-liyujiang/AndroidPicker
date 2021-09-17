@@ -20,8 +20,8 @@ import android.widget.Button;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
-import com.github.gzuliyujiang.colorpicker.BrightnessGradientView;
 import com.github.gzuliyujiang.colorpicker.ColorGradientView;
+import com.github.gzuliyujiang.colorpicker.BrightnessGradientView;
 import com.github.gzuliyujiang.colorpicker.ColorPicker;
 import com.github.gzuliyujiang.colorpicker.OnColorChangedListener;
 import com.github.gzuliyujiang.colorpicker.OnColorPickedListener;
@@ -34,6 +34,7 @@ import com.github.gzuliyujiang.fallback.R;
  * @since 2021/6/10 11:49
  */
 public class ColorPickerActivity extends FragmentActivity implements View.OnClickListener, OnColorChangedListener {
+    private BrightnessGradientView brightnessGradientView;
     private Button button;
 
     @Override
@@ -46,7 +47,7 @@ public class ColorPickerActivity extends FragmentActivity implements View.OnClic
         colorGradientView.setPointerDrawable(android.R.drawable.ic_menu_compass);
         colorGradientView.setColor(0xFF7FF7FF);
         colorGradientView.setOnColorChangedListener(this);
-        BrightnessGradientView brightnessGradientView = findViewById(R.id.color_picker_bright);
+        brightnessGradientView = findViewById(R.id.color_picker_bright);
         brightnessGradientView.setColor(0xFF377377);
         brightnessGradientView.setOnColorChangedListener(this);
     }
@@ -67,7 +68,10 @@ public class ColorPickerActivity extends FragmentActivity implements View.OnClic
     }
 
     @Override
-    public void onColorChanged(int color) {
+    public void onColorChanged(ColorGradientView gradientView, int color) {
+        if (gradientView.getId() == R.id.color_picker_panel) {
+            brightnessGradientView.setColor(color);
+        }
         button.setTextColor(color);
     }
 

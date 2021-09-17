@@ -24,6 +24,12 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="onCalendarColorScheme"
+            android:text="日历日期选择器配色方案" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:onClick="onCalendarDateRange"
             android:text="日历日期范围选择（如酒店入住及离店日期）" />
 
@@ -33,7 +39,7 @@
             android:onClick="onCalendarDateSingle"
             android:text="日历单个日期选择（如航班出发日期）" />
 
-        <com.github.gzuliyujiang.calendarpicker.calendar.view.CalendarView
+        <com.github.gzuliyujiang.calendarpicker.core.CalendarView
             android:id="@+id/calendar_picker_body"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -23,13 +23,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
         android:layout_marginBottom="25dp"
-        android:background="@drawable/dialog_ellipse_light_gray"
         android:gravity="center"
         android:paddingTop="13dp"
         android:paddingBottom="13dp"
         android:singleLine="true"
         android:text="@android:string/cancel"
-        android:textColor="#FF666666"
+        android:textColor="#FF333333"
         android:textSize="15sp" />
 
     <View
@@ -43,13 +42,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
         android:layout_marginBottom="25dp"
-        android:background="@drawable/dialog_ellipse_blue"
         android:gravity="center"
         android:paddingTop="13dp"
         android:paddingBottom="13dp"
         android:singleLine="true"
         android:text="@android:string/ok"
-        android:textColor="#FFFFFFFF"
+        android:textColor="#FF333333"
         android:textSize="15sp" />
 
 </LinearLayout>

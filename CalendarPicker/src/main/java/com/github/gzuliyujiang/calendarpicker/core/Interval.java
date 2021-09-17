@@ -11,13 +11,11 @@
  * See the Mulan PSL v2 for more details.
  */
 
-package com.github.gzuliyujiang.calendarpicker.calendar.protocol;
+package com.github.gzuliyujiang.calendarpicker.core;
 
 /**
- * 泛型区间
  * Created by peng on 2017/8/4.
  */
-
 public class Interval<T> {
     private int lBound;
     private T left;

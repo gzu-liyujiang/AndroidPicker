@@ -27,6 +27,7 @@ import androidx.annotation.Px;
 import androidx.annotation.StyleRes;
 import androidx.annotation.StyleableRes;
 
+import com.github.gzuliyujiang.dialog.DialogConfig;
 import com.github.gzuliyujiang.wheelpicker.R;
 import com.github.gzuliyujiang.wheelview.contract.OnWheelChangedListener;
 import com.github.gzuliyujiang.wheelview.widget.WheelView;

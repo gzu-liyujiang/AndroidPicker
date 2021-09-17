@@ -18,6 +18,7 @@ import android.content.Context;
 
 import androidx.multidex.MultiDex;
 
+import com.github.gzuliyujiang.dialog.DialogColor;
 import com.github.gzuliyujiang.dialog.DialogConfig;
 import com.github.gzuliyujiang.dialog.DialogLog;
 import com.github.gzuliyujiang.dialog.DialogStyle;
@@ -46,6 +47,9 @@ public class DemoApp extends Application {
         super.onCreate();
         DialogLog.enable();
         DialogConfig.setDialogStyle(DialogStyle.Default);
+        DialogConfig.setDialogColor(new DialogColor()
+                .cancelTextColor(0xFFFF0000)
+                .okTextColor(0xFF0099CC));
         initXCrash(this);
     }
 

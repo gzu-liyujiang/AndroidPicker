@@ -11,17 +11,16 @@
   ~ See the Mulan PSL v2 for more details.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:orientation="horizontal">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/dialog_modal_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:paddingStart="20dp"
         android:paddingTop="15dp"
         android:paddingEnd="20dp"
@@ -30,35 +29,27 @@
         android:textColor="#FF333333"
         android:textSize="15sp" />
 
-    <View
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_weight="1.0" />
-
     <TextView
         android:id="@+id/dialog_modal_title"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="60dp"
+        android:layout_marginEnd="60dp"
         android:ellipsize="end"
         android:gravity="center"
-        android:paddingStart="20dp"
         android:paddingTop="10dp"
-        android:paddingEnd="20dp"
         android:paddingBottom="10dp"
         android:singleLine="true"
         android:textColor="#FF666666"
         android:textSize="14sp"
         tools:text="@android:string/untitled" />
 
-    <View
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_weight="1.0" />
-
     <TextView
         android:id="@+id/dialog_modal_ok"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|end"
         android:paddingStart="20dp"
         android:paddingTop="15dp"
         android:paddingEnd="20dp"
@@ -67,4 +58,4 @@
         android:textColor="#FF0081FF"
         android:textSize="15sp" />
 
-</LinearLayout>
+</FrameLayout>

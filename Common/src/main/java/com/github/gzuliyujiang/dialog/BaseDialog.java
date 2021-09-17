@@ -18,8 +18,11 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.os.Build;
@@ -32,10 +35,12 @@ import android.view.WindowManager;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.ColorInt;
+import androidx.annotation.Dimension;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.Px;
 import androidx.annotation.StyleRes;
 
 /**
@@ -126,40 +131,40 @@ public abstract class BaseDialog extends Dialog implements DialogInterface.OnSho
         setCanceledOnTouchOutside(false);
     }
 
-    public final void enableRoundCorner() {
-        setBackgroundResource(R.drawable.dialog_corner_round_top_white);
-    }
-
-    public final void setBackground(Drawable background) {
-        if (contentView == null) {
-            return;
-        }
-        contentView.setBackground(background);
-    }
-
-    public final void setBackgroundColor(boolean round, @ColorInt int color) {
-        if (contentView == null) {
-            return;
-        }
-        if (!round) {
-            contentView.setBackgroundColor(color);
-            return;
-        }
-        float radiusInPX = contentView.getResources().getDisplayMetrics().density * 25;
-        float[] outerR = new float[]{radiusInPX, radiusInPX, radiusInPX, radiusInPX, 0, 0, 0, 0};
-        ShapeDrawable drawable = new ShapeDrawable(new RoundRectShape(outerR, null, null));
-        Paint paint = drawable.getPaint();
-        paint.setAntiAlias(true);
-        paint.setColor(color);
-        paint.setStyle(Paint.Style.FILL);
-        contentView.setBackground(drawable);
-    }
-
     public final void setBackgroundColor(@ColorInt int color) {
+        setBackgroundColor(CornerRound.No, color);
+    }
+
+
+    public final void setBackgroundColor(@CornerRound int cornerRound, @ColorInt int color) {
+        setBackgroundColor(cornerRound, 20, color);
+    }
+
+    public final void setBackgroundColor(@CornerRound int cornerRound, @Dimension(unit = Dimension.DP) int radius, @ColorInt int color) {
         if (contentView == null) {
             return;
         }
-        contentView.setBackgroundColor(color);
+        float radiusInPX = contentView.getResources().getDisplayMetrics().density * radius;
+        contentView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        Drawable drawable;
+        switch (cornerRound) {
+            case CornerRound.Top:
+                float[] outerRadii = new float[]{radiusInPX, radiusInPX, radiusInPX, radiusInPX, 0, 0, 0, 0};
+                ShapeDrawable shapeDrawable = new ShapeDrawable(new RoundRectShape(outerRadii, null, null));
+                shapeDrawable.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN));
+                drawable = shapeDrawable;
+                break;
+            case CornerRound.All:
+                GradientDrawable gradientDrawable = new GradientDrawable();
+                gradientDrawable.setCornerRadius(radiusInPX);
+                gradientDrawable.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN));
+                drawable = gradientDrawable;
+                break;
+            default:
+                drawable = new ColorDrawable(color);
+                break;
+        }
+        contentView.setBackground(drawable);
     }
 
     public final void setBackgroundResource(@DrawableRes int resId) {
@@ -167,6 +172,13 @@ public abstract class BaseDialog extends Dialog implements DialogInterface.OnSho
             return;
         }
         contentView.setBackgroundResource(resId);
+    }
+
+    public final void setBackgroundDrawable(Drawable drawable) {
+        if (contentView == null) {
+            return;
+        }
+        contentView.setBackground(drawable);
     }
 
     public final void setLayout(int width, int height) {

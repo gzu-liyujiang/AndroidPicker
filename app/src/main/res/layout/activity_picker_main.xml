@@ -18,12 +18,12 @@
     android:orientation="vertical">
 
     <TextView
-        style="?android:textAppearanceMedium"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:background="@color/colorPrimary"
         android:gravity="center"
         android:text="选择器示例"
-        android:textColor="@android:color/black" />
+        android:textColor="@android:color/white" />
 
     <ScrollView
         android:layout_width="match_parent"

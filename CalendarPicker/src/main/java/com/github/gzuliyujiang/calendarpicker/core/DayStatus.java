@@ -11,16 +11,28 @@
  * See the Mulan PSL v2 for more details.
  */
 
-package com.github.gzuliyujiang.calendarpicker.calendar.protocol;
+package com.github.gzuliyujiang.calendarpicker.core;
 
-import java.util.Date;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
- * 月份中日期点击回调
- * Created by peng on 2017/8/4.
+ * Created by peng on 2017/8/2.
  */
-public interface OnCalendarDayClickListener {
-
-    void onCalendarDayClick(Date date);
-
+@Retention(RetentionPolicy.SOURCE)
+public @interface DayStatus {
+    //正常
+    int NORMAL = 0;
+    //不可用
+    int INVALID = 1;
+    //范围内
+    int RANGE = 2;
+    //左边界
+    int BOUND_L = 3;
+    //单选
+    int BOUND_M = 4;
+    //右边界
+    int BOUND_R = 5;
+    //强调
+    int STRESS = 6;
 }

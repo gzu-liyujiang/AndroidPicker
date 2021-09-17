@@ -13,8 +13,10 @@
 
 package com.github.gzuliyujiang.filepicker.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.Gravity;
@@ -69,8 +71,9 @@ public class PathAdapter extends RecyclerView.Adapter<ViewHolder> {
         textView.setPadding(padding, 0, padding, 0);
         layout.addView(textView);
         ImageView imageView = new ImageView(context);
-        int width = (int) (20 * context.getResources().getDisplayMetrics().density);
-        imageView.setLayoutParams(new LinearLayout.LayoutParams(width, wrapContent));
+        int size = (int) (15 * context.getResources().getDisplayMetrics().density);
+        imageView.setLayoutParams(new LinearLayout.LayoutParams(size, size));
+        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
         layout.addView(imageView);
         ViewHolder viewHolder = new ViewHolder(layout);
         viewHolder.textView = textView;
@@ -79,16 +82,24 @@ public class PathAdapter extends RecyclerView.Adapter<ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        holder.textView.setText(paths.get(position));
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        final int adapterPosition = holder.getAdapterPosition();
+        holder.textView.setText(paths.get(adapterPosition));
         holder.imageView.setImageDrawable(arrowIcon);
+        if (adapterPosition == getItemCount() - 1) {
+            holder.textView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            holder.imageView.setVisibility(View.GONE);
+        } else {
+            holder.textView.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+            holder.imageView.setVisibility(View.VISIBLE);
+        }
         if (onPathClickedListener == null) {
             return;
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onPathClickedListener.onPathClicked(position, getPath(position));
+                onPathClickedListener.onPathClicked(PathAdapter.this, adapterPosition, getPath(adapterPosition));
             }
         });
     }
@@ -107,6 +118,7 @@ public class PathAdapter extends RecyclerView.Adapter<ViewHolder> {
         this.arrowIcon = arrowIcon;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void updatePath(File file) {
         if (arrowIcon == null) {
             arrowIcon = ContextCompat.getDrawable(context, R.mipmap.file_picker_arrow);

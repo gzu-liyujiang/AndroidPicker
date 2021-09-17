@@ -11,20 +11,18 @@
  * See the Mulan PSL v2 for more details.
  */
 
-package com.github.gzuliyujiang.calendarpicker.calendar.adapter;
+package com.github.gzuliyujiang.calendarpicker.core;
 
 import android.annotation.SuppressLint;
+import android.graphics.Typeface;
+import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.github.gzuliyujiang.calendarpicker.calendar.protocol.Interval;
-import com.github.gzuliyujiang.calendarpicker.calendar.protocol.MonthEntity;
-import com.github.gzuliyujiang.calendarpicker.calendar.protocol.OnCalendarDayClickListener;
-import com.github.gzuliyujiang.calendarpicker.calendar.protocol.OnCalendarSelectedListener;
-import com.github.gzuliyujiang.calendarpicker.calendar.utils.DateUtils;
-import com.github.gzuliyujiang.calendarpicker.calendar.view.MonthView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,22 +30,30 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 日历适配器
  * Created by peng on 2017/8/3.
  */
 @SuppressWarnings("UnusedReturnValue")
-public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> implements OnCalendarDayClickListener {
+public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.VH> implements OnDateClickListener {
     private boolean notify = true;
+    private ColorScheme colorScheme = new ColorScheme();
     private final List<Date> dates = new ArrayList<>();
     private final Interval<Date> valid = new Interval<>();
     private final Interval<Date> select = new Interval<>();
     private final Interval<String> selectNote = new Interval<>();
     private boolean singleMode = false;
     private Date lastClickDate = null;
-    private OnCalendarSelectedListener onCalendarSelectedListener;
+    private OnDateSelectedListener onDateSelectedListener;
 
     public CalendarAdapter notify(boolean notify) {
         this.notify = notify;
+        return this;
+    }
+
+    public CalendarAdapter colorScheme(ColorScheme colorScheme) {
+        if (colorScheme == null) {
+            colorScheme = new ColorScheme();
+        }
+        this.colorScheme = colorScheme;
         return this;
     }
 
@@ -160,29 +166,44 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> im
         notifyDataSetChanged();
     }
 
-    public void setOnCalendarSelectedListener(OnCalendarSelectedListener onCalendarSelectedListener) {
-        this.onCalendarSelectedListener = onCalendarSelectedListener;
+    public void setOnCalendarSelectedListener(OnDateSelectedListener onDateSelectedListener) {
+        this.onDateSelectedListener = onDateSelectedListener;
     }
 
     @NonNull
     @Override
-    public CalendarViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        MonthView view = new MonthView(parent.getContext());
-        int width = ViewGroup.LayoutParams.MATCH_PARENT;
-        int height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(width, height);
-        view.setLayoutParams(params);
-        view.setOnDayInMonthClickListener(CalendarAdapter.this);
-        return new CalendarViewHolder(view);
+    public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LinearLayout linearLayout = new LinearLayout(parent.getContext());
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        linearLayout.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        TextView titleView = new TextView(parent.getContext());
+        titleView.setGravity(Gravity.CENTER);
+        titleView.setTextSize(14);
+        titleView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+        int padding = (int) (parent.getResources().getDisplayMetrics().density * 10);
+        titleView.setPadding(padding, padding, padding, padding);
+        linearLayout.addView(titleView, new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        MonthView monthView = new MonthView(parent.getContext());
+        linearLayout.addView(monthView, new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        return new VH(linearLayout, titleView, monthView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CalendarViewHolder holder, int position) {
-        MonthEntity entity = MonthEntity.obtain(valid, select)
+    public void onBindViewHolder(@NonNull VH holder, int position) {
+        holder.titleView.setBackgroundColor(colorScheme.monthTitleBackgroundColor());
+        holder.titleView.setTextColor(colorScheme.monthTitleTextColor());
+        holder.titleView.setText(TimeUtils.dateText(getDateValue(position).getTime(), TimeUtils.YY_M_CN));
+        holder.monthView.setOnDayInMonthClickListener(this);
+        holder.monthView.setValue(MonthEntity.obtain(valid, select)
                 .date(dates.get(position))
                 .singleMode(singleMode)
-                .selectNote(selectNote);
-        holder.view().value(entity);
+                .note(selectNote), colorScheme);
     }
 
     @Override
@@ -203,7 +224,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> im
         if (time >= dates.get(lastPosition).getTime()) {
             return lastPosition;
         }
-        for (int i = 0; i < lastPosition; i++) {
+        for (int i = 0; i <= lastPosition; i++) {
             Calendar minDate = DateUtils.calendar(dates.get(i).getTime());
             minDate.set(Calendar.DAY_OF_MONTH, 1);
             minDate.set(Calendar.HOUR_OF_DAY, 0);
@@ -221,7 +242,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> im
         return -1;
     }
 
-    public Date value(int position) {
+    public Date getDateValue(int position) {
         if (position >= 0 && position < dates.size()) {
             return dates.get(position);
         }
@@ -236,23 +257,36 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> im
         if (null == lastClickDate || singleMode) {
             lastClickDate = date;
             select(date, date).refresh();
-            if (null != onCalendarSelectedListener) {
-                onCalendarSelectedListener.onSingleSelected(date);
+            if (null != onDateSelectedListener) {
+                onDateSelectedListener.onSingleSelected(date);
             }
             return;
         }
         if (lastClickDate.getTime() >= date.getTime()) {
             lastClickDate = date;
             select(date, date).refresh();
-            if (null != onCalendarSelectedListener) {
-                onCalendarSelectedListener.onSingleSelected(date);
+            if (null != onDateSelectedListener) {
+                onDateSelectedListener.onSingleSelected(date);
             }
         } else {
             select(lastClickDate, date).refresh();
-            if (null != onCalendarSelectedListener) {
-                onCalendarSelectedListener.onRangeSelected(lastClickDate, date);
+            if (null != onDateSelectedListener) {
+                onDateSelectedListener.onRangeSelected(lastClickDate, date);
             }
             lastClickDate = null;
         }
     }
+
+    static class VH extends RecyclerView.ViewHolder {
+        TextView titleView;
+        MonthView monthView;
+
+        VH(View itemView, TextView titleView, MonthView monthView) {
+            super(itemView);
+            this.titleView = titleView;
+            this.monthView = monthView;
+        }
+
+    }
+
 }

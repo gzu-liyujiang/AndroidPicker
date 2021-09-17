@@ -78,7 +78,7 @@ dependencies {
 }
 ```
 
-日历日期选择器：
+日历日期选择器（[README.md](/CalendarPicker/README.md)）：
 
 ```groovy
 dependencies {
@@ -116,19 +116,6 @@ dependencies {
 }
 ```
 
-代码同时托管在`GitHub`及`GitEE`，因此`3.x及以上版本`的依赖项也可以将`com.github.gzu-liyujiang`换成`com.gitee.li_yu_jiang`，即：
-
-```groovy
-    implementation 'com.gitee.li_yu_jiang.AndroidPicker:Common:<version>'
-    implementation 'com.gitee.li_yu_jiang.AndroidPicker:WheelView:<version>'
-    implementation 'com.gitee.li_yu_jiang.AndroidPicker:WheelPicker:<version>'
-    implementation 'com.gitee.li_yu_jiang.AndroidPicker:AddressPicker:<version>'
-    implementation 'com.gitee.li_yu_jiang.AndroidPicker:ColorPicker:<version>'
-    implementation 'com.gitee.li_yu_jiang.AndroidPicker:FilePicker:<version>'
-    implementation 'com.gitee.li_yu_jiang.AndroidPicker:CalendarPicker:<version>'
-    implementation 'com.gitee.li_yu_jiang.AndroidPicker:ImagePicker:<version>'
-```
-
 ## 混淆规则
 
 项目库混淆无需额外配置。
@@ -144,7 +131,7 @@ dependencies {
 ### 在 Java 中
 
 ```groovy
-        DialogConfig.setDialogStyle(DialogStyle.XiaoMi);
+        DialogConfig.setDialogStyle(DialogStyle.One);
         ...
         List<GoodsCategoryBean> data = new ArrayList<>();
         data.add(new GoodsCategoryBean(1, "食品生鲜"));
@@ -194,7 +181,7 @@ dependencies {
 ```
 
 ```groovy
-        DialogConfig.setDialogStyle(DialogStyle.IOS);
+        DialogConfig.setDialogStyle(DialogStyle.Three);
         ...
         AddressPicker picker = new AddressPicker(this);
         picker.setAddressMode("city.json", AddressMode.PROVINCE_CITY_COUNTY,
@@ -244,30 +231,6 @@ dependencies {
                 android:layout_gravity="center_horizontal"
                 app:wheel_itemTextAlign="center" />
 
-            <com.github.gzuliyujiang.wheelpicker.widget.LinkageWheelLayout
-                android:id="@+id/wheel_linkage"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                app:wheel_curtainColor="#FFF1F1F1"
-                app:wheel_curtainEnabled="true"
-                app:wheel_indicatorEnabled="false" />
-
-            <com.github.gzuliyujiang.wheelpicker.widget.NumberWheelLayout
-                android:layout_width="90dp"
-                android:layout_height="150dp"
-                android:layout_gravity="center_horizontal"
-                app:wheel_label="个"
-                app:wheel_maxNumber="30"
-                app:wheel_minNumber="10"
-                app:wheel_stepNumber="5"
-                app:wheel_visibleItemCount="7" />
-
-            <com.github.gzuliyujiang.wheelpicker.widget.DatimeWheelLayout
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                app:wheel_dateMode="year_month_day"
-                app:wheel_timeMode="hour_12_no_second" />
-
             <com.github.gzuliyujiang.wheelpicker.widget.DateWheelLayout
                 android:layout_width="120dp"
                 android:layout_height="150dp"
@@ -275,23 +238,55 @@ dependencies {
                 app:wheel_dateMode="month_day"
                 app:wheel_dayLabel="日"
                 app:wheel_monthLabel="月" />
-
-            <com.github.gzuliyujiang.wheelpicker.widget.TimeWheelLayout
-                android:layout_width="95dp"
-                android:layout_height="150dp"
-                android:layout_gravity="center_horizontal"
-                app:wheel_curvedEnabled="true"
-                app:wheel_curvedMaxAngle="45"
-                app:wheel_hourLabel=":"
-                app:wheel_minuteLabel=":"
-                app:wheel_timeMode="hour_24_has_second" />
-
+    
+                ...
+    
         </LinearLayout>
 ```
 
 ###  定制样式
 
-#### 在Java中集成重写
+####  全局配置所有选择器样式及配色
+
+```java
+//内置支持四种弹窗样式（Default、One、Two、Three），效果可运行Demo查看
+public class DemoApp extends Application {
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        DialogConfig.setDialogStyle(DialogStyle.Default);
+        DialogConfig.setDialogColor(new DialogColor()
+                .cancelTextColor(0xFFFF0000)
+                .okTextColor(0xFF0099CC));
+    }
+
+}
+```
+#### 在`app/.../res/values/styles.xml`中重写`WheelDefault`覆盖
+
+```xml
+    <style name="WheelDefault">
+        <item name="wheel_visibleItemCount">5</item>
+        <item name="wheel_itemTextAlign">center</item>
+        <item name="wheel_itemSpace">20dp</item>
+        <item name="wheel_itemTextColor">#FF999999</item>
+        <item name="wheel_itemTextColorSelected">#FF000000</item>
+        <item name="wheel_itemTextSize">16sp</item>
+        <item name="wheel_sameWidthEnabled">false</item>
+        <item name="wheel_atmosphericEnabled">true</item>
+        <item name="wheel_curtainEnabled">false</item>
+        <item name="wheel_curtainColor">#FFDEDEDE</item>
+        <item name="wheel_curvedEnabled">false</item>
+        <item name="wheel_curvedMaxAngle">90</item>
+        <item name="wheel_cyclicEnabled">false</item>
+        <item name="wheel_indicatorEnabled">true</item>
+        <item name="wheel_indicatorColor">#FFDEDEDE</item>
+        <item name="wheel_indicatorSize">1dp</item>
+    </style>
+```
+
+#### 在Java中集成重写某一选择器样式及配色
 
 ```java
 //仿蚂蚁财富APP定投周期选择弹窗样式
@@ -344,28 +339,6 @@ public class AntFortuneLikePicker extends LinkagePicker {
 }
 ````
 
-#### 在``app/.../res/values/styles.xml`中重写覆盖
-
-```xml
-    <style name="WheelDefault">
-        <item name="wheel_visibleItemCount">5</item>
-        <item name="wheel_itemTextAlign">center</item>
-        <item name="wheel_itemSpace">20dp</item>
-        <item name="wheel_itemTextColor">#FF999999</item>
-        <item name="wheel_itemTextColorSelected">#FF000000</item>
-        <item name="wheel_itemTextSize">16sp</item>
-        <item name="wheel_sameWidthEnabled">false</item>
-        <item name="wheel_atmosphericEnabled">true</item>
-        <item name="wheel_curtainEnabled">false</item>
-        <item name="wheel_curtainColor">#FFDEDEDE</item>
-        <item name="wheel_curvedEnabled">false</item>
-        <item name="wheel_curvedMaxAngle">90</item>
-        <item name="wheel_cyclicEnabled">false</item>
-        <item name="wheel_indicatorEnabled">true</item>
-        <item name="wheel_indicatorColor">#FFDEDEDE</item>
-        <item name="wheel_indicatorSize">1dp</item>
-    </style>
-```
 ## 效果预览
 
 以下图片显示的效果可能已修改过，实际效果请运行 demo 查看。

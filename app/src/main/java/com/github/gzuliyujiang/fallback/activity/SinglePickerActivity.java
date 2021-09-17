@@ -111,7 +111,6 @@ public class SinglePickerActivity extends FragmentActivity implements OnNumberPi
 
     public void onOptionText(View view) {
         OptionPicker picker = new OptionPicker(this);
-        picker.setBackgroundColor(true, 0xFFFFFFFF);
         picker.setData("测试", "很长很长很长很长很长很长很长很长很长很长很长很长很长很长");
         picker.setOnOptionPickedListener(this);
         picker.getWheelLayout().setOnOptionSelectedListener(new OnOptionSelectedListener() {

@@ -14,6 +14,9 @@
 package com.github.gzuliyujiang.filepicker.contract;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.github.gzuliyujiang.filepicker.adapter.ViewHolder;
 
 /**
  * @author 贵州山野羡民（1032694760@qq.com）
@@ -21,6 +24,6 @@ import androidx.annotation.NonNull;
  */
 public interface OnPathClickedListener {
 
-    void onPathClicked(int position, @NonNull String path);
+    void onPathClicked(RecyclerView.Adapter<ViewHolder> adapter, int position, @NonNull String path);
 
 }

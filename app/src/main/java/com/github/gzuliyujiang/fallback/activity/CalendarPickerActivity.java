@@ -24,14 +24,14 @@ import androidx.fragment.app.FragmentActivity;
 import com.github.gzuliyujiang.calendarpicker.CalendarPicker;
 import com.github.gzuliyujiang.calendarpicker.OnRangeDatePickListener;
 import com.github.gzuliyujiang.calendarpicker.OnSingleDatePickListener;
-import com.github.gzuliyujiang.calendarpicker.calendar.utils.DateUtils;
-import com.github.gzuliyujiang.calendarpicker.calendar.view.CalendarView;
+import com.github.gzuliyujiang.calendarpicker.core.ColorScheme;
+import com.github.gzuliyujiang.calendarpicker.core.DateUtils;
+import com.github.gzuliyujiang.calendarpicker.core.CalendarView;
 import com.github.gzuliyujiang.fallback.R;
 
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 /**
  * 日历日期选择器
@@ -61,19 +61,41 @@ public class CalendarPickerActivity extends FragmentActivity {
                 .refresh();
     }
 
+    public void onCalendarColorScheme(View view) {
+        CalendarPicker picker = new CalendarPicker(this);
+        Date currentDate = new Date(System.currentTimeMillis());
+        if (startTimeInMillis == 0 && endTimeInMillis == 0) {
+            startTimeInMillis = currentDate.getTime() - 3 * android.text.format.DateUtils.DAY_IN_MILLIS;
+            endTimeInMillis = currentDate.getTime() + 3 * android.text.format.DateUtils.DAY_IN_MILLIS;
+        }
+        picker.setSelectedDate(startTimeInMillis, endTimeInMillis);
+        picker.setColorScheme(new ColorScheme()
+                .daySelectBackgroundColor(0xFF0000FF)
+                .dayStressTextColor(0xFF0000DD));
+        picker.setOnRangeDatePickListener(new OnRangeDatePickListener() {
+            @Override
+            public void onRangeDatePicked(@NonNull Date startDate, @NonNull Date endDate) {
+                startTimeInMillis = startDate.getTime();
+                endTimeInMillis = endDate.getTime();
+                Toast.makeText(getApplicationContext(), DateFormat.getDateTimeInstance().format(startDate)
+                        + "\n" + DateFormat.getDateTimeInstance().format(endDate), Toast.LENGTH_SHORT).show();
+            }
+        });
+        picker.show();
+    }
+
     public void onCalendarDateRange(View view) {
         CalendarPicker picker = new CalendarPicker(this);
         Date currentDate = new Date(System.currentTimeMillis());
-        Calendar calendar1 = Calendar.getInstance(Locale.CHINA);
-        calendar1.setTime(currentDate);
-        calendar1.add(Calendar.MONTH, -12);
-        calendar1.set(Calendar.DAY_OF_MONTH, DateUtils.maxDaysOfMonth(calendar1.getTime()));
-        Date minDate = calendar1.getTime();
-        Calendar calendar = Calendar.getInstance(Locale.CHINA);
-        calendar.setTime(currentDate);
-        calendar.add(Calendar.MONTH, 12);
-        calendar.set(Calendar.DAY_OF_MONTH, DateUtils.maxDaysOfMonth(calendar.getTime()));
-        Date maxDate = calendar.getTime();
+        Calendar minCalendar = DateUtils.calendar(currentDate);
+        minCalendar.add(Calendar.MONTH, -12);
+        minCalendar.set(Calendar.DAY_OF_MONTH, DateUtils.maxDaysOfMonth(minCalendar.getTime()));
+        Date minDate = minCalendar.getTime();
+        Calendar maxCalendar = DateUtils.calendar(currentDate);
+        maxCalendar.setTime(currentDate);
+        maxCalendar.add(Calendar.MONTH, 12);
+        maxCalendar.set(Calendar.DAY_OF_MONTH, DateUtils.maxDaysOfMonth(maxCalendar.getTime()));
+        Date maxDate = maxCalendar.getTime();
         picker.setRangeDate(minDate, maxDate);
         if (startTimeInMillis == 0 && endTimeInMillis == 0) {
             startTimeInMillis = currentDate.getTime() - 3 * android.text.format.DateUtils.DAY_IN_MILLIS;

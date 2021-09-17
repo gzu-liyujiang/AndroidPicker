@@ -11,10 +11,7 @@
  * See the Mulan PSL v2 for more details.
  */
 
-package com.github.gzuliyujiang.calendarpicker.calendar.utils;
-
-import com.github.gzuliyujiang.calendarpicker.calendar.protocol.Interval;
-import com.github.gzuliyujiang.calendarpicker.calendar.protocol.NInterval;
+package com.github.gzuliyujiang.calendarpicker.core;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -142,8 +139,8 @@ public class DateUtils {
      * @param dateInterval 开始,结束日期区间
      * @return 起始位置区间
      */
-    public static NInterval daysInterval(Date month, Interval<Date> dateInterval) {
-        final NInterval range = new NInterval();
+    public static NumInterval daysInterval(Date month, Interval<Date> dateInterval) {
+        final NumInterval range = new NumInterval();
         if (null == month || null == dateInterval) {
             return range;
         }
@@ -221,6 +218,9 @@ public class DateUtils {
     public static Date specialDayInMonth(Date month, int index) {
         Calendar calendar = calendar(month);
         calendar.set(Calendar.DAY_OF_MONTH, index + 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
         return calendar.getTime();
     }
 

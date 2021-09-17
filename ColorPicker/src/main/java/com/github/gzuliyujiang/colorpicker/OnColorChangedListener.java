@@ -21,6 +21,6 @@ import androidx.annotation.ColorInt;
  */
 public interface OnColorChangedListener {
 
-    void onColorChanged(@ColorInt int color);
+    void onColorChanged(ColorGradientView gradientView, @ColorInt int color);
 
 }

@@ -31,6 +31,7 @@ import com.github.gzuliyujiang.dialog.DialogLog;
 import com.github.gzuliyujiang.filepicker.adapter.FileAdapter;
 import com.github.gzuliyujiang.filepicker.adapter.FileEntity;
 import com.github.gzuliyujiang.filepicker.adapter.PathAdapter;
+import com.github.gzuliyujiang.filepicker.adapter.ViewHolder;
 import com.github.gzuliyujiang.filepicker.annotation.ExplorerMode;
 import com.github.gzuliyujiang.filepicker.contract.OnFileClickedListener;
 import com.github.gzuliyujiang.filepicker.contract.OnPathClickedListener;
@@ -45,7 +46,7 @@ import java.util.Locale;
  * @since 2021/6/10 18:50
  */
 @SuppressWarnings("unused")
-public class FileExplorer extends FrameLayout {
+public class FileExplorer extends FrameLayout implements OnPathClickedListener {
     private int explorerMode = ExplorerMode.FILE;
     private File initDir;
     private CharSequence emptyHint;
@@ -78,44 +79,43 @@ public class FileExplorer extends FrameLayout {
     }
 
     private void init(Context context) {
+        initDir = getDefaultDir();
         View contentView = inflate(context, R.layout.file_picker_content, this);
-        fileListView = contentView.findViewById(R.id.file_picker_file_list);
-        fileAdapter = new FileAdapter(context);
-        fileListView.setAdapter(fileAdapter);
-        emptyHint = Locale.getDefault().getDisplayLanguage().contains("中文") ? "<空>" : "<Empty>";
-        emptyHintView = contentView.findViewById(R.id.file_picker_empty_hint);
-        emptyHintView.setText(emptyHint);
         pathAdapter = new PathAdapter(context);
+        pathAdapter.setOnPathClickedListener(this);
         pathListView = contentView.findViewById(R.id.file_picker_path_list);
         pathListView.setAdapter(pathAdapter);
+        fileAdapter = new FileAdapter(context);
+        fileAdapter.setOnPathClickedListener(this);
         fileAdapter.setOnlyListDir(false);
         fileAdapter.setShowHideDir(true);
         fileAdapter.setShowHomeDir(true);
         fileAdapter.setShowUpDir(true);
-        initDir = getDefaultDir();
         fileAdapter.loadData(initDir);
-        fileAdapter.setOnPathClickedListener(new OnPathClickedListener() {
-            @Override
-            public void onPathClicked(int position, @NonNull String path) {
-                FileEntity entity = fileAdapter.getItem(position);
-                DialogLog.print("clicked file item: " + entity);
-                File file = entity.getFile();
-                if (file.isDirectory()) {
-                    refreshCurrent(file);
-                    return;
-                }
-                if (onFileClickedListener != null) {
-                    onFileClickedListener.onFileClicked(file);
-                }
+        fileListView = contentView.findViewById(R.id.file_picker_file_list);
+        fileListView.setAdapter(fileAdapter);
+        emptyHint = Locale.getDefault().getDisplayLanguage().contains("中文") ? "<空>" : "<Empty>";
+        emptyHintView = contentView.findViewById(R.id.file_picker_empty_hint);
+        emptyHintView.setText(emptyHint);
+    }
+
+    @Override
+    public void onPathClicked(RecyclerView.Adapter<ViewHolder> adapter, int position, @NonNull String path) {
+        DialogLog.print("clicked path name: " + path);
+        if (adapter instanceof PathAdapter) {
+            refreshCurrent(new File(path));
+        } else if (adapter instanceof FileAdapter) {
+            FileEntity entity = fileAdapter.getItem(position);
+            DialogLog.print("clicked file item: " + entity);
+            File file = entity.getFile();
+            if (file.isDirectory()) {
+                refreshCurrent(file);
+                return;
             }
-        });
-        pathAdapter.setOnPathClickedListener(new OnPathClickedListener() {
-            @Override
-            public void onPathClicked(int position, @NonNull String path) {
-                DialogLog.print("clicked path name: " + path);
-                refreshCurrent(new File(path));
+            if (onFileClickedListener != null) {
+                onFileClickedListener.onFileClicked(file);
             }
-        });
+        }
     }
 
     public final File getDefaultDir() {
@@ -175,6 +175,12 @@ public class FileExplorer extends FrameLayout {
             DialogLog.print("files or dirs count: " + itemCount);
             emptyHintView.setVisibility(View.GONE);
         }
+        pathListView.post(new Runnable() {
+            @Override
+            public void run() {
+                pathListView.scrollToPosition(pathAdapter.getItemCount() - 1);
+            }
+        });
     }
 
     public void setOnFileClickedListener(OnFileClickedListener listener) {
@@ -183,34 +189,42 @@ public class FileExplorer extends FrameLayout {
 
     public void setAllowExtensions(String[] allowExtensions) {
         fileAdapter.setAllowExtensions(allowExtensions);
+        fileAdapter.refreshData();
     }
 
     public void setShowUpDir(boolean showUpDir) {
         fileAdapter.setShowUpDir(showUpDir);
+        fileAdapter.refreshData();
     }
 
     public void setShowHomeDir(boolean showHomeDir) {
         fileAdapter.setShowHomeDir(showHomeDir);
+        fileAdapter.refreshData();
     }
 
     public void setShowHideDir(boolean showHideDir) {
         fileAdapter.setShowHideDir(showHideDir);
+        fileAdapter.refreshData();
     }
 
     public void setFileIcon(Drawable fileIcon) {
         fileAdapter.setFileIcon(fileIcon);
+        fileAdapter.refreshData();
     }
 
     public void setFolderIcon(Drawable folderIcon) {
         fileAdapter.setFolderIcon(folderIcon);
+        fileAdapter.refreshData();
     }
 
     public void setHomeIcon(Drawable homeIcon) {
         fileAdapter.setHomeIcon(homeIcon);
+        fileAdapter.notifyItemRangeChanged(0, Math.min(2, fileAdapter.getItemCount()));
     }
 
     public void setUpIcon(Drawable upIcon) {
         fileAdapter.setUpIcon(upIcon);
+        fileAdapter.notifyItemRangeChanged(0, Math.min(2, fileAdapter.getItemCount()));
     }
 
     public void setArrowIcon(Drawable arrowIcon) {
@@ -219,6 +233,7 @@ public class FileExplorer extends FrameLayout {
 
     public void setItemHeight(int itemHeight) {
         fileAdapter.setItemHeight(itemHeight);
+        fileAdapter.refreshData();
     }
 
     public final FileAdapter getFileAdapter() {
@@ -229,8 +244,16 @@ public class FileExplorer extends FrameLayout {
         return pathAdapter;
     }
 
+    public final File getRootDir() {
+        return fileAdapter.getRootDir();
+    }
+
     public final File getCurrentFile() {
         return fileAdapter.getCurrentFile();
+    }
+
+    public final RecyclerView getPathListView() {
+        return pathListView;
     }
 
     public final RecyclerView getFileListView() {
@@ -239,10 +262,6 @@ public class FileExplorer extends FrameLayout {
 
     public final TextView getEmptyHintView() {
         return emptyHintView;
-    }
-
-    public final RecyclerView getPathListView() {
-        return pathListView;
     }
 
 }

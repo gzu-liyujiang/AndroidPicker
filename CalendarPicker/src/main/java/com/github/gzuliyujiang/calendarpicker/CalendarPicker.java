@@ -20,10 +20,11 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
 
-import com.github.gzuliyujiang.calendarpicker.calendar.adapter.CalendarAdapter;
-import com.github.gzuliyujiang.calendarpicker.calendar.protocol.OnCalendarSelectedListener;
-import com.github.gzuliyujiang.calendarpicker.calendar.utils.DateUtils;
-import com.github.gzuliyujiang.calendarpicker.calendar.view.CalendarView;
+import com.github.gzuliyujiang.calendarpicker.core.CalendarAdapter;
+import com.github.gzuliyujiang.calendarpicker.core.ColorScheme;
+import com.github.gzuliyujiang.calendarpicker.core.OnDateSelectedListener;
+import com.github.gzuliyujiang.calendarpicker.core.DateUtils;
+import com.github.gzuliyujiang.calendarpicker.core.CalendarView;
 import com.github.gzuliyujiang.dialog.DialogConfig;
 import com.github.gzuliyujiang.dialog.DialogStyle;
 import com.github.gzuliyujiang.dialog.ModalDialog;
@@ -39,9 +40,10 @@ import java.util.Locale;
  * @since 2019/4/30 13:36
  */
 @SuppressWarnings({"unused", "deprecation"})
-public class CalendarPicker extends ModalDialog implements OnCalendarSelectedListener {
+public class CalendarPicker extends ModalDialog implements OnDateSelectedListener {
     private CalendarView calendarView;
     private CalendarAdapter calendarAdapter;
+    private ColorScheme colorScheme;
     private boolean singleMode = false;
     private Date minDate, maxDate;
     private Date selectDate, startDate, endDate;
@@ -61,19 +63,26 @@ public class CalendarPicker extends ModalDialog implements OnCalendarSelectedLis
     @NonNull
     @Override
     protected View createBodyView() {
-        return View.inflate(activity, R.layout.calendar_picker, null);
+        calendarView = new CalendarView(activity);
+        return calendarView;
     }
 
     @Override
     protected void initView(@NonNull View contentView) {
         super.initView(contentView);
-        if (DialogConfig.getDialogStyle() == DialogStyle.Two) {
-            headerView.setVisibility(View.VISIBLE);
-            titleView.setText("日期选择");
-        } else {
-            headerView.setVisibility(View.GONE);
+        switch (DialogConfig.getDialogStyle()) {
+            case DialogStyle.Default:
+                headerView.setVisibility(View.VISIBLE);
+                titleView.setText("");
+                break;
+            case DialogStyle.Two:
+                headerView.setVisibility(View.VISIBLE);
+                titleView.setText("请选择");
+                break;
+            default:
+                headerView.setVisibility(View.GONE);
+                break;
         }
-        calendarView = contentView.findViewById(R.id.calendar_picker_body);
     }
 
     @Override
@@ -81,6 +90,18 @@ public class CalendarPicker extends ModalDialog implements OnCalendarSelectedLis
         super.initData();
         initialized = true;
         setHeight((int) (activity.getResources().getDisplayMetrics().heightPixels * 0.6f));
+        if (minDate == null && maxDate == null) {
+            Date currentDate = new Date(System.currentTimeMillis());
+            Calendar minCalendar = DateUtils.calendar(currentDate);
+            minCalendar.add(Calendar.MONTH, -12);
+            minCalendar.set(Calendar.DAY_OF_MONTH, DateUtils.maxDaysOfMonth(minCalendar.getTime()));
+            minDate = minCalendar.getTime();
+            Calendar maxCalendar = DateUtils.calendar(currentDate);
+            maxCalendar.setTime(currentDate);
+            maxCalendar.add(Calendar.MONTH, 12);
+            maxCalendar.set(Calendar.DAY_OF_MONTH, DateUtils.maxDaysOfMonth(maxCalendar.getTime()));
+            maxDate = maxCalendar.getTime();
+        }
         calendarAdapter = calendarView.getAdapter();
         calendarAdapter.setOnCalendarSelectedListener(this);
         refreshData();
@@ -118,6 +139,19 @@ public class CalendarPicker extends ModalDialog implements OnCalendarSelectedLis
     public void onRangeSelected(@NonNull Date start, @NonNull Date end) {
         startDate = start;
         endDate = end;
+    }
+
+    /**
+     * 设置配色方案
+     */
+    public void setColorScheme(ColorScheme colorScheme) {
+        if (colorScheme == null) {
+            colorScheme = new ColorScheme();
+        }
+        this.colorScheme = colorScheme;
+        if (initialized) {
+            refreshData();
+        }
     }
 
     /**
@@ -219,10 +253,8 @@ public class CalendarPicker extends ModalDialog implements OnCalendarSelectedLis
     }
 
     private void refreshData() {
+        calendarView.setColorScheme(colorScheme);
         calendarAdapter.notify(false);
-        if (!TextUtils.isEmpty(noteFrom) && !TextUtils.isEmpty(noteTo)) {
-            calendarAdapter.intervalNotes(noteFrom, noteTo);
-        }
         calendarAdapter.single(singleMode);
         if (singleMode) {
             startDate = selectDate;
@@ -231,6 +263,9 @@ public class CalendarPicker extends ModalDialog implements OnCalendarSelectedLis
         calendarAdapter.valid(minDate, maxDate);
         calendarAdapter.select(startDate, endDate);
         calendarAdapter.range(minDate, maxDate);
+        if (!TextUtils.isEmpty(noteFrom) && !TextUtils.isEmpty(noteTo)) {
+            calendarAdapter.intervalNotes(noteFrom, noteTo);
+        }
         calendarAdapter.refresh();
         scrollToSelectedPosition();
     }

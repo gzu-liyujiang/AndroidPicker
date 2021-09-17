@@ -29,11 +29,6 @@
         android:textColor="#FF333333"
         android:textSize="14sp" />
 
-    <View
-        android:layout_width="1px"
-        android:layout_height="20dp"
-        android:background="#FF999999" />
-
     <TextView
         android:id="@+id/dialog_modal_ok"
         android:layout_width="0dp"

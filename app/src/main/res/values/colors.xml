@@ -15,15 +15,10 @@
 
     <eat-comment />
     <!-- 应用的主要色调，ActionBar Toolbar 默认使用该颜色 -->
-    <color name="colorPrimary">@android:color/white</color>
+    <color name="colorPrimary">@android:color/holo_blue_light</color>
     <!-- 应用的主要暗色调，StatusBar、NavigationBar默认使用该颜色 -->
-    <color name="colorPrimaryDark">@color/colorPrimary</color>
+    <color name="colorPrimaryDark">@android:color/holo_blue_light</color>
     <!-- 应用的补充亮色调，默认情况下用于框架控件的颜色（通过colorControlActivated），CheckBox RadioButton Switch 等一般控件默认采用该颜色 -->
-    <color name="colorAccent">@android:color/holo_blue_light</color>
-    <eat-comment />
-    <!-- 日历选择器配色 -->
-    <color name="calendar_day_text_stress_color">@android:color/holo_blue_bright</color>
-    <color name="calendar_day_background_range_color">@android:color/holo_blue_light</color>
-    <color name="calendar_day_background_bound_color">@android:color/holo_blue_dark</color>
+    <color name="colorAccent">@android:color/holo_blue_dark</color>
 
 </resources>

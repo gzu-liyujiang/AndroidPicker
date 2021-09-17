@@ -11,20 +11,14 @@
  * See the Mulan PSL v2 for more details.
  */
 
-package com.github.gzuliyujiang.calendarpicker.calendar.protocol;
-
-import androidx.annotation.NonNull;
-
-import java.util.Date;
+package com.github.gzuliyujiang.dialog;
 
 /**
  * @author 贵州山野羡民（1032694760@qq.com）
- * @since 2021/9/16 10:38
+ * @since 2021/9/17 9:58
  */
-public interface OnCalendarSelectedListener {
-
-    void onSingleSelected(@NonNull Date date);
-
-    void onRangeSelected(@NonNull Date start, @NonNull Date end);
-
+public @interface CornerRound {
+    int No = 0;
+    int Top = 1;
+    int All = 2;
 }

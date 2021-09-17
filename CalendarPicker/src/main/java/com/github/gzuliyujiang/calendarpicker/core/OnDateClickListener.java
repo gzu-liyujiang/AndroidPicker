@@ -11,27 +11,15 @@
  * See the Mulan PSL v2 for more details.
  */
 
-package com.github.gzuliyujiang.calendarpicker.calendar.adapter;
+package com.github.gzuliyujiang.calendarpicker.core;
 
-import android.view.View;
-
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.github.gzuliyujiang.calendarpicker.calendar.view.MonthView;
+import java.util.Date;
 
 /**
- * Created by peng on 2017/8/3.
+ * Created by peng on 2017/8/4.
  */
+public interface OnDateClickListener {
 
-public class CalendarViewHolder extends RecyclerView.ViewHolder {
-    private final MonthView view;
+    void onCalendarDayClick(Date date);
 
-    CalendarViewHolder(View itemView) {
-        super(itemView);
-        view = (MonthView) itemView;
-    }
-
-    public MonthView view() {
-        return view;
-    }
 }

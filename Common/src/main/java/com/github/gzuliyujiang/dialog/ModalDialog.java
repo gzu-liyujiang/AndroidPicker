@@ -14,7 +14,10 @@
 package com.github.gzuliyujiang.dialog;
 
 import android.app.Activity;
-import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -28,6 +31,7 @@ import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
+import androidx.core.graphics.ColorUtils;
 
 /**
  * @author 贵州山野羡民（1032694760@qq.com）
@@ -74,18 +78,6 @@ public abstract class ModalDialog extends BottomDialog implements View.OnClickLi
         rootLayout.setOrientation(LinearLayout.VERTICAL);
         rootLayout.setGravity(Gravity.CENTER);
         rootLayout.setPadding(0, 0, 0, 0);
-        switch (DialogConfig.getDialogStyle()) {
-            case DialogStyle.One:
-            case DialogStyle.Two:
-                rootLayout.setBackgroundResource(R.drawable.dialog_corner_round_top_white);
-                break;
-            case DialogStyle.Three:
-                rootLayout.setBackgroundResource(R.drawable.dialog_corner_round_all_white);
-                break;
-            default:
-                rootLayout.setBackgroundColor(Color.WHITE);
-                break;
-        }
         headerView = createHeaderView();
         if (headerView == null) {
             headerView = new View(activity);
@@ -128,7 +120,7 @@ public abstract class ModalDialog extends BottomDialog implements View.OnClickLi
         if (DialogConfig.getDialogStyle() == DialogStyle.Default) {
             View view = new View(activity);
             view.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, (int) (1 * activity.getResources().getDisplayMetrics().density)));
-            view.setBackgroundColor(0xFFDDDDDD);
+            view.setBackgroundColor(DialogConfig.getDialogColor().topLineColor());
             return view;
         }
         return null;
@@ -155,6 +147,19 @@ public abstract class ModalDialog extends BottomDialog implements View.OnClickLi
     @Override
     protected void initView(@NonNull View contentView) {
         super.initView(contentView);
+        int color = DialogConfig.getDialogColor().contentBackgroundColor();
+        switch (DialogConfig.getDialogStyle()) {
+            case DialogStyle.One:
+            case DialogStyle.Two:
+                setBackgroundColor(CornerRound.Top, color);
+                break;
+            case DialogStyle.Three:
+                setBackgroundColor(CornerRound.All, color);
+                break;
+            default:
+                setBackgroundColor(CornerRound.No, color);
+                break;
+        }
         cancelView = contentView.findViewById(R.id.dialog_modal_cancel);
         if (cancelView == null) {
             throw new IllegalArgumentException("Cancel view id not found");
@@ -173,11 +178,45 @@ public abstract class ModalDialog extends BottomDialog implements View.OnClickLi
     @Override
     protected void initData() {
         super.initData();
-        if (cancelView != null) {
-            cancelView.setOnClickListener(this);
+        titleView.setTextColor(DialogConfig.getDialogColor().titleTextColor());
+        cancelView.setTextColor(DialogConfig.getDialogColor().cancelTextColor());
+        okView.setTextColor(DialogConfig.getDialogColor().okTextColor());
+        cancelView.setOnClickListener(this);
+        okView.setOnClickListener(this);
+        maybeBuildEllipseButton();
+    }
+
+    private void maybeBuildEllipseButton() {
+        if (DialogConfig.getDialogStyle() != DialogStyle.One && DialogConfig.getDialogStyle() != DialogStyle.Two) {
+            return;
         }
-        if (okView != null) {
-            okView.setOnClickListener(this);
+        if (DialogConfig.getDialogStyle() == DialogStyle.Two) {
+            Drawable background = cancelView.getBackground();
+            if (background != null) {
+                background.setColorFilter(new PorterDuffColorFilter(DialogConfig.getDialogColor().cancelEllipseColor(), PorterDuff.Mode.SRC_IN));
+                cancelView.setBackground(background);
+            } else {
+                cancelView.setBackgroundResource(R.mipmap.dialog_close_icon);
+            }
+        } else {
+            GradientDrawable cancelDrawable = new GradientDrawable();
+            cancelDrawable.setCornerRadius(okView.getResources().getDisplayMetrics().density * 999);
+            cancelDrawable.setColor(DialogConfig.getDialogColor().cancelEllipseColor());
+            cancelView.setBackground(cancelDrawable);
+            if (ColorUtils.calculateLuminance(DialogConfig.getDialogColor().cancelEllipseColor()) < 0.5f) {
+                cancelView.setTextColor(0xFFFFFFFF);
+            } else {
+                cancelView.setTextColor(0xFF666666);
+            }
+        }
+        GradientDrawable okDrawable = new GradientDrawable();
+        okDrawable.setCornerRadius(okView.getResources().getDisplayMetrics().density * 999);
+        okDrawable.setColor(DialogConfig.getDialogColor().okEllipseColor());
+        okView.setBackground(okDrawable);
+        if (ColorUtils.calculateLuminance(DialogConfig.getDialogColor().okEllipseColor()) < 0.5f) {
+            okView.setTextColor(0xFFFFFFFF);
+        } else {
+            okView.setTextColor(0xFF333333);
         }
     }
 

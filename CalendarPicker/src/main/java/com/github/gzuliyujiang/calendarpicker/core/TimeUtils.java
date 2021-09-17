@@ -11,7 +11,7 @@
  * See the Mulan PSL v2 for more details.
  */
 
-package com.github.gzuliyujiang.calendarpicker.calendar.utils;
+package com.github.gzuliyujiang.calendarpicker.core;
 
 import androidx.annotation.NonNull;
 

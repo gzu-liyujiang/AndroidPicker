@@ -11,23 +11,19 @@
  * See the Mulan PSL v2 for more details.
  */
 
-package com.github.gzuliyujiang.calendarpicker.calendar.protocol;
+package com.github.gzuliyujiang.calendarpicker.core;
+
+import androidx.annotation.NonNull;
+
+import java.util.Date;
 
 /**
- * 整数区间
  * Created by peng on 2017/8/4.
  */
+public interface OnDateSelectedListener {
 
-public class NInterval extends Interval<Integer> {
+    void onSingleSelected(@NonNull Date date);
 
-    public NInterval() {
-        left(-1);
-        lBound(-1);
-        right(-1);
-        rBound(-1);
-    }
+    void onRangeSelected(@NonNull Date start, @NonNull Date end);
 
-    public boolean contain(int index) {
-        return index >= left() && index <= right();
-    }
 }

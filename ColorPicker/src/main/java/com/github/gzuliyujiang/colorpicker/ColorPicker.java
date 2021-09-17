@@ -93,7 +93,7 @@ public class ColorPicker extends ModalDialog implements OnColorChangedListener {
     }
 
     @Override
-    public void onColorChanged(@ColorInt int color) {
+    public void onColorChanged(ColorGradientView gradientView, @ColorInt int color) {
         updateCurrentColor(color);
     }
 

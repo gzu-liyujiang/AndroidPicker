@@ -11,27 +11,24 @@
  * See the Mulan PSL v2 for more details.
  */
 
-package com.github.gzuliyujiang.calendarpicker.calendar.protocol;
+package com.github.gzuliyujiang.calendarpicker.core;
 
-import com.github.gzuliyujiang.calendarpicker.calendar.annotation.Status;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
- * 日期单元实体信息
  * Created by peng on 2017/8/4.
  */
-public class DayEntity {
+public class DayEntity implements Serializable {
     private static final List<DayEntity> pools = new ArrayList<>();
-    @Status
+    @DayStatus
     private int status;
     private int value;
-    @Status
+    @DayStatus
     private int valueStatus;
     private String desc;
-    @Status
+    @DayStatus
     private int descStatus;
     private String note;
 
@@ -39,12 +36,12 @@ public class DayEntity {
         super();
     }
 
-    @Status
+    @DayStatus
     public int status() {
         return status;
     }
 
-    public DayEntity status(@Status int status) {
+    public DayEntity status(@DayStatus int status) {
         this.status = status;
         return this;
     }
@@ -62,12 +59,12 @@ public class DayEntity {
         return value;
     }
 
-    @Status
+    @DayStatus
     public int valueStatus() {
         return valueStatus;
     }
 
-    public DayEntity valueStatus(@Status int valueStatus) {
+    public DayEntity valueStatus(@DayStatus int valueStatus) {
         this.valueStatus = valueStatus;
         return this;
     }
@@ -82,12 +79,12 @@ public class DayEntity {
         return this;
     }
 
-    @Status
+    @DayStatus
     public int descStatus() {
         return descStatus;
     }
 
-    public DayEntity descStatus(@Status int descStatus) {
+    public DayEntity descStatus(@DayStatus int descStatus) {
         this.descStatus = descStatus;
         return this;
     }
@@ -103,16 +100,16 @@ public class DayEntity {
 
     public void recycle() {
         if (!pools.contains(this)) {
-            this.status = Status.NORMAL;
+            this.status = DayStatus.NORMAL;
             this.value = -1;
-            this.valueStatus = Status.NORMAL;
-            this.descStatus = Status.NORMAL;
+            this.valueStatus = DayStatus.NORMAL;
+            this.descStatus = DayStatus.NORMAL;
             this.desc = "";
             pools.add(this);
         }
     }
 
-    public static DayEntity obtain(@Status int status, int value, String desc) {
+    public static DayEntity obtain(@DayStatus int status, int value, String desc) {
         DayEntity entity = 0 == pools.size() ? new DayEntity() : pools.remove(0);
         entity.status = status;
         entity.value = value;

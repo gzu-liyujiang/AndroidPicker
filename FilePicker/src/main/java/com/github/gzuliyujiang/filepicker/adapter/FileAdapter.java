@@ -13,9 +13,9 @@
 
 package com.github.gzuliyujiang.filepicker.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.Gravity;
@@ -86,7 +86,6 @@ public class FileAdapter extends RecyclerView.Adapter<ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LinearLayout layout = new LinearLayout(context);
-        layout.setBackground(new StateDrawable(Color.WHITE, Color.LTGRAY));
         layout.setOrientation(LinearLayout.HORIZONTAL);
         layout.setGravity(Gravity.CENTER_VERTICAL);
         int height = (int) (itemHeight * context.getResources().getDisplayMetrics().density);
@@ -95,8 +94,9 @@ public class FileAdapter extends RecyclerView.Adapter<ViewHolder> {
         int padding = (int) (5 * context.getResources().getDisplayMetrics().density);
         layout.setPadding(padding, padding, padding, padding);
         ImageView imageView = new ImageView(context);
-        int wh = (int) (30 * context.getResources().getDisplayMetrics().density);
-        imageView.setLayoutParams(new LinearLayout.LayoutParams(wh, wh));
+        int size = (int) (20 * context.getResources().getDisplayMetrics().density);
+        imageView.setLayoutParams(new LinearLayout.LayoutParams(size, size));
+        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
         imageView.setImageResource(android.R.drawable.ic_menu_report_image);
         layout.addView(imageView);
         TextView textView = new TextView(context);
@@ -113,8 +113,9 @@ public class FileAdapter extends RecyclerView.Adapter<ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        final FileEntity item = getItem(position);
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        final int adapterPosition = holder.getAdapterPosition();
+        final FileEntity item = getItem(adapterPosition);
         holder.imageView.setImageDrawable(item.getIcon());
         holder.textView.setText(item.getName());
         if (onPathClickedListener == null) {
@@ -123,7 +124,7 @@ public class FileAdapter extends RecyclerView.Adapter<ViewHolder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onPathClickedListener.onPathClicked(position, item.getFile().getAbsolutePath());
+                onPathClickedListener.onPathClicked(FileAdapter.this, adapterPosition, item.getFile().getAbsolutePath());
             }
         });
     }
@@ -140,7 +141,6 @@ public class FileAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     public void setItemHeight(@Dimension(unit = Dimension.DP) int itemHeight) {
         this.itemHeight = itemHeight;
-        notifyDataSetChanged();
     }
 
     public void setFileIcon(Drawable fileIcon) {
@@ -148,7 +148,6 @@ public class FileAdapter extends RecyclerView.Adapter<ViewHolder> {
             return;
         }
         this.fileIcon = fileIcon;
-        notifyDataSetChanged();
     }
 
     public void setFolderIcon(Drawable folderIcon) {
@@ -156,7 +155,6 @@ public class FileAdapter extends RecyclerView.Adapter<ViewHolder> {
             return;
         }
         this.folderIcon = folderIcon;
-        notifyDataSetChanged();
     }
 
     public void setHomeIcon(Drawable homeIcon) {
@@ -164,7 +162,6 @@ public class FileAdapter extends RecyclerView.Adapter<ViewHolder> {
             return;
         }
         this.homeIcon = homeIcon;
-        notifyDataSetChanged();
     }
 
     public void setUpIcon(Drawable upIcon) {
@@ -172,7 +169,6 @@ public class FileAdapter extends RecyclerView.Adapter<ViewHolder> {
             return;
         }
         this.upIcon = upIcon;
-        notifyDataSetChanged();
     }
 
     /**
@@ -183,7 +179,6 @@ public class FileAdapter extends RecyclerView.Adapter<ViewHolder> {
             return;
         }
         this.allowExtensions = allowExtensions;
-        loadData(getCurrentFile());
     }
 
     /**
@@ -194,7 +189,6 @@ public class FileAdapter extends RecyclerView.Adapter<ViewHolder> {
             return;
         }
         this.onlyListDir = onlyListDir;
-        loadData(getCurrentFile());
     }
 
     public boolean isOnlyListDir() {
@@ -209,7 +203,6 @@ public class FileAdapter extends RecyclerView.Adapter<ViewHolder> {
             return;
         }
         this.showHomeDir = showHomeDir;
-        loadData(getCurrentFile());
     }
 
     public boolean isShowHomeDir() {
@@ -224,7 +217,6 @@ public class FileAdapter extends RecyclerView.Adapter<ViewHolder> {
             return;
         }
         this.showUpDir = showUpDir;
-        loadData(getCurrentFile());
     }
 
     public boolean isShowUpDir() {
@@ -239,7 +231,6 @@ public class FileAdapter extends RecyclerView.Adapter<ViewHolder> {
             return;
         }
         this.showHideDir = showHideDir;
-        loadData(getCurrentFile());
     }
 
     public boolean isShowHideDir() {
@@ -256,13 +247,21 @@ public class FileAdapter extends RecyclerView.Adapter<ViewHolder> {
             return;
         }
         this.fileSort = fileSort;
-        loadData(getCurrentFile());
+    }
+
+    public File getRootDir() {
+        return rootDir;
     }
 
     public File getCurrentFile() {
         return currentFile;
     }
 
+    public void refreshData() {
+        loadData(currentFile);
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
     public void loadData(File dir) {
         if (dir == null) {
             DialogLog.print("current directory is null");
