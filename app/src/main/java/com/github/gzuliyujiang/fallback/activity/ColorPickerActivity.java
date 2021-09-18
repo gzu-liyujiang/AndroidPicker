@@ -18,10 +18,9 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentActivity;
 
-import com.github.gzuliyujiang.colorpicker.ColorGradientView;
 import com.github.gzuliyujiang.colorpicker.BrightnessGradientView;
+import com.github.gzuliyujiang.colorpicker.ColorGradientView;
 import com.github.gzuliyujiang.colorpicker.ColorPicker;
 import com.github.gzuliyujiang.colorpicker.OnColorChangedListener;
 import com.github.gzuliyujiang.colorpicker.OnColorPickedListener;
@@ -33,7 +32,7 @@ import com.github.gzuliyujiang.fallback.R;
  * @author 贵州山野羡民（1032694760@qq.com）
  * @since 2021/6/10 11:49
  */
-public class ColorPickerActivity extends FragmentActivity implements View.OnClickListener, OnColorChangedListener {
+public class ColorPickerActivity extends BackAbleActivity implements View.OnClickListener, OnColorChangedListener {
     private BrightnessGradientView brightnessGradientView;
     private Button button;
 

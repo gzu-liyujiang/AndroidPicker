@@ -18,7 +18,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentActivity;
 
 import com.github.gzuliyujiang.fallback.R;
 import com.github.gzuliyujiang.fallback.custom.AntFortuneLikePicker;
@@ -30,7 +29,7 @@ import com.github.gzuliyujiang.wheelpicker.contract.OnLinkagePickedListener;
  * @author 贵州山野羡民（1032694760@qq.com）
  * @since 2021/6/4 12:40
  */
-public class LinkagePickerActivity extends FragmentActivity implements OnCarNumberPickedListener, OnLinkagePickedListener {
+public class LinkagePickerActivity extends BackAbleActivity implements OnCarNumberPickedListener, OnLinkagePickedListener {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,6 +50,7 @@ public class LinkagePickerActivity extends FragmentActivity implements OnCarNumb
     public void onCarNumber(View view) {
         CarNumberPicker picker = new CarNumberPicker(this);
         picker.setBodyWidth(90);
+        picker.setDefaultValue("贵", "F", "");
         picker.setOnCarNumberPickedListener(this);
         picker.show();
     }

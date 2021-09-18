@@ -21,54 +21,49 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <include layout="@layout/layout_title_bar" />
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onYearMonthDayTime"
-            android:text="年月日时间选择"
-            android:textColor="#FF333333" />
+            android:text="年月日时间选择" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onYearMonthDay"
-            android:text="年月日选择"
-            android:textColor="#FF333333" />
+            android:text="年月日选择" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onYearMonth"
-            android:text="年月选择"
-            android:textColor="#FF333333" />
+            android:text="年月选择" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onMonthDay"
-            android:text="月日选择"
-            android:textColor="#FF333333" />
+            android:text="月日选择" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onTime12"
-            android:text="时间选择（12小时制）"
-            android:textColor="#FF333333" />
+            android:text="时间选择（12小时制）" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onTime24"
-            android:text="时间选择（24小时制）"
-            android:textColor="#FF333333" />
+            android:text="时间选择（24小时制）" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onBirthday"
-            android:text="生日选择"
-            android:textColor="#FF333333" />
+            android:text="生日选择" />
 
     </LinearLayout>
 

@@ -22,19 +22,19 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <include layout="@layout/layout_title_bar" />
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onFilePick"
-            android:text="文件选择"
-            android:textColor="#FF333333" />
+            android:text="文件选择" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onDirPick"
-            android:text="目录选择"
-            android:textColor="#FF333333" />
+            android:text="目录选择" />
 
         <com.github.gzuliyujiang.filepicker.FileExplorer
             android:id="@+id/file_picker_explorer"

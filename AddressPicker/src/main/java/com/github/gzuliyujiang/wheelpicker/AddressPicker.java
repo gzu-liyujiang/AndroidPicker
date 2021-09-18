@@ -18,6 +18,7 @@ import android.app.Activity;
 import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
 
+import com.github.gzuliyujiang.dialog.DialogLog;
 import com.github.gzuliyujiang.wheelpicker.annotation.AddressMode;
 import com.github.gzuliyujiang.wheelpicker.contract.AddressLoader;
 import com.github.gzuliyujiang.wheelpicker.contract.AddressParser;
@@ -75,11 +76,13 @@ public class AddressPicker extends LinkagePicker implements AddressReceiver {
         if (onAddressLoadListener != null) {
             onAddressLoadListener.onAddressLoadStarted();
         }
+        DialogLog.print("Address data loading");
         addressLoader.loadJson(this, addressParser);
     }
 
     @Override
     public void onAddressReceived(@NonNull List<ProvinceEntity> data) {
+        DialogLog.print("Address data received");
         wheelLayout.hideLoading();
         if (onAddressLoadListener != null) {
             onAddressLoadListener.onAddressLoadFinished(data);

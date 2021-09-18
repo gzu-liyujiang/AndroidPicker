@@ -165,21 +165,36 @@ public class LinkageWheelLayout extends BaseWheelLayout {
     }
 
     public void setData(@NonNull LinkageProvider provider) {
-        dataProvider = provider;
         setFirstVisible(provider.firstLevelVisible());
         setThirdVisible(provider.thirdLevelVisible());
-        firstIndex = provider.findFirstIndex(firstValue);
-        secondIndex = provider.findSecondIndex(firstIndex, secondValue);
-        thirdIndex = provider.findThirdIndex(firstIndex, secondIndex, thirdValue);
+        if (firstValue != null) {
+            firstIndex = provider.findFirstIndex(firstValue);
+        }
+        if (secondValue != null) {
+            secondIndex = provider.findSecondIndex(firstIndex, secondValue);
+        }
+        if (thirdValue != null) {
+            thirdIndex = provider.findThirdIndex(firstIndex, secondIndex, thirdValue);
+        }
+        dataProvider = provider;
         changeFirstData();
         changeSecondData();
         changeThirdData();
     }
 
     public void setDefaultValue(Object first, Object second, Object third) {
-        this.firstValue = first;
-        this.secondValue = second;
-        this.thirdValue = third;
+        if (dataProvider != null) {
+            firstIndex = dataProvider.findFirstIndex(first);
+            secondIndex = dataProvider.findSecondIndex(firstIndex, second);
+            thirdIndex = dataProvider.findThirdIndex(firstIndex, secondIndex, third);
+            changeFirstData();
+            changeSecondData();
+            changeThirdData();
+        } else {
+            this.firstValue = first;
+            this.secondValue = second;
+            this.thirdValue = third;
+        }
     }
 
     public void setFormatter(WheelFormatter first, WheelFormatter second, WheelFormatter third) {

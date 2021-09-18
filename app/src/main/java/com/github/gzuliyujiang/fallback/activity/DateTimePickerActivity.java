@@ -18,7 +18,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentActivity;
 
 import com.github.gzuliyujiang.fallback.R;
 import com.github.gzuliyujiang.wheelpicker.BirthdayPicker;
@@ -46,7 +45,7 @@ import com.github.gzuliyujiang.wheelpicker.widget.TimeWheelLayout;
  * @author 贵州山野羡民（1032694760@qq.com）
  * @since 2019/6/23
  */
-public class DateTimePickerActivity extends FragmentActivity implements OnDatePickedListener, OnTimePickedListener {
+public class DateTimePickerActivity extends BackAbleActivity implements OnDatePickedListener, OnTimePickedListener {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

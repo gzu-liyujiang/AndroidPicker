@@ -21,12 +21,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <include layout="@layout/layout_title_bar" />
+
         <Button
             android:id="@+id/color_picker_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="颜色选择"
-            android:textColor="#FF333333" />
+            android:text="颜色选择" />
 
         <com.github.gzuliyujiang.colorpicker.BrightnessGradientView
             android:id="@+id/color_picker_bright"

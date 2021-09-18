@@ -21,47 +21,43 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <include layout="@layout/layout_title_bar" />
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onProvinceCityCounty"
-            android:text="省市县选择（默认数据源为国家民政局2020年12月）"
-            android:textColor="#FF333333" />
+            android:text="省市县选择（默认数据源为国家民政局2020年12月）" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onProvinceCity"
-            android:text="省市选择（默认数据源为国家民政局2020年12月）"
-            android:textColor="#FF333333" />
+            android:text="省市选择（默认数据源为国家民政局2020年12月）" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onCityCounty"
-            android:text="市县选择选择（默认数据源为国家民政局2020年12月）"
-            android:textColor="#FF333333" />
+            android:text="市县选择选择（默认数据源为国家民政局2020年12月）" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onCustomUi"
-            android:text="地址选择（自定义UI，数据源为国家统计局2020年6月）"
-            android:textColor="#FF333333" />
+            android:text="地址选择（自定义UI，数据源为国家统计局2020年6月）" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onCustomDataByJson"
-            android:text="地址选择（自定义数据格式之JSON，含港澳台区划）"
-            android:textColor="#FF333333" />
+            android:text="地址选择（自定义数据格式之JSON，含港澳台区划）" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onCustomDataByText"
-            android:text="地址选择（自定义数据格式之文本）"
-            android:textColor="#FF333333" />
+            android:text="地址选择（自定义数据格式之文本）" />
 
     </LinearLayout>
 

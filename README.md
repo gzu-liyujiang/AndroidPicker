@@ -125,13 +125,12 @@ dependencies {
 ## 用法示例
 
 常见用法请参阅 [demo](/app)，高级用法请细读[源码](/WheelPicker)，
-诸如可以在自己的项目里重写同名的`res/layout/picker_confirm_header.xml`来自定义个性化弹窗头部， 重写同名的`assets/china_address.json`
-来自定义省市区数据， 重写同名的`PickerAnimation`来自定义弹窗动画……。 代码是最好的老师，强烈建议拉取代码运行，尝试修改 demo 对比查看实际效果以便加深理解。
+诸如可以重写同名的`assets/china_address.json`来自定义省市区数据， 重写同名的`DialogSheetAnimation`来自定义弹窗动画……。 代码是最好的老师，强烈建议拉取代码运行，尝试修改 demo 对比查看实际效果以便加深理解。
 
 ### 在 Java 中
 
 ```groovy
-        DialogConfig.setDialogStyle(DialogStyle.One);
+DialogConfig.setDialogStyle(DialogStyle.One);
 ...
 List<GoodsCategoryBean> data = new ArrayList<>();
 data.add(new GoodsCategoryBean(1, "食品生鲜"));
@@ -158,7 +157,7 @@ picker.show();
 ```
 
 ```groovy
-        DialogConfig.setDialogStyle(DialogStyle.Default);
+DialogConfig.setDialogStyle(DialogStyle.Default);
 ...
 DatePicker picker = new DatePicker(this);
 picker.setBodyWidth(240);
@@ -181,7 +180,7 @@ picker.show();
 ```
 
 ```groovy
-        DialogConfig.setDialogStyle(DialogStyle.Three);
+DialogConfig.setDialogStyle(DialogStyle.Three);
 ...
 AddressPicker picker = new AddressPicker(this);
 picker.setAddressMode("city.json", AddressMode.PROVINCE_CITY_COUNTY,
@@ -203,7 +202,6 @@ picker.show();
 ### 在 XML 中
 
 ```xml
-
 <com.github.gzuliyujiang.wheelview.widget.WheelView android:id="@+id/wheel_view"
     android:layout_width="117dp" android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal" app:wheel_atmosphericEnabled="true"
@@ -214,7 +212,6 @@ picker.show();
 ```
 
 ```xml
-
 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
     android:orientation="vertical">
 
@@ -236,7 +233,7 @@ picker.show();
 #### 全局配置所有选择器样式及配色
 
 ```java
-//内置支持四种弹窗样式（Default、One、Two、Three），效果可运行Demo查看
+//4.0.0版本开始内置支持四种弹窗样式（Default、One、Two、Three），效果可运行Demo查看
 public class DemoApp extends Application {
 
     @Override
@@ -244,7 +241,7 @@ public class DemoApp extends Application {
         super.onCreate();
         DialogConfig.setDialogStyle(DialogStyle.Default);
         DialogConfig.setDialogColor(new DialogColor()
-                .cancelTextColor(0xFFFF0000)
+                .cancelTextColor(0xFF999999)
                 .okTextColor(0xFF0099CC));
     }
 

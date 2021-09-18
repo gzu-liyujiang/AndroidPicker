@@ -19,7 +19,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentActivity;
 
 import com.github.gzuliyujiang.fallback.R;
 import com.github.gzuliyujiang.filepicker.FileExplorer;
@@ -35,7 +34,7 @@ import java.io.File;
  * @author 贵州山野羡民（1032694760@qq.com）
  * @since 2021/6/10 19:11
  */
-public class FilePickerActivity extends FragmentActivity implements OnFilePickedListener {
+public class FilePickerActivity extends BackAbleActivity implements OnFilePickedListener {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

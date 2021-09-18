@@ -21,7 +21,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentActivity;
 
 import com.github.gzuliyujiang.fallback.R;
 import com.github.gzuliyujiang.imagepicker.ActivityBuilder;
@@ -33,7 +32,7 @@ import com.github.gzuliyujiang.imagepicker.PickCallback;
  * @author 贵州山野羡民（1032694760@qq.com）
  * @since 2021/7/30 12:44
  */
-public class ImagePickerActivity extends FragmentActivity {
+public class ImagePickerActivity extends BackAbleActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

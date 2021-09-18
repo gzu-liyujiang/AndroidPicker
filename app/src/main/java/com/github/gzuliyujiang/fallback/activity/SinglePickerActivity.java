@@ -19,7 +19,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentActivity;
 
 import com.github.gzuliyujiang.fallback.R;
 import com.github.gzuliyujiang.fallback.bean.GoodsCategoryBean;
@@ -46,7 +45,7 @@ import java.util.List;
  * @author 贵州山野羡民（1032694760@qq.com）
  * @since 2019/6/23
  */
-public class SinglePickerActivity extends FragmentActivity implements OnNumberPickedListener, OnOptionPickedListener {
+public class SinglePickerActivity extends BackAbleActivity implements OnNumberPickedListener, OnOptionPickedListener {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

@@ -576,7 +576,6 @@ public class WheelView extends View implements Runnable {
         computeFlingLimitYCoordinate();
         requestLayout();
         invalidate();
-        handler.post(this);
     }
 
     @Override

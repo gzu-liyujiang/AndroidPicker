@@ -48,7 +48,7 @@ public class DemoApp extends Application {
         DialogLog.enable();
         DialogConfig.setDialogStyle(DialogStyle.Default);
         DialogConfig.setDialogColor(new DialogColor()
-                .cancelTextColor(0xFFFF0000)
+                .cancelTextColor(0xFF999999)
                 .okTextColor(0xFF0099CC));
         initXCrash(this);
     }

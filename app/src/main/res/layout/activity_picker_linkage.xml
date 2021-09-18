@@ -22,19 +22,19 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <include layout="@layout/layout_title_bar" />
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onCarNumber"
-            android:text="中国大陆车牌号选择"
-            android:textColor="#FF333333" />
+            android:text="中国大陆车牌号选择"/>
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onLikeAntFortune"
-            android:text="仿蚂蚁财富定投周期选择"
-            android:textColor="#FF333333" />
+            android:text="仿蚂蚁财富定投周期选择"/>
 
         <com.github.gzuliyujiang.wheelpicker.widget.CarNumberWheelLayout
             android:layout_width="90dp"

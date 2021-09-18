@@ -22,19 +22,19 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <include layout="@layout/layout_title_bar" />
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onCamera"
-            android:text="相机拍照"
-            android:textColor="#FF333333" />
+            android:text="相机拍照"/>
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onGallery"
-            android:text="相册选取"
-            android:textColor="#FF333333" />
+            android:text="相册选取"/>
 
     </LinearLayout>
 

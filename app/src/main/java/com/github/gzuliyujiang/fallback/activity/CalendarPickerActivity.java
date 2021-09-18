@@ -19,14 +19,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentActivity;
 
 import com.github.gzuliyujiang.calendarpicker.CalendarPicker;
 import com.github.gzuliyujiang.calendarpicker.OnRangeDatePickListener;
 import com.github.gzuliyujiang.calendarpicker.OnSingleDatePickListener;
+import com.github.gzuliyujiang.calendarpicker.core.CalendarView;
 import com.github.gzuliyujiang.calendarpicker.core.ColorScheme;
 import com.github.gzuliyujiang.calendarpicker.core.DateUtils;
-import com.github.gzuliyujiang.calendarpicker.core.CalendarView;
 import com.github.gzuliyujiang.fallback.R;
 
 import java.text.DateFormat;
@@ -39,7 +38,7 @@ import java.util.Date;
  * @author 贵州山野羡民（1032694760@qq.com）
  * @since 2019/6/23
  */
-public class CalendarPickerActivity extends FragmentActivity {
+public class CalendarPickerActivity extends BackAbleActivity {
     private long startTimeInMillis, endTimeInMillis, singleTimeInMillis;
 
     @Override
@@ -70,8 +69,8 @@ public class CalendarPickerActivity extends FragmentActivity {
         }
         picker.setSelectedDate(startTimeInMillis, endTimeInMillis);
         picker.setColorScheme(new ColorScheme()
-                .daySelectBackgroundColor(0xFF0000FF)
-                .dayStressTextColor(0xFF0000DD));
+                .daySelectBackgroundColor(0xFF00CC00)
+                .dayStressTextColor(0xFF00AA00));
         picker.setOnRangeDatePickListener(new OnRangeDatePickListener() {
             @Override
             public void onRangeDatePicked(@NonNull Date startDate, @NonNull Date endDate) {

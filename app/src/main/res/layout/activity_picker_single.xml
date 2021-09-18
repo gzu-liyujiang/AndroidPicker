@@ -21,61 +21,55 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <include layout="@layout/layout_title_bar" />
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onInteger"
-            android:text="整数选择"
-            android:textColor="#FF333333" />
+            android:text="整数选择" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onFloat"
-            android:text="小数选择"
-            android:textColor="#FF333333" />
+            android:text="小数选择" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onOptionText"
-            android:text="单项选择（字符串）"
-            android:textColor="#FF333333" />
+            android:text="单项选择（字符串）" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onOptionBean"
-            android:text="单项选择（JavaBean）"
-            android:textColor="#FF333333" />
+            android:text="单项选择（JavaBean）" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onSex"
-            android:text="性别选择"
-            android:textColor="#FF333333" />
+            android:text="性别选择" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onEthnic"
-            android:text="民族选择"
-            android:textColor="#FF333333" />
+            android:text="民族选择" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onConstellation"
-            android:text="星座选择"
-            android:textColor="#FF333333" />
+            android:text="星座选择" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onPhoneCode"
-            android:text="手机号码前缀选择"
-            android:textColor="#FF333333" />
+            android:text="手机号码前缀选择" />
 
     </LinearLayout>
 

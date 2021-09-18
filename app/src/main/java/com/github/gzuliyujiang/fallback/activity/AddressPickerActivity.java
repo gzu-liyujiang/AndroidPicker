@@ -18,7 +18,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentActivity;
 
 import com.github.gzuliyujiang.fallback.R;
 import com.github.gzuliyujiang.fallback.custom.CustomAddressPicker;
@@ -39,7 +38,7 @@ import com.github.gzuliyujiang.wheelpicker.utility.AddressJsonParser;
  * @author 贵州山野羡民（1032694760@qq.com）
  * @since 2019/6/23
  */
-public class AddressPickerActivity extends FragmentActivity implements OnAddressPickedListener {
+public class AddressPickerActivity extends BackAbleActivity implements OnAddressPickedListener {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,7 +71,7 @@ public class AddressPickerActivity extends FragmentActivity implements OnAddress
     public void onProvinceCity(View view) {
         AddressPicker picker = new AddressPicker(this);
         picker.setAddressMode(AddressMode.PROVINCE_CITY);
-        picker.setDefaultValue("520000", "520100", "520115");
+        picker.setDefaultValue("520000", "520100", "");
         picker.setOnAddressPickedListener(this);
         picker.getWheelLayout().setOnLinkageSelectedListener(new OnLinkageSelectedListener() {
             @Override
@@ -123,7 +122,7 @@ public class AddressPickerActivity extends FragmentActivity implements OnAddress
                         .countyCodeField("code")
                         .countyNameField("name")
                         .build());
-        picker.setDefaultValue("贵州省", "毕节地区", "纳雍县");
+        picker.setDefaultValue("贵州省", "毕节市", "纳雍县");
         picker.setOnAddressPickedListener(this);
         picker.getWheelLayout().setOnLinkageSelectedListener(new OnLinkageSelectedListener() {
             @Override
