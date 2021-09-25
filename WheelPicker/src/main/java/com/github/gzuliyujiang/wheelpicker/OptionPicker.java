@@ -60,6 +60,28 @@ public class OptionPicker extends ModalDialog {
     }
 
     @Override
+    protected void initView() {
+        super.initView();
+        titleView.setText("请选择");
+    }
+
+    @Override
+    protected void initData() {
+        super.initData();
+        initialized = true;
+        if (data == null || data.size() == 0) {
+            data = provideData();
+        }
+        wheelLayout.setData(data);
+        if (defaultValue != null) {
+            wheelLayout.setDefaultValue(defaultValue);
+        }
+        if (defaultPosition != -1) {
+            wheelLayout.setDefaultPosition(defaultPosition);
+        }
+    }
+
+    @Override
     protected void onCancel() {
 
     }
@@ -70,23 +92,6 @@ public class OptionPicker extends ModalDialog {
             int position = wheelLayout.getWheelView().getCurrentPosition();
             Object item = wheelLayout.getWheelView().getCurrentItem();
             onOptionPickedListener.onOptionPicked(position, item);
-        }
-    }
-
-    @Override
-    protected void initData() {
-        super.initData();
-        initialized = true;
-        titleView.setText("请选择");
-        if (data == null || data.size() == 0) {
-            data = provideData();
-        }
-        wheelLayout.setData(data);
-        if (defaultValue != null) {
-            wheelLayout.setDefaultValue(defaultValue);
-        }
-        if (defaultPosition != -1) {
-            wheelLayout.setDefaultPosition(defaultPosition);
         }
     }
 

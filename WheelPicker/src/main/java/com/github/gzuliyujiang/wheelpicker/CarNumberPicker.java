@@ -62,8 +62,8 @@ public class CarNumberPicker extends LinkagePicker {
     }
 
     @Override
-    protected void initData() {
-        super.initData();
+    protected void initView() {
+        super.initView();
         titleView.setText("车牌选择");
     }
 

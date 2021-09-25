@@ -50,13 +50,8 @@ public class DatePicker extends ModalDialog {
     }
 
     @Override
-    protected void initView(@NonNull View contentView) {
-        super.initView(contentView);
-    }
-
-    @Override
-    protected void initData() {
-        super.initData();
+    protected void initView() {
+        super.initView();
         titleView.setText("日期选择");
     }
 

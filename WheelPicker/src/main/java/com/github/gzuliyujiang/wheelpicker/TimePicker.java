@@ -52,13 +52,8 @@ public class TimePicker extends ModalDialog {
     }
 
     @Override
-    protected void initView(@NonNull View contentView) {
-        super.initView(contentView);
-    }
-
-    @Override
-    protected void initData() {
-        super.initData();
+    protected void initView() {
+        super.initView();
         titleView.setText("时间选择");
     }
 

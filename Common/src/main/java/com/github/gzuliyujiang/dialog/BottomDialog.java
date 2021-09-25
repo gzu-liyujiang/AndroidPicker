@@ -46,8 +46,8 @@ public abstract class BottomDialog extends BaseDialog {
     }
 
     @Override
-    public void onInit(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
-        super.onInit(activity, savedInstanceState);
+    public void onInit(@Nullable Bundle savedInstanceState) {
+        super.onInit(savedInstanceState);
         setCancelable(true);
         setCanceledOnTouchOutside(true);
         setWidth(activity.getResources().getDisplayMetrics().widthPixels);
@@ -66,7 +66,7 @@ public abstract class BottomDialog extends BaseDialog {
         return true;
     }
 
-    private void addMaskView() {
+    protected void addMaskView() {
         // 通过自定义遮罩层视图解决自带弹窗遮罩致使系统导航栏背景过暗不一体问题
         try {
             // 取消弹窗遮罩效果 android:backgroundDimEnabled=false
@@ -111,7 +111,7 @@ public abstract class BottomDialog extends BaseDialog {
         super.onDismiss(dialog);
     }
 
-    private void removeMaskView() {
+    protected void removeMaskView() {
         if (maskView == null) {
             DialogLog.print("mask view is null");
             return;

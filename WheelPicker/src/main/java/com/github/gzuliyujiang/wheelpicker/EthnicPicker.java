@@ -103,8 +103,8 @@ public class EthnicPicker extends OptionPicker {
     }
 
     @Override
-    protected void initData() {
-        super.initData();
+    protected void initView() {
+        super.initView();
         titleView.setText("民族选择");
     }
 

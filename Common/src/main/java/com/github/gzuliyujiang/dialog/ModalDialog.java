@@ -57,8 +57,8 @@ public abstract class ModalDialog extends BottomDialog implements View.OnClickLi
     }
 
     @Override
-    public void onInit(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
-        super.onInit(activity, savedInstanceState);
+    public void onInit(@Nullable Bundle savedInstanceState) {
+        super.onInit(savedInstanceState);
         if (DialogConfig.getDialogStyle() == DialogStyle.Three) {
             setWidth((int) (activity.getResources().getDisplayMetrics().widthPixels * 0.8f));
             setGravity(Gravity.CENTER);
@@ -145,8 +145,8 @@ public abstract class ModalDialog extends BottomDialog implements View.OnClickLi
 
     @CallSuper
     @Override
-    protected void initView(@NonNull View contentView) {
-        super.initView(contentView);
+    protected void initView() {
+        super.initView();
         int color = DialogConfig.getDialogColor().contentBackgroundColor();
         switch (DialogConfig.getDialogStyle()) {
             case DialogStyle.One:
@@ -172,12 +172,6 @@ public abstract class ModalDialog extends BottomDialog implements View.OnClickLi
         if (okView == null) {
             throw new IllegalArgumentException("Ok view id not found");
         }
-    }
-
-    @CallSuper
-    @Override
-    protected void initData() {
-        super.initData();
         titleView.setTextColor(DialogConfig.getDialogColor().titleTextColor());
         cancelView.setTextColor(DialogConfig.getDialogColor().cancelTextColor());
         okView.setTextColor(DialogConfig.getDialogColor().okTextColor());

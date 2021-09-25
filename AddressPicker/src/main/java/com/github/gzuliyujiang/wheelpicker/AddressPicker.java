@@ -64,11 +64,14 @@ public class AddressPicker extends LinkagePicker implements AddressReceiver {
     public AddressPicker(@NonNull Activity activity, @StyleRes int themeResId) {
         super(activity, themeResId);
     }
-
+    @Override
+    protected void initView() {
+        super.initView();
+        titleView.setText("地址选择");
+    }
     @Override
     protected void initData() {
         super.initData();
-        titleView.setText("地址选择");
         if (addressLoader == null || addressParser == null) {
             return;
         }

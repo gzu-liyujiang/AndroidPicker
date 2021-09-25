@@ -21,10 +21,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
 
 import com.github.gzuliyujiang.calendarpicker.core.CalendarAdapter;
-import com.github.gzuliyujiang.calendarpicker.core.ColorScheme;
-import com.github.gzuliyujiang.calendarpicker.core.OnDateSelectedListener;
-import com.github.gzuliyujiang.calendarpicker.core.DateUtils;
 import com.github.gzuliyujiang.calendarpicker.core.CalendarView;
+import com.github.gzuliyujiang.calendarpicker.core.ColorScheme;
+import com.github.gzuliyujiang.calendarpicker.core.DateUtils;
+import com.github.gzuliyujiang.calendarpicker.core.OnDateSelectedListener;
 import com.github.gzuliyujiang.dialog.DialogConfig;
 import com.github.gzuliyujiang.dialog.DialogStyle;
 import com.github.gzuliyujiang.dialog.ModalDialog;
@@ -68,8 +68,9 @@ public class CalendarPicker extends ModalDialog implements OnDateSelectedListene
     }
 
     @Override
-    protected void initView(@NonNull View contentView) {
-        super.initView(contentView);
+    protected void initView() {
+        super.initView();
+        setHeight((int) (activity.getResources().getDisplayMetrics().heightPixels * 0.6f));
         switch (DialogConfig.getDialogStyle()) {
             case DialogStyle.Default:
                 headerView.setVisibility(View.VISIBLE);
@@ -89,7 +90,6 @@ public class CalendarPicker extends ModalDialog implements OnDateSelectedListene
     protected void initData() {
         super.initData();
         initialized = true;
-        setHeight((int) (activity.getResources().getDisplayMetrics().heightPixels * 0.6f));
         if (minDate == null && maxDate == null) {
             Date currentDate = new Date(System.currentTimeMillis());
             Calendar minCalendar = DateUtils.calendar(currentDate);

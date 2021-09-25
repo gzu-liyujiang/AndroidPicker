@@ -38,8 +38,8 @@ public class AntFortuneLikePicker extends LinkagePicker {
     }
 
     @Override
-    public void onInit(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
-        super.onInit(activity, savedInstanceState);
+    public void onInit(@Nullable Bundle savedInstanceState) {
+        super.onInit(savedInstanceState);
         lastDialogStyle = DialogConfig.getDialogStyle();
         DialogConfig.setDialogStyle(DialogStyle.Default);
         setWidth(activity.getResources().getDisplayMetrics().widthPixels);

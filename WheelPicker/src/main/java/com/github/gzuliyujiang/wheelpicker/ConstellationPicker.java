@@ -61,8 +61,8 @@ public class ConstellationPicker extends OptionPicker {
     }
 
     @Override
-    protected void initData() {
-        super.initData();
+    protected void initView() {
+        super.initView();
         titleView.setText("星座选择");
     }
 

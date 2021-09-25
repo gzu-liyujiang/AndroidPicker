@@ -53,8 +53,8 @@ public class NumberPicker extends ModalDialog {
     }
 
     @Override
-    protected void initData() {
-        super.initData();
+    protected void initView() {
+        super.initView();
         titleView.setText("请选择");
     }
 
