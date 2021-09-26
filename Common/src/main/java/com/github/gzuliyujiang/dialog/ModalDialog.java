@@ -214,6 +214,24 @@ public abstract class ModalDialog extends BottomDialog implements View.OnClickLi
         }
     }
 
+    @Override
+    public void setTitle(@Nullable CharSequence title) {
+        if (titleView != null) {
+            titleView.setText(title);
+        } else {
+            super.setTitle(title);
+        }
+    }
+
+    @Override
+    public void setTitle(int titleId) {
+        if (titleView != null) {
+            titleView.setText(titleId);
+        } else {
+            super.setTitle(titleId);
+        }
+    }
+
     @CallSuper
     @Override
     public void onClick(View v) {

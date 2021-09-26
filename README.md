@@ -140,6 +140,7 @@ data.add(new GoodsCategoryBean(4, "医疗保健"));
 data.add(new GoodsCategoryBean(5, "酒水饮料"));
 data.add(new GoodsCategoryBean(6, "图书音像"));
 OptionPicker picker = new OptionPicker(this);
+picker.setTitle("货物分类");
 picker.setBodyWidth(140);
 picker.getWheelView().setIndicatorColor(0xFFFF0000);
 picker.getWheelView().setTextColor(0xFFFF00FF);
@@ -202,33 +203,49 @@ picker.show();
 ### 在 XML 中
 
 ```xml
-<com.github.gzuliyujiang.wheelview.widget.WheelView android:id="@+id/wheel_view"
-    android:layout_width="117dp" android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal" app:wheel_atmosphericEnabled="true"
-    app:wheel_curvedEnabled="true" app:wheel_curvedIndicatorSpace="4dp"
-    app:wheel_curvedMaxAngle="60" app:wheel_indicatorColor="#FF0081FF" app:wheel_itemSpace="50dp"
-    app:wheel_itemTextColor="#FF474747" app:wheel_itemTextColorSelected="#FF0081FF"
+<com.github.gzuliyujiang.wheelview.widget.WheelView
+    android:id="@+id/wheel_view"
+    android:layout_width="117dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    app:wheel_atmosphericEnabled="true"
+    app:wheel_curvedEnabled="true"
+    app:wheel_curvedIndicatorSpace="4dp"
+    app:wheel_curvedMaxAngle="60"
+    app:wheel_indicatorColor="#FF0081FF"
+    app:wheel_itemSpace="50dp"
+    app:wheel_itemTextColor="#FF474747"
+    app:wheel_itemTextColorSelected="#FF0081FF"
     app:wheel_itemTextSize="20sp" />
 ```
 
 ```xml
-<LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.github.gzuliyujiang.wheelpicker.widget.OptionWheelLayout android:id="@+id/wheel_option"
-        android:layout_width="90dp" android:layout_height="150dp"
-        android:layout_gravity="center_horizontal" app:wheel_itemTextAlign="center" />
+    <com.github.gzuliyujiang.wheelpicker.widget.OptionWheelLayout
+        android:id="@+id/wheel_option"
+        android:layout_width="90dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center_horizontal"
+        app:wheel_itemTextAlign="center" />
 
-    <com.github.gzuliyujiang.wheelpicker.widget.DateWheelLayout android:layout_width="120dp"
-        android:layout_height="150dp" android:layout_gravity="center_horizontal"
-        app:wheel_dateMode="month_day" app:wheel_dayLabel="日" app:wheel_monthLabel="月" />
+    <com.github.gzuliyujiang.wheelpicker.widget.DateWheelLayout
+        android:layout_width="120dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center_horizontal"
+        app:wheel_dateMode="month_day"
+        app:wheel_dayLabel="日"
+        app:wheel_monthLabel="月" />
 
     ...
 
 </LinearLayout>
 ```
 
-### 定制样式
+### 自定义样式
 
 #### 全局配置所有选择器样式及配色
 
@@ -251,7 +268,6 @@ public class DemoApp extends Application {
 #### 在`app/.../res/values/styles.xml`中重写`WheelDefault`覆盖
 
 ```xml
-
 <style name="WheelDefault">
     <item name="wheel_visibleItemCount">5</item>
     <item name="wheel_itemTextAlign">center</item>
