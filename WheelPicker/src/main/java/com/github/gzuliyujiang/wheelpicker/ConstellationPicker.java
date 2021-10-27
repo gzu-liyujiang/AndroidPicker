@@ -21,7 +21,6 @@ import androidx.annotation.StyleRes;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * 星座选择器
@@ -31,14 +30,6 @@ import java.util.Locale;
  */
 @SuppressWarnings("WeakerAccess")
 public class ConstellationPicker extends OptionPicker {
-    public static final List<String> DATA_CN = Arrays.asList(
-            "水瓶座", "双鱼座", "白羊座", "金牛座", "双子座", "巨蟹座",
-            "狮子座", "处女座", "天秤座", "天蝎座", "射手座", "摩羯座"
-    );
-    public static final List<String> DATA_EN = Arrays.asList(
-            "Aquarius", "Pisces", "Aries", "Taurus", "Gemini", "Cancer",
-            "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn"
-    );
     private final boolean includeUnlimited;
 
     public ConstellationPicker(Activity activity) {
@@ -63,23 +54,15 @@ public class ConstellationPicker extends OptionPicker {
     @Override
     protected void initData() {
         super.initData();
-        titleView.setText("星座选择");
+        titleView.setText(R.string.wheel_constellation_title);
     }
 
     @Override
     protected List<?> provideData() {
-        boolean isChinese = Locale.getDefault().getDisplayLanguage().contains("中文");
-        LinkedList<String> data = new LinkedList<>();
-        if (isChinese) {
-            data.addAll(DATA_CN);
-            if (includeUnlimited) {
-                data.addFirst("不限");
-            }
-        } else {
-            data.addAll(DATA_EN);
-            if (includeUnlimited) {
-                data.addFirst("Unlimited");
-            }
+        String[] array = activity.getResources().getStringArray(R.array.wheel_constellation_value);
+        LinkedList<String> data = new LinkedList<>(Arrays.asList(array));
+        if (includeUnlimited) {
+            data.addFirst(activity.getString(R.string.wheel_constellation_secrecy));
         }
         return data;
     }

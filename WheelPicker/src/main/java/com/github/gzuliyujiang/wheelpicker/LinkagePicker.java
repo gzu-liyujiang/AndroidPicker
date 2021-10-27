@@ -60,7 +60,7 @@ public class LinkagePicker extends ModalDialog {
     @Override
     protected void initData() {
         super.initData();
-        titleView.setText("请选择");
+        titleView.setText(R.string.wheel_linkage_title);
     }
 
     @Override

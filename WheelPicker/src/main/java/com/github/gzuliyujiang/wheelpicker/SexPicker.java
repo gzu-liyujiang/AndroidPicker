@@ -21,7 +21,6 @@ import androidx.annotation.StyleRes;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * 性别选择器
@@ -31,12 +30,6 @@ import java.util.Locale;
  */
 @SuppressWarnings("WeakerAccess")
 public class SexPicker extends OptionPicker {
-    public static final List<String> DATA_CN = Arrays.asList(
-            "男", "女"
-    );
-    public static final List<String> DATA_EN = Arrays.asList(
-            "Male", "Female"
-    );
     private final boolean includeSecrecy;
 
     public SexPicker(Activity activity) {
@@ -61,23 +54,15 @@ public class SexPicker extends OptionPicker {
     @Override
     protected void initData() {
         super.initData();
-        titleView.setText("性别选择");
+        titleView.setText(R.string.wheel_sex_title);
     }
 
     @Override
     protected List<?> provideData() {
-        boolean isChinese = Locale.getDefault().getDisplayLanguage().contains("中文");
-        LinkedList<String> data = new LinkedList<>();
-        if (isChinese) {
-            data.addAll(DATA_CN);
-            if (includeSecrecy) {
-                data.addFirst("保密");
-            }
-        } else {
-            data.addAll(DATA_EN);
-            if (includeSecrecy) {
-                data.addFirst("Unlimited");
-            }
+        String[] array = activity.getResources().getStringArray(R.array.wheel_sex_value);
+        LinkedList<String> data = new LinkedList<>(Arrays.asList(array));
+        if (includeSecrecy) {
+            data.addFirst(activity.getString(R.string.wheel_sex_secrecy));
         }
         return data;
     }

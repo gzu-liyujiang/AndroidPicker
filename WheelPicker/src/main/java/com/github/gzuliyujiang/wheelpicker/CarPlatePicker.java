@@ -20,9 +20,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
 
 import com.github.gzuliyujiang.wheelpicker.contract.LinkageProvider;
-import com.github.gzuliyujiang.wheelpicker.contract.OnCarNumberPickedListener;
+import com.github.gzuliyujiang.wheelpicker.contract.OnCarPlatePickedListener;
 import com.github.gzuliyujiang.wheelpicker.contract.OnLinkagePickedListener;
-import com.github.gzuliyujiang.wheelpicker.widget.CarNumberWheelLayout;
+import com.github.gzuliyujiang.wheelpicker.widget.CarPlateWheelLayout;
 
 /**
  * 中国大陆车牌号滚轮选择
@@ -31,14 +31,14 @@ import com.github.gzuliyujiang.wheelpicker.widget.CarNumberWheelLayout;
  * @since 2016/12/18 10:47
  */
 @SuppressWarnings({"unused"})
-public class CarNumberPicker extends LinkagePicker {
-    private OnCarNumberPickedListener onCarNumberPickedListener;
+public class CarPlatePicker extends LinkagePicker {
+    private OnCarPlatePickedListener onCarPlatePickedListener;
 
-    public CarNumberPicker(@NonNull Activity activity) {
+    public CarPlatePicker(@NonNull Activity activity) {
         super(activity);
     }
 
-    public CarNumberPicker(@NonNull Activity activity, @StyleRes int themeResId) {
+    public CarPlatePicker(@NonNull Activity activity, @StyleRes int themeResId) {
         super(activity, themeResId);
     }
 
@@ -51,34 +51,34 @@ public class CarNumberPicker extends LinkagePicker {
     @Deprecated
     @Override
     public void setOnLinkagePickedListener(OnLinkagePickedListener onLinkagePickedListener) {
-        throw new UnsupportedOperationException("Use setOnCarNumberPickedListener instead");
+        throw new UnsupportedOperationException("Use setOnCarPlatePickedListener instead");
     }
 
     @NonNull
     @Override
     protected View createBodyView() {
-        wheelLayout = new CarNumberWheelLayout(activity);
+        wheelLayout = new CarPlateWheelLayout(activity);
         return wheelLayout;
     }
 
     @Override
-    protected void initData() {
-        super.initData();
-        titleView.setText("车牌选择");
+    protected void initView(@NonNull View contentView) {
+        super.initView(contentView);
+        titleView.setText(R.string.wheel_car_plate_title);
     }
 
     @Override
     protected void onOk() {
-        if (onCarNumberPickedListener != null) {
+        if (onCarPlatePickedListener != null) {
             String province = wheelLayout.getFirstWheelView().getCurrentItem().toString();
             String letter = wheelLayout.getSecondWheelView().getCurrentItem().toString();
-            onCarNumberPickedListener.onCarNumberPicked(province, letter);
+            onCarPlatePickedListener.onCarNumberPicked(province, letter);
         }
     }
 
 
-    public void setOnCarNumberPickedListener(OnCarNumberPickedListener onCarNumberPickedListener) {
-        this.onCarNumberPickedListener = onCarNumberPickedListener;
+    public void setOnCarPlatePickedListener(OnCarPlatePickedListener onCarPlatePickedListener) {
+        this.onCarPlatePickedListener = onCarPlatePickedListener;
     }
 
 }

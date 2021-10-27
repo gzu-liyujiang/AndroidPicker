@@ -34,6 +34,7 @@ import java.util.List;
  */
 @SuppressWarnings("UnusedReturnValue")
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.VH> implements OnDateClickListener {
+    public static String DATE_FORMAT = "yyyy年MM月";
     private boolean notify = true;
     private ColorScheme colorScheme = new ColorScheme();
     private final List<Date> dates = new ArrayList<>();
@@ -198,7 +199,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.VH> im
     public void onBindViewHolder(@NonNull VH holder, int position) {
         holder.titleView.setBackgroundColor(colorScheme.monthTitleBackgroundColor());
         holder.titleView.setTextColor(colorScheme.monthTitleTextColor());
-        holder.titleView.setText(TimeUtils.dateText(getDateValue(position).getTime(), TimeUtils.YY_M_CN));
+        holder.titleView.setText(TimeUtils.dateText(getDateValue(position).getTime(), DATE_FORMAT));
         holder.monthView.setOnDayInMonthClickListener(this);
         holder.monthView.setValue(MonthEntity.obtain(valid, select)
                 .date(dates.get(position))

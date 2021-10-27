@@ -25,7 +25,7 @@ import android.widget.TextView;
  * @since 2021/9/17 14:36
  */
 public class WeekAdapter extends BaseAdapter {
-    private static final String[] DATA = new String[]{
+    public static String[] DATA = new String[]{
             "日", "一", "二", "三", "四", "五", "六"
     };
     private ColorScheme colorScheme = new ColorScheme();

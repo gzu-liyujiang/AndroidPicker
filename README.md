@@ -124,14 +124,12 @@ dependencies {
 
 ## 用法示例
 
-常见用法请参阅 [demo](/app)，高级用法请细读[源码](/WheelPicker)，
-诸如可以重写同名的`assets/china_address.json`来自定义省市区数据， 重写同名的`DialogSheetAnimation`来自定义弹窗动画……。 代码是最好的老师，强烈建议拉取代码运行，尝试修改 demo 对比查看实际效果以便加深理解。
+常见用法请参阅 [demo](/app)，高级用法请细读[源码](/WheelPicker)， 诸如可以重写同名的`assets/china_address.json`来自定义省市区数据，
+重写同名的`DialogSheetAnimation`来自定义弹窗动画……。 代码是最好的老师，强烈建议拉取代码运行，尝试修改 demo 对比查看实际效果以便加深理解。
 
 ### 在 Java 中
 
 ```groovy
-DialogConfig.setDialogStyle(DialogStyle.One);
-...
 List<GoodsCategoryBean> data = new ArrayList<>();
 data.add(new GoodsCategoryBean(1, "食品生鲜"));
 data.add(new GoodsCategoryBean(2, "家用电器"));
@@ -157,14 +155,13 @@ picker.show();
 ```
 
 ```groovy
-DialogConfig.setDialogStyle(DialogStyle.Default);
-...
 DatePicker picker = new DatePicker(this);
-picker.setBodyWidth(240);
+//picker.setBodyWidth(240);
 DateWheelLayout wheelLayout = picker.getWheelLayout();
 wheelLayout.setDateMode(DateMode.YEAR_MONTH_DAY);
-wheelLayout.setDateLabel("年", "月", "日");
-wheelLayout.setRange(DateEntity.today(), DateEntity.yearOnFuture(30), DateEntity.yearOnFuture(10));
+//wheelLayout.setDateLabel("年", "月", "日");
+wheelLayout.setDateFormatter(new UnitDateFormatter());
+wheelLayout.setRange(DateEntity.target(2021, 1, 1), DateEntity.target(2050, 12, 31), DateEntity.today());
 wheelLayout.setCurtainEnabled(true);
 wheelLayout.setCurtainColor(0xFFCC0000);
 wheelLayout.setIndicatorEnabled(true);
@@ -172,16 +169,13 @@ wheelLayout.setIndicatorColor(0xFFFF0000);
 wheelLayout.setIndicatorSize(view.getResources().getDisplayMetrics().density * 2);
 wheelLayout.setTextColor(0xCCCC0000);
 wheelLayout.setSelectedTextColor(0xFFFF0000);
-wheelLayout.getYearLabelView().setTextColor(0xFF999999);
-wheelLayout.getMonthLabelView().setTextColor(0xFF999999);
-wheelLayout.getDayLabelView().setTextColor(0xFF999999);
-picker.setOnDatePickedListener(this);
+//wheelLayout.getYearLabelView().setTextColor(0xFF999999);
+//wheelLayout.getMonthLabelView().setTextColor(0xFF999999);
+//picker.setOnDatePickedListener(this);
 picker.show();
 ```
 
 ```groovy
-DialogConfig.setDialogStyle(DialogStyle.Three);
-...
 AddressPicker picker = new AddressPicker(this);
 picker.setAddressMode("city.json", AddressMode.PROVINCE_CITY_COUNTY,
         new AddressJsonParser.Builder()
@@ -199,9 +193,10 @@ picker.setOnAddressPickedListener(this);
 picker.show();
 ```
 
-### 在 XML 中
+### 在 XML 中 （可选）
 
 ```xml
+
 <com.github.gzuliyujiang.wheelview.widget.WheelView android:id="@+id/wheel_view"
     android:layout_width="117dp" android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal" app:wheel_atmosphericEnabled="true"
@@ -212,6 +207,7 @@ picker.show();
 ```
 
 ```xml
+
 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
     android:orientation="vertical">
 
@@ -228,7 +224,7 @@ picker.show();
 </LinearLayout>
 ```
 
-### 定制样式
+### 定制样式（可选）
 
 #### 全局配置所有选择器样式及配色
 
@@ -324,6 +320,37 @@ public class AntFortuneLikePicker extends LinkagePicker {
 
 }
 ````
+
+### 国际化多语言（可选）
+
+在APP项目中重写以下字符串资源即可，具体名称可查看源代码：
+
+#### dialog_strings.xml
+
+```xml
+<resources>
+    <string name="dialog_modal_title">温馨提示</string>
+    <string name="dialog_modal_ok">确定</string>
+    <string name="dialog_modal_cancel">取消</string>
+</resources>
+```
+#### wheel_strings.xml
+
+```xml
+<resources>
+    <string name="wheel_linkage_title">&#160;</string>
+    <string name="wheel_date_title">日期选择</string>
+    <string name="wheel_datime_title">日期时间选择</string>
+    <string name="wheel_time_title">时间选择</string>
+    <string name="wheel_birthday_title">生日选择</string>
+    <string name="wheel_car_plate_title">车牌选择</string>
+    <string name="wheel_option_title">&#160;</string>
+    <string name="wheel_phone_code_title">手机号码前缀</string>
+    <string name="wheel_ethnic_title">民族选择</string>
+    <string name="wheel_number_title">&#160;</string>
+    <string name="wheel_constellation_title">星座选择</string>
+</resources>
+```
 
 ## 效果预览
 

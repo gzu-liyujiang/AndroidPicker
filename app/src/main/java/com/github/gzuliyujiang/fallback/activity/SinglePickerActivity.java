@@ -80,7 +80,7 @@ public class SinglePickerActivity extends BackAbleActivity implements OnNumberPi
         });
         picker.setRange(140, 200, 1);
         picker.setDefaultValue(172);
-        picker.getTitleView().setText("身高选择");
+        picker.setTitle("身高选择");
         picker.show();
     }
 
@@ -197,7 +197,8 @@ public class SinglePickerActivity extends BackAbleActivity implements OnNumberPi
     public void onPhoneCode(View view) {
         PhoneCodePicker picker = new PhoneCodePicker(this);
         picker.setBodyWidth(140);
-        picker.setDefaultPosition(2);
+        picker.setOnlyChina(false);
+        picker.setDefaultValueByCode("+86");
         picker.setOnOptionPickedListener(this);
         picker.getWheelLayout().setOnOptionSelectedListener(new OnOptionSelectedListener() {
             @Override

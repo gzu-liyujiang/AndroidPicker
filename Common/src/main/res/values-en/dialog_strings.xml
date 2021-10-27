@@ -11,18 +11,10 @@
   ~ See the Mulan PSL v2 for more details.
   -->
 
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/dialog_modal_title"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:ellipsize="end"
-    android:gravity="center"
-    android:paddingStart="25dp"
-    android:paddingTop="15dp"
-    android:paddingEnd="25dp"
-    android:paddingBottom="15dp"
-    android:singleLine="true"
-    android:text="@string/dialog_modal_title"
-    android:textColor="#FF666666"
-    android:textSize="15sp"
-    android:textStyle="bold" />
+<resources>
+
+    <string name="dialog_modal_title">Tips</string>
+    <string name="dialog_modal_ok">OK</string>
+    <string name="dialog_modal_cancel">Cancel</string>
+
+</resources>

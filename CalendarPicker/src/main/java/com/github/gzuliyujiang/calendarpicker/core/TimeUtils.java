@@ -25,9 +25,6 @@ import java.util.Map;
  * 时间工具
  */
 public class TimeUtils {
-    public final static String YY_M_CN = "yyyy年MM月";
-    public final static String YY_MD = "yyyy-MM-dd";
-
     private final static Map<String, SimpleDateFormat> dateMap = new HashMap<>();
 
     private static void ensureDateFormatMap(@NonNull String format) {
@@ -45,7 +42,9 @@ public class TimeUtils {
         ensureDateFormatMap(format);
         if (dateMap.containsKey(format)) {
             SimpleDateFormat sdf = dateMap.get(format);
-            return sdf.parse(dateText);
+            if (sdf != null) {
+                return sdf.parse(dateText);
+            }
         }
         return null;
     }
@@ -55,7 +54,9 @@ public class TimeUtils {
         ensureDateFormatMap(format);
         if (dateMap.containsKey(format)) {
             SimpleDateFormat sdf = dateMap.get(format);
-            value = sdf.format(new Date(date));
+            if (sdf != null) {
+                value = sdf.format(new Date(date));
+            }
         }
         return value;
     }

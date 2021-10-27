@@ -22,10 +22,10 @@ import java.util.List;
  * Created by peng on 2017/8/4.
  */
 public class MonthEntity implements Serializable {
-    public static final int WEEK_DAYS = 7;
-    public static final int MAX_HORIZONTAL_LINES = 6;
-    public static final int MAX_DAYS_OF_MONTH = 31;
-    public static final String STR_TODAY = "今天";
+    public static int WEEK_DAYS = 7;
+    public static int MAX_HORIZONTAL_LINES = 6;
+    public static int MAX_DAYS_OF_MONTH = 31;
+    public static String STR_TODAY = "今天";
     private final static List<MonthEntity> pools = new ArrayList<>();
     private Date date;
     private Interval<Date> valid;

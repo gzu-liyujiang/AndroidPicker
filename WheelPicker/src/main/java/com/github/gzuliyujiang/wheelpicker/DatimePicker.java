@@ -52,7 +52,7 @@ public class DatimePicker extends ModalDialog {
     @Override
     protected void initData() {
         super.initData();
-        titleView.setText("日期时间选择");
+        titleView.setText(R.string.wheel_datime_title);
     }
 
     @Override

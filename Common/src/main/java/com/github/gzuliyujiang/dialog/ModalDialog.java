@@ -30,6 +30,7 @@ import androidx.annotation.Dimension;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.core.graphics.ColorUtils;
 
@@ -238,6 +239,24 @@ public abstract class ModalDialog extends BottomDialog implements View.OnClickLi
     protected abstract void onCancel();
 
     protected abstract void onOk();
+
+    @Override
+    public void setTitle(@Nullable CharSequence title) {
+        if (titleView == null) {
+            return;
+        }
+        titleView.post(new Runnable() {
+            @Override
+            public void run() {
+                titleView.setText(title);
+            }
+        });
+    }
+
+    @Override
+    public void setTitle(@StringRes int titleId) {
+        setTitle(activity.getString(titleId));
+    }
 
     public final void setBodyWidth(@Dimension(unit = Dimension.DP) @IntRange(from = 50) int bodyWidth) {
         ViewGroup.LayoutParams layoutParams = bodyView.getLayoutParams();

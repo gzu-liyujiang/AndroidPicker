@@ -27,7 +27,7 @@
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
         android:singleLine="true"
-        android:text="温馨提示"
+        android:text="@string/dialog_modal_title"
         android:textColor="#FF666666"
         android:textSize="15sp"
         android:textStyle="bold" />

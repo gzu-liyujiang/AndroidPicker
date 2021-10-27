@@ -1,0 +1,49 @@
+<!--
+  ~ Copyright (c) 2016-present 贵州纳雍穿青人李裕江<1032694760@qq.com>
+  ~
+  ~ The software is licensed under the Mulan PSL v2.
+  ~ You can use this software according to the terms and conditions of the Mulan PSL v2.
+  ~ You may obtain a copy of Mulan PSL v2 at:
+  ~     http://license.coscl.org.cn/MulanPSL2
+  ~ THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR
+  ~ PURPOSE.
+  ~ See the Mulan PSL v2 for more details.
+  -->
+
+<resources>
+
+    <string name="wheel_linkage_title">&#160;</string>
+    <string name="wheel_date_title">日期选择</string>
+    <string name="wheel_datime_title">日期时间选择</string>
+    <string name="wheel_time_title">时间选择</string>
+    <string name="wheel_birthday_title">生日选择</string>
+    <string name="wheel_car_plate_title">车牌选择</string>
+    <string name="wheel_option_title">&#160;</string>
+    <string name="wheel_phone_code_title">手机号码前缀</string>
+    <string name="wheel_ethnic_title">民族选择</string>
+    <string name="wheel_number_title">&#160;</string>
+    <string name="wheel_constellation_title">星座选择</string>
+    <string-array name="wheel_constellation_value">
+        <item>水瓶座</item>
+        <item>双鱼座</item>
+        <item>白羊座</item>
+        <item>金牛座</item>
+        <item>双子座</item>
+        <item>巨蟹座</item>
+        <item>狮子座</item>
+        <item>处女座</item>
+        <item>天秤座</item>
+        <item>天蝎座</item>
+        <item>射手座</item>
+        <item>摩羯座</item>
+    </string-array>
+    <string name="wheel_constellation_secrecy">保密</string>
+    <string name="wheel_sex_title">性别选择</string>
+    <string-array name="wheel_sex_value">
+        <item>男</item>
+        <item>女</item>
+    </string-array>
+    <string name="wheel_sex_secrecy">保密</string>
+
+</resources>

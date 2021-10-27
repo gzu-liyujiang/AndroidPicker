@@ -77,7 +77,7 @@ public class OptionPicker extends ModalDialog {
     protected void initData() {
         super.initData();
         initialized = true;
-        titleView.setText("请选择");
+        titleView.setText(R.string.wheel_option_title);
         if (data == null || data.size() == 0) {
             data = provideData();
         }

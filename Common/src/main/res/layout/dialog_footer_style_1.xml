@@ -27,7 +27,7 @@
         android:paddingTop="13dp"
         android:paddingBottom="13dp"
         android:singleLine="true"
-        android:text="@android:string/cancel"
+        android:text="@string/dialog_modal_cancel"
         android:textColor="#FF333333"
         android:textSize="15sp" />
 
@@ -46,7 +46,7 @@
         android:paddingTop="13dp"
         android:paddingBottom="13dp"
         android:singleLine="true"
-        android:text="@android:string/ok"
+        android:text="@string/dialog_modal_ok"
         android:textColor="#FF333333"
         android:textSize="15sp" />
 

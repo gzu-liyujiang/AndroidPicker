@@ -19,35 +19,35 @@ import android.util.AttributeSet;
 
 import androidx.annotation.NonNull;
 
-import com.github.gzuliyujiang.wheelpicker.impl.CarNumberProvider;
+import com.github.gzuliyujiang.wheelpicker.impl.CarPlateProvider;
 
 /**
  * @author 贵州山野羡民（1032694760@qq.com）
  * @since 2021/6/9 11:57
  */
-public class CarNumberWheelLayout extends LinkageWheelLayout {
-    private CarNumberProvider provider;
+public class CarPlateWheelLayout extends LinkageWheelLayout {
+    private CarPlateProvider provider;
 
-    public CarNumberWheelLayout(Context context) {
+    public CarPlateWheelLayout(Context context) {
         super(context);
     }
 
-    public CarNumberWheelLayout(Context context, AttributeSet attrs) {
+    public CarPlateWheelLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public CarNumberWheelLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+    public CarPlateWheelLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
-    public CarNumberWheelLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public CarPlateWheelLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
     @Override
     protected void onInit(@NonNull Context context) {
         super.onInit(context);
-        provider = new CarNumberProvider();
+        provider = new CarPlateProvider();
         setData(provider);
     }
 

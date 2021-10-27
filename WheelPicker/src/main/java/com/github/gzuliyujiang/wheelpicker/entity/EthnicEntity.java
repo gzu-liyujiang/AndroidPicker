@@ -26,13 +26,13 @@ import java.util.Objects;
  * @since 2021/6/12 15:05
  */
 public class EthnicEntity implements TextProvider, Serializable {
-    private static final boolean CHINESE;
+    private static final boolean IS_CHINESE;
     private String code;
     private String name;
     private String spelling;
 
     static {
-        CHINESE = Locale.getDefault().getDisplayLanguage().contains("中文");
+        IS_CHINESE = Locale.getDefault().getDisplayLanguage().contains("中文");
     }
 
     public String getCode() {
@@ -61,7 +61,7 @@ public class EthnicEntity implements TextProvider, Serializable {
 
     @Override
     public String provideText() {
-        if (CHINESE) {
+        if (IS_CHINESE) {
             return name;
         }
         return spelling;

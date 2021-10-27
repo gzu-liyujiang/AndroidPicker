@@ -25,7 +25,7 @@
         android:gravity="center"
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
-        android:text="@android:string/cancel"
+        android:text="@string/dialog_modal_cancel"
         android:textColor="#FF333333"
         android:textSize="14sp" />
 
@@ -37,7 +37,7 @@
         android:gravity="center"
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
-        android:text="@android:string/ok"
+        android:text="@string/dialog_modal_ok"
         android:textColor="#FF333333"
         android:textSize="14sp" />
 

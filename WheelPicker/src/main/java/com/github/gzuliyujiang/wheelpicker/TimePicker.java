@@ -59,7 +59,7 @@ public class TimePicker extends ModalDialog {
     @Override
     protected void initData() {
         super.initData();
-        titleView.setText("时间选择");
+        titleView.setText(R.string.wheel_time_title);
     }
 
     @Override

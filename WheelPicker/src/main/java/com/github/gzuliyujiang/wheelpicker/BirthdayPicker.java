@@ -14,6 +14,7 @@
 package com.github.gzuliyujiang.wheelpicker;
 
 import android.app.Activity;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
@@ -44,9 +45,14 @@ public class BirthdayPicker extends DatePicker {
     }
 
     @Override
+    protected void initView(@NonNull View contentView) {
+        super.initView(contentView);
+        titleView.setText(R.string.wheel_birthday_title);
+    }
+
+    @Override
     protected void initData() {
         super.initData();
-        titleView.setText("生日选择");
         Calendar calendar = Calendar.getInstance();
         int currentYear = calendar.get(Calendar.YEAR);
         int currentMonth = calendar.get(Calendar.MONTH) + 1;

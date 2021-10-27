@@ -17,7 +17,7 @@ package com.github.gzuliyujiang.wheelpicker.contract;
  * @author 贵州山野羡民（1032694760@qq.com）
  * @since 2021/6/9 11:53
  */
-public interface OnCarNumberPickedListener {
+public interface OnCarPlatePickedListener {
 
     void onCarNumberPicked(String province, String letter);
 

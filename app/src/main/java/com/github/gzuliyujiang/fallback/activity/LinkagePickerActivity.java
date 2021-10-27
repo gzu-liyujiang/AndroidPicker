@@ -21,15 +21,15 @@ import androidx.annotation.Nullable;
 
 import com.github.gzuliyujiang.fallback.R;
 import com.github.gzuliyujiang.fallback.custom.AntFortuneLikePicker;
-import com.github.gzuliyujiang.wheelpicker.CarNumberPicker;
-import com.github.gzuliyujiang.wheelpicker.contract.OnCarNumberPickedListener;
+import com.github.gzuliyujiang.wheelpicker.CarPlatePicker;
+import com.github.gzuliyujiang.wheelpicker.contract.OnCarPlatePickedListener;
 import com.github.gzuliyujiang.wheelpicker.contract.OnLinkagePickedListener;
 
 /**
  * @author 贵州山野羡民（1032694760@qq.com）
  * @since 2021/6/4 12:40
  */
-public class LinkagePickerActivity extends BackAbleActivity implements OnCarNumberPickedListener, OnLinkagePickedListener {
+public class LinkagePickerActivity extends BackAbleActivity implements OnCarPlatePickedListener, OnLinkagePickedListener {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,10 +48,10 @@ public class LinkagePickerActivity extends BackAbleActivity implements OnCarNumb
     }
 
     public void onCarNumber(View view) {
-        CarNumberPicker picker = new CarNumberPicker(this);
+        CarPlatePicker picker = new CarPlatePicker(this);
         picker.setBodyWidth(90);
         picker.setDefaultValue("贵", "F", "");
-        picker.setOnCarNumberPickedListener(this);
+        picker.setOnCarPlatePickedListener(this);
         picker.show();
     }
 

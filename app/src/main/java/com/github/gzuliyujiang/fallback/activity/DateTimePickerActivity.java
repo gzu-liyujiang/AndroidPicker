@@ -84,11 +84,12 @@ public class DateTimePickerActivity extends BackAbleActivity implements OnDatePi
 
     public void onYearMonthDay(View view) {
         DatePicker picker = new DatePicker(this);
-        picker.setBodyWidth(240);
+        //picker.setBodyWidth(240);
         DateWheelLayout wheelLayout = picker.getWheelLayout();
         wheelLayout.setDateMode(DateMode.YEAR_MONTH_DAY);
-        wheelLayout.setDateLabel("年", "月", "日");
-        wheelLayout.setRange(DateEntity.today(), DateEntity.yearOnFuture(30), DateEntity.yearOnFuture(10));
+        //wheelLayout.setDateLabel("年", "月", "日");
+        wheelLayout.setDateFormatter(new UnitDateFormatter());
+        wheelLayout.setRange(DateEntity.target(2021, 1, 1), DateEntity.target(2050, 12, 31), DateEntity.today());
         wheelLayout.setCurtainEnabled(true);
         wheelLayout.setCurtainColor(0xFFCC0000);
         wheelLayout.setIndicatorEnabled(true);
@@ -96,10 +97,9 @@ public class DateTimePickerActivity extends BackAbleActivity implements OnDatePi
         wheelLayout.setIndicatorSize(view.getResources().getDisplayMetrics().density * 2);
         wheelLayout.setTextColor(0xCCCC0000);
         wheelLayout.setSelectedTextColor(0xFFFF0000);
-        wheelLayout.getYearLabelView().setTextColor(0xFF999999);
-        wheelLayout.getMonthLabelView().setTextColor(0xFF999999);
-        wheelLayout.getDayLabelView().setTextColor(0xFF999999);
-        picker.setOnDatePickedListener(this);
+        //wheelLayout.getYearLabelView().setTextColor(0xFF999999);
+        //wheelLayout.getMonthLabelView().setTextColor(0xFF999999);
+        //picker.setOnDatePickedListener(this);
         picker.show();
     }
 

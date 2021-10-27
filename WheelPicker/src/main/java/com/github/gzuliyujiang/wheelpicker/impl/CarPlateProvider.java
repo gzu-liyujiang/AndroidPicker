@@ -27,7 +27,7 @@ import java.util.List;
  * @author 贵州山野羡民（1032694760@qq.com）
  * @since 2021/6/9 11:31
  */
-public class CarNumberProvider implements LinkageProvider {
+public class CarPlateProvider implements LinkageProvider {
     private static final String[] ABBREVIATIONS = {
             "京", "津", "冀", "晋", "蒙", "辽", "吉", "黑", "沪",
             "苏", "浙", "皖", "闽", "赣", "鲁", "豫", "鄂", "湘",

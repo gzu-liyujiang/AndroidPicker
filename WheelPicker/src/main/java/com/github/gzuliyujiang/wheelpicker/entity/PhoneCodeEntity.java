@@ -18,17 +18,28 @@ import androidx.annotation.NonNull;
 import com.github.gzuliyujiang.wheelview.contract.TextProvider;
 
 import java.io.Serializable;
+import java.util.Locale;
+import java.util.Objects;
 
 /**
  * @author 贵州山野羡民（1032694760@qq.com）
  * @since 2021/6/3 16:27
  */
 public class PhoneCodeEntity implements TextProvider, Serializable {
-    private String name;
+    private static final boolean IS_CHINESE;
     private String code;
+    private String name;
+    private String english;
 
-    public PhoneCodeEntity(String name, String code) {
-        this.name = name;
+    static {
+        IS_CHINESE = Locale.getDefault().getDisplayLanguage().contains("中文");
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
         this.code = code;
     }
 
@@ -40,25 +51,48 @@ public class PhoneCodeEntity implements TextProvider, Serializable {
         this.name = name;
     }
 
-    public String getCode() {
-        return code;
+    public String getEnglish() {
+        return english;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setEnglish(String english) {
+        this.english = english;
     }
 
     @Override
     public String provideText() {
-        return name;
+        if (IS_CHINESE) {
+            return name;
+        }
+        return english;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        PhoneCodeEntity that = (PhoneCodeEntity) o;
+        return Objects.equals(code, that.code) ||
+                Objects.equals(name, that.name) ||
+                Objects.equals(english, that.english);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(code, name, english);
     }
 
     @NonNull
     @Override
     public String toString() {
         return "PhoneCodeEntity{" +
-                "name='" + name + '\'' +
-                ", code='" + code + '\'' +
+                "code='" + code + '\'' +
+                ", name='" + name + '\'' +
+                ", english" + english + '\'' +
                 '}';
     }
 
