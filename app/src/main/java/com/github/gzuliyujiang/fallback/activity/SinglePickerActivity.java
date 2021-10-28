@@ -145,6 +145,9 @@ public class SinglePickerActivity extends BackAbleActivity implements OnNumberPi
         wheelLayout.setIndicatorEnabled(false);
         wheelLayout.setTextColor(0xFFFF00FF);
         wheelLayout.setSelectedTextColor(0xFFFF0000);
+        wheelLayout.setTextSize(15 * view.getResources().getDisplayMetrics().scaledDensity);
+        wheelLayout.setSelectedTextSize(17 * view.getResources().getDisplayMetrics().scaledDensity);
+        wheelLayout.setSelectedTextBold(true);
         wheelLayout.setCurtainEnabled(true);
         wheelLayout.setCurtainColor(0xEEFF0000);
         wheelLayout.setCurtainCorner(CurtainCorner.ALL);

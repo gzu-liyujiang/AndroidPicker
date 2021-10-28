@@ -24,6 +24,7 @@ import androidx.annotation.NonNull;
 import com.github.gzuliyujiang.wheelpicker.R;
 import com.github.gzuliyujiang.wheelpicker.contract.LinkageProvider;
 import com.github.gzuliyujiang.wheelpicker.contract.OnLinkageSelectedListener;
+import com.github.gzuliyujiang.wheelview.annotation.CurtainCorner;
 import com.github.gzuliyujiang.wheelview.annotation.ItemTextAlign;
 import com.github.gzuliyujiang.wheelview.annotation.ScrollState;
 import com.github.gzuliyujiang.wheelview.contract.WheelFormatter;
@@ -93,13 +94,16 @@ public class LinkageWheelLayout extends BaseWheelLayout {
     @Override
     protected void onAttributeSet(@NonNull Context context, @NonNull TypedArray typedArray) {
         float density = context.getResources().getDisplayMetrics().density;
-        setTextSize(typedArray.getDimensionPixelSize(R.styleable.LinkageWheelLayout_wheel_itemTextSize,
-                (int) (15 * context.getResources().getDisplayMetrics().scaledDensity)));
+        float scaledDensity = context.getResources().getDisplayMetrics().scaledDensity;
         setVisibleItemCount(typedArray.getInt(R.styleable.LinkageWheelLayout_wheel_visibleItemCount, 5));
         setSameWidthEnabled(typedArray.getBoolean(R.styleable.LinkageWheelLayout_wheel_sameWidthEnabled, false));
         setMaxWidthText(typedArray.getString(R.styleable.LinkageWheelLayout_wheel_maxWidthText));
-        setSelectedTextColor(typedArray.getColor(R.styleable.LinkageWheelLayout_wheel_itemTextColorSelected, 0xFF000000));
+        setTextSize(typedArray.getDimension(R.styleable.LinkageWheelLayout_wheel_itemTextSize, 15 * scaledDensity));
+        setSelectedTextSize(typedArray.getDimension(R.styleable.LinkageWheelLayout_wheel_itemTextSizeSelected, 16 * scaledDensity));
         setTextColor(typedArray.getColor(R.styleable.LinkageWheelLayout_wheel_itemTextColor, 0xFF888888));
+        setSelectedTextColor(typedArray.getColor(R.styleable.LinkageWheelLayout_wheel_itemTextColorSelected, 0xFF000000));
+        setSelectedTextBold(typedArray.getBoolean(R.styleable.LinkageWheelLayout_wheel_itemTextBoldSelected, false));
+        setTextAlign(typedArray.getInt(R.styleable.LinkageWheelLayout_wheel_itemTextAlign, ItemTextAlign.CENTER));
         setItemSpace(typedArray.getDimensionPixelSize(R.styleable.LinkageWheelLayout_wheel_itemSpace,
                 (int) (20 * density)));
         setCyclicEnabled(typedArray.getBoolean(R.styleable.LinkageWheelLayout_wheel_cyclicEnabled, false));
@@ -109,11 +113,11 @@ public class LinkageWheelLayout extends BaseWheelLayout {
         setCurvedIndicatorSpace(typedArray.getDimensionPixelSize(R.styleable.LinkageWheelLayout_wheel_curvedIndicatorSpace, (int) (1 * density)));
         setCurtainEnabled(typedArray.getBoolean(R.styleable.LinkageWheelLayout_wheel_curtainEnabled, false));
         setCurtainColor(typedArray.getColor(R.styleable.LinkageWheelLayout_wheel_curtainColor, 0x88FFFFFF));
+        setCurtainCorner(typedArray.getInt(R.styleable.LinkageWheelLayout_wheel_curtainCorner, CurtainCorner.NONE));
         setCurtainRadius(typedArray.getDimension(R.styleable.LinkageWheelLayout_wheel_curtainRadius, 0));
         setAtmosphericEnabled(typedArray.getBoolean(R.styleable.LinkageWheelLayout_wheel_atmosphericEnabled, false));
         setCurvedEnabled(typedArray.getBoolean(R.styleable.LinkageWheelLayout_wheel_curvedEnabled, false));
         setCurvedMaxAngle(typedArray.getInteger(R.styleable.LinkageWheelLayout_wheel_curvedMaxAngle, 90));
-        setTextAlign(typedArray.getInt(R.styleable.LinkageWheelLayout_wheel_itemTextAlign, ItemTextAlign.CENTER));
         setFirstVisible(typedArray.getBoolean(R.styleable.LinkageWheelLayout_wheel_firstVisible, true));
         setThirdVisible(typedArray.getBoolean(R.styleable.LinkageWheelLayout_wheel_thirdVisible, true));
         String firstLabel = typedArray.getString(R.styleable.LinkageWheelLayout_wheel_firstLabel);

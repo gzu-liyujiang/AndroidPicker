@@ -27,6 +27,7 @@ import com.github.gzuliyujiang.wheelpicker.contract.DateFormatter;
 import com.github.gzuliyujiang.wheelpicker.contract.OnDateSelectedListener;
 import com.github.gzuliyujiang.wheelpicker.entity.DateEntity;
 import com.github.gzuliyujiang.wheelpicker.impl.SimpleDateFormatter;
+import com.github.gzuliyujiang.wheelview.annotation.CurtainCorner;
 import com.github.gzuliyujiang.wheelview.annotation.ItemTextAlign;
 import com.github.gzuliyujiang.wheelview.annotation.ScrollState;
 import com.github.gzuliyujiang.wheelview.contract.WheelFormatter;
@@ -101,13 +102,16 @@ public class DateWheelLayout extends BaseWheelLayout {
     @Override
     protected void onAttributeSet(@NonNull Context context, @NonNull TypedArray typedArray) {
         float density = context.getResources().getDisplayMetrics().density;
-        setTextSize(typedArray.getDimensionPixelSize(R.styleable.DateWheelLayout_wheel_itemTextSize,
-                (int) (15 * context.getResources().getDisplayMetrics().scaledDensity)));
+        float scaledDensity = context.getResources().getDisplayMetrics().scaledDensity;
         setVisibleItemCount(typedArray.getInt(R.styleable.DateWheelLayout_wheel_visibleItemCount, 5));
         setSameWidthEnabled(typedArray.getBoolean(R.styleable.DateWheelLayout_wheel_sameWidthEnabled, false));
         setMaxWidthText(typedArray.getString(R.styleable.DateWheelLayout_wheel_maxWidthText));
-        setSelectedTextColor(typedArray.getColor(R.styleable.DateWheelLayout_wheel_itemTextColorSelected, 0xFF000000));
         setTextColor(typedArray.getColor(R.styleable.DateWheelLayout_wheel_itemTextColor, 0xFF888888));
+        setSelectedTextColor(typedArray.getColor(R.styleable.DateWheelLayout_wheel_itemTextColorSelected, 0xFF000000));
+        setTextSize(typedArray.getDimension(R.styleable.DateWheelLayout_wheel_itemTextSize, 15 * scaledDensity));
+        setSelectedTextSize(typedArray.getDimension(R.styleable.DateWheelLayout_wheel_itemTextSizeSelected, 16 * scaledDensity));
+        setSelectedTextBold(typedArray.getBoolean(R.styleable.DateWheelLayout_wheel_itemTextBoldSelected, false));
+        setTextAlign(typedArray.getInt(R.styleable.DateWheelLayout_wheel_itemTextAlign, ItemTextAlign.CENTER));
         setItemSpace(typedArray.getDimensionPixelSize(R.styleable.DateWheelLayout_wheel_itemSpace,
                 (int) (20 * density)));
         setCyclicEnabled(typedArray.getBoolean(R.styleable.DateWheelLayout_wheel_cyclicEnabled, false));
@@ -117,11 +121,11 @@ public class DateWheelLayout extends BaseWheelLayout {
         setCurvedIndicatorSpace(typedArray.getDimensionPixelSize(R.styleable.DateWheelLayout_wheel_curvedIndicatorSpace, (int) (1 * density)));
         setCurtainEnabled(typedArray.getBoolean(R.styleable.DateWheelLayout_wheel_curtainEnabled, false));
         setCurtainColor(typedArray.getColor(R.styleable.DateWheelLayout_wheel_curtainColor, 0x88FFFFFF));
+        setCurtainCorner(typedArray.getInt(R.styleable.DateWheelLayout_wheel_curtainCorner, CurtainCorner.NONE));
         setCurtainRadius(typedArray.getDimension(R.styleable.DateWheelLayout_wheel_curtainRadius, 0));
         setAtmosphericEnabled(typedArray.getBoolean(R.styleable.DateWheelLayout_wheel_atmosphericEnabled, false));
         setCurvedEnabled(typedArray.getBoolean(R.styleable.DateWheelLayout_wheel_curvedEnabled, false));
         setCurvedMaxAngle(typedArray.getInteger(R.styleable.DateWheelLayout_wheel_curvedMaxAngle, 90));
-        setTextAlign(typedArray.getInt(R.styleable.DateWheelLayout_wheel_itemTextAlign, ItemTextAlign.CENTER));
         setDateMode(typedArray.getInt(R.styleable.DateWheelLayout_wheel_dateMode, DateMode.YEAR_MONTH_DAY));
         String yearLabel = typedArray.getString(R.styleable.DateWheelLayout_wheel_yearLabel);
         String monthLabel = typedArray.getString(R.styleable.DateWheelLayout_wheel_monthLabel);
@@ -135,7 +139,7 @@ public class DateWheelLayout extends BaseWheelLayout {
     public void onWheelSelected(WheelView view, int position) {
         int id = view.getId();
         if (id == R.id.wheel_picker_date_year_wheel) {
-            selectedYear = (Integer) yearWheelView.getItem(position);
+            selectedYear = yearWheelView.getItem(position);
             selectedMonth = null;
             selectedDay = null;
             changeMonth(selectedYear);
@@ -143,14 +147,14 @@ public class DateWheelLayout extends BaseWheelLayout {
             return;
         }
         if (id == R.id.wheel_picker_date_month_wheel) {
-            selectedMonth = (Integer) monthWheelView.getItem(position);
+            selectedMonth = monthWheelView.getItem(position);
             selectedDay = null;
             changeDay(selectedYear, selectedMonth);
             dateSelectedCallback();
             return;
         }
         if (id == R.id.wheel_picker_date_day_wheel) {
-            selectedDay = (Integer) dayWheelView.getItem(position);
+            selectedDay = dayWheelView.getItem(position);
             dateSelectedCallback();
         }
     }
@@ -314,15 +318,15 @@ public class DateWheelLayout extends BaseWheelLayout {
     }
 
     public final int getSelectedYear() {
-        return (int) yearWheelView.getCurrentItem();
+        return yearWheelView.getCurrentItem();
     }
 
     public final int getSelectedMonth() {
-        return (int) monthWheelView.getCurrentItem();
+        return monthWheelView.getCurrentItem();
     }
 
     public final int getSelectedDay() {
-        return (int) dayWheelView.getCurrentItem();
+        return dayWheelView.getCurrentItem();
     }
 
     private void changeYear() {

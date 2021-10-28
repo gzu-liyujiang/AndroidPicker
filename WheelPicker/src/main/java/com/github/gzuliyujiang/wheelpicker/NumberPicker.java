@@ -61,8 +61,8 @@ public class NumberPicker extends ModalDialog {
     protected void onOk() {
         if (onNumberPickedListener != null) {
             int position = wheelLayout.getWheelView().getCurrentPosition();
-            Object item = wheelLayout.getWheelView().getCurrentItem();
-            onNumberPickedListener.onNumberPicked(position, (Number) item);
+            Number item = wheelLayout.getWheelView().getCurrentItem();
+            onNumberPickedListener.onNumberPicked(position, item);
         }
     }
 

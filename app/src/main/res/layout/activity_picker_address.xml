@@ -39,13 +39,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onProvinceCityForGuiZhou"
-            android:text="贵州省省市选择（数据精简专用）" />
+            android:text="贵州省地级市选择（精简专用的JSON数据）" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onCityCounty"
-            android:text="市县选择选择（数据为国家民政局2020年12月）" />
+            android:text="市县选择（数据为国家民政局2020年12月）" />
 
         <Button
             android:layout_width="match_parent"

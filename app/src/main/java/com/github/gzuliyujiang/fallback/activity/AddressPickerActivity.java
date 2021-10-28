@@ -105,19 +105,21 @@ public class AddressPickerActivity extends BackAbleActivity implements OnAddress
         picker.setDefaultValue("贵州省", "毕节市", "纳雍县");
         picker.setOnAddressPickedListener(this);
         LinkageWheelLayout wheelLayout = picker.getWheelLayout();
-        wheelLayout.setIndicatorEnabled(false);
+        wheelLayout.setTextSize(15 * view.getResources().getDisplayMetrics().scaledDensity);
+        wheelLayout.setSelectedTextSize(17 * view.getResources().getDisplayMetrics().scaledDensity);
+        wheelLayout.setSelectedTextBold(true);
         wheelLayout.setCurtainEnabled(true);
         wheelLayout.setCurtainColor(0xEE0081FF);
-        wheelLayout.setCurtainRadius(5 * view.getResources().getDisplayMetrics().density);
+        wheelLayout.setCurtainRadius(8 * view.getResources().getDisplayMetrics().density);
         int padding = (int) (10 * view.getResources().getDisplayMetrics().density);
         wheelLayout.setPadding(padding, 0, padding, 0);
         wheelLayout.setOnLinkageSelectedListener(new OnLinkageSelectedListener() {
             @Override
             public void onLinkageSelected(Object first, Object second, Object third) {
                 picker.getTitleView().setText(String.format("%s%s%s",
-                        picker.getFirstWheelView().formatItem(first),
-                        picker.getSecondWheelView().formatItem(second),
-                        picker.getThirdWheelView().formatItem(third)));
+                        picker.getProvinceWheelView().formatItem(first),
+                        picker.getCityWheelView().formatItem(second),
+                        picker.getCountyWheelView().formatItem(third)));
             }
         });
         picker.getProvinceWheelView().setCurtainCorner(CurtainCorner.LEFT);

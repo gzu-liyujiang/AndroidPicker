@@ -46,8 +46,10 @@
     <declare-styleable name="OptionWheelLayout">
         <attr name="wheel_visibleItemCount" />
         <attr name="wheel_itemTextSize" />
+        <attr name="wheel_itemTextSizeSelected" />
         <attr name="wheel_itemTextColor" />
         <attr name="wheel_itemTextColorSelected" />
+        <attr name="wheel_itemTextBoldSelected" />
         <attr name="wheel_itemSpace" />
         <attr name="wheel_itemTextAlign" />
         <attr name="wheel_sameWidthEnabled" />
@@ -58,6 +60,7 @@
         <attr name="wheel_indicatorSize" />
         <attr name="wheel_curtainEnabled" />
         <attr name="wheel_curtainColor" />
+        <attr name="wheel_curtainCorner" />
         <attr name="wheel_curtainRadius" />
         <attr name="wheel_atmosphericEnabled" />
         <attr name="wheel_curvedEnabled" />
@@ -69,8 +72,10 @@
     <declare-styleable name="NumberWheelLayout">
         <attr name="wheel_visibleItemCount" />
         <attr name="wheel_itemTextSize" />
+        <attr name="wheel_itemTextSizeSelected" />
         <attr name="wheel_itemTextColor" />
         <attr name="wheel_itemTextColorSelected" />
+        <attr name="wheel_itemTextBoldSelected" />
         <attr name="wheel_itemSpace" />
         <attr name="wheel_itemTextAlign" />
         <attr name="wheel_sameWidthEnabled" />
@@ -81,6 +86,7 @@
         <attr name="wheel_indicatorSize" />
         <attr name="wheel_curtainEnabled" />
         <attr name="wheel_curtainColor" />
+        <attr name="wheel_curtainCorner" />
         <attr name="wheel_curtainRadius" />
         <attr name="wheel_atmosphericEnabled" />
         <attr name="wheel_curvedEnabled" />
@@ -96,8 +102,10 @@
     <declare-styleable name="DateWheelLayout">
         <attr name="wheel_visibleItemCount" />
         <attr name="wheel_itemTextSize" />
+        <attr name="wheel_itemTextSizeSelected" />
         <attr name="wheel_itemTextColor" />
         <attr name="wheel_itemTextColorSelected" />
+        <attr name="wheel_itemTextBoldSelected" />
         <attr name="wheel_itemSpace" />
         <attr name="wheel_itemTextAlign" />
         <attr name="wheel_sameWidthEnabled" />
@@ -108,6 +116,7 @@
         <attr name="wheel_indicatorSize" />
         <attr name="wheel_curtainEnabled" />
         <attr name="wheel_curtainColor" />
+        <attr name="wheel_curtainCorner" />
         <attr name="wheel_curtainRadius" />
         <attr name="wheel_atmosphericEnabled" />
         <attr name="wheel_curvedEnabled" />
@@ -122,8 +131,10 @@
     <declare-styleable name="TimeWheelLayout">
         <attr name="wheel_visibleItemCount" />
         <attr name="wheel_itemTextSize" />
+        <attr name="wheel_itemTextSizeSelected" />
         <attr name="wheel_itemTextColor" />
         <attr name="wheel_itemTextColorSelected" />
+        <attr name="wheel_itemTextBoldSelected" />
         <attr name="wheel_itemSpace" />
         <attr name="wheel_itemTextAlign" />
         <attr name="wheel_sameWidthEnabled" />
@@ -134,6 +145,7 @@
         <attr name="wheel_indicatorSize" />
         <attr name="wheel_curtainEnabled" />
         <attr name="wheel_curtainColor" />
+        <attr name="wheel_curtainCorner" />
         <attr name="wheel_curtainRadius" />
         <attr name="wheel_atmosphericEnabled" />
         <attr name="wheel_curvedEnabled" />
@@ -148,8 +160,10 @@
     <declare-styleable name="DatimeWheelLayout">
         <attr name="wheel_visibleItemCount" />
         <attr name="wheel_itemTextSize" />
+        <attr name="wheel_itemTextSizeSelected" />
         <attr name="wheel_itemTextColor" />
         <attr name="wheel_itemTextColorSelected" />
+        <attr name="wheel_itemTextBoldSelected" />
         <attr name="wheel_itemSpace" />
         <attr name="wheel_itemTextAlign" />
         <attr name="wheel_sameWidthEnabled" />
@@ -160,6 +174,7 @@
         <attr name="wheel_indicatorSize" />
         <attr name="wheel_curtainEnabled" />
         <attr name="wheel_curtainColor" />
+        <attr name="wheel_curtainCorner" />
         <attr name="wheel_curtainRadius" />
         <attr name="wheel_atmosphericEnabled" />
         <attr name="wheel_curvedEnabled" />
@@ -178,8 +193,10 @@
     <declare-styleable name="LinkageWheelLayout">
         <attr name="wheel_visibleItemCount" />
         <attr name="wheel_itemTextSize" />
+        <attr name="wheel_itemTextSizeSelected" />
         <attr name="wheel_itemTextColor" />
         <attr name="wheel_itemTextColorSelected" />
+        <attr name="wheel_itemTextBoldSelected" />
         <attr name="wheel_itemSpace" />
         <attr name="wheel_itemTextAlign" />
         <attr name="wheel_sameWidthEnabled" />
@@ -190,6 +207,7 @@
         <attr name="wheel_indicatorSize" />
         <attr name="wheel_curtainEnabled" />
         <attr name="wheel_curtainColor" />
+        <attr name="wheel_curtainCorner" />
         <attr name="wheel_curtainRadius" />
         <attr name="wheel_atmosphericEnabled" />
         <attr name="wheel_curvedEnabled" />

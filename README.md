@@ -147,6 +147,9 @@ OptionWheelLayout wheelLayout = picker.getWheelLayout();
 wheelLayout.setIndicatorEnabled(false);
 wheelLayout.setTextColor(0xFFFF00FF);
 wheelLayout.setSelectedTextColor(0xFFFF0000);
+wheelLayout.setTextSize(15 * view.getResources().getDisplayMetrics().scaledDensity);
+wheelLayout.setSelectedTextSize(17 * view.getResources().getDisplayMetrics().scaledDensity);
+wheelLayout.setSelectedTextBold(true);
 wheelLayout.setCurtainEnabled(true);
 wheelLayout.setCurtainColor(0xEEFF0000);
 wheelLayout.setCurtainCorner(CurtainCorner.ALL);
@@ -198,6 +201,9 @@ picker.setTitle("贵州省地址选择");
 picker.setDefaultValue("贵州省", "毕节市", "纳雍县");
 picker.setOnAddressPickedListener(this);
 LinkageWheelLayout wheelLayout = picker.getWheelLayout();
+wheelLayout.setTextSize(15 * view.getResources().getDisplayMetrics().scaledDensity);
+wheelLayout.setSelectedTextSize(17 * view.getResources().getDisplayMetrics().scaledDensity);
+wheelLayout.setSelectedTextBold(true);
 wheelLayout.setIndicatorEnabled(false);
 wheelLayout.setCurtainEnabled(true);
 wheelLayout.setCurtainColor(0xEE0081FF);
@@ -208,9 +214,9 @@ wheelLayout.setOnLinkageSelectedListener(new OnLinkageSelectedListener() {
     @Override
     public void onLinkageSelected(Object first, Object second, Object third) {
         picker.getTitleView().setText(String.format("%s%s%s",
-                picker.getFirstWheelView().formatItem(first),
-                picker.getSecondWheelView().formatItem(second),
-                picker.getThirdWheelView().formatItem(third)));
+                picker.getProvinceWheelView().formatItem(first),
+                picker.getCityWheelView().formatItem(second),
+                picker.getCountyWheelView().formatItem(third)));
     }
 });
 picker.getProvinceWheelView().setCurtainCorner(CurtainCorner.LEFT);
@@ -263,7 +269,7 @@ picker.show();
 </LinearLayout>
 ```
 
-### 自定义样式
+### 自定义样式（可选）
 
 #### 全局配置所有选择器样式及配色
 
@@ -283,16 +289,16 @@ public class DemoApp extends Application {
 }
 ```
 
-#### 在`app/.../res/values/styles.xml`中重写`WheelDefault`覆盖
+#### **在`app/.../res/values/styles.xml`中重写`WheelDefault`覆盖** （不推荐）
 
 ```xml
 <style name="WheelDefault">
-    <item name="wheel_visibleItemCount">5</item>
-    <item name="wheel_itemTextAlign">center</item>
-    <item name="wheel_itemSpace">20dp</item>
-    <item name="wheel_itemTextColor">#FF999999</item>
-    <item name="wheel_itemTextColorSelected">#FF000000</item>
+    <item name="wheel_itemSpace">15dp</item>
+    <item name="wheel_itemTextColor">@android:color/darker_gray</item>
+    <item name="wheel_itemTextColorSelected">@android:color/holo_blue_dark</item>
     <item name="wheel_itemTextSize">16sp</item>
+    <item name="wheel_itemTextSizeSelected">18sp</item>
+    <item name="wheel_itemTextBoldSelected">false</item>
     <item name="wheel_sameWidthEnabled">false</item>
     <item name="wheel_atmosphericEnabled">true</item>
     <item name="wheel_curtainEnabled">false</item>
@@ -301,7 +307,7 @@ public class DemoApp extends Application {
     <item name="wheel_curvedMaxAngle">90</item>
     <item name="wheel_cyclicEnabled">false</item>
     <item name="wheel_indicatorEnabled">true</item>
-    <item name="wheel_indicatorColor">#FFDEDEDE</item>
+    <item name="wheel_indicatorColor">@android:color/holo_blue_light</item>
     <item name="wheel_indicatorSize">1dp</item>
 </style>
 ```
@@ -368,10 +374,10 @@ public class AntFortuneLikePicker extends LinkagePicker {
 - ![效果图](/screenshots/3.webp)
 - ![效果图](/screenshots/4.webp)
 - ![效果图](/screenshots/5.webp)
-- ![效果图](/screenshots/6.gif)
-- ![效果图](/screenshots/7.gif)
+- ![效果图](/screenshots/6.webp)
+- ![效果图](/screenshots/7.webp)
 - ![效果图](/screenshots/8.webp)
-- ![效果图](/screenshots/9.gif)
+- ![效果图](/screenshots/9.webp)
 
 ## 特别鸣谢
 

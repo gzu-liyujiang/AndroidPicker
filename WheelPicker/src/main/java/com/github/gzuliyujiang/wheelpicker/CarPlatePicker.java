@@ -64,8 +64,8 @@ public class CarPlatePicker extends LinkagePicker {
     @Override
     protected void onOk() {
         if (onCarPlatePickedListener != null) {
-            String province = wheelLayout.getFirstWheelView().getCurrentItem().toString();
-            String letter = wheelLayout.getSecondWheelView().getCurrentItem().toString();
+            String province = wheelLayout.getFirstWheelView().getCurrentItem();
+            String letter = wheelLayout.getSecondWheelView().getCurrentItem();
             onCarPlatePickedListener.onCarNumberPicked(province, letter);
         }
     }

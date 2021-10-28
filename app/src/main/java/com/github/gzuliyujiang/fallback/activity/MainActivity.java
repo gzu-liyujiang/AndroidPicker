@@ -43,10 +43,10 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_picker_main);
         WheelView wheelView = findViewById(R.id.wheel_view);
-        wheelView.setData(Arrays.asList("111", "222", "333", "444", "555", "666", "777", "888", "999",
-                "aaa", "bbb", "ccc", "ddd", "eee", "fff", "ggg"));
+        wheelView.setData(Arrays.asList("第1项", "第2项", "第3项", "第4项", "第5项", "第6项", "第7项", "第8项", "第9项",
+                "aaa", "bbb", "ccc", "ddd", "eee", "fff", "第N项"));
         OptionWheelLayout optionWheelLayout = findViewById(R.id.wheel_option);
-        optionWheelLayout.getWheelView().setData(Arrays.asList("aaa", "bbb", "ccc", "123", "xxx", "yyy", "zzz"));
+        optionWheelLayout.setData(Arrays.asList("aaa", "bbb", "ccc", "123", "xxx", "yyy", "zzz"));
         LinkageWheelLayout linkageWheelLayout = findViewById(R.id.wheel_linkage);
         linkageWheelLayout.setData(new AntFortuneLikeProvider());
     }

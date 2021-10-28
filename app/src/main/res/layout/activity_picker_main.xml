@@ -105,28 +105,41 @@
                 android:layout_gravity="center_horizontal"
                 app:wheel_atmosphericEnabled="true"
                 app:wheel_curvedEnabled="true"
-                app:wheel_curvedIndicatorSpace="4dp"
+                app:wheel_curvedIndicatorSpace="5dp"
                 app:wheel_curvedMaxAngle="60"
+                app:wheel_cyclicEnabled="true"
                 app:wheel_indicatorColor="#FF0081FF"
-                app:wheel_itemSpace="50dp"
+                app:wheel_itemSpace="30dp"
+                app:wheel_itemTextBoldSelected="true"
                 app:wheel_itemTextColor="#FF474747"
                 app:wheel_itemTextColorSelected="#FF0081FF"
-                app:wheel_itemTextSize="20sp" />
+                app:wheel_itemTextSize="20sp"
+                app:wheel_itemTextSizeSelected="24sp" />
 
             <com.github.gzuliyujiang.wheelpicker.widget.OptionWheelLayout
                 android:id="@+id/wheel_option"
                 android:layout_width="90dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center_horizontal"
+                app:wheel_curtainColor="#9933B5E5"
+                app:wheel_curtainCorner="all"
+                app:wheel_curtainEnabled="true"
+                app:wheel_curtainRadius="8dp"
+                app:wheel_indicatorEnabled="false"
                 app:wheel_itemTextAlign="center" />
 
             <com.github.gzuliyujiang.wheelpicker.widget.LinkageWheelLayout
                 android:id="@+id/wheel_linkage"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
                 app:wheel_curtainColor="#FFF1F1F1"
                 app:wheel_curtainEnabled="true"
-                app:wheel_indicatorEnabled="false" />
+                app:wheel_indicatorEnabled="false"
+                app:wheel_itemTextBoldSelected="true"
+                app:wheel_itemTextSize="20sp"
+                app:wheel_itemTextSizeSelected="23sp" />
 
             <com.github.gzuliyujiang.wheelpicker.widget.NumberWheelLayout
                 android:layout_width="90dp"

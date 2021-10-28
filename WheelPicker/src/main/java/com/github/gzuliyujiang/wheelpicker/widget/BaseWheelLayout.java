@@ -29,6 +29,7 @@ import androidx.annotation.StyleableRes;
 
 import com.github.gzuliyujiang.wheelpicker.R;
 import com.github.gzuliyujiang.wheelview.annotation.CurtainCorner;
+import com.github.gzuliyujiang.wheelview.annotation.ItemTextAlign;
 import com.github.gzuliyujiang.wheelview.annotation.ScrollState;
 import com.github.gzuliyujiang.wheelview.contract.OnWheelChangedListener;
 import com.github.gzuliyujiang.wheelview.widget.WheelView;
@@ -143,6 +144,30 @@ public abstract class BaseWheelLayout extends LinearLayout implements OnWheelCha
         }
     }
 
+    public void setVisibleItemCount(int visibleItemCount) {
+        for (WheelView wheelView : wheelViews) {
+            wheelView.setVisibleItemCount(visibleItemCount);
+        }
+    }
+
+    public void setItemSpace(@Px int space) {
+        for (WheelView wheelView : wheelViews) {
+            wheelView.setItemSpace(space);
+        }
+    }
+
+    public void setSameWidthEnabled(boolean sameWidthEnabled) {
+        for (WheelView wheelView : wheelViews) {
+            wheelView.setSameWidthEnabled(sameWidthEnabled);
+        }
+    }
+
+    public void setDefaultItemPosition(int position) {
+        for (WheelView wheelView : wheelViews) {
+            wheelView.setDefaultPosition(position);
+        }
+    }
+
     public void setCurtainEnabled(boolean hasCurtain) {
         for (WheelView wheelView : wheelViews) {
             wheelView.setCurtainEnabled(hasCurtain);
@@ -191,12 +216,6 @@ public abstract class BaseWheelLayout extends LinearLayout implements OnWheelCha
         }
     }
 
-    public void setItemSpace(@Px int space) {
-        for (WheelView wheelView : wheelViews) {
-            wheelView.setItemSpace(space);
-        }
-    }
-
     public void setCyclicEnabled(boolean cyclic) {
         for (WheelView wheelView : wheelViews) {
             wheelView.setCyclicEnabled(cyclic);
@@ -221,24 +240,6 @@ public abstract class BaseWheelLayout extends LinearLayout implements OnWheelCha
         }
     }
 
-    public void setTextSize(@Px int textSize) {
-        for (WheelView wheelView : wheelViews) {
-            wheelView.setTextSize(textSize);
-        }
-    }
-
-    public void setSameWidthEnabled(boolean sameWidthEnabled) {
-        for (WheelView wheelView : wheelViews) {
-            wheelView.setSameWidthEnabled(sameWidthEnabled);
-        }
-    }
-
-    public void setDefaultItemPosition(int position) {
-        for (WheelView wheelView : wheelViews) {
-            wheelView.setDefaultPosition(position);
-        }
-    }
-
     public void setMaxWidthText(String text) {
         if (TextUtils.isEmpty(text)) {
             return;
@@ -248,9 +249,15 @@ public abstract class BaseWheelLayout extends LinearLayout implements OnWheelCha
         }
     }
 
-    public void setSelectedTextColor(@ColorInt int color) {
+    public void setTextSize(@Px float textSize) {
         for (WheelView wheelView : wheelViews) {
-            wheelView.setSelectedTextColor(color);
+            wheelView.setTextSize(textSize);
+        }
+    }
+
+    public void setSelectedTextSize(@Px float textSize) {
+        for (WheelView wheelView : wheelViews) {
+            wheelView.setSelectedTextSize(textSize);
         }
     }
 
@@ -260,13 +267,19 @@ public abstract class BaseWheelLayout extends LinearLayout implements OnWheelCha
         }
     }
 
-    public void setVisibleItemCount(int visibleItemCount) {
+    public void setSelectedTextColor(@ColorInt int color) {
         for (WheelView wheelView : wheelViews) {
-            wheelView.setVisibleItemCount(visibleItemCount);
+            wheelView.setSelectedTextColor(color);
         }
     }
 
-    public void setTextAlign(int align) {
+    public void setSelectedTextBold(boolean bold) {
+        for (WheelView wheelView : wheelViews) {
+            wheelView.setSelectedTextBold(bold);
+        }
+    }
+
+    public void setTextAlign(@ItemTextAlign int align) {
         for (WheelView wheelView : wheelViews) {
             wheelView.setTextAlign(align);
         }

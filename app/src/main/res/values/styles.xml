@@ -17,10 +17,11 @@
         <item name="wheel_itemTextColor">@android:color/darker_gray</item>
         <item name="wheel_itemTextColorSelected">@android:color/holo_blue_dark</item>
         <item name="wheel_itemTextSize">16sp</item>
+        <item name="wheel_itemTextSizeSelected">18sp</item>
+        <item name="wheel_itemTextBoldSelected">false</item>
         <item name="wheel_sameWidthEnabled">false</item>
         <item name="wheel_atmosphericEnabled">true</item>
         <item name="wheel_curtainEnabled">false</item>
-        <item name="wheel_curtainColor">#FFDEDEDE</item>
         <item name="wheel_curvedEnabled">false</item>
         <item name="wheel_curvedMaxAngle">90</item>
         <item name="wheel_cyclicEnabled">false</item>

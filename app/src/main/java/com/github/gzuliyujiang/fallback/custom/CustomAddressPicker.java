@@ -99,9 +99,9 @@ public class CustomAddressPicker extends BottomDialog implements AddressReceiver
         }
         if (id == R.id.wheel_picker_address_confirm) {
             if (onAddressPickedListener != null) {
-                ProvinceEntity province = (ProvinceEntity) wheelLayout.getFirstWheelView().getCurrentItem();
-                CityEntity city = (CityEntity) wheelLayout.getSecondWheelView().getCurrentItem();
-                CountyEntity county = (CountyEntity) wheelLayout.getThirdWheelView().getCurrentItem();
+                ProvinceEntity province = wheelLayout.getFirstWheelView().getCurrentItem();
+                CityEntity city = wheelLayout.getSecondWheelView().getCurrentItem();
+                CountyEntity county = wheelLayout.getThirdWheelView().getCurrentItem();
                 onAddressPickedListener.onAddressPicked(province, city, county);
             }
             dismiss();

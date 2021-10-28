@@ -106,9 +106,9 @@ public class AddressPicker extends LinkagePicker implements AddressReceiver {
     @Override
     protected void onOk() {
         if (onAddressPickedListener != null) {
-            ProvinceEntity province = (ProvinceEntity) wheelLayout.getFirstWheelView().getCurrentItem();
-            CityEntity city = (CityEntity) wheelLayout.getSecondWheelView().getCurrentItem();
-            CountyEntity county = (CountyEntity) wheelLayout.getThirdWheelView().getCurrentItem();
+            ProvinceEntity province = wheelLayout.getFirstWheelView().getCurrentItem();
+            CityEntity city = wheelLayout.getSecondWheelView().getCurrentItem();
+            CountyEntity county = wheelLayout.getThirdWheelView().getCurrentItem();
             onAddressPickedListener.onAddressPicked(province, city, county);
         }
     }

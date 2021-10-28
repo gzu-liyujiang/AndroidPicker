@@ -16,10 +16,12 @@
     <style name="WheelDefault">
         <item name="wheel_visibleItemCount">5</item>
         <item name="wheel_itemTextAlign">center</item>
-        <item name="wheel_itemSpace">20dp</item>
+        <item name="wheel_itemSpace">30dp</item>
         <item name="wheel_itemTextColor">#FF999999</item>
         <item name="wheel_itemTextColorSelected">#FF000000</item>
-        <item name="wheel_itemTextSize">16sp</item>
+        <item name="wheel_itemTextSize">18sp</item>
+        <item name="wheel_itemTextSizeSelected">23sp</item>
+        <item name="wheel_itemTextBoldSelected">false</item>
         <item name="wheel_sameWidthEnabled">false</item>
         <item name="wheel_atmosphericEnabled">true</item>
         <item name="wheel_curtainEnabled">false</item>
