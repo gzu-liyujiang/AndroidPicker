@@ -24,6 +24,8 @@ requests 贡献您的代码，大家共同学习【[AndroidPicker 交流群 6042
 
 ### 依赖配置
 
+#### 在项目根目录下的build.gradle中
+
 ```groovy
 allprojects {
     repositories {
@@ -32,7 +34,9 @@ allprojects {
 }
 ```
 
-所有选择器的基础窗体：
+#### 在项目模块下的build.gradle中（以下依赖性都是独立的，不必全部引入，请按需来）
+
+所有选择器的基础窗体（用于自定义弹窗）：
 
 ```groovy
 dependencies {
@@ -40,7 +44,7 @@ dependencies {
 }
 ```
 
-滚轮选择器的滚轮控件：
+滚轮选择器的滚轮控件（用于自定义滚轮选择器）：
 
 ```groovy
 dependencies {
@@ -124,7 +128,7 @@ dependencies {
 
 ## 用法示例
 
-常见用法请参阅 [demo](/app)，高级用法请细读[源码](/WheelPicker)， 诸如可以重写同名的`assets/china_address.json`来自定义省市区数据，
+常见用法请参阅 [demo](/app)，**高级用法**请细读[源码](/WheelPicker)， 诸如可以重写同名的`assets/china_address.json`来自定义省市区数据，
 重写同名的`DialogSheetAnimation`来自定义弹窗动画……。 代码是最好的老师，强烈建议拉取代码运行，尝试修改 demo 对比查看实际效果以便加深理解。
 
 ### 在 Java 中
@@ -263,7 +267,7 @@ picker.show();
 </LinearLayout>
 ```
 
-### 自定义样式
+### 自定义样式（可选）
 
 #### 全局配置所有选择器样式及配色
 
