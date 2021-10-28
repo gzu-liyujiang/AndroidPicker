@@ -59,15 +59,20 @@ public class FilePicker extends ModalDialog {
     }
 
     @Override
-    protected void initData() {
-        super.initData();
-        initialized = true;
+    protected void initView() {
+        super.initView();
+        setHeight((int) (activity.getResources().getDisplayMetrics().heightPixels * 0.6f));
+        titleView.setText(explorerMode == ExplorerMode.FILE ? "文件选择" : "目录选择");
         if (explorerMode == ExplorerMode.FILE) {
             okView.setVisibility(View.GONE);
         }
-        setHeight((int) (activity.getResources().getDisplayMetrics().heightPixels * 0.6f));
+    }
+
+    @Override
+    protected void initData() {
+        super.initData();
+        initialized = true;
         setInitDir(explorerMode, initDir);
-        titleView.setText(explorerMode == ExplorerMode.FILE ? "选择文件" : "选择目录");
     }
 
     @Override

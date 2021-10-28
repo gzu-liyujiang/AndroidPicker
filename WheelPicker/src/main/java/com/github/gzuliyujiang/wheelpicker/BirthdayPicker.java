@@ -14,7 +14,6 @@
 package com.github.gzuliyujiang.wheelpicker;
 
 import android.app.Activity;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
@@ -42,12 +41,6 @@ public class BirthdayPicker extends DatePicker {
 
     public BirthdayPicker(@NonNull Activity activity, @StyleRes int themeResId) {
         super(activity, themeResId);
-    }
-
-    @Override
-    protected void initView(@NonNull View contentView) {
-        super.initView(contentView);
-        titleView.setText(R.string.wheel_birthday_title);
     }
 
     @Override

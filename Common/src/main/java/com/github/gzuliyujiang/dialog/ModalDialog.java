@@ -30,7 +30,6 @@ import androidx.annotation.Dimension;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.core.graphics.ColorUtils;
 
@@ -58,8 +57,8 @@ public abstract class ModalDialog extends BottomDialog implements View.OnClickLi
     }
 
     @Override
-    public void onInit(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
-        super.onInit(activity, savedInstanceState);
+    public void onInit(@Nullable Bundle savedInstanceState) {
+        super.onInit(savedInstanceState);
         if (DialogConfig.getDialogStyle() == DialogStyle.Three) {
             setWidth((int) (activity.getResources().getDisplayMetrics().widthPixels * 0.8f));
             setGravity(Gravity.CENTER);
@@ -146,8 +145,8 @@ public abstract class ModalDialog extends BottomDialog implements View.OnClickLi
 
     @CallSuper
     @Override
-    protected void initView(@NonNull View contentView) {
-        super.initView(contentView);
+    protected void initView() {
+        super.initView();
         int color = DialogConfig.getDialogColor().contentBackgroundColor();
         switch (DialogConfig.getDialogStyle()) {
             case DialogStyle.One:
@@ -173,12 +172,6 @@ public abstract class ModalDialog extends BottomDialog implements View.OnClickLi
         if (okView == null) {
             throw new IllegalArgumentException("Ok view id not found");
         }
-    }
-
-    @CallSuper
-    @Override
-    protected void initData() {
-        super.initData();
         titleView.setTextColor(DialogConfig.getDialogColor().titleTextColor());
         cancelView.setTextColor(DialogConfig.getDialogColor().cancelTextColor());
         okView.setTextColor(DialogConfig.getDialogColor().okTextColor());
@@ -221,6 +214,34 @@ public abstract class ModalDialog extends BottomDialog implements View.OnClickLi
         }
     }
 
+    @Override
+    public void setTitle(final @Nullable CharSequence title) {
+        if (titleView != null) {
+            titleView.post(new Runnable() {
+                @Override
+                public void run() {
+                    titleView.setText(title);
+                }
+            });
+        } else {
+            super.setTitle(title);
+        }
+    }
+
+    @Override
+    public void setTitle(final int titleId) {
+        if (titleView != null) {
+            titleView.post(new Runnable() {
+                @Override
+                public void run() {
+                    titleView.setText(titleId);
+                }
+            });
+        } else {
+            super.setTitle(titleId);
+        }
+    }
+
     @CallSuper
     @Override
     public void onClick(View v) {
@@ -239,24 +260,6 @@ public abstract class ModalDialog extends BottomDialog implements View.OnClickLi
     protected abstract void onCancel();
 
     protected abstract void onOk();
-
-    @Override
-    public void setTitle(@Nullable CharSequence title) {
-        if (titleView == null) {
-            return;
-        }
-        titleView.post(new Runnable() {
-            @Override
-            public void run() {
-                titleView.setText(title);
-            }
-        });
-    }
-
-    @Override
-    public void setTitle(@StringRes int titleId) {
-        setTitle(activity.getString(titleId));
-    }
 
     public final void setBodyWidth(@Dimension(unit = Dimension.DP) @IntRange(from = 50) int bodyWidth) {
         ViewGroup.LayoutParams layoutParams = bodyView.getLayoutParams();

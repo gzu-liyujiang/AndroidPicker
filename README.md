@@ -138,6 +138,7 @@ data.add(new GoodsCategoryBean(4, "医疗保健"));
 data.add(new GoodsCategoryBean(5, "酒水饮料"));
 data.add(new GoodsCategoryBean(6, "图书音像"));
 OptionPicker picker = new OptionPicker(this);
+picker.setTitle("货物分类");
 picker.setBodyWidth(140);
 picker.getWheelView().setIndicatorColor(0xFFFF0000);
 picker.getWheelView().setTextColor(0xFFFF00FF);
@@ -196,35 +197,49 @@ picker.show();
 ### 在 XML 中 （可选）
 
 ```xml
-
-<com.github.gzuliyujiang.wheelview.widget.WheelView android:id="@+id/wheel_view"
-    android:layout_width="117dp" android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal" app:wheel_atmosphericEnabled="true"
-    app:wheel_curvedEnabled="true" app:wheel_curvedIndicatorSpace="4dp"
-    app:wheel_curvedMaxAngle="60" app:wheel_indicatorColor="#FF0081FF" app:wheel_itemSpace="50dp"
-    app:wheel_itemTextColor="#FF474747" app:wheel_itemTextColorSelected="#FF0081FF"
+<com.github.gzuliyujiang.wheelview.widget.WheelView
+    android:id="@+id/wheel_view"
+    android:layout_width="117dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    app:wheel_atmosphericEnabled="true"
+    app:wheel_curvedEnabled="true"
+    app:wheel_curvedIndicatorSpace="4dp"
+    app:wheel_curvedMaxAngle="60"
+    app:wheel_indicatorColor="#FF0081FF"
+    app:wheel_itemSpace="50dp"
+    app:wheel_itemTextColor="#FF474747"
+    app:wheel_itemTextColorSelected="#FF0081FF"
     app:wheel_itemTextSize="20sp" />
 ```
 
 ```xml
-
-<LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.github.gzuliyujiang.wheelpicker.widget.OptionWheelLayout android:id="@+id/wheel_option"
-        android:layout_width="90dp" android:layout_height="150dp"
-        android:layout_gravity="center_horizontal" app:wheel_itemTextAlign="center" />
+    <com.github.gzuliyujiang.wheelpicker.widget.OptionWheelLayout
+        android:id="@+id/wheel_option"
+        android:layout_width="90dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center_horizontal"
+        app:wheel_itemTextAlign="center" />
 
-    <com.github.gzuliyujiang.wheelpicker.widget.DateWheelLayout android:layout_width="120dp"
-        android:layout_height="150dp" android:layout_gravity="center_horizontal"
-        app:wheel_dateMode="month_day" app:wheel_dayLabel="日" app:wheel_monthLabel="月" />
+    <com.github.gzuliyujiang.wheelpicker.widget.DateWheelLayout
+        android:layout_width="120dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center_horizontal"
+        app:wheel_dateMode="month_day"
+        app:wheel_dayLabel="日"
+        app:wheel_monthLabel="月" />
 
     ...
 
 </LinearLayout>
 ```
 
-### 定制样式（可选）
+### 自定义样式
 
 #### 全局配置所有选择器样式及配色
 
@@ -247,7 +262,6 @@ public class DemoApp extends Application {
 #### 在`app/.../res/values/styles.xml`中重写`WheelDefault`覆盖
 
 ```xml
-
 <style name="WheelDefault">
     <item name="wheel_visibleItemCount">5</item>
     <item name="wheel_itemTextAlign">center</item>
@@ -320,37 +334,6 @@ public class AntFortuneLikePicker extends LinkagePicker {
 
 }
 ````
-
-### 国际化多语言（可选）
-
-在APP项目中重写以下字符串资源即可，具体名称可查看源代码：
-
-#### dialog_strings.xml
-
-```xml
-<resources>
-    <string name="dialog_modal_title">温馨提示</string>
-    <string name="dialog_modal_ok">确定</string>
-    <string name="dialog_modal_cancel">取消</string>
-</resources>
-```
-#### wheel_strings.xml
-
-```xml
-<resources>
-    <string name="wheel_linkage_title">&#160;</string>
-    <string name="wheel_date_title">日期选择</string>
-    <string name="wheel_datime_title">日期时间选择</string>
-    <string name="wheel_time_title">时间选择</string>
-    <string name="wheel_birthday_title">生日选择</string>
-    <string name="wheel_car_plate_title">车牌选择</string>
-    <string name="wheel_option_title">&#160;</string>
-    <string name="wheel_phone_code_title">手机号码前缀</string>
-    <string name="wheel_ethnic_title">民族选择</string>
-    <string name="wheel_number_title">&#160;</string>
-    <string name="wheel_constellation_title">星座选择</string>
-</resources>
-```
 
 ## 效果预览
 

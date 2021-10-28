@@ -50,12 +50,6 @@ public class DatimePicker extends ModalDialog {
     }
 
     @Override
-    protected void initData() {
-        super.initData();
-        titleView.setText(R.string.wheel_datime_title);
-    }
-
-    @Override
     protected void onCancel() {
 
     }

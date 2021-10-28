@@ -52,12 +52,6 @@ public class SexPicker extends OptionPicker {
     }
 
     @Override
-    protected void initData() {
-        super.initData();
-        titleView.setText(R.string.wheel_sex_title);
-    }
-
-    @Override
     protected List<?> provideData() {
         String[] array = activity.getResources().getStringArray(R.array.wheel_sex_value);
         LinkedList<String> data = new LinkedList<>(Arrays.asList(array));

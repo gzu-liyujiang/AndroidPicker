@@ -62,12 +62,6 @@ public class CarPlatePicker extends LinkagePicker {
     }
 
     @Override
-    protected void initView(@NonNull View contentView) {
-        super.initView(contentView);
-        titleView.setText(R.string.wheel_car_plate_title);
-    }
-
-    @Override
     protected void onOk() {
         if (onCarPlatePickedListener != null) {
             String province = wheelLayout.getFirstWheelView().getCurrentItem().toString();

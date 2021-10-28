@@ -56,8 +56,8 @@ public class ColorPicker extends ModalDialog implements OnColorChangedListener {
 
     @CallSuper
     @Override
-    protected void initView(@NonNull View contentView) {
-        super.initView(contentView);
+    protected void initView() {
+        super.initView();
         colorGradientView = contentView.findViewById(R.id.color_picker_panel);
         brightnessGradientView = contentView.findViewById(R.id.color_picker_bright);
     }

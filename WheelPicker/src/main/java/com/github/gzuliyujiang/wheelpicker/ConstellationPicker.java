@@ -52,12 +52,6 @@ public class ConstellationPicker extends OptionPicker {
     }
 
     @Override
-    protected void initData() {
-        super.initData();
-        titleView.setText(R.string.wheel_constellation_title);
-    }
-
-    @Override
     protected List<?> provideData() {
         String[] array = activity.getResources().getStringArray(R.array.wheel_constellation_value);
         LinkedList<String> data = new LinkedList<>(Arrays.asList(array));

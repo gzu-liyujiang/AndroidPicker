@@ -50,17 +50,6 @@ public class DatePicker extends ModalDialog {
     }
 
     @Override
-    protected void initView(@NonNull View contentView) {
-        super.initView(contentView);
-    }
-
-    @Override
-    protected void initData() {
-        super.initData();
-        titleView.setText(R.string.wheel_date_title);
-    }
-
-    @Override
     protected void onCancel() {
 
     }

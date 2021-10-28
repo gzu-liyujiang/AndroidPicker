@@ -102,12 +102,6 @@ public class EthnicPicker extends OptionPicker {
         super(activity, themeResId);
     }
 
-    @Override
-    protected void initData() {
-        super.initData();
-        titleView.setText(R.string.wheel_ethnic_title);
-    }
-
     public void setEthnicSpec(@EthnicSpec int ethnicSpec) {
         this.ethnicSpec = ethnicSpec;
         setData(provideData());

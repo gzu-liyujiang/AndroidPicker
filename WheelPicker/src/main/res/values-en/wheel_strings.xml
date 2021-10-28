@@ -13,17 +13,6 @@
 
 <resources>
 
-    <string name="wheel_linkage_title">&#160;</string>
-    <string name="wheel_date_title">&#160;</string>
-    <string name="wheel_datime_title">&#160;</string>
-    <string name="wheel_time_title">&#160;</string>
-    <string name="wheel_birthday_title">Birthday</string>
-    <string name="wheel_car_plate_title">Car Plate</string>
-    <string name="wheel_option_title">&#160;</string>
-    <string name="wheel_phone_code_title">Phone Code</string>
-    <string name="wheel_ethnic_title">Ethnic</string>
-    <string name="wheel_number_title">&#160;</string>
-    <string name="wheel_constellation_title">Constellation</string>
     <string-array name="wheel_constellation_value">
         <item>Aquarius</item>
         <item>Pisces</item>
@@ -39,7 +28,6 @@
         <item>Capricorn</item>
     </string-array>
     <string name="wheel_constellation_secrecy">Unlimited</string>
-    <string name="wheel_sex_title">Gender</string>
     <string-array name="wheel_sex_value">
         <item>Male</item>
         <item>Female</item>

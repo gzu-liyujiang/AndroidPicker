@@ -55,8 +55,8 @@ public class CustomAddressPicker extends BottomDialog implements AddressReceiver
     }
 
     @Override
-    protected void initView(@NonNull View contentView) {
-        super.initView(contentView);
+    protected void initView() {
+        super.initView();
         contentView.findViewById(R.id.wheel_picker_address_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

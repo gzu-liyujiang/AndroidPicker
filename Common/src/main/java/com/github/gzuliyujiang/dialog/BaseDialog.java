@@ -17,7 +17,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.ColorDrawable;
@@ -40,7 +39,6 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.Px;
 import androidx.annotation.StyleRes;
 
 /**
@@ -87,7 +85,7 @@ public abstract class BaseDialog extends Dialog implements DialogInterface.OnSho
             window.setGravity(Gravity.CENTER);
             window.getDecorView().setPadding(0, 0, 0, 0);
         }
-        onInit(activity, null);
+        onInit(null);
         // 调用create或show才能触发onCreate
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             super.create();
@@ -96,9 +94,19 @@ public abstract class BaseDialog extends Dialog implements DialogInterface.OnSho
         }
     }
 
+    /**
+     * @deprecated 使用 {@link #onInit(Bundle)} 代替
+     */
+    @Deprecated
     @CallSuper
     protected void onInit(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
         DialogLog.print("dialog onInit");
+    }
+
+    @CallSuper
+    protected void onInit(@Nullable Bundle savedInstanceState) {
+        //noinspection deprecation
+        onInit(activity, savedInstanceState);
     }
 
     @Override
@@ -115,15 +123,26 @@ public abstract class BaseDialog extends Dialog implements DialogInterface.OnSho
         contentView.setFocusable(true);
         contentView.setFocusableInTouchMode(true);
         setContentView(contentView);
-        initView(contentView);
+        initView();
     }
 
     @NonNull
     protected abstract View createContentView();
 
+    /**
+     * @deprecated 使用 {@link #initView()}  代替
+     */
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
     @CallSuper
     protected void initView(View contentView) {
         DialogLog.print("dialog initView");
+    }
+
+    @CallSuper
+    protected void initView() {
+        //noinspection deprecation
+        initView(contentView);
     }
 
     public final void disableCancel() {

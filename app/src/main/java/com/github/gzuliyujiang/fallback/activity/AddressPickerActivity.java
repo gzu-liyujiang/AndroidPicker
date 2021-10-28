@@ -82,12 +82,14 @@ public class AddressPickerActivity extends BackAbleActivity implements OnAddress
                         picker.getThirdWheelView().formatItem(third)));
             }
         });
+        picker.getTitleView().setText("省市选择");
         picker.show();
     }
 
     public void onCityCounty(View view) {
         AddressPicker picker = new AddressPicker(this);
         picker.setAddressMode(AddressMode.CITY_COUNTY);
+        picker.setTitle("贵州省地址选择");
         picker.setDefaultValue("贵州省", "毕节市", "纳雍县");
         picker.setOnAddressPickedListener(this);
         picker.getWheelLayout().setOnLinkageSelectedListener(new OnLinkageSelectedListener() {

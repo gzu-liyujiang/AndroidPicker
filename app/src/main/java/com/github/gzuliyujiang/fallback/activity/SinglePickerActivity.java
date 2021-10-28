@@ -133,6 +133,7 @@ public class SinglePickerActivity extends BackAbleActivity implements OnNumberPi
         data.add(new GoodsCategoryBean(5, "酒水饮料"));
         data.add(new GoodsCategoryBean(6, "图书音像"));
         OptionPicker picker = new OptionPicker(this);
+        picker.setTitle("货物分类");
         picker.setBodyWidth(140);
         picker.getWheelView().setIndicatorColor(0xFFFF0000);
         picker.getWheelView().setTextColor(0xFFFF00FF);

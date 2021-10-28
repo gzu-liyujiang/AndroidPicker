@@ -53,12 +53,6 @@ public class NumberPicker extends ModalDialog {
     }
 
     @Override
-    protected void initView(@NonNull View contentView) {
-        super.initView(contentView);
-        titleView.setText(R.string.wheel_number_title);
-    }
-
-    @Override
     protected void onCancel() {
 
     }

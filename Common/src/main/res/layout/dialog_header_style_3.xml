@@ -12,6 +12,7 @@
   -->
 
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/dialog_modal_title"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -22,7 +23,7 @@
     android:paddingEnd="25dp"
     android:paddingBottom="15dp"
     android:singleLine="true"
-    android:text="@string/dialog_modal_title"
     android:textColor="#FF666666"
     android:textSize="15sp"
-    android:textStyle="bold" />
+    android:textStyle="bold"
+    tools:text="@android:string/untitled" />
