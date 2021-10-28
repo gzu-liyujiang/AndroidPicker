@@ -47,9 +47,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="&lt;Empty&gt;"
             android:textColor="#FF999999"
             android:visibility="invisible"
+            tools:text="&lt;Empty&gt;"
             tools:visibility="visible" />
 
     </FrameLayout>

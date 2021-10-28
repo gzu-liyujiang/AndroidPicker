@@ -263,22 +263,31 @@ public class PhoneCodePicker extends OptionPicker {
         setData(provideData());
     }
 
+    @Override
+    public void setDefaultValue(Object item) {
+        if (item instanceof String) {
+            setDefaultValueByName(item.toString());
+        } else {
+            super.setDefaultValue(item);
+        }
+    }
+
     public void setDefaultValueByCode(String code) {
         PhoneCodeEntity entity = new PhoneCodeEntity();
         entity.setCode(code);
-        setDefaultValue(entity);
+        super.setDefaultValue(entity);
     }
 
     public void setDefaultValueByName(String name) {
         PhoneCodeEntity entity = new PhoneCodeEntity();
         entity.setName(name);
-        setDefaultValue(entity);
+        super.setDefaultValue(entity);
     }
 
     public void setDefaultValueByEnglish(String english) {
         PhoneCodeEntity entity = new PhoneCodeEntity();
         entity.setEnglish(english);
-        setDefaultValue(entity);
+        super.setDefaultValue(entity);
     }
 
     @Override

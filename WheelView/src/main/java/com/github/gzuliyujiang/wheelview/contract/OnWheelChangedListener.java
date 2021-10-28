@@ -13,6 +13,7 @@
 
 package com.github.gzuliyujiang.wheelview.contract;
 
+import com.github.gzuliyujiang.wheelview.annotation.ScrollState;
 import com.github.gzuliyujiang.wheelview.widget.WheelView;
 
 /**
@@ -51,19 +52,19 @@ public interface OnWheelChangedListener {
      * be called when they switch
      *
      * @param view  wheel view
-     * @param state {@link WheelView#SCROLL_STATE_IDLE}
-     *              {@link WheelView#SCROLL_STATE_DRAGGING}
-     *              {@link WheelView#SCROLL_STATE_SCROLLING}
+     * @param state {@link ScrollState#IDLE}
+     *              {@link ScrollState#DRAGGING}
+     *              {@link ScrollState#SCROLLING}
      *              <p>
      *              State only one of the following
-     *              {@link WheelView#SCROLL_STATE_IDLE}
+     *              {@link ScrollState#IDLE}
      *              Express WheelPicker in state of idle
-     *              {@link WheelView#SCROLL_STATE_DRAGGING}
+     *              {@link ScrollState#DRAGGING}
      *              Express WheelPicker in state of dragging
-     *              {@link WheelView#SCROLL_STATE_SCROLLING}
+     *              {@link ScrollState#SCROLLING}
      *              Express WheelPicker in state of scrolling
      */
-    void onWheelScrollStateChanged(WheelView view, int state);
+    void onWheelScrollStateChanged(WheelView view, @ScrollState int state);
 
     /**
      * Invoke when loop finished

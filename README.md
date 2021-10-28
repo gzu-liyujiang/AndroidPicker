@@ -14,7 +14,7 @@ requests 贡献您的代码，大家共同学习【[AndroidPicker 交流群 6042
 ## 接入指引
 
 最新版本：[![jitpack](https://jitpack.io/v/gzu-liyujiang/AndroidPicker.svg)](https://jitpack.io/#gzu-liyujiang/AndroidPicker)
-（[更新日志](/ChangeLog.md)）
+（具体历史版本号参见 [更新日志](/ChangeLog.md)）
 
 ### 注意事项
 
@@ -140,18 +140,23 @@ data.add(new GoodsCategoryBean(6, "图书音像"));
 OptionPicker picker = new OptionPicker(this);
 picker.setTitle("货物分类");
 picker.setBodyWidth(140);
-picker.getWheelView().setIndicatorColor(0xFFFF0000);
-picker.getWheelView().setTextColor(0xFFFF00FF);
-picker.getWheelView().setSelectedTextColor(0xFFFF0000);
+picker.setData(data);
+picker.setDefaultPosition(2);
 picker.setOnOptionPickedListener(this);
-picker.getWheelLayout().setOnOptionSelectedListener(new OnOptionSelectedListener() {
+OptionWheelLayout wheelLayout = picker.getWheelLayout();
+wheelLayout.setIndicatorEnabled(false);
+wheelLayout.setTextColor(0xFFFF00FF);
+wheelLayout.setSelectedTextColor(0xFFFF0000);
+wheelLayout.setCurtainEnabled(true);
+wheelLayout.setCurtainColor(0xEEFF0000);
+wheelLayout.setCurtainCorner(CurtainCorner.ALL);
+wheelLayout.setCurtainRadius(5 * view.getResources().getDisplayMetrics().density);
+wheelLayout.setOnOptionSelectedListener(new OnOptionSelectedListener() {
     @Override
     public void onOptionSelected(int position, Object item) {
         picker.getTitleView().setText(picker.getWheelView().formatItem(position));
     }
 });
-picker.setData(data);
-picker.setDefaultPosition(2);
 picker.show();
 ```
 
@@ -178,7 +183,7 @@ picker.show();
 
 ```groovy
 AddressPicker picker = new AddressPicker(this);
-picker.setAddressMode("city.json", AddressMode.PROVINCE_CITY_COUNTY,
+picker.setAddressMode("china_address_guizhou_city.json", AddressMode.PROVINCE_CITY,
         new AddressJsonParser.Builder()
                 .provinceCodeField("code")
                 .provinceNameField("name")
@@ -189,8 +194,27 @@ picker.setAddressMode("city.json", AddressMode.PROVINCE_CITY_COUNTY,
                 .countyCodeField("code")
                 .countyNameField("name")
                 .build());
-picker.setDefaultValue("贵州省", "毕节地区", "纳雍县");
+picker.setTitle("贵州省地址选择");
+picker.setDefaultValue("贵州省", "毕节市", "纳雍县");
 picker.setOnAddressPickedListener(this);
+LinkageWheelLayout wheelLayout = picker.getWheelLayout();
+wheelLayout.setIndicatorEnabled(false);
+wheelLayout.setCurtainEnabled(true);
+wheelLayout.setCurtainColor(0xEE0081FF);
+wheelLayout.setCurtainRadius(5 * view.getResources().getDisplayMetrics().density);
+int padding = (int) (10 * view.getResources().getDisplayMetrics().density);
+wheelLayout.setPadding(padding, 0, padding, 0);
+wheelLayout.setOnLinkageSelectedListener(new OnLinkageSelectedListener() {
+    @Override
+    public void onLinkageSelected(Object first, Object second, Object third) {
+        picker.getTitleView().setText(String.format("%s%s%s",
+                picker.getFirstWheelView().formatItem(first),
+                picker.getSecondWheelView().formatItem(second),
+                picker.getThirdWheelView().formatItem(third)));
+    }
+});
+picker.getProvinceWheelView().setCurtainCorner(CurtainCorner.LEFT);
+picker.getCityWheelView().setCurtainCorner(CurtainCorner.RIGHT);
 picker.show();
 ```
 

@@ -30,6 +30,7 @@ import com.github.gzuliyujiang.wheelpicker.entity.DatimeEntity;
 import com.github.gzuliyujiang.wheelpicker.impl.SimpleDateFormatter;
 import com.github.gzuliyujiang.wheelpicker.impl.SimpleTimeFormatter;
 import com.github.gzuliyujiang.wheelview.annotation.ItemTextAlign;
+import com.github.gzuliyujiang.wheelview.annotation.ScrollState;
 import com.github.gzuliyujiang.wheelview.widget.NumberWheelView;
 import com.github.gzuliyujiang.wheelview.widget.WheelView;
 
@@ -109,6 +110,7 @@ public class DatimeWheelLayout extends BaseWheelLayout {
         setCurvedIndicatorSpace(typedArray.getDimensionPixelSize(R.styleable.DatimeWheelLayout_wheel_curvedIndicatorSpace, (int) (1 * density)));
         setCurtainEnabled(typedArray.getBoolean(R.styleable.DatimeWheelLayout_wheel_curtainEnabled, false));
         setCurtainColor(typedArray.getColor(R.styleable.DatimeWheelLayout_wheel_curtainColor, 0x88FFFFFF));
+        setCurtainRadius(typedArray.getDimension(R.styleable.DatimeWheelLayout_wheel_curtainRadius, 0));
         setAtmosphericEnabled(typedArray.getBoolean(R.styleable.DatimeWheelLayout_wheel_atmosphericEnabled, false));
         setCurvedEnabled(typedArray.getBoolean(R.styleable.DatimeWheelLayout_wheel_curvedEnabled, false));
         setCurvedMaxAngle(typedArray.getInteger(R.styleable.DatimeWheelLayout_wheel_curvedMaxAngle, 90));
@@ -153,7 +155,7 @@ public class DatimeWheelLayout extends BaseWheelLayout {
     }
 
     @Override
-    public void onWheelScrollStateChanged(WheelView view, int state) {
+    public void onWheelScrollStateChanged(WheelView view, @ScrollState int state) {
         dateWheelLayout.onWheelScrollStateChanged(view, state);
         timeWheelLayout.onWheelScrollStateChanged(view, state);
     }

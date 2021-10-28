@@ -28,6 +28,7 @@ import com.github.gzuliyujiang.wheelpicker.contract.OnDateSelectedListener;
 import com.github.gzuliyujiang.wheelpicker.entity.DateEntity;
 import com.github.gzuliyujiang.wheelpicker.impl.SimpleDateFormatter;
 import com.github.gzuliyujiang.wheelview.annotation.ItemTextAlign;
+import com.github.gzuliyujiang.wheelview.annotation.ScrollState;
 import com.github.gzuliyujiang.wheelview.contract.WheelFormatter;
 import com.github.gzuliyujiang.wheelview.widget.NumberWheelView;
 import com.github.gzuliyujiang.wheelview.widget.WheelView;
@@ -116,6 +117,7 @@ public class DateWheelLayout extends BaseWheelLayout {
         setCurvedIndicatorSpace(typedArray.getDimensionPixelSize(R.styleable.DateWheelLayout_wheel_curvedIndicatorSpace, (int) (1 * density)));
         setCurtainEnabled(typedArray.getBoolean(R.styleable.DateWheelLayout_wheel_curtainEnabled, false));
         setCurtainColor(typedArray.getColor(R.styleable.DateWheelLayout_wheel_curtainColor, 0x88FFFFFF));
+        setCurtainRadius(typedArray.getDimension(R.styleable.DateWheelLayout_wheel_curtainRadius, 0));
         setAtmosphericEnabled(typedArray.getBoolean(R.styleable.DateWheelLayout_wheel_atmosphericEnabled, false));
         setCurvedEnabled(typedArray.getBoolean(R.styleable.DateWheelLayout_wheel_curvedEnabled, false));
         setCurvedMaxAngle(typedArray.getInteger(R.styleable.DateWheelLayout_wheel_curvedMaxAngle, 90));
@@ -154,21 +156,21 @@ public class DateWheelLayout extends BaseWheelLayout {
     }
 
     @Override
-    public void onWheelScrollStateChanged(WheelView view, int state) {
+    public void onWheelScrollStateChanged(WheelView view, @ScrollState int state) {
         int id = view.getId();
         if (id == R.id.wheel_picker_date_year_wheel) {
-            monthWheelView.setEnabled(state == WheelView.SCROLL_STATE_IDLE);
-            dayWheelView.setEnabled(state == WheelView.SCROLL_STATE_IDLE);
+            monthWheelView.setEnabled(state == ScrollState.IDLE);
+            dayWheelView.setEnabled(state == ScrollState.IDLE);
             return;
         }
         if (id == R.id.wheel_picker_date_month_wheel) {
-            yearWheelView.setEnabled(state == WheelView.SCROLL_STATE_IDLE);
-            dayWheelView.setEnabled(state == WheelView.SCROLL_STATE_IDLE);
+            yearWheelView.setEnabled(state == ScrollState.IDLE);
+            dayWheelView.setEnabled(state == ScrollState.IDLE);
             return;
         }
         if (id == R.id.wheel_picker_date_day_wheel) {
-            yearWheelView.setEnabled(state == WheelView.SCROLL_STATE_IDLE);
-            monthWheelView.setEnabled(state == WheelView.SCROLL_STATE_IDLE);
+            yearWheelView.setEnabled(state == ScrollState.IDLE);
+            monthWheelView.setEnabled(state == ScrollState.IDLE);
         }
     }
 

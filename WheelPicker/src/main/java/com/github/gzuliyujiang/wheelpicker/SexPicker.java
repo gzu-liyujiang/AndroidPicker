@@ -18,8 +18,14 @@ import android.app.Activity;
 import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
 
-import java.util.Arrays;
-import java.util.LinkedList;
+import com.github.gzuliyujiang.dialog.DialogLog;
+import com.github.gzuliyujiang.wheelpicker.entity.SexEntity;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,33 +36,63 @@ import java.util.List;
  */
 @SuppressWarnings("WeakerAccess")
 public class SexPicker extends OptionPicker {
-    private final boolean includeSecrecy;
+    public static String JSON = "[{\"id\":0,\"name\":\"保密\",\"english\":\"Secrecy\"},\n" +
+            "{\"id\":1,\"name\":\"男\",\"english\":\"Male\"},\n" +
+            "{\"id\":2,\"name\":\"女\",\"english\":\"Female\"}]";
+    private boolean includeSecrecy;
 
     public SexPicker(Activity activity) {
-        this(activity, false);
+        super(activity);
     }
 
     public SexPicker(@NonNull Activity activity, @StyleRes int themeResId) {
         super(activity, themeResId);
-        this.includeSecrecy = false;
     }
 
-    public SexPicker(Activity activity, boolean includeSecrecy) {
-        super(activity);
+    public void setIncludeSecrecy(boolean includeSecrecy) {
         this.includeSecrecy = includeSecrecy;
+        setData(provideData());
     }
 
-    public SexPicker(@NonNull Activity activity, @StyleRes int themeResId, boolean includeSecrecy) {
-        super(activity, themeResId);
-        this.includeSecrecy = includeSecrecy;
+    @Override
+    public void setDefaultValue(Object item) {
+        if (item instanceof String) {
+            setDefaultValueByName(item.toString());
+        } else {
+            super.setDefaultValue(item);
+        }
+    }
+
+    public void setDefaultValueByName(String name) {
+        SexEntity entity = new SexEntity();
+        entity.setName(name);
+        super.setDefaultValue(entity);
+    }
+
+    public void setDefaultValueByEnglish(String english) {
+        SexEntity entity = new SexEntity();
+        entity.setEnglish(english);
+        super.setDefaultValue(entity);
     }
 
     @Override
     protected List<?> provideData() {
-        String[] array = activity.getResources().getStringArray(R.array.wheel_sex_value);
-        LinkedList<String> data = new LinkedList<>(Arrays.asList(array));
-        if (includeSecrecy) {
-            data.addFirst(activity.getString(R.string.wheel_sex_secrecy));
+        ArrayList<SexEntity> data = new ArrayList<>();
+        try {
+            JSONArray jsonArray = new JSONArray(JSON);
+            for (int i = 0, n = jsonArray.length(); i < n; i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                SexEntity entity = new SexEntity();
+                entity.setId(jsonObject.getString("id"));
+                entity.setName(jsonObject.getString("name"));
+                entity.setEnglish(jsonObject.getString("english"));
+                if (!includeSecrecy && "0".equals(entity.getId())) {
+                    continue;
+                }
+                data.add(entity);
+            }
+        } catch (JSONException e) {
+            DialogLog.print(e);
         }
         return data;
     }

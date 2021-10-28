@@ -25,6 +25,7 @@ import com.github.gzuliyujiang.wheelpicker.R;
 import com.github.gzuliyujiang.wheelpicker.contract.LinkageProvider;
 import com.github.gzuliyujiang.wheelpicker.contract.OnLinkageSelectedListener;
 import com.github.gzuliyujiang.wheelview.annotation.ItemTextAlign;
+import com.github.gzuliyujiang.wheelview.annotation.ScrollState;
 import com.github.gzuliyujiang.wheelview.contract.WheelFormatter;
 import com.github.gzuliyujiang.wheelview.widget.WheelView;
 
@@ -108,6 +109,7 @@ public class LinkageWheelLayout extends BaseWheelLayout {
         setCurvedIndicatorSpace(typedArray.getDimensionPixelSize(R.styleable.LinkageWheelLayout_wheel_curvedIndicatorSpace, (int) (1 * density)));
         setCurtainEnabled(typedArray.getBoolean(R.styleable.LinkageWheelLayout_wheel_curtainEnabled, false));
         setCurtainColor(typedArray.getColor(R.styleable.LinkageWheelLayout_wheel_curtainColor, 0x88FFFFFF));
+        setCurtainRadius(typedArray.getDimension(R.styleable.LinkageWheelLayout_wheel_curtainRadius, 0));
         setAtmosphericEnabled(typedArray.getBoolean(R.styleable.LinkageWheelLayout_wheel_atmosphericEnabled, false));
         setCurvedEnabled(typedArray.getBoolean(R.styleable.LinkageWheelLayout_wheel_curvedEnabled, false));
         setCurvedMaxAngle(typedArray.getInteger(R.styleable.LinkageWheelLayout_wheel_curvedMaxAngle, 90));
@@ -146,21 +148,21 @@ public class LinkageWheelLayout extends BaseWheelLayout {
     }
 
     @Override
-    public void onWheelScrollStateChanged(WheelView view, int state) {
+    public void onWheelScrollStateChanged(WheelView view, @ScrollState int state) {
         int id = view.getId();
         if (id == R.id.wheel_picker_linkage_first_wheel) {
-            secondWheelView.setEnabled(state == WheelView.SCROLL_STATE_IDLE);
-            thirdWheelView.setEnabled(state == WheelView.SCROLL_STATE_IDLE);
+            secondWheelView.setEnabled(state == ScrollState.IDLE);
+            thirdWheelView.setEnabled(state == ScrollState.IDLE);
             return;
         }
         if (id == R.id.wheel_picker_linkage_second_wheel) {
-            firstWheelView.setEnabled(state == WheelView.SCROLL_STATE_IDLE);
-            thirdWheelView.setEnabled(state == WheelView.SCROLL_STATE_IDLE);
+            firstWheelView.setEnabled(state == ScrollState.IDLE);
+            thirdWheelView.setEnabled(state == ScrollState.IDLE);
             return;
         }
         if (id == R.id.wheel_picker_linkage_third_wheel) {
-            firstWheelView.setEnabled(state == WheelView.SCROLL_STATE_IDLE);
-            secondWheelView.setEnabled(state == WheelView.SCROLL_STATE_IDLE);
+            firstWheelView.setEnabled(state == ScrollState.IDLE);
+            secondWheelView.setEnabled(state == ScrollState.IDLE);
         }
     }
 

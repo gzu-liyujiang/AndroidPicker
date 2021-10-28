@@ -29,6 +29,7 @@ import com.github.gzuliyujiang.wheelpicker.contract.TimeFormatter;
 import com.github.gzuliyujiang.wheelpicker.entity.TimeEntity;
 import com.github.gzuliyujiang.wheelpicker.impl.SimpleTimeFormatter;
 import com.github.gzuliyujiang.wheelview.annotation.ItemTextAlign;
+import com.github.gzuliyujiang.wheelview.annotation.ScrollState;
 import com.github.gzuliyujiang.wheelview.contract.WheelFormatter;
 import com.github.gzuliyujiang.wheelview.widget.NumberWheelView;
 import com.github.gzuliyujiang.wheelview.widget.WheelView;
@@ -122,6 +123,7 @@ public class TimeWheelLayout extends BaseWheelLayout {
         setCurvedIndicatorSpace(typedArray.getDimensionPixelSize(R.styleable.TimeWheelLayout_wheel_curvedIndicatorSpace, (int) (1 * density)));
         setCurtainEnabled(typedArray.getBoolean(R.styleable.TimeWheelLayout_wheel_curtainEnabled, false));
         setCurtainColor(typedArray.getColor(R.styleable.TimeWheelLayout_wheel_curtainColor, 0x88FFFFFF));
+        setCurtainRadius(typedArray.getDimension(R.styleable.TimeWheelLayout_wheel_curtainRadius, 0));
         setAtmosphericEnabled(typedArray.getBoolean(R.styleable.TimeWheelLayout_wheel_atmosphericEnabled, false));
         setCurvedEnabled(typedArray.getBoolean(R.styleable.TimeWheelLayout_wheel_curvedEnabled, false));
         setCurvedMaxAngle(typedArray.getInteger(R.styleable.TimeWheelLayout_wheel_curvedMaxAngle, 90));
@@ -161,21 +163,21 @@ public class TimeWheelLayout extends BaseWheelLayout {
     }
 
     @Override
-    public void onWheelScrollStateChanged(WheelView view, int state) {
+    public void onWheelScrollStateChanged(WheelView view, @ScrollState int state) {
         int id = view.getId();
         if (id == R.id.wheel_picker_time_hour_wheel) {
-            minuteWheelView.setEnabled(state == WheelView.SCROLL_STATE_IDLE);
-            secondWheelView.setEnabled(state == WheelView.SCROLL_STATE_IDLE);
+            minuteWheelView.setEnabled(state == ScrollState.IDLE);
+            secondWheelView.setEnabled(state == ScrollState.IDLE);
             return;
         }
         if (id == R.id.wheel_picker_time_minute_wheel) {
-            hourWheelView.setEnabled(state == WheelView.SCROLL_STATE_IDLE);
-            secondWheelView.setEnabled(state == WheelView.SCROLL_STATE_IDLE);
+            hourWheelView.setEnabled(state == ScrollState.IDLE);
+            secondWheelView.setEnabled(state == ScrollState.IDLE);
             return;
         }
         if (id == R.id.wheel_picker_time_second_wheel) {
-            hourWheelView.setEnabled(state == WheelView.SCROLL_STATE_IDLE);
-            minuteWheelView.setEnabled(state == WheelView.SCROLL_STATE_IDLE);
+            hourWheelView.setEnabled(state == ScrollState.IDLE);
+            minuteWheelView.setEnabled(state == ScrollState.IDLE);
         }
     }
 

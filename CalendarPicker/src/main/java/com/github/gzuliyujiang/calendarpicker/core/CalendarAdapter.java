@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by peng on 2017/8/3.
@@ -42,8 +43,15 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.VH> im
     private final Interval<Date> select = new Interval<>();
     private final Interval<String> selectNote = new Interval<>();
     private boolean singleMode = false;
+    private FestivalProvider festivalProvider;
     private Date lastClickDate = null;
     private OnDateSelectedListener onDateSelectedListener;
+
+    static {
+        if (!Locale.getDefault().getDisplayLanguage().contains("中文")) {
+            DATE_FORMAT = "MMM, yyyy";
+        }
+    }
 
     public CalendarAdapter notify(boolean notify) {
         this.notify = notify;
@@ -60,6 +68,14 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.VH> im
 
     public CalendarAdapter single(boolean value) {
         singleMode = value;
+        if (notify) {
+            refresh();
+        }
+        return this;
+    }
+
+    public CalendarAdapter festivalProvider(FestivalProvider value) {
+        festivalProvider = value;
         if (notify) {
             refresh();
         }
@@ -204,6 +220,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.VH> im
         holder.monthView.setValue(MonthEntity.obtain(valid, select)
                 .date(dates.get(position))
                 .singleMode(singleMode)
+                .festivalProvider(festivalProvider)
                 .note(selectNote), colorScheme);
     }
 

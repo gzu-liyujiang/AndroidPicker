@@ -14,6 +14,7 @@
 package com.github.gzuliyujiang.wheelpicker;
 
 import android.app.Activity;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
@@ -33,6 +34,7 @@ import com.github.gzuliyujiang.wheelpicker.entity.ProvinceEntity;
 import com.github.gzuliyujiang.wheelpicker.impl.AddressProvider;
 import com.github.gzuliyujiang.wheelpicker.impl.AssetAddressLoader;
 import com.github.gzuliyujiang.wheelpicker.utility.AddressJsonParser;
+import com.github.gzuliyujiang.wheelview.widget.WheelView;
 
 import java.util.List;
 
@@ -137,6 +139,30 @@ public class AddressPicker extends LinkagePicker implements AddressReceiver {
                                @NonNull AddressJsonParser jsonParser) {
         this.addressMode = addressMode;
         setAddressLoader(new AssetAddressLoader(getContext(), assetPath), jsonParser);
+    }
+
+    public final WheelView getProvinceWheelView() {
+        return wheelLayout.getFirstWheelView();
+    }
+
+    public final WheelView getCityWheelView() {
+        return wheelLayout.getSecondWheelView();
+    }
+
+    public final WheelView getCountyWheelView() {
+        return wheelLayout.getThirdWheelView();
+    }
+
+    public final TextView getProvinceLabelView() {
+        return wheelLayout.getFirstLabelView();
+    }
+
+    public final TextView getCityLabelView() {
+        return wheelLayout.getSecondLabelView();
+    }
+
+    public final TextView getCountyLabelView() {
+        return wheelLayout.getThirdLabelView();
     }
 
 }

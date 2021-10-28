@@ -62,7 +62,6 @@ public class FilePicker extends ModalDialog {
     protected void initView() {
         super.initView();
         setHeight((int) (activity.getResources().getDisplayMetrics().heightPixels * 0.6f));
-        titleView.setText(explorerMode == ExplorerMode.FILE ? "文件选择" : "目录选择");
         if (explorerMode == ExplorerMode.FILE) {
             okView.setVisibility(View.GONE);
         }

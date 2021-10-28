@@ -33,10 +33,13 @@ import com.github.gzuliyujiang.wheelpicker.contract.OnNumberPickedListener;
 import com.github.gzuliyujiang.wheelpicker.contract.OnNumberSelectedListener;
 import com.github.gzuliyujiang.wheelpicker.contract.OnOptionPickedListener;
 import com.github.gzuliyujiang.wheelpicker.contract.OnOptionSelectedListener;
+import com.github.gzuliyujiang.wheelpicker.widget.OptionWheelLayout;
+import com.github.gzuliyujiang.wheelview.annotation.CurtainCorner;
 import com.github.gzuliyujiang.wheelview.contract.WheelFormatter;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -135,24 +138,30 @@ public class SinglePickerActivity extends BackAbleActivity implements OnNumberPi
         OptionPicker picker = new OptionPicker(this);
         picker.setTitle("货物分类");
         picker.setBodyWidth(140);
-        picker.getWheelView().setIndicatorColor(0xFFFF0000);
-        picker.getWheelView().setTextColor(0xFFFF00FF);
-        picker.getWheelView().setSelectedTextColor(0xFFFF0000);
+        picker.setData(data);
+        picker.setDefaultPosition(2);
         picker.setOnOptionPickedListener(this);
-        picker.getWheelLayout().setOnOptionSelectedListener(new OnOptionSelectedListener() {
+        OptionWheelLayout wheelLayout = picker.getWheelLayout();
+        wheelLayout.setIndicatorEnabled(false);
+        wheelLayout.setTextColor(0xFFFF00FF);
+        wheelLayout.setSelectedTextColor(0xFFFF0000);
+        wheelLayout.setCurtainEnabled(true);
+        wheelLayout.setCurtainColor(0xEEFF0000);
+        wheelLayout.setCurtainCorner(CurtainCorner.ALL);
+        wheelLayout.setCurtainRadius(5 * view.getResources().getDisplayMetrics().density);
+        wheelLayout.setOnOptionSelectedListener(new OnOptionSelectedListener() {
             @Override
             public void onOptionSelected(int position, Object item) {
                 picker.getTitleView().setText(picker.getWheelView().formatItem(position));
             }
         });
-        picker.setData(data);
-        picker.setDefaultPosition(2);
         picker.show();
     }
 
     public void onSex(View view) {
-        SexPicker picker = new SexPicker(this, true);
+        SexPicker picker = new SexPicker(this);
         picker.setBodyWidth(140);
+        picker.setIncludeSecrecy(false);
         picker.setDefaultValue("女");
         picker.setOnOptionPickedListener(this);
         picker.getWheelLayout().setOnOptionSelectedListener(new OnOptionSelectedListener() {
@@ -182,9 +191,14 @@ public class SinglePickerActivity extends BackAbleActivity implements OnNumberPi
     }
 
     public void onConstellation(View view) {
-        ConstellationPicker picker = new ConstellationPicker(this, true);
+        ConstellationPicker picker = new ConstellationPicker(this);
         picker.setBodyWidth(140);
-        picker.setDefaultValue("射手座");
+        picker.setIncludeUnlimited(true);
+        //picker.setDefaultValueByName("射手座");
+        //picker.setDefaultValueByDate(DateEntity.target(1991, 12, 9));
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(1991, 11, 9);
+        picker.setDefaultValueByDate(calendar.getTime());
         picker.setOnOptionPickedListener(this);
         picker.getWheelLayout().setOnOptionSelectedListener(new OnOptionSelectedListener() {
             @Override

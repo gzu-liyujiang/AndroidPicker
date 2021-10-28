@@ -22,9 +22,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 /**
  * 月份控件
@@ -197,41 +195,17 @@ public class MonthView extends ViewGroup {
     }
 
     @NonNull
-    private String toDayDesc(int index) {
-        Date date = DateUtils.specialDayInMonth(monthEntity.date(), index);
-        String monthDay = new SimpleDateFormat("MMdd", Locale.PRC).format(date);
-        switch (monthDay) {
-            case "0101":
-                return "元旦";
-            case "0214":
-                return "情人节";
-            case "0308":
-                return "妇女节";
-            case "0312":
-                return "植树节";
-            case "0401":
-                return "愚人节";
-            case "0501":
-                return "劳动节";
-            case "0504":
-                return "青年节";
-            case "0601":
-                return "儿童节";
-            case "0701":
-                return "建党节";
-            case "0801":
-                return "建军节";
-            case "0910":
-                return "教师节";
-            case "1001":
-                return "国庆节";
-            case "1111":
-                return "光棍节";
-            case "1225":
-                return "圣诞节";
-            default:
-                return "";
+    protected String toDayDesc(int index) {
+        FestivalProvider festivalProvider = monthEntity.festivalProvider();
+        if (festivalProvider == null) {
+            return "";
         }
+        Date date = DateUtils.specialDayInMonth(monthEntity.date(), index);
+        String festival = festivalProvider.provideText(date);
+        if (festival == null) {
+            festival = "";
+        }
+        return festival;
     }
 
     public void setValue(@NonNull MonthEntity entity, @NonNull ColorScheme colorScheme) {

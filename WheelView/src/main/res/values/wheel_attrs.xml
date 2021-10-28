@@ -33,6 +33,7 @@
     <attr name="wheel_indicatorSize" format="dimension|reference" />
     <attr name="wheel_curtainEnabled" format="boolean|reference" />
     <attr name="wheel_curtainColor" format="color|reference" />
+    <attr name="wheel_curtainRadius" format="dimension|reference" />
     <attr name="wheel_atmosphericEnabled" format="boolean|reference" />
     <attr name="wheel_curvedEnabled" format="boolean|reference" />
     <attr name="wheel_curvedMaxAngle" format="integer|reference" />
@@ -53,6 +54,7 @@
         <attr name="wheel_indicatorSize" />
         <attr name="wheel_curtainEnabled" />
         <attr name="wheel_curtainColor" />
+        <attr name="wheel_curtainRadius" />
         <attr name="wheel_atmosphericEnabled" />
         <attr name="wheel_curvedEnabled" />
         <attr name="wheel_curvedMaxAngle" />

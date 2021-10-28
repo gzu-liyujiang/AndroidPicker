@@ -24,6 +24,7 @@ import com.github.gzuliyujiang.calendarpicker.core.CalendarAdapter;
 import com.github.gzuliyujiang.calendarpicker.core.CalendarView;
 import com.github.gzuliyujiang.calendarpicker.core.ColorScheme;
 import com.github.gzuliyujiang.calendarpicker.core.DateUtils;
+import com.github.gzuliyujiang.calendarpicker.core.FestivalProvider;
 import com.github.gzuliyujiang.calendarpicker.core.OnDateSelectedListener;
 import com.github.gzuliyujiang.dialog.DialogConfig;
 import com.github.gzuliyujiang.dialog.DialogStyle;
@@ -45,6 +46,7 @@ public class CalendarPicker extends ModalDialog implements OnDateSelectedListene
     private CalendarAdapter calendarAdapter;
     private ColorScheme colorScheme;
     private boolean singleMode = false;
+    private FestivalProvider festivalProvider;
     private Date minDate, maxDate;
     private Date selectDate, startDate, endDate;
     private String noteFrom, noteTo;
@@ -73,12 +75,8 @@ public class CalendarPicker extends ModalDialog implements OnDateSelectedListene
         setHeight((int) (activity.getResources().getDisplayMetrics().heightPixels * 0.6f));
         switch (DialogConfig.getDialogStyle()) {
             case DialogStyle.Default:
-                headerView.setVisibility(View.VISIBLE);
-                titleView.setText("");
-                break;
             case DialogStyle.Two:
                 headerView.setVisibility(View.VISIBLE);
-                titleView.setText("请选择");
                 break;
             default:
                 headerView.setVisibility(View.GONE);
@@ -252,10 +250,21 @@ public class CalendarPicker extends ModalDialog implements OnDateSelectedListene
         }
     }
 
+    /**
+     * 设置是否展示节日文本
+     */
+    public void setFestivalProvider(FestivalProvider festivalProvider) {
+        this.festivalProvider = festivalProvider;
+        if (initialized) {
+            refreshData();
+        }
+    }
+
     private void refreshData() {
         calendarView.setColorScheme(colorScheme);
         calendarAdapter.notify(false);
         calendarAdapter.single(singleMode);
+        calendarAdapter.festivalProvider(festivalProvider);
         if (singleMode) {
             startDate = selectDate;
             endDate = selectDate;

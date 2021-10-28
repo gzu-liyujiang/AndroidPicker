@@ -23,7 +23,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.Region;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -43,7 +45,9 @@ import androidx.annotation.Px;
 import androidx.annotation.StyleRes;
 
 import com.github.gzuliyujiang.wheelview.R;
+import com.github.gzuliyujiang.wheelview.annotation.CurtainCorner;
 import com.github.gzuliyujiang.wheelview.annotation.ItemTextAlign;
+import com.github.gzuliyujiang.wheelview.annotation.ScrollState;
 import com.github.gzuliyujiang.wheelview.contract.OnWheelChangedListener;
 import com.github.gzuliyujiang.wheelview.contract.TextProvider;
 import com.github.gzuliyujiang.wheelview.contract.WheelFormatter;
@@ -61,9 +65,12 @@ import java.util.List;
  */
 @SuppressWarnings({"unused"})
 public class WheelView extends View implements Runnable {
-    public static final int SCROLL_STATE_IDLE = 0;
-    public static final int SCROLL_STATE_DRAGGING = 1;
-    public static final int SCROLL_STATE_SCROLLING = 2;
+    @Deprecated
+    public static final int SCROLL_STATE_IDLE = ScrollState.IDLE;
+    @Deprecated
+    public static final int SCROLL_STATE_DRAGGING = ScrollState.DRAGGING;
+    @Deprecated
+    public static final int SCROLL_STATE_SCROLLING = ScrollState.SCROLLING;
 
     protected List<?> data = new ArrayList<>();
     protected WheelFormatter formatter;
@@ -77,6 +84,8 @@ public class WheelView extends View implements Runnable {
     protected float indicatorSize;
     protected int indicatorColor;
     protected int curtainColor;
+    protected int curtainCorner;
+    protected float curtainRadius;
     protected int itemSpace;
     protected int textAlign;
     protected boolean sameWidthEnabled;
@@ -171,6 +180,8 @@ public class WheelView extends View implements Runnable {
             curvedIndicatorSpace = (int) (1 * density);
             curtainEnabled = false;
             curtainColor = 0xFFFFFFFF;
+            curtainCorner = CurtainCorner.NONE;
+            curtainRadius = 0;
             atmosphericEnabled = false;
             curvedEnabled = false;
             curvedMaxAngle = 90;
@@ -201,6 +212,8 @@ public class WheelView extends View implements Runnable {
         curvedIndicatorSpace = typedArray.getDimensionPixelSize(R.styleable.WheelView_wheel_curvedIndicatorSpace, (int) (1 * density));
         curtainEnabled = typedArray.getBoolean(R.styleable.WheelView_wheel_curtainEnabled, false);
         curtainColor = typedArray.getColor(R.styleable.WheelView_wheel_curtainColor, 0xFFFFFFFF);
+        curtainCorner = CurtainCorner.NONE;
+        curtainRadius = typedArray.getDimension(R.styleable.WheelView_wheel_curtainRadius, 0);
         atmosphericEnabled = typedArray.getBoolean(R.styleable.WheelView_wheel_atmosphericEnabled, false);
         curvedEnabled = typedArray.getBoolean(R.styleable.WheelView_wheel_curvedEnabled, false);
         curvedMaxAngle = typedArray.getInteger(R.styleable.WheelView_wheel_curvedMaxAngle, 90);
@@ -488,6 +501,26 @@ public class WheelView extends View implements Runnable {
 
     public void setCurtainColor(@ColorInt int color) {
         curtainColor = color;
+        invalidate();
+    }
+
+    @CurtainCorner
+    public int getCurtainCorner() {
+        return curtainCorner;
+    }
+
+    public void setCurtainCorner(@CurtainCorner int curtainCorner) {
+        this.curtainCorner = curtainCorner;
+        invalidate();
+    }
+
+    @Px
+    public float getCurtainRadius() {
+        return curtainRadius;
+    }
+
+    public void setCurtainRadius(@Px float curtainRadius) {
+        this.curtainRadius = curtainRadius;
         invalidate();
     }
 
@@ -857,24 +890,65 @@ public class WheelView extends View implements Runnable {
 
     private void drawCurtain(Canvas canvas) {
         // Need to draw curtain or not
-        if (curtainEnabled) {
-            int red = Color.red(curtainColor);
-            int green = Color.green(curtainColor);
-            int blue = Color.blue(curtainColor);
-            paint.setColor(Color.argb(128, red, green, blue));
-            paint.setStyle(Paint.Style.FILL);
-            canvas.drawRect(rectCurrentItem, paint);
+        if (!curtainEnabled) {
+            return;
         }
+        int red = Color.red(curtainColor);
+        int green = Color.green(curtainColor);
+        int blue = Color.blue(curtainColor);
+        paint.setColor(Color.argb(128, red, green, blue));
+        paint.setStyle(Paint.Style.FILL);
+        if (curtainRadius > 0) {
+            //canvas.drawRoundRect(new RectF(rectCurrentItem), curtainRadius, curtainRadius, paint);
+            Path path = new Path();
+            float[] radii;
+            switch (curtainCorner) {
+                case CurtainCorner.ALL:
+                    radii = new float[]{
+                            curtainRadius, curtainRadius, curtainRadius, curtainRadius,
+                            curtainRadius, curtainRadius, curtainRadius, curtainRadius
+                    };
+                    break;
+                case CurtainCorner.TOP:
+                    radii = new float[]{
+                            curtainRadius, curtainRadius, curtainRadius, curtainRadius, 0, 0, 0, 0
+                    };
+                    break;
+                case CurtainCorner.BOTTOM:
+                    radii = new float[]{
+                            0, 0, 0, 0, curtainRadius, curtainRadius, curtainRadius, curtainRadius
+                    };
+                    break;
+                case CurtainCorner.LEFT:
+                    radii = new float[]{
+                            curtainRadius, curtainRadius, 0, 0, 0, 0, curtainRadius, curtainRadius
+                    };
+                    break;
+                case CurtainCorner.RIGHT:
+                    radii = new float[]{
+                            0, 0, curtainRadius, curtainRadius, curtainRadius, curtainRadius, 0, 0
+                    };
+                    break;
+                default:
+                    radii = new float[]{0, 0, 0, 0, 0, 0, 0, 0};
+                    break;
+            }
+            path.addRoundRect(new RectF(rectCurrentItem), radii, Path.Direction.CCW);
+            canvas.drawPath(path, paint);
+            return;
+        }
+        canvas.drawRect(rectCurrentItem, paint);
     }
 
     private void drawIndicator(Canvas canvas) {
         // Need to draw indicator or not
-        if (indicatorEnabled) {
-            paint.setColor(indicatorColor);
-            paint.setStyle(Paint.Style.FILL);
-            canvas.drawRect(rectIndicatorHead, paint);
-            canvas.drawRect(rectIndicatorFoot, paint);
+        if (!indicatorEnabled) {
+            return;
         }
+        paint.setColor(indicatorColor);
+        paint.setStyle(Paint.Style.FILL);
+        canvas.drawRect(rectIndicatorHead, paint);
+        canvas.drawRect(rectIndicatorFoot, paint);
     }
 
     private boolean isPositionInRange(int position, int itemCount) {
@@ -945,7 +1019,7 @@ public class WheelView extends View implements Runnable {
             tracker.addMovement(event);
         }
         if (null != onWheelChangedListener) {
-            onWheelChangedListener.onWheelScrollStateChanged(this, SCROLL_STATE_DRAGGING);
+            onWheelChangedListener.onWheelScrollStateChanged(this, ScrollState.DRAGGING);
         }
         // Scroll WheelPicker's content
         float move = event.getY() - lastPointYCoordinate;
@@ -1041,7 +1115,7 @@ public class WheelView extends View implements Runnable {
         int itemCount = getItemCount();
         if (itemCount == 0) {
             if (null != onWheelChangedListener) {
-                onWheelChangedListener.onWheelScrollStateChanged(this, SCROLL_STATE_IDLE);
+                onWheelChangedListener.onWheelScrollStateChanged(this, ScrollState.IDLE);
             }
             return;
         }
@@ -1051,7 +1125,7 @@ public class WheelView extends View implements Runnable {
             currentPosition = position;
             if (null != onWheelChangedListener) {
                 onWheelChangedListener.onWheelSelected(this, position);
-                onWheelChangedListener.onWheelScrollStateChanged(this, SCROLL_STATE_IDLE);
+                onWheelChangedListener.onWheelScrollStateChanged(this, ScrollState.IDLE);
             }
             postInvalidate();
             return;
@@ -1059,7 +1133,7 @@ public class WheelView extends View implements Runnable {
         // Scroll not finished
         if (scroller.computeScrollOffset()) {
             if (null != onWheelChangedListener) {
-                onWheelChangedListener.onWheelScrollStateChanged(this, SCROLL_STATE_SCROLLING);
+                onWheelChangedListener.onWheelScrollStateChanged(this, ScrollState.SCROLLING);
             }
             scrollOffsetYCoordinate = scroller.getCurrY();
             int position = computePosition(itemCount);

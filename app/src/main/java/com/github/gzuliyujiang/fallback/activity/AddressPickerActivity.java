@@ -31,6 +31,8 @@ import com.github.gzuliyujiang.wheelpicker.entity.CityEntity;
 import com.github.gzuliyujiang.wheelpicker.entity.CountyEntity;
 import com.github.gzuliyujiang.wheelpicker.entity.ProvinceEntity;
 import com.github.gzuliyujiang.wheelpicker.utility.AddressJsonParser;
+import com.github.gzuliyujiang.wheelpicker.widget.LinkageWheelLayout;
+import com.github.gzuliyujiang.wheelview.annotation.CurtainCorner;
 
 /**
  * 地址滚轮选择器
@@ -70,6 +72,7 @@ public class AddressPickerActivity extends BackAbleActivity implements OnAddress
 
     public void onProvinceCity(View view) {
         AddressPicker picker = new AddressPicker(this);
+        picker.setTitle("省市选择");
         picker.setAddressMode(AddressMode.PROVINCE_CITY);
         picker.setDefaultValue("520000", "520100", "");
         picker.setOnAddressPickedListener(this);
@@ -82,13 +85,59 @@ public class AddressPickerActivity extends BackAbleActivity implements OnAddress
                         picker.getThirdWheelView().formatItem(third)));
             }
         });
-        picker.getTitleView().setText("省市选择");
+        picker.show();
+    }
+
+    public void onProvinceCityForGuiZhou(View view) {
+        AddressPicker picker = new AddressPicker(this);
+        picker.setAddressMode("china_address_guizhou_city.json", AddressMode.PROVINCE_CITY,
+                new AddressJsonParser.Builder()
+                        .provinceCodeField("code")
+                        .provinceNameField("name")
+                        .provinceChildField("city")
+                        .cityCodeField("code")
+                        .cityNameField("name")
+                        .cityChildField("area")
+                        .countyCodeField("code")
+                        .countyNameField("name")
+                        .build());
+        picker.setTitle("贵州省地址选择");
+        picker.setDefaultValue("贵州省", "毕节市", "纳雍县");
+        picker.setOnAddressPickedListener(this);
+        LinkageWheelLayout wheelLayout = picker.getWheelLayout();
+        wheelLayout.setIndicatorEnabled(false);
+        wheelLayout.setCurtainEnabled(true);
+        wheelLayout.setCurtainColor(0xEE0081FF);
+        wheelLayout.setCurtainRadius(5 * view.getResources().getDisplayMetrics().density);
+        int padding = (int) (10 * view.getResources().getDisplayMetrics().density);
+        wheelLayout.setPadding(padding, 0, padding, 0);
+        wheelLayout.setOnLinkageSelectedListener(new OnLinkageSelectedListener() {
+            @Override
+            public void onLinkageSelected(Object first, Object second, Object third) {
+                picker.getTitleView().setText(String.format("%s%s%s",
+                        picker.getFirstWheelView().formatItem(first),
+                        picker.getSecondWheelView().formatItem(second),
+                        picker.getThirdWheelView().formatItem(third)));
+            }
+        });
+        picker.getProvinceWheelView().setCurtainCorner(CurtainCorner.LEFT);
+        picker.getCityWheelView().setCurtainCorner(CurtainCorner.RIGHT);
         picker.show();
     }
 
     public void onCityCounty(View view) {
         AddressPicker picker = new AddressPicker(this);
-        picker.setAddressMode(AddressMode.CITY_COUNTY);
+        picker.setAddressMode("china_address_guizhou.json", AddressMode.CITY_COUNTY,
+                new AddressJsonParser.Builder()
+                        .provinceCodeField("code")
+                        .provinceNameField("name")
+                        .provinceChildField("city")
+                        .cityCodeField("code")
+                        .cityNameField("name")
+                        .cityChildField("area")
+                        .countyCodeField("code")
+                        .countyNameField("name")
+                        .build());
         picker.setTitle("贵州省地址选择");
         picker.setDefaultValue("贵州省", "毕节市", "纳雍县");
         picker.setOnAddressPickedListener(this);

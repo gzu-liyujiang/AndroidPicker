@@ -40,12 +40,16 @@ import java.util.List;
  * @author 贵州山野羡民（1032694760@qq.com）
  * @since 2021/6/7 16:03
  */
-public class CustomAddressPicker extends BottomDialog implements AddressReceiver {
+public class CustomAddressPicker extends BottomDialog implements AddressReceiver, View.OnClickListener {
     protected LinkageWheelLayout wheelLayout;
     private OnAddressPickedListener onAddressPickedListener;
 
     public CustomAddressPicker(@NonNull Activity activity) {
         super(activity);
+    }
+
+    public CustomAddressPicker(@NonNull Activity activity, int themeResId) {
+        super(activity, themeResId);
     }
 
     @NonNull
@@ -57,24 +61,8 @@ public class CustomAddressPicker extends BottomDialog implements AddressReceiver
     @Override
     protected void initView() {
         super.initView();
-        contentView.findViewById(R.id.wheel_picker_address_cancel).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
-        contentView.findViewById(R.id.wheel_picker_address_confirm).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onAddressPickedListener != null) {
-                    ProvinceEntity province = (ProvinceEntity) wheelLayout.getFirstWheelView().getCurrentItem();
-                    CityEntity city = (CityEntity) wheelLayout.getSecondWheelView().getCurrentItem();
-                    CountyEntity county = (CountyEntity) wheelLayout.getThirdWheelView().getCurrentItem();
-                    onAddressPickedListener.onAddressPicked(province, city, county);
-                }
-                dismiss();
-            }
-        });
+        contentView.findViewById(R.id.wheel_picker_address_cancel).setOnClickListener(this);
+        contentView.findViewById(R.id.wheel_picker_address_confirm).setOnClickListener(this);
         wheelLayout = contentView.findViewById(R.id.wheel_picker_address_wheel);
     }
 
@@ -100,6 +88,24 @@ public class CustomAddressPicker extends BottomDialog implements AddressReceiver
     public void onAddressReceived(@NonNull List<ProvinceEntity> data) {
         wheelLayout.hideLoading();
         wheelLayout.setData(new AddressProvider(data, AddressMode.PROVINCE_CITY_COUNTY));
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        if (id == R.id.wheel_picker_address_cancel) {
+            dismiss();
+            return;
+        }
+        if (id == R.id.wheel_picker_address_confirm) {
+            if (onAddressPickedListener != null) {
+                ProvinceEntity province = (ProvinceEntity) wheelLayout.getFirstWheelView().getCurrentItem();
+                CityEntity city = (CityEntity) wheelLayout.getSecondWheelView().getCurrentItem();
+                CountyEntity county = (CountyEntity) wheelLayout.getThirdWheelView().getCurrentItem();
+                onAddressPickedListener.onAddressPicked(province, city, county);
+            }
+            dismiss();
+        }
     }
 
     public void setDefaultValue(String province, String city, String county) {

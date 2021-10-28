@@ -17,6 +17,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by peng on 2017/8/4.
@@ -32,6 +33,13 @@ public class MonthEntity implements Serializable {
     private Interval<Date> select;
     private Interval<String> note;
     private boolean singleMode = false;
+    private FestivalProvider festivalProvider;
+
+    static {
+        if (!Locale.getDefault().getDisplayLanguage().contains("中文")) {
+            STR_TODAY = "Today";
+        }
+    }
 
     public static MonthEntity obtain(Interval<Date> valid, Interval<Date> select) {
         MonthEntity entity = pools.size() == 0 ? new MonthEntity() : pools.remove(0);
@@ -71,13 +79,22 @@ public class MonthEntity implements Serializable {
         return this;
     }
 
-    public MonthEntity singleMode(boolean single) {
-        this.singleMode = single;
+    public MonthEntity singleMode(boolean singleMode) {
+        this.singleMode = singleMode;
         return this;
     }
 
     public boolean singleMode() {
         return this.singleMode;
+    }
+
+    public MonthEntity festivalProvider(FestivalProvider festivalProvider) {
+        this.festivalProvider = festivalProvider;
+        return this;
+    }
+
+    public FestivalProvider festivalProvider() {
+        return this.festivalProvider;
     }
 
     public Interval<String> note() {

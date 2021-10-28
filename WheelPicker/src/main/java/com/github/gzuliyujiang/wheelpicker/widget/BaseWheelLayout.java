@@ -27,8 +27,9 @@ import androidx.annotation.Px;
 import androidx.annotation.StyleRes;
 import androidx.annotation.StyleableRes;
 
-import com.github.gzuliyujiang.dialog.DialogConfig;
 import com.github.gzuliyujiang.wheelpicker.R;
+import com.github.gzuliyujiang.wheelview.annotation.CurtainCorner;
+import com.github.gzuliyujiang.wheelview.annotation.ScrollState;
 import com.github.gzuliyujiang.wheelview.contract.OnWheelChangedListener;
 import com.github.gzuliyujiang.wheelview.widget.WheelView;
 
@@ -125,7 +126,7 @@ public abstract class BaseWheelLayout extends LinearLayout implements OnWheelCha
     }
 
     @Override
-    public void onWheelScrollStateChanged(WheelView view, int state) {
+    public void onWheelScrollStateChanged(WheelView view, @ScrollState int state) {
 
     }
 
@@ -151,6 +152,18 @@ public abstract class BaseWheelLayout extends LinearLayout implements OnWheelCha
     public void setCurtainColor(@ColorInt int color) {
         for (WheelView wheelView : wheelViews) {
             wheelView.setCurtainColor(color);
+        }
+    }
+
+    public void setCurtainCorner(@CurtainCorner int corner) {
+        for (WheelView wheelView : wheelViews) {
+            wheelView.setCurtainCorner(corner);
+        }
+    }
+
+    public void setCurtainRadius(@Px float radius) {
+        for (WheelView wheelView : wheelViews) {
+            wheelView.setCurtainRadius(radius);
         }
     }
 
