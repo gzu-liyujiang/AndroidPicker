@@ -98,7 +98,10 @@
         android:minHeight="200dp"
         app:wheel_indicatorColor="@android:color/holo_red_light"
         app:wheel_indicatorEnabled="true"
+        app:wheel_itemTextBoldSelected="true"
         app:wheel_itemTextColor="@android:color/darker_gray"
-        app:wheel_itemTextColorSelected="@android:color/holo_red_light" />
+        app:wheel_itemTextColorSelected="@android:color/holo_red_light"
+        app:wheel_itemTextSize="15sp"
+        app:wheel_itemTextSizeSelected="18sp" />
 
 </LinearLayout>

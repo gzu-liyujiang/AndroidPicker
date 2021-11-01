@@ -26,9 +26,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.Region;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -141,9 +139,7 @@ public class WheelView extends View implements Runnable {
         super(context, attrs, defStyleAttr);
         this.attrs = attrs;
         initAttrs(context, attrs, defStyleAttr, R.style.WheelDefault);
-        paint.setColor(textColor);
-        paint.setTextSize(textSize);
-        paint.setFakeBoldText(false);
+        initTextPaint();
         updateVisibleItemCount();
         scroller = new Scroller(context);
         ViewConfiguration configuration = ViewConfiguration.get(context);
@@ -155,14 +151,19 @@ public class WheelView extends View implements Runnable {
         }
     }
 
+    private void initTextPaint() {
+        paint.setColor(textColor);
+        paint.setTextSize(textSize);
+        paint.setFakeBoldText(false);
+        paint.setStyle(Paint.Style.FILL);
+    }
+
     public void setStyle(@StyleRes int style) {
         if (attrs == null) {
             throw new RuntimeException("Please use " + getClass().getSimpleName() + " in xml");
         }
         initAttrs(getContext(), attrs, R.attr.WheelStyle, style);
-        paint.setColor(textColor);
-        paint.setTextSize(textSize);
-        paint.setFakeBoldText(false);
+        initTextPaint();
         requestLayout();
         invalidate();
     }
@@ -757,14 +758,11 @@ public class WheelView extends View implements Runnable {
              drawnDataPosition < drawnDataStartPos + defaultItemPosition + drawnItemCount;
              drawnDataPosition++, drawnOffsetPos++) {
 
-            paint.setColor(textColor);
-            paint.setTextSize(textSize);
-            paint.setFakeBoldText(false);
-            paint.setStyle(Paint.Style.FILL);
+            initTextPaint();
+            boolean isCenterItem = drawnDataPosition == drawnDataStartPos + defaultItemPosition + drawnItemCount / 2;
 
             int drawnItemCenterYCoordinate = drawnCenterYCoordinate + (drawnOffsetPos * itemHeight)
                     + scrollOffsetYCoordinate % itemHeight;
-
             int centerYCoordinateAbs = Math.abs(drawnCenterYCoordinate - drawnItemCenterYCoordinate);
             // Correct ratio of item's drawn center to wheel center
             float ratio = (drawnCenterYCoordinate - centerYCoordinateAbs - rectDrawn.top) * 1f /
@@ -807,19 +805,11 @@ public class WheelView extends View implements Runnable {
             // Correct item's drawn center Y coordinate base on curved state
             float drawCenterYCoordinate = curvedEnabled ? drawnCenterYCoordinate - distanceToCenter
                     : drawnItemCenterYCoordinate;
-            String data = obtainItemText(drawnDataPosition);
-            if (paint.measureText(data) - getMeasuredWidth() > 0) {
-                // 超出控件宽度则省略部分文字
-                int length = data.length();
-                if (length > 5) {
-                    data = data.substring(0, length - 4) + "...";
-                }
-            }
-            drawItemText(canvas, data, drawCenterYCoordinate);
+            drawItemText(canvas, drawnDataPosition, isCenterItem, drawCenterYCoordinate);
         }
     }
 
-    private void drawItemText(Canvas canvas, String data, float drawCenterYCoordinate) {
+    private void drawItemText(Canvas canvas, int dataPosition, boolean isCenterItem, float drawCenterYCoordinate) {
         // Judges need to draw different color for current item or not
         if (selectedTextColor == -1) {
             canvas.save();
@@ -827,22 +817,20 @@ public class WheelView extends View implements Runnable {
             if (curvedEnabled) {
                 canvas.concat(matrixRotate);
             }
-            canvas.drawText(data, drawnCenterXCoordinate, drawCenterYCoordinate, paint);
+            reallyDrawText(canvas, dataPosition, drawCenterYCoordinate);
             canvas.restore();
             return;
         }
 
-        canvas.save();
-        if (curvedEnabled) {
-            canvas.concat(matrixRotate);
+        if (!isCenterItem) {
+            canvas.save();
+            if (curvedEnabled) {
+                canvas.concat(matrixRotate);
+            }
+            reallyDrawText(canvas, dataPosition, drawCenterYCoordinate);
+            canvas.restore();
+            return;
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            canvas.clipOutRect(rectCurrentItem);
-        } else {
-            canvas.clipRect(rectCurrentItem, Region.Op.DIFFERENCE);
-        }
-        canvas.drawText(data, drawnCenterXCoordinate, drawCenterYCoordinate, paint);
-        canvas.restore();
 
         paint.setColor(selectedTextColor);
         paint.setTextSize(selectedTextSize);
@@ -851,9 +839,20 @@ public class WheelView extends View implements Runnable {
         if (curvedEnabled) {
             canvas.concat(matrixRotate);
         }
-        canvas.clipRect(rectCurrentItem);
-        canvas.drawText(data, drawnCenterXCoordinate, drawCenterYCoordinate, paint);
+        reallyDrawText(canvas, dataPosition, drawCenterYCoordinate);
         canvas.restore();
+    }
+
+    private void reallyDrawText(Canvas canvas, int dataPosition, float drawCenterYCoordinate) {
+        String data = obtainItemText(dataPosition);
+        if (paint.measureText(data) - getMeasuredWidth() > 0) {
+            // 超出控件宽度则省略部分文字
+            int length = data.length();
+            if (length > 4) {
+                data = data.substring(0, length - 4) + "...";
+            }
+        }
+        canvas.drawText(data, drawnCenterXCoordinate, drawCenterYCoordinate, paint);
     }
 
     private float computeDegree(int drawnItemCenterYCoordinate, float ratio) {

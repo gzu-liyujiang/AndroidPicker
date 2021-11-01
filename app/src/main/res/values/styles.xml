@@ -17,7 +17,7 @@
         <item name="wheel_itemTextColor">@android:color/darker_gray</item>
         <item name="wheel_itemTextColorSelected">@android:color/holo_blue_dark</item>
         <item name="wheel_itemTextSize">16sp</item>
-        <item name="wheel_itemTextSizeSelected">18sp</item>
+        <item name="wheel_itemTextSizeSelected">16sp</item>
         <item name="wheel_itemTextBoldSelected">false</item>
         <item name="wheel_sameWidthEnabled">false</item>
         <item name="wheel_atmosphericEnabled">true</item>

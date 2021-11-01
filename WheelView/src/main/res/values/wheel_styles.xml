@@ -20,7 +20,7 @@
         <item name="wheel_itemTextColor">#FF999999</item>
         <item name="wheel_itemTextColorSelected">#FF000000</item>
         <item name="wheel_itemTextSize">18sp</item>
-        <item name="wheel_itemTextSizeSelected">23sp</item>
+        <item name="wheel_itemTextSizeSelected">18sp</item>
         <item name="wheel_itemTextBoldSelected">false</item>
         <item name="wheel_sameWidthEnabled">false</item>
         <item name="wheel_atmosphericEnabled">true</item>
