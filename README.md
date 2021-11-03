@@ -147,88 +147,89 @@ picker.setBodyWidth(140);
 picker.setData(data);
 picker.setDefaultPosition(2);
 picker.setOnOptionPickedListener(this);
-OptionWheelLayout wheelLayout = picker.getWheelLayout();
-wheelLayout.setIndicatorEnabled(false);
-wheelLayout.setTextColor(0xFFFF00FF);
-wheelLayout.setSelectedTextColor(0xFFFF0000);
-wheelLayout.setTextSize(15 * view.getResources().getDisplayMetrics().scaledDensity);
-wheelLayout.setSelectedTextSize(17 * view.getResources().getDisplayMetrics().scaledDensity);
-wheelLayout.setSelectedTextBold(true);
-wheelLayout.setCurtainEnabled(true);
-wheelLayout.setCurtainColor(0xEEFF0000);
-wheelLayout.setCurtainCorner(CurtainCorner.ALL);
-wheelLayout.setCurtainRadius(5 * view.getResources().getDisplayMetrics().density);
-wheelLayout.setOnOptionSelectedListener(new OnOptionSelectedListener() {
-    @Override
-    public void onOptionSelected(int position, Object item) {
-        picker.getTitleView().setText(picker.getWheelView().formatItem(position));
-    }
-});
+//OptionWheelLayout wheelLayout = picker.getWheelLayout();
+//wheelLayout.setIndicatorEnabled(false);
+//wheelLayout.setTextColor(0xFFFF00FF);
+//wheelLayout.setSelectedTextColor(0xFFFF0000);
+//wheelLayout.setTextSize(15 * view.getResources().getDisplayMetrics().scaledDensity);
+//wheelLayout.setSelectedTextSize(17 * view.getResources().getDisplayMetrics().scaledDensity);
+//wheelLayout.setSelectedTextBold(true);
+//wheelLayout.setCurtainEnabled(true);
+//wheelLayout.setCurtainColor(0xEEFF0000);
+//wheelLayout.setCurtainCorner(CurtainCorner.ALL);
+//wheelLayout.setCurtainRadius(5 * view.getResources().getDisplayMetrics().density);
+//wheelLayout.setOnOptionSelectedListener(new OnOptionSelectedListener() {
+//    @Override
+//    public void onOptionSelected(int position, Object item) {
+//        picker.getTitleView().setText(picker.getWheelView().formatItem(position));
+//    }
+//});
 picker.show();
 ```
 
 ```groovy
 DatePicker picker = new DatePicker(this);
 //picker.setBodyWidth(240);
-DateWheelLayout wheelLayout = picker.getWheelLayout();
-wheelLayout.setDateMode(DateMode.YEAR_MONTH_DAY);
+//DateWheelLayout wheelLayout = picker.getWheelLayout();
+//wheelLayout.setDateMode(DateMode.YEAR_MONTH_DAY);
 //wheelLayout.setDateLabel("年", "月", "日");
-wheelLayout.setDateFormatter(new UnitDateFormatter());
-wheelLayout.setRange(DateEntity.target(2021, 1, 1), DateEntity.target(2050, 12, 31), DateEntity.today());
-wheelLayout.setCurtainEnabled(true);
-wheelLayout.setCurtainColor(0xFFCC0000);
-wheelLayout.setIndicatorEnabled(true);
-wheelLayout.setIndicatorColor(0xFFFF0000);
-wheelLayout.setIndicatorSize(view.getResources().getDisplayMetrics().density * 2);
-wheelLayout.setTextColor(0xCCCC0000);
-wheelLayout.setSelectedTextColor(0xFFFF0000);
+//wheelLayout.setDateFormatter(new UnitDateFormatter());
+//wheelLayout.setRange(DateEntity.target(2021, 1, 1), DateEntity.target(2050, 12, 31), DateEntity.today());
+//wheelLayout.setCurtainEnabled(true);
+//wheelLayout.setCurtainColor(0xFFCC0000);
+//wheelLayout.setIndicatorEnabled(true);
+//wheelLayout.setIndicatorColor(0xFFFF0000);
+//wheelLayout.setIndicatorSize(view.getResources().getDisplayMetrics().density * 2);
+//wheelLayout.setTextColor(0xCCCC0000);
+//wheelLayout.setSelectedTextColor(0xFFFF0000);
 //wheelLayout.getYearLabelView().setTextColor(0xFF999999);
 //wheelLayout.getMonthLabelView().setTextColor(0xFF999999);
-//picker.setOnDatePickedListener(this);
+picker.setOnDatePickedListener(this);
 picker.show();
 ```
 
 ```groovy
 AddressPicker picker = new AddressPicker(this);
-picker.setAddressMode("china_address_guizhou_city.json", AddressMode.PROVINCE_CITY,
-        new AddressJsonParser.Builder()
-                .provinceCodeField("code")
-                .provinceNameField("name")
-                .provinceChildField("city")
-                .cityCodeField("code")
-                .cityNameField("name")
-                .cityChildField("area")
-                .countyCodeField("code")
-                .countyNameField("name")
-                .build());
-picker.setTitle("贵州省地址选择");
-picker.setDefaultValue("贵州省", "毕节市", "纳雍县");
+picker.setAddressMode(AddressMode.PROVINCE_CITY);
+//picker.setAddressMode("china_address_guizhou_city.json", AddressMode.PROVINCE_CITY,
+//        new AddressJsonParser.Builder()
+//                .provinceCodeField("code")
+//                .provinceNameField("name")
+//                .provinceChildField("city")
+//                .cityCodeField("code")
+//                .cityNameField("name")
+//                .cityChildField("area")
+//                .countyCodeField("code")
+//                .countyNameField("name")
+//                .build());
+//picker.setTitle("贵州省地址选择");
+//picker.setDefaultValue("贵州省", "毕节市", "纳雍县");
 picker.setOnAddressPickedListener(this);
-LinkageWheelLayout wheelLayout = picker.getWheelLayout();
-wheelLayout.setTextSize(15 * view.getResources().getDisplayMetrics().scaledDensity);
-wheelLayout.setSelectedTextSize(17 * view.getResources().getDisplayMetrics().scaledDensity);
-wheelLayout.setSelectedTextBold(true);
-wheelLayout.setIndicatorEnabled(false);
-wheelLayout.setCurtainEnabled(true);
-wheelLayout.setCurtainColor(0xEE0081FF);
-wheelLayout.setCurtainRadius(5 * view.getResources().getDisplayMetrics().density);
-int padding = (int) (10 * view.getResources().getDisplayMetrics().density);
-wheelLayout.setPadding(padding, 0, padding, 0);
-wheelLayout.setOnLinkageSelectedListener(new OnLinkageSelectedListener() {
-    @Override
-    public void onLinkageSelected(Object first, Object second, Object third) {
-        picker.getTitleView().setText(String.format("%s%s%s",
-                picker.getProvinceWheelView().formatItem(first),
-                picker.getCityWheelView().formatItem(second),
-                picker.getCountyWheelView().formatItem(third)));
-    }
-});
-picker.getProvinceWheelView().setCurtainCorner(CurtainCorner.LEFT);
-picker.getCityWheelView().setCurtainCorner(CurtainCorner.RIGHT);
+//LinkageWheelLayout wheelLayout = picker.getWheelLayout();
+//wheelLayout.setTextSize(15 * view.getResources().getDisplayMetrics().scaledDensity);
+//wheelLayout.setSelectedTextSize(17 * view.getResources().getDisplayMetrics().scaledDensity);
+//wheelLayout.setSelectedTextBold(true);
+//wheelLayout.setIndicatorEnabled(false);
+//wheelLayout.setCurtainEnabled(true);
+//wheelLayout.setCurtainColor(0xEE0081FF);
+//wheelLayout.setCurtainRadius(5 * view.getResources().getDisplayMetrics().density);
+//int padding = (int) (10 * view.getResources().getDisplayMetrics().density);
+//wheelLayout.setPadding(padding, 0, padding, 0);
+//wheelLayout.setOnLinkageSelectedListener(new OnLinkageSelectedListener() {
+//    @Override
+//    public void onLinkageSelected(Object first, Object second, Object third) {
+//        picker.getTitleView().setText(String.format("%s%s%s",
+//                picker.getProvinceWheelView().formatItem(first),
+//                picker.getCityWheelView().formatItem(second),
+//                picker.getCountyWheelView().formatItem(third)));
+//    }
+//});
+//picker.getProvinceWheelView().setCurtainCorner(CurtainCorner.LEFT);
+//picker.getCityWheelView().setCurtainCorner(CurtainCorner.RIGHT);
 picker.show();
 ```
 
-### 在 XML 中 （可选）
+### 在 XML 中
 
 ```xml
 <com.github.gzuliyujiang.wheelview.widget.WheelView
@@ -295,7 +296,7 @@ public class DemoApp extends Application {
 
 #### 自定义 style
 
-- **在`app/.../res/values/styles.xml`中重写`WheelDefault`覆盖** （所有选择器都会生效）
+- 在`app/.../res/values/styles.xml`中**重写`WheelDefault`覆盖** （所有选择器都会生效）
 
 ```xml
 <style name="WheelDefault">
@@ -318,7 +319,7 @@ public class DemoApp extends Application {
 </style>
 ```
 
-- **在`app/.../res/values/styles.xml`中参考`WheelDefault`写个style**，然后调用`setStyle`（只作用于当前选择器）
+- 在`app/.../res/values/styles.xml`中参考`WheelDefault`写个style，然后**调用`setStyle`**（只作用于当前选择器）
 
 ```groovy
 picker.getWheelView().setStyle(R.style.WheelStyleDemo);
