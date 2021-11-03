@@ -27,6 +27,7 @@ import androidx.annotation.Px;
 import androidx.annotation.StyleRes;
 import androidx.annotation.StyleableRes;
 
+import com.github.gzuliyujiang.dialog.DialogLog;
 import com.github.gzuliyujiang.wheelpicker.R;
 import com.github.gzuliyujiang.wheelview.annotation.CurtainCorner;
 import com.github.gzuliyujiang.wheelview.annotation.ItemTextAlign;
@@ -112,7 +113,8 @@ public abstract class BaseWheelLayout extends LinearLayout implements OnWheelCha
 
     public void setStyle(@StyleRes int style) {
         if (attrs == null) {
-            throw new RuntimeException("Please use " + getClass().getSimpleName() + " in xml");
+            DialogLog.print("Please use " + getClass().getSimpleName() + " in xml");
+            return;
         }
         TypedArray a = getContext().obtainStyledAttributes(attrs, provideStyleableRes(), R.attr.WheelStyle, style);
         onAttributeSet(getContext(), a);

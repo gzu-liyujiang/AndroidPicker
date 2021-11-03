@@ -293,7 +293,9 @@ public class DemoApp extends Application {
 }
 ```
 
-#### **在`app/.../res/values/styles.xml`中重写`WheelDefault`覆盖** （不推荐）
+#### 自定义 style
+
+- **在`app/.../res/values/styles.xml`中重写`WheelDefault`覆盖** （所有选择器都会生效）
 
 ```xml
 <style name="WheelDefault">
@@ -314,6 +316,12 @@ public class DemoApp extends Application {
     <item name="wheel_indicatorColor">@android:color/holo_blue_light</item>
     <item name="wheel_indicatorSize">1dp</item>
 </style>
+```
+
+- **在`app/.../res/values/styles.xml`中参考`WheelDefault`写个style**，然后调用`setStyle`（只作用于当前选择器）
+
+```groovy
+picker.getWheelView().setStyle(R.style.WheelStyleDemo);
 ```
 
 #### 在Java中集成重写某一选择器样式及配色

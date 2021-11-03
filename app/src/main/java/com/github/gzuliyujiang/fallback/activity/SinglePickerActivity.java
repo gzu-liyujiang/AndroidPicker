@@ -121,9 +121,7 @@ public class SinglePickerActivity extends BackAbleActivity implements OnNumberPi
                 picker.getTitleView().setText(picker.getWheelView().formatItem(position));
             }
         });
-        picker.getWheelView().setCyclicEnabled(true);
-        picker.getWheelView().setCurvedEnabled(true);
-        picker.getWheelView().setCurvedMaxAngle(60);
+        picker.getWheelView().setStyle(R.style.WheelStyleDemo);
         picker.show();
     }
 

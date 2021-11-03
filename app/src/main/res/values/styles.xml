@@ -30,4 +30,21 @@
         <item name="wheel_indicatorSize">1dp</item>
     </style>
 
+    <style name="WheelStyleDemo">
+        <item name="wheel_itemTextColor">@android:color/holo_green_dark</item>
+        <item name="wheel_itemTextColorSelected">@android:color/holo_green_light</item>
+        <item name="wheel_itemTextSize">20sp</item>
+        <item name="wheel_itemTextSizeSelected">22sp</item>
+        <item name="wheel_itemTextBoldSelected">true</item>
+        <item name="wheel_sameWidthEnabled">false</item>
+        <item name="wheel_atmosphericEnabled">true</item>
+        <item name="wheel_curtainEnabled">false</item>
+        <item name="wheel_curvedEnabled">false</item>
+        <item name="wheel_curvedMaxAngle">60</item>
+        <item name="wheel_cyclicEnabled">true</item>
+        <item name="wheel_indicatorEnabled">true</item>
+        <item name="wheel_indicatorColor">@android:color/holo_green_dark</item>
+        <item name="wheel_indicatorSize">1dp</item>
+    </style>
+
 </resources>
