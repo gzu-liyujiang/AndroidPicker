@@ -21,7 +21,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.github.gzuliyujiang.dialog.DialogLog;
 import com.github.gzuliyujiang.wheelpicker.R;
 import com.github.gzuliyujiang.wheelpicker.annotation.DateMode;
 import com.github.gzuliyujiang.wheelpicker.contract.DateFormatter;
@@ -252,7 +251,6 @@ public class DateWheelLayout extends BaseWheelLayout {
         this.startValue = startValue;
         this.endValue = endValue;
         if (defaultValue != null) {
-            DialogLog.print("defaultValue=" + defaultValue.toString());
             selectedYear = defaultValue.getYear();
             selectedMonth = defaultValue.getMonth();
             selectedDay = defaultValue.getDay();
