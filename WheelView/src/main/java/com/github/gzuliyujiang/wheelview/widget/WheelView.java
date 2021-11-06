@@ -872,14 +872,22 @@ public class WheelView extends View implements Runnable {
         canvas.restore();
     }
 
-    private void reallyDrawText(Canvas canvas, int dataPosition, float drawCenterYCoordinate) {
+    private void drawItemText(Canvas canvas, int dataPosition, float drawCenterYCoordinate) {
+        boolean hasCut = false;
+        String ellipsis = "...";
+        int measuredWidth = getMeasuredWidth();
+        float ellipsisWidth = paint.measureText(ellipsis);
         String data = obtainItemText(dataPosition);
-        if (paint.measureText(data) - getMeasuredWidth() > 0) {
+        while (paint.measureText(data) + ellipsisWidth - measuredWidth > 0) {
             // 超出控件宽度则省略部分文字
             int length = data.length();
-            if (length > 4) {
-                data = data.substring(0, length - 4) + "...";
+            if (length > 1) {
+                data = data.substring(0, length - 1);
+                hasCut = true;
             }
+        }
+        if (hasCut) {
+            data = data + ellipsis;
         }
         canvas.drawText(data, drawnCenterXCoordinate, drawCenterYCoordinate, paint);
     }
@@ -955,7 +963,6 @@ public class WheelView extends View implements Runnable {
         paint.setColor(Color.argb(128, red, green, blue));
         paint.setStyle(Paint.Style.FILL);
         if (curtainRadius > 0) {
-            //canvas.drawRoundRect(new RectF(rectCurrentItem), curtainRadius, curtainRadius, paint);
             Path path = new Path();
             float[] radii;
             switch (curtainCorner) {
