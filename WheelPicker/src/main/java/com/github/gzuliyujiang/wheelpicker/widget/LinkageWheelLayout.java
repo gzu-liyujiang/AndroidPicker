@@ -99,7 +99,7 @@ public class LinkageWheelLayout extends BaseWheelLayout {
         setSameWidthEnabled(typedArray.getBoolean(R.styleable.LinkageWheelLayout_wheel_sameWidthEnabled, false));
         setMaxWidthText(typedArray.getString(R.styleable.LinkageWheelLayout_wheel_maxWidthText));
         setTextSize(typedArray.getDimension(R.styleable.LinkageWheelLayout_wheel_itemTextSize, 15 * scaledDensity));
-        setSelectedTextSize(typedArray.getDimension(R.styleable.LinkageWheelLayout_wheel_itemTextSizeSelected, 16 * scaledDensity));
+        setSelectedTextSize(typedArray.getDimension(R.styleable.LinkageWheelLayout_wheel_itemTextSizeSelected, 15 * scaledDensity));
         setTextColor(typedArray.getColor(R.styleable.LinkageWheelLayout_wheel_itemTextColor, 0xFF888888));
         setSelectedTextColor(typedArray.getColor(R.styleable.LinkageWheelLayout_wheel_itemTextColorSelected, 0xFF000000));
         setSelectedTextBold(typedArray.getBoolean(R.styleable.LinkageWheelLayout_wheel_itemTextBoldSelected, false));

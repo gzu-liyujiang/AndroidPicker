@@ -70,7 +70,7 @@ public class NumberWheelLayout extends OptionWheelLayout {
         setSelectedTextColor(typedArray.getColor(R.styleable.NumberWheelLayout_wheel_itemTextColorSelected, 0xFF000000));
         setTextColor(typedArray.getColor(R.styleable.NumberWheelLayout_wheel_itemTextColor, 0xFF888888));
         setTextSize(typedArray.getDimension(R.styleable.NumberWheelLayout_wheel_itemTextSize, 15 * scaledDensity));
-        setSelectedTextSize(typedArray.getDimension(R.styleable.NumberWheelLayout_wheel_itemTextSizeSelected, 16 * scaledDensity));
+        setSelectedTextSize(typedArray.getDimension(R.styleable.NumberWheelLayout_wheel_itemTextSizeSelected, 15 * scaledDensity));
         setSelectedTextBold(typedArray.getBoolean(R.styleable.NumberWheelLayout_wheel_itemTextBoldSelected, false));
         setTextAlign(typedArray.getInt(R.styleable.NumberWheelLayout_wheel_itemTextAlign, ItemTextAlign.CENTER));
         setItemSpace(typedArray.getDimensionPixelSize(R.styleable.NumberWheelLayout_wheel_itemSpace, (int) (20 * density)));

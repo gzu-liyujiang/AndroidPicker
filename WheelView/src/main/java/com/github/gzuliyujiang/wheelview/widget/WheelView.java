@@ -26,7 +26,9 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Region;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -180,7 +182,7 @@ public class WheelView extends View implements Runnable {
             textColor = 0xFF888888;
             selectedTextColor = 0xFF000000;
             textSize = 15 * scaledDensity;
-            selectedTextSize = 16 * scaledDensity;
+            selectedTextSize = textSize;
             selectedTextBold = false;
             itemSpace = (int) (20 * density);
             cyclicEnabled = false;
@@ -212,7 +214,7 @@ public class WheelView extends View implements Runnable {
         textColor = typedArray.getColor(R.styleable.WheelView_wheel_itemTextColor, 0xFF888888);
         selectedTextColor = typedArray.getColor(R.styleable.WheelView_wheel_itemTextColorSelected, 0xFF000000);
         textSize = typedArray.getDimension(R.styleable.WheelView_wheel_itemTextSize, 15 * scaledDensity);
-        selectedTextSize = typedArray.getDimension(R.styleable.WheelView_wheel_itemTextSizeSelected, 16 * scaledDensity);
+        selectedTextSize = typedArray.getDimension(R.styleable.WheelView_wheel_itemTextSizeSelected, textSize);
         selectedTextBold = typedArray.getBoolean(R.styleable.WheelView_wheel_itemTextBoldSelected, false);
         textAlign = typedArray.getInt(R.styleable.WheelView_wheel_itemTextAlign, ItemTextAlign.CENTER);
         itemSpace = typedArray.getDimensionPixelSize(R.styleable.WheelView_wheel_itemSpace, (int) (20 * density));
@@ -746,12 +748,12 @@ public class WheelView extends View implements Runnable {
         if (itemHeight - halfDrawnItemCount <= 0) {
             return;
         }
-        drawAllItemText(canvas);
+        drawAllItem(canvas);
         drawCurtain(canvas);
         drawIndicator(canvas);
     }
 
-    private void drawAllItemText(Canvas canvas) {
+    private void drawAllItem(Canvas canvas) {
         int drawnDataStartPos = -1 * scrollOffsetYCoordinate / itemHeight - halfDrawnItemCount;
         for (int drawnDataPosition = drawnDataStartPos + defaultItemPosition,
              drawnOffsetPos = -1 * halfDrawnItemCount;
@@ -805,11 +807,11 @@ public class WheelView extends View implements Runnable {
             // Correct item's drawn center Y coordinate base on curved state
             float drawCenterYCoordinate = curvedEnabled ? drawnCenterYCoordinate - distanceToCenter
                     : drawnItemCenterYCoordinate;
-            drawItemText(canvas, drawnDataPosition, isCenterItem, drawCenterYCoordinate);
+            drawItemRect(canvas, drawnDataPosition, isCenterItem, drawCenterYCoordinate);
         }
     }
 
-    private void drawItemText(Canvas canvas, int dataPosition, boolean isCenterItem, float drawCenterYCoordinate) {
+    private void drawItemRect(Canvas canvas, int dataPosition, boolean isCenterItem, float drawCenterYCoordinate) {
         // Judges need to draw different color for current item or not
         if (selectedTextColor == -1) {
             canvas.save();
@@ -817,7 +819,30 @@ public class WheelView extends View implements Runnable {
             if (curvedEnabled) {
                 canvas.concat(matrixRotate);
             }
-            reallyDrawText(canvas, dataPosition, drawCenterYCoordinate);
+            drawItemText(canvas, dataPosition, drawCenterYCoordinate);
+            canvas.restore();
+            return;
+        }
+
+        if (textSize == selectedTextSize) {
+            canvas.save();
+            if (curvedEnabled) {
+                canvas.concat(matrixRotate);
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                canvas.clipOutRect(rectCurrentItem);
+            } else {
+                canvas.clipRect(rectCurrentItem, Region.Op.DIFFERENCE);
+            }
+            drawItemText(canvas, dataPosition, drawCenterYCoordinate);
+            canvas.restore();
+            paint.setColor(selectedTextColor);
+            canvas.save();
+            if (curvedEnabled) {
+                canvas.concat(matrixRotate);
+            }
+            canvas.clipRect(rectCurrentItem);
+            drawItemText(canvas, dataPosition, drawCenterYCoordinate);
             canvas.restore();
             return;
         }
@@ -827,7 +852,7 @@ public class WheelView extends View implements Runnable {
             if (curvedEnabled) {
                 canvas.concat(matrixRotate);
             }
-            reallyDrawText(canvas, dataPosition, drawCenterYCoordinate);
+            drawItemText(canvas, dataPosition, drawCenterYCoordinate);
             canvas.restore();
             return;
         }
@@ -839,7 +864,7 @@ public class WheelView extends View implements Runnable {
         if (curvedEnabled) {
             canvas.concat(matrixRotate);
         }
-        reallyDrawText(canvas, dataPosition, drawCenterYCoordinate);
+        drawItemText(canvas, dataPosition, drawCenterYCoordinate);
         canvas.restore();
     }
 

@@ -109,7 +109,7 @@ public class DateWheelLayout extends BaseWheelLayout {
         setTextColor(typedArray.getColor(R.styleable.DateWheelLayout_wheel_itemTextColor, 0xFF888888));
         setSelectedTextColor(typedArray.getColor(R.styleable.DateWheelLayout_wheel_itemTextColorSelected, 0xFF000000));
         setTextSize(typedArray.getDimension(R.styleable.DateWheelLayout_wheel_itemTextSize, 15 * scaledDensity));
-        setSelectedTextSize(typedArray.getDimension(R.styleable.DateWheelLayout_wheel_itemTextSizeSelected, 16 * scaledDensity));
+        setSelectedTextSize(typedArray.getDimension(R.styleable.DateWheelLayout_wheel_itemTextSizeSelected, 15 * scaledDensity));
         setSelectedTextBold(typedArray.getBoolean(R.styleable.DateWheelLayout_wheel_itemTextBoldSelected, false));
         setTextAlign(typedArray.getInt(R.styleable.DateWheelLayout_wheel_itemTextAlign, ItemTextAlign.CENTER));
         setItemSpace(typedArray.getDimensionPixelSize(R.styleable.DateWheelLayout_wheel_itemSpace,
