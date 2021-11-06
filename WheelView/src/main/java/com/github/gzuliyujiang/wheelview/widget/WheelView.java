@@ -344,7 +344,7 @@ public class WheelView extends View implements Runnable {
             newData = new ArrayList<>();
         }
         data = newData;
-        notifyDataSetChanged(0);
+        notifyDataSetChanged(0, false);
     }
 
     public void setDefaultValue(Object value) {
@@ -382,7 +382,7 @@ public class WheelView extends View implements Runnable {
     }
 
     public void setDefaultPosition(int position) {
-        notifyDataSetChanged(position);
+        notifyDataSetChanged(position, false);
     }
 
     public boolean isSameWidthEnabled() {
@@ -632,10 +632,14 @@ public class WheelView extends View implements Runnable {
         invalidate();
     }
 
-    private void notifyDataSetChanged(int position) {
+    private void notifyDataSetChanged(int position, boolean smooth) {
         position = Math.min(position, getItemCount() - 1);
         position = Math.max(position, 0);
-        scrollTo(position);
+        if (smooth) {
+            smoothScrollTo(position);
+        } else {
+            scrollTo(position);
+        }
     }
 
     @Override
@@ -1206,9 +1210,9 @@ public class WheelView extends View implements Runnable {
         return (-1 * scrollOffsetYCoordinate / itemHeight + defaultItemPosition) % itemCount;
     }
 
-    public final void scrollTo(final int position) {
+    public final void smoothScrollTo(final int position) {
         if (isInEditMode()) {
-            updateDate(position);
+            scrollTo(position);
             return;
         }
         int differencesLines = currentPosition - position;
@@ -1225,13 +1229,13 @@ public class WheelView extends View implements Runnable {
         animator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                updateDate(position);
+                scrollTo(position);
             }
         });
         animator.start();
     }
 
-    private void updateDate(int position) {
+    public void scrollTo(int position) {
         scrollOffsetYCoordinate = 0;
         defaultItem = getItem(position);
         defaultItemPosition = position;

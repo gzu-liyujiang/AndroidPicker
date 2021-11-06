@@ -49,7 +49,7 @@ public class LinkagePickerActivity extends BackAbleActivity implements OnCarPlat
 
     public void onCarNumber(View view) {
         CarPlatePicker picker = new CarPlatePicker(this);
-        picker.setBodyWidth(90);
+        picker.setBodyWidth(100);
         picker.setDefaultValue("贵", "F", "");
         picker.setOnCarPlatePickedListener(this);
         picker.show();

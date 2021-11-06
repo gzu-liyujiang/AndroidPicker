@@ -62,6 +62,7 @@ public class TimeWheelLayout extends BaseWheelLayout {
     private int timeMode;
     private OnTimeSelectedListener onTimeSelectedListener;
     private OnTimeMeridiemSelectedListener onTimeMeridiemSelectedListener;
+    private boolean resetWhenLinkage = true;
 
     public TimeWheelLayout(Context context) {
         super(context);
@@ -118,8 +119,7 @@ public class TimeWheelLayout extends BaseWheelLayout {
         setSelectedTextSize(typedArray.getDimension(R.styleable.TimeWheelLayout_wheel_itemTextSizeSelected, 15 * scaledDensity));
         setSelectedTextBold(typedArray.getBoolean(R.styleable.TimeWheelLayout_wheel_itemTextBoldSelected, false));
         setTextAlign(typedArray.getInt(R.styleable.TimeWheelLayout_wheel_itemTextAlign, ItemTextAlign.CENTER));
-        setItemSpace(typedArray.getDimensionPixelSize(R.styleable.TimeWheelLayout_wheel_itemSpace,
-                (int) (20 * density)));
+        setItemSpace(typedArray.getDimensionPixelSize(R.styleable.TimeWheelLayout_wheel_itemSpace, (int) (20 * density)));
         setCyclicEnabled(typedArray.getBoolean(R.styleable.TimeWheelLayout_wheel_cyclicEnabled, false));
         setIndicatorEnabled(typedArray.getBoolean(R.styleable.TimeWheelLayout_wheel_indicatorEnabled, false));
         setIndicatorColor(typedArray.getColor(R.styleable.TimeWheelLayout_wheel_indicatorColor, 0xFFC9C9C9));
@@ -138,8 +138,15 @@ public class TimeWheelLayout extends BaseWheelLayout {
         String secondLabel = typedArray.getString(R.styleable.TimeWheelLayout_wheel_secondLabel);
         setTimeLabel(hourLabel, minuteLabel, secondLabel);
         setTimeFormatter(new SimpleTimeFormatter(this));
-        setRange(TimeEntity.target(0, 0, 0),
-                TimeEntity.target(23, 59, 59), TimeEntity.now());
+    }
+
+    @Override
+    protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
+        super.onVisibilityChanged(changedView, visibility);
+        if (visibility == VISIBLE && startValue == null && endValue == null) {
+            setRange(TimeEntity.target(0, 0, 0),
+                    TimeEntity.target(23, 59, 59), TimeEntity.now());
+        }
     }
 
     @Override
@@ -147,15 +154,19 @@ public class TimeWheelLayout extends BaseWheelLayout {
         int id = view.getId();
         if (id == R.id.wheel_picker_time_hour_wheel) {
             selectedHour = hourWheelView.getItem(position);
-            selectedMinute = null;
-            selectedSecond = null;
+            if (resetWhenLinkage) {
+                selectedMinute = null;
+                selectedSecond = null;
+            }
             changeMinute(selectedHour);
             timeSelectedCallback();
             return;
         }
         if (id == R.id.wheel_picker_time_minute_wheel) {
             selectedMinute = minuteWheelView.getItem(position);
-            selectedSecond = null;
+            if (resetWhenLinkage) {
+                selectedSecond = null;
+            }
             changeSecond();
             timeSelectedCallback();
             return;
@@ -267,6 +278,10 @@ public class TimeWheelLayout extends BaseWheelLayout {
             selectedHour = defaultValue.getHour();
             selectedMinute = defaultValue.getMinute();
             selectedSecond = defaultValue.getSecond();
+        } else {
+            selectedHour = null;
+            selectedMinute = null;
+            selectedSecond = null;
         }
         changeHour();
         changeAnteMeridiem();
@@ -312,6 +327,10 @@ public class TimeWheelLayout extends BaseWheelLayout {
 
     public void setOnTimeMeridiemSelectedListener(OnTimeMeridiemSelectedListener onTimeMeridiemSelectedListener) {
         this.onTimeMeridiemSelectedListener = onTimeMeridiemSelectedListener;
+    }
+
+    public void setResetWhenLinkage(boolean resetWhenLinkage) {
+        this.resetWhenLinkage = resetWhenLinkage;
     }
 
     public final TimeEntity getStartValue() {
@@ -392,6 +411,9 @@ public class TimeWheelLayout extends BaseWheelLayout {
         max = Math.min(maxHour, max);
         if (selectedHour == null) {
             selectedHour = min;
+        } else {
+            selectedHour = Math.max(selectedHour, min);
+            selectedHour = Math.min(selectedHour, max);
         }
         hourWheelView.setRange(min, max, 1);
         hourWheelView.setDefaultValue(selectedHour);
@@ -420,6 +442,9 @@ public class TimeWheelLayout extends BaseWheelLayout {
         }
         if (selectedMinute == null) {
             selectedMinute = min;
+        } else {
+            selectedMinute = Math.max(selectedMinute, min);
+            selectedMinute = Math.min(selectedMinute, max);
         }
         minuteWheelView.setRange(min, max, 1);
         minuteWheelView.setDefaultValue(selectedMinute);

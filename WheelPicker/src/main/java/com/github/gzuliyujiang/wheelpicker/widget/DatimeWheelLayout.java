@@ -16,6 +16,7 @@ package com.github.gzuliyujiang.wheelpicker.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -131,7 +132,14 @@ public class DatimeWheelLayout extends BaseWheelLayout {
         setTimeLabel(hourLabel, minuteLabel, secondLabel);
         setDateFormatter(new SimpleDateFormatter());
         setTimeFormatter(new SimpleTimeFormatter(timeWheelLayout));
-        setRange(DatimeEntity.now(), DatimeEntity.yearOnFuture(30), DatimeEntity.now());
+    }
+
+    @Override
+    protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
+        super.onVisibilityChanged(changedView, visibility);
+        if (visibility == VISIBLE && startValue == null && endValue == null) {
+            setRange(DatimeEntity.now(), DatimeEntity.yearOnFuture(30), DatimeEntity.now());
+        }
     }
 
     @Override
@@ -230,6 +238,11 @@ public class DatimeWheelLayout extends BaseWheelLayout {
 
     public void setOnDatimeSelectedListener(OnDatimeSelectedListener onDatimeSelectedListener) {
         this.onDatimeSelectedListener = onDatimeSelectedListener;
+    }
+
+    public void setResetWhenLinkage(boolean dateResetWhenLinkage, boolean timeResetWhenLinkage) {
+        dateWheelLayout.setResetWhenLinkage(dateResetWhenLinkage);
+        timeWheelLayout.setResetWhenLinkage(timeResetWhenLinkage);
     }
 
     public final DatimeEntity getStartValue() {

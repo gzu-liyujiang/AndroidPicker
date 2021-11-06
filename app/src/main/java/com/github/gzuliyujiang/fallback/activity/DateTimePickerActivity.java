@@ -99,7 +99,8 @@ public class DateTimePickerActivity extends BackAbleActivity implements OnDatePi
         wheelLayout.setSelectedTextColor(0xFFFF0000);
         //wheelLayout.getYearLabelView().setTextColor(0xFF999999);
         //wheelLayout.getMonthLabelView().setTextColor(0xFF999999);
-        //picker.setOnDatePickedListener(this);
+        picker.setOnDatePickedListener(this);
+        picker.getWheelLayout().setResetWhenLinkage(false);
         picker.show();
     }
 
@@ -145,6 +146,7 @@ public class DateTimePickerActivity extends BackAbleActivity implements OnDatePi
         picker.getWheelLayout().setTimeMode(TimeMode.HOUR_24_HAS_SECOND);
         picker.getWheelLayout().setTimeFormatter(new UnitTimeFormatter());
         picker.getWheelLayout().setDefaultValue(TimeEntity.now());
+        picker.getWheelLayout().setResetWhenLinkage(false);
         picker.setOnTimePickedListener(this);
         picker.show();
     }
@@ -153,6 +155,7 @@ public class DateTimePickerActivity extends BackAbleActivity implements OnDatePi
         BirthdayPicker picker = new BirthdayPicker(this);
         picker.setDefaultValue(1991, 11, 11);
         picker.setOnDatePickedListener(this);
+        picker.getWheelLayout().setResetWhenLinkage(false);
         picker.show();
     }
 

@@ -184,6 +184,7 @@ DatePicker picker = new DatePicker(this);
 //wheelLayout.setSelectedTextColor(0xFFFF0000);
 //wheelLayout.getYearLabelView().setTextColor(0xFF999999);
 //wheelLayout.getMonthLabelView().setTextColor(0xFF999999);
+picker.getWheelLayout().setResetWhenLinkage(false);
 picker.setOnDatePickedListener(this);
 picker.show();
 ```
