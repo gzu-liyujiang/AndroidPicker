@@ -130,6 +130,7 @@ public class DateTimePickerActivity extends BackAbleActivity implements OnDatePi
         wheelLayout.setTimeMode(TimeMode.HOUR_12_NO_SECOND);
         wheelLayout.setTimeLabel(":", " ", "");
         wheelLayout.setDefaultValue(TimeEntity.now());
+        wheelLayout.setTimeStep(1, 10, 1);
         picker.setOnTimeMeridiemPickedListener(new OnTimeMeridiemPickedListener() {
             @Override
             public void onTimePicked(int hour, int minute, int second, boolean isAnteMeridiem) {
@@ -143,10 +144,11 @@ public class DateTimePickerActivity extends BackAbleActivity implements OnDatePi
 
     public void onTime24(View view) {
         TimePicker picker = new TimePicker(this);
-        picker.getWheelLayout().setTimeMode(TimeMode.HOUR_24_HAS_SECOND);
-        picker.getWheelLayout().setTimeFormatter(new UnitTimeFormatter());
-        picker.getWheelLayout().setDefaultValue(TimeEntity.now());
-        picker.getWheelLayout().setResetWhenLinkage(false);
+        TimeWheelLayout wheelLayout = picker.getWheelLayout();
+        wheelLayout.setTimeMode(TimeMode.HOUR_24_HAS_SECOND);
+        wheelLayout.setTimeFormatter(new UnitTimeFormatter());
+        wheelLayout.setDefaultValue(TimeEntity.now());
+        wheelLayout.setResetWhenLinkage(false);
         picker.setOnTimePickedListener(this);
         picker.show();
     }

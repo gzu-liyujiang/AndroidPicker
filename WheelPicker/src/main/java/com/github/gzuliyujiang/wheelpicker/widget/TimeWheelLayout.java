@@ -60,6 +60,9 @@ public class TimeWheelLayout extends BaseWheelLayout {
     private Integer selectedSecond;
     private boolean isAnteMeridiem;
     private int timeMode;
+    private int hourStep = 1;
+    private int minuteStep = 1;
+    private int secondStep = 1;
     private OnTimeSelectedListener onTimeSelectedListener;
     private OnTimeMeridiemSelectedListener onTimeMeridiemSelectedListener;
     private boolean resetWhenLinkage = true;
@@ -333,6 +336,19 @@ public class TimeWheelLayout extends BaseWheelLayout {
         this.resetWhenLinkage = resetWhenLinkage;
     }
 
+    public void setTimeStep(int hourStep, int minuteStep, int secondStep) {
+        this.hourStep = hourStep;
+        this.minuteStep = minuteStep;
+        this.secondStep = secondStep;
+        if (isDataAlready()) {
+            setRange(startValue, endValue, TimeEntity.target(selectedHour, selectedMinute, selectedSecond));
+        }
+    }
+
+    public boolean isDataAlready() {
+        return startValue != null && endValue != null;
+    }
+
     public final TimeEntity getStartValue() {
         return startValue;
     }
@@ -415,7 +431,7 @@ public class TimeWheelLayout extends BaseWheelLayout {
             selectedHour = Math.max(selectedHour, min);
             selectedHour = Math.min(selectedHour, max);
         }
-        hourWheelView.setRange(min, max, 1);
+        hourWheelView.setRange(min, max, hourStep);
         hourWheelView.setDefaultValue(selectedHour);
         changeMinute(selectedHour);
     }
@@ -446,7 +462,7 @@ public class TimeWheelLayout extends BaseWheelLayout {
             selectedMinute = Math.max(selectedMinute, min);
             selectedMinute = Math.min(selectedMinute, max);
         }
-        minuteWheelView.setRange(min, max, 1);
+        minuteWheelView.setRange(min, max, minuteStep);
         minuteWheelView.setDefaultValue(selectedMinute);
         changeSecond();
     }
@@ -455,7 +471,7 @@ public class TimeWheelLayout extends BaseWheelLayout {
         if (selectedSecond == null) {
             selectedSecond = 0;
         }
-        secondWheelView.setRange(0, 59, 1);
+        secondWheelView.setRange(0, 59, secondStep);
         secondWheelView.setDefaultValue(selectedSecond);
     }
 
