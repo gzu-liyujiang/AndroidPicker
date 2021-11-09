@@ -1,5 +1,7 @@
 # 更新日志
 
+- 时间选择器支持设置时分秒间隔，参阅 [issues#270](https://github.com/gzu-liyujiang/AndroidPicker/issues/270)；
+
 ## 4.1.3 - 2021.11.07
 
 - 滚轮选择器条目文字过长截取优化；
