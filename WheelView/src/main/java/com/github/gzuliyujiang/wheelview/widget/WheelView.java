@@ -344,7 +344,7 @@ public class WheelView extends View implements Runnable {
             newData = new ArrayList<>();
         }
         data = newData;
-        notifyDataSetChanged(0, false);
+        notifyDataSetChanged(0);
     }
 
     public void setDefaultValue(Object value) {
@@ -382,7 +382,7 @@ public class WheelView extends View implements Runnable {
     }
 
     public void setDefaultPosition(int position) {
-        notifyDataSetChanged(position, false);
+        notifyDataSetChanged(position);
     }
 
     public boolean isSameWidthEnabled() {
@@ -632,14 +632,10 @@ public class WheelView extends View implements Runnable {
         invalidate();
     }
 
-    private void notifyDataSetChanged(int position, boolean smooth) {
+    private void notifyDataSetChanged(int position) {
         position = Math.min(position, getItemCount() - 1);
         position = Math.max(position, 0);
-        if (smooth) {
-            smoothScrollTo(position);
-        } else {
-            scrollTo(position);
-        }
+        scrollTo(position);
     }
 
     @Override
@@ -1242,16 +1238,21 @@ public class WheelView extends View implements Runnable {
         animator.start();
     }
 
-    public void scrollTo(int position) {
-        scrollOffsetYCoordinate = 0;
-        defaultItem = getItem(position);
-        defaultItemPosition = position;
-        currentPosition = position;
-        computeFlingLimitYCoordinate();
-        updatePaintTextAlign();
-        computeTextWidthAndHeight();
-        requestLayout();
-        invalidate();
+    public void scrollTo(final int position) {
+        post(new Runnable() {
+            @Override
+            public void run() {
+                scrollOffsetYCoordinate = 0;
+                defaultItem = getItem(position);
+                defaultItemPosition = position;
+                currentPosition = position;
+                computeFlingLimitYCoordinate();
+                updatePaintTextAlign();
+                computeTextWidthAndHeight();
+                requestLayout();
+                invalidate();
+            }
+        });
     }
 
 }
