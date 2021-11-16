@@ -166,7 +166,7 @@
                 app:wheel_monthLabel="月" />
 
             <com.github.gzuliyujiang.wheelpicker.widget.TimeWheelLayout
-                android:layout_width="110dp"
+                android:layout_width="200dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center_horizontal"
                 app:wheel_curvedEnabled="true"
