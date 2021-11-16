@@ -144,6 +144,8 @@ public class SinglePickerActivity extends BackAbleActivity implements OnNumberPi
         wheelLayout.setTextColor(0xFFFF00FF);
         wheelLayout.setSelectedTextColor(0xFFFF0000);
         wheelLayout.setTextSize(15 * view.getResources().getDisplayMetrics().scaledDensity);
+        //注：建议通过`setStyle`定制样式设置文字加大，若通过`setSelectedTextSize`设置，该解决方案会导致选择器展示时跳动一下
+        //wheelLayout.setStyle(R.style.WheelStyleDemo);
         wheelLayout.setSelectedTextSize(17 * view.getResources().getDisplayMetrics().scaledDensity);
         wheelLayout.setSelectedTextBold(true);
         wheelLayout.setCurtainEnabled(true);

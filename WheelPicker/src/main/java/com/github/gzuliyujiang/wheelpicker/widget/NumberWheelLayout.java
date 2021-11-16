@@ -23,8 +23,6 @@ import androidx.annotation.Nullable;
 import com.github.gzuliyujiang.wheelpicker.R;
 import com.github.gzuliyujiang.wheelpicker.contract.OnNumberSelectedListener;
 import com.github.gzuliyujiang.wheelpicker.contract.OnOptionSelectedListener;
-import com.github.gzuliyujiang.wheelview.annotation.CurtainCorner;
-import com.github.gzuliyujiang.wheelview.annotation.ItemTextAlign;
 import com.github.gzuliyujiang.wheelview.widget.WheelView;
 
 import java.util.ArrayList;
@@ -56,41 +54,13 @@ public class NumberWheelLayout extends OptionWheelLayout {
     }
 
     @Override
-    protected int[] provideStyleableRes() {
-        return R.styleable.NumberWheelLayout;
-    }
-
-    @Override
-    protected void onAttributeSet(@NonNull Context context, @NonNull TypedArray typedArray) {
-        float density = context.getResources().getDisplayMetrics().density;
-        float scaledDensity = context.getResources().getDisplayMetrics().scaledDensity;
-        setVisibleItemCount(typedArray.getInt(R.styleable.NumberWheelLayout_wheel_visibleItemCount, 5));
-        setSameWidthEnabled(typedArray.getBoolean(R.styleable.NumberWheelLayout_wheel_sameWidthEnabled, false));
-        setMaxWidthText(typedArray.getString(R.styleable.NumberWheelLayout_wheel_maxWidthText));
-        setSelectedTextColor(typedArray.getColor(R.styleable.NumberWheelLayout_wheel_itemTextColorSelected, 0xFF000000));
-        setTextColor(typedArray.getColor(R.styleable.NumberWheelLayout_wheel_itemTextColor, 0xFF888888));
-        setTextSize(typedArray.getDimension(R.styleable.NumberWheelLayout_wheel_itemTextSize, 15 * scaledDensity));
-        setSelectedTextSize(typedArray.getDimension(R.styleable.NumberWheelLayout_wheel_itemTextSizeSelected, 15 * scaledDensity));
-        setSelectedTextBold(typedArray.getBoolean(R.styleable.NumberWheelLayout_wheel_itemTextBoldSelected, false));
-        setTextAlign(typedArray.getInt(R.styleable.NumberWheelLayout_wheel_itemTextAlign, ItemTextAlign.CENTER));
-        setItemSpace(typedArray.getDimensionPixelSize(R.styleable.NumberWheelLayout_wheel_itemSpace, (int) (20 * density)));
-        setCyclicEnabled(typedArray.getBoolean(R.styleable.NumberWheelLayout_wheel_cyclicEnabled, false));
-        setIndicatorEnabled(typedArray.getBoolean(R.styleable.NumberWheelLayout_wheel_indicatorEnabled, false));
-        setIndicatorColor(typedArray.getColor(R.styleable.NumberWheelLayout_wheel_indicatorColor, 0xFFC9C9C9));
-        setIndicatorSize(typedArray.getDimensionPixelSize(R.styleable.NumberWheelLayout_wheel_indicatorSize, (int) (1 * density)));
-        setCurvedIndicatorSpace(typedArray.getDimensionPixelSize(R.styleable.NumberWheelLayout_wheel_curvedIndicatorSpace, (int) (1 * density)));
-        setCurtainEnabled(typedArray.getBoolean(R.styleable.NumberWheelLayout_wheel_curtainEnabled, false));
-        setCurtainColor(typedArray.getColor(R.styleable.NumberWheelLayout_wheel_curtainColor, 0x88FFFFFF));
-        setCurtainCorner(typedArray.getInt(R.styleable.NumberWheelLayout_wheel_curtainCorner, CurtainCorner.NONE));
-        setCurtainRadius(typedArray.getDimension(R.styleable.NumberWheelLayout_wheel_curtainRadius, 0));
-        setAtmosphericEnabled(typedArray.getBoolean(R.styleable.NumberWheelLayout_wheel_atmosphericEnabled, false));
-        setCurvedEnabled(typedArray.getBoolean(R.styleable.NumberWheelLayout_wheel_curvedEnabled, false));
-        setCurvedMaxAngle(typedArray.getInteger(R.styleable.NumberWheelLayout_wheel_curvedMaxAngle, 90));
-        getLabelView().setText(typedArray.getString(R.styleable.NumberWheelLayout_wheel_label));
+    protected void onAttributeSet(@NonNull Context context, @Nullable AttributeSet attrs) {
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.NumberWheelLayout);
         float minNumber = typedArray.getFloat(R.styleable.NumberWheelLayout_wheel_minNumber, 0);
         float maxNumber = typedArray.getFloat(R.styleable.NumberWheelLayout_wheel_maxNumber, 10);
         float stepNumber = typedArray.getFloat(R.styleable.NumberWheelLayout_wheel_stepNumber, 1);
         boolean isDecimal = typedArray.getBoolean(R.styleable.NumberWheelLayout_wheel_isDecimal, false);
+        typedArray.recycle();
         if (isDecimal) {
             setRange(minNumber, maxNumber, stepNumber);
         } else {

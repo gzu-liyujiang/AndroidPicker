@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.github.gzuliyujiang.wheelpicker.R;
 import com.github.gzuliyujiang.wheelpicker.annotation.DateMode;
@@ -27,8 +28,6 @@ import com.github.gzuliyujiang.wheelpicker.contract.DateFormatter;
 import com.github.gzuliyujiang.wheelpicker.contract.OnDateSelectedListener;
 import com.github.gzuliyujiang.wheelpicker.entity.DateEntity;
 import com.github.gzuliyujiang.wheelpicker.impl.SimpleDateFormatter;
-import com.github.gzuliyujiang.wheelview.annotation.CurtainCorner;
-import com.github.gzuliyujiang.wheelview.annotation.ItemTextAlign;
 import com.github.gzuliyujiang.wheelview.annotation.ScrollState;
 import com.github.gzuliyujiang.wheelview.contract.WheelFormatter;
 import com.github.gzuliyujiang.wheelview.widget.NumberWheelView;
@@ -81,11 +80,6 @@ public class DateWheelLayout extends BaseWheelLayout {
     }
 
     @Override
-    protected int[] provideStyleableRes() {
-        return R.styleable.DateWheelLayout;
-    }
-
-    @Override
     protected List<WheelView> provideWheelViews() {
         return Arrays.asList(yearWheelView, monthWheelView, dayWheelView);
     }
@@ -101,35 +95,13 @@ public class DateWheelLayout extends BaseWheelLayout {
     }
 
     @Override
-    protected void onAttributeSet(@NonNull Context context, @NonNull TypedArray typedArray) {
-        float density = context.getResources().getDisplayMetrics().density;
-        float scaledDensity = context.getResources().getDisplayMetrics().scaledDensity;
-        setVisibleItemCount(typedArray.getInt(R.styleable.DateWheelLayout_wheel_visibleItemCount, 5));
-        setSameWidthEnabled(typedArray.getBoolean(R.styleable.DateWheelLayout_wheel_sameWidthEnabled, false));
-        setMaxWidthText(typedArray.getString(R.styleable.DateWheelLayout_wheel_maxWidthText));
-        setTextColor(typedArray.getColor(R.styleable.DateWheelLayout_wheel_itemTextColor, 0xFF888888));
-        setSelectedTextColor(typedArray.getColor(R.styleable.DateWheelLayout_wheel_itemTextColorSelected, 0xFF000000));
-        setTextSize(typedArray.getDimension(R.styleable.DateWheelLayout_wheel_itemTextSize, 15 * scaledDensity));
-        setSelectedTextSize(typedArray.getDimension(R.styleable.DateWheelLayout_wheel_itemTextSizeSelected, 15 * scaledDensity));
-        setSelectedTextBold(typedArray.getBoolean(R.styleable.DateWheelLayout_wheel_itemTextBoldSelected, false));
-        setTextAlign(typedArray.getInt(R.styleable.DateWheelLayout_wheel_itemTextAlign, ItemTextAlign.CENTER));
-        setItemSpace(typedArray.getDimensionPixelSize(R.styleable.DateWheelLayout_wheel_itemSpace, (int) (20 * density)));
-        setCyclicEnabled(typedArray.getBoolean(R.styleable.DateWheelLayout_wheel_cyclicEnabled, false));
-        setIndicatorEnabled(typedArray.getBoolean(R.styleable.DateWheelLayout_wheel_indicatorEnabled, false));
-        setIndicatorColor(typedArray.getColor(R.styleable.DateWheelLayout_wheel_indicatorColor, 0xFFC9C9C9));
-        setIndicatorSize(typedArray.getDimension(R.styleable.DateWheelLayout_wheel_indicatorSize, 1 * density));
-        setCurvedIndicatorSpace(typedArray.getDimensionPixelSize(R.styleable.DateWheelLayout_wheel_curvedIndicatorSpace, (int) (1 * density)));
-        setCurtainEnabled(typedArray.getBoolean(R.styleable.DateWheelLayout_wheel_curtainEnabled, false));
-        setCurtainColor(typedArray.getColor(R.styleable.DateWheelLayout_wheel_curtainColor, 0x88FFFFFF));
-        setCurtainCorner(typedArray.getInt(R.styleable.DateWheelLayout_wheel_curtainCorner, CurtainCorner.NONE));
-        setCurtainRadius(typedArray.getDimension(R.styleable.DateWheelLayout_wheel_curtainRadius, 0));
-        setAtmosphericEnabled(typedArray.getBoolean(R.styleable.DateWheelLayout_wheel_atmosphericEnabled, false));
-        setCurvedEnabled(typedArray.getBoolean(R.styleable.DateWheelLayout_wheel_curvedEnabled, false));
-        setCurvedMaxAngle(typedArray.getInteger(R.styleable.DateWheelLayout_wheel_curvedMaxAngle, 90));
+    protected void onAttributeSet(@NonNull Context context, @Nullable AttributeSet attrs) {
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.DateWheelLayout);
         setDateMode(typedArray.getInt(R.styleable.DateWheelLayout_wheel_dateMode, DateMode.YEAR_MONTH_DAY));
         String yearLabel = typedArray.getString(R.styleable.DateWheelLayout_wheel_yearLabel);
         String monthLabel = typedArray.getString(R.styleable.DateWheelLayout_wheel_monthLabel);
         String dayLabel = typedArray.getString(R.styleable.DateWheelLayout_wheel_dayLabel);
+        typedArray.recycle();
         setDateLabel(yearLabel, monthLabel, dayLabel);
         setDateFormatter(new SimpleDateFormatter());
     }

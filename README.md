@@ -152,7 +152,6 @@ picker.setOnOptionPickedListener(this);
 //wheelLayout.setTextColor(0xFFFF00FF);
 //wheelLayout.setSelectedTextColor(0xFFFF0000);
 //wheelLayout.setTextSize(15 * view.getResources().getDisplayMetrics().scaledDensity);
-//wheelLayout.setSelectedTextSize(17 * view.getResources().getDisplayMetrics().scaledDensity);
 //wheelLayout.setSelectedTextBold(true);
 //wheelLayout.setCurtainEnabled(true);
 //wheelLayout.setCurtainColor(0xEEFF0000);
@@ -208,7 +207,6 @@ picker.setAddressMode(AddressMode.PROVINCE_CITY);
 picker.setOnAddressPickedListener(this);
 //LinkageWheelLayout wheelLayout = picker.getWheelLayout();
 //wheelLayout.setTextSize(15 * view.getResources().getDisplayMetrics().scaledDensity);
-//wheelLayout.setSelectedTextSize(17 * view.getResources().getDisplayMetrics().scaledDensity);
 //wheelLayout.setSelectedTextBold(true);
 //wheelLayout.setIndicatorEnabled(false);
 //wheelLayout.setCurtainEnabled(true);
@@ -297,7 +295,17 @@ public class DemoApp extends Application {
 
 #### 自定义 style
 
-- 在`app/.../res/values/styles.xml`中**重写`WheelDefault`覆盖** （所有选择器都会生效）
+- **调用`setStyle`**（只作用于当前选择器，推荐）
+
+在`app/.../res/values/styles.xml`中参考`WheelDefault`写个style，然后设置。
+
+```groovy
+picker.getWheelView().setStyle(R.style.WheelStyleDemo);
+```
+
+- **重写`WheelDefault`覆盖** （所有选择器都会生效，不推荐）
+  
+在`app/.../res/values/styles.xml`中**重写`WheelDefault`覆盖** 。
 
 ```xml
 <style name="WheelDefault">
@@ -318,12 +326,6 @@ public class DemoApp extends Application {
     <item name="wheel_indicatorColor">@android:color/holo_blue_light</item>
     <item name="wheel_indicatorSize">1dp</item>
 </style>
-```
-
-- 在`app/.../res/values/styles.xml`中参考`WheelDefault`写个style，然后**调用`setStyle`**（只作用于当前选择器）
-
-```groovy
-picker.getWheelView().setStyle(R.style.WheelStyleDemo);
 ```
 
 #### 在Java中集成重写某一选择器样式及配色

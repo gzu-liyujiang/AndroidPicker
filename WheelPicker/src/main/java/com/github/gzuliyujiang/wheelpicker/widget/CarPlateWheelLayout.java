@@ -14,10 +14,10 @@
 package com.github.gzuliyujiang.wheelpicker.widget;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.util.AttributeSet;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.github.gzuliyujiang.wheelpicker.impl.CarPlateProvider;
 
@@ -52,8 +52,7 @@ public class CarPlateWheelLayout extends LinkageWheelLayout {
     }
 
     @Override
-    protected void onAttributeSet(@NonNull Context context, @NonNull TypedArray typedArray) {
-        super.onAttributeSet(context, typedArray);
+    protected void onAttributeSet(@NonNull Context context, @Nullable AttributeSet attrs) {
         setFirstVisible(provider.firstLevelVisible());
         setThirdVisible(provider.thirdLevelVisible());
     }

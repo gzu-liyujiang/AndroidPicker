@@ -1,6 +1,10 @@
 # 更新日志
 
+## 4.1.4 - 2021.11.16
+
 - 时间选择器支持设置时分秒间隔，参阅 [issues#270](https://github.com/gzu-liyujiang/AndroidPicker/issues/270)；
+- 修复滚轮选择器设置选中项文字加大加粗可能导致错乱问题（注：建议通过`setStyle`定制样式设置文字加大，若通过`setSelectedTextSize`设置，该解决方案会导致选择器展示时跳动一下）；
+- 代码精简，移除`declare-styleable`冗余；
 
 ## 4.1.3 - 2021.11.07
 

@@ -25,9 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.StyleRes;
-import androidx.annotation.StyleableRes;
 
-import com.github.gzuliyujiang.dialog.DialogLog;
 import com.github.gzuliyujiang.wheelpicker.R;
 import com.github.gzuliyujiang.wheelview.annotation.CurtainCorner;
 import com.github.gzuliyujiang.wheelview.annotation.ItemTextAlign;
@@ -47,49 +45,34 @@ import java.util.List;
 @SuppressWarnings("unused")
 public abstract class BaseWheelLayout extends LinearLayout implements OnWheelChangedListener {
     private final List<WheelView> wheelViews = new ArrayList<>();
-    private AttributeSet attrs;
 
     public BaseWheelLayout(Context context) {
         super(context);
-        init(context, null);
-        TypedArray a = context.obtainStyledAttributes(null, provideStyleableRes(),
-                R.attr.WheelStyle, R.style.WheelDefault);
-        onAttributeSet(context, a);
+        init(context, null, R.attr.WheelStyle, R.style.WheelDefault);
     }
 
     public BaseWheelLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        init(context, attrs);
-        TypedArray a = context.obtainStyledAttributes(attrs, provideStyleableRes(),
-                R.attr.WheelStyle, R.style.WheelDefault);
-        onAttributeSet(context, a);
-        a.recycle();
+        init(context, attrs, R.attr.WheelStyle, R.style.WheelDefault);
     }
 
     public BaseWheelLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context, attrs);
-        TypedArray a = context.obtainStyledAttributes(attrs, provideStyleableRes(),
-                defStyleAttr, R.style.WheelDefault);
-        onAttributeSet(context, a);
-        a.recycle();
+        init(context, attrs, defStyleAttr, R.style.WheelDefault);
     }
 
     public BaseWheelLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr);
-        init(context, attrs);
-        TypedArray a = context.obtainStyledAttributes(attrs, provideStyleableRes(),
-                defStyleAttr, defStyleRes);
-        onAttributeSet(context, a);
-        a.recycle();
+        init(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    private void init(Context context, AttributeSet attrs) {
-        this.attrs = attrs;
+    private void init(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         setOrientation(VERTICAL);
         inflate(context, provideLayoutRes(), this);
         onInit(context);
+        wheelViews.clear();
         wheelViews.addAll(provideWheelViews());
+        initAttrs(context, attrs, defStyleAttr, defStyleRes);
         for (WheelView wheelView : wheelViews) {
             wheelView.setOnWheelChangedListener(this);
         }
@@ -99,26 +82,47 @@ public abstract class BaseWheelLayout extends LinearLayout implements OnWheelCha
 
     }
 
-    protected void onAttributeSet(@NonNull Context context, @NonNull TypedArray typedArray) {
+    private void initAttrs(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        float density = context.getResources().getDisplayMetrics().density;
+        float scaledDensity = context.getResources().getDisplayMetrics().scaledDensity;
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BaseWheelLayout, defStyleAttr, defStyleRes);
+        setVisibleItemCount(typedArray.getInt(R.styleable.BaseWheelLayout_wheel_visibleItemCount, 5));
+        setSameWidthEnabled(typedArray.getBoolean(R.styleable.BaseWheelLayout_wheel_sameWidthEnabled, false));
+        setMaxWidthText(typedArray.getString(R.styleable.BaseWheelLayout_wheel_maxWidthText));
+        setTextColor(typedArray.getColor(R.styleable.BaseWheelLayout_wheel_itemTextColor, 0xFF888888));
+        setSelectedTextColor(typedArray.getColor(R.styleable.BaseWheelLayout_wheel_itemTextColorSelected, 0xFF000000));
+        setTextSize(typedArray.getDimension(R.styleable.BaseWheelLayout_wheel_itemTextSize, 15 * scaledDensity));
+        setSelectedTextSize(typedArray.getDimension(R.styleable.BaseWheelLayout_wheel_itemTextSizeSelected, 15 * scaledDensity));
+        setSelectedTextBold(typedArray.getBoolean(R.styleable.BaseWheelLayout_wheel_itemTextBoldSelected, false));
+        setTextAlign(typedArray.getInt(R.styleable.BaseWheelLayout_wheel_itemTextAlign, ItemTextAlign.CENTER));
+        setItemSpace(typedArray.getDimensionPixelSize(R.styleable.BaseWheelLayout_wheel_itemSpace, (int) (20 * density)));
+        setCyclicEnabled(typedArray.getBoolean(R.styleable.BaseWheelLayout_wheel_cyclicEnabled, false));
+        setIndicatorEnabled(typedArray.getBoolean(R.styleable.BaseWheelLayout_wheel_indicatorEnabled, false));
+        setIndicatorColor(typedArray.getColor(R.styleable.BaseWheelLayout_wheel_indicatorColor, 0xFFC9C9C9));
+        setIndicatorSize(typedArray.getDimension(R.styleable.BaseWheelLayout_wheel_indicatorSize, 1 * density));
+        setCurvedIndicatorSpace(typedArray.getDimensionPixelSize(R.styleable.BaseWheelLayout_wheel_curvedIndicatorSpace, (int) (1 * density)));
+        setCurtainEnabled(typedArray.getBoolean(R.styleable.BaseWheelLayout_wheel_curtainEnabled, false));
+        setCurtainColor(typedArray.getColor(R.styleable.BaseWheelLayout_wheel_curtainColor, 0x88FFFFFF));
+        setCurtainCorner(typedArray.getInt(R.styleable.BaseWheelLayout_wheel_curtainCorner, CurtainCorner.NONE));
+        setCurtainRadius(typedArray.getDimension(R.styleable.BaseWheelLayout_wheel_curtainRadius, 0));
+        setAtmosphericEnabled(typedArray.getBoolean(R.styleable.BaseWheelLayout_wheel_atmosphericEnabled, false));
+        setCurvedEnabled(typedArray.getBoolean(R.styleable.BaseWheelLayout_wheel_curvedEnabled, false));
+        setCurvedMaxAngle(typedArray.getInteger(R.styleable.BaseWheelLayout_wheel_curvedMaxAngle, 90));
+        typedArray.recycle();
+        onAttributeSet(context, attrs);
+    }
+
+    protected void onAttributeSet(@NonNull Context context, @Nullable AttributeSet attrs) {
 
     }
 
     @LayoutRes
     protected abstract int provideLayoutRes();
 
-    @StyleableRes
-    protected abstract int[] provideStyleableRes();
-
     protected abstract List<WheelView> provideWheelViews();
 
     public void setStyle(@StyleRes int style) {
-        if (attrs == null) {
-            DialogLog.print("Please use " + getClass().getSimpleName() + " in xml");
-            return;
-        }
-        TypedArray a = getContext().obtainStyledAttributes(attrs, provideStyleableRes(), R.attr.WheelStyle, style);
-        onAttributeSet(getContext(), a);
-        a.recycle();
+        initAttrs(getContext(), null, R.attr.WheelStyle, style);
         requestLayout();
         invalidate();
     }

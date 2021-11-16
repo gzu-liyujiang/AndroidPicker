@@ -43,7 +43,7 @@
     <attr name="wheel_firstVisible" format="boolean|reference" />
     <attr name="wheel_thirdVisible" format="boolean|reference" />
 
-    <declare-styleable name="OptionWheelLayout">
+    <declare-styleable name="BaseWheelLayout">
         <attr name="wheel_visibleItemCount" />
         <attr name="wheel_itemTextSize" />
         <attr name="wheel_itemTextSizeSelected" />
@@ -66,33 +66,13 @@
         <attr name="wheel_curvedEnabled" />
         <attr name="wheel_curvedMaxAngle" />
         <attr name="wheel_curvedIndicatorSpace" />
+    </declare-styleable>
+
+    <declare-styleable name="OptionWheelLayout">
         <attr name="wheel_label" />
     </declare-styleable>
 
     <declare-styleable name="NumberWheelLayout">
-        <attr name="wheel_visibleItemCount" />
-        <attr name="wheel_itemTextSize" />
-        <attr name="wheel_itemTextSizeSelected" />
-        <attr name="wheel_itemTextColor" />
-        <attr name="wheel_itemTextColorSelected" />
-        <attr name="wheel_itemTextBoldSelected" />
-        <attr name="wheel_itemSpace" />
-        <attr name="wheel_itemTextAlign" />
-        <attr name="wheel_sameWidthEnabled" />
-        <attr name="wheel_maxWidthText" />
-        <attr name="wheel_cyclicEnabled" />
-        <attr name="wheel_indicatorEnabled" />
-        <attr name="wheel_indicatorColor" />
-        <attr name="wheel_indicatorSize" />
-        <attr name="wheel_curtainEnabled" />
-        <attr name="wheel_curtainColor" />
-        <attr name="wheel_curtainCorner" />
-        <attr name="wheel_curtainRadius" />
-        <attr name="wheel_atmosphericEnabled" />
-        <attr name="wheel_curvedEnabled" />
-        <attr name="wheel_curvedMaxAngle" />
-        <attr name="wheel_curvedIndicatorSpace" />
-        <attr name="wheel_label" />
         <attr name="wheel_minNumber" />
         <attr name="wheel_maxNumber" />
         <attr name="wheel_stepNumber" />
@@ -100,28 +80,6 @@
     </declare-styleable>
 
     <declare-styleable name="DateWheelLayout">
-        <attr name="wheel_visibleItemCount" />
-        <attr name="wheel_itemTextSize" />
-        <attr name="wheel_itemTextSizeSelected" />
-        <attr name="wheel_itemTextColor" />
-        <attr name="wheel_itemTextColorSelected" />
-        <attr name="wheel_itemTextBoldSelected" />
-        <attr name="wheel_itemSpace" />
-        <attr name="wheel_itemTextAlign" />
-        <attr name="wheel_sameWidthEnabled" />
-        <attr name="wheel_maxWidthText" />
-        <attr name="wheel_cyclicEnabled" />
-        <attr name="wheel_indicatorEnabled" />
-        <attr name="wheel_indicatorColor" />
-        <attr name="wheel_indicatorSize" />
-        <attr name="wheel_curtainEnabled" />
-        <attr name="wheel_curtainColor" />
-        <attr name="wheel_curtainCorner" />
-        <attr name="wheel_curtainRadius" />
-        <attr name="wheel_atmosphericEnabled" />
-        <attr name="wheel_curvedEnabled" />
-        <attr name="wheel_curvedMaxAngle" />
-        <attr name="wheel_curvedIndicatorSpace" />
         <attr name="wheel_dateMode" />
         <attr name="wheel_yearLabel" />
         <attr name="wheel_monthLabel" />
@@ -129,28 +87,6 @@
     </declare-styleable>
 
     <declare-styleable name="TimeWheelLayout">
-        <attr name="wheel_visibleItemCount" />
-        <attr name="wheel_itemTextSize" />
-        <attr name="wheel_itemTextSizeSelected" />
-        <attr name="wheel_itemTextColor" />
-        <attr name="wheel_itemTextColorSelected" />
-        <attr name="wheel_itemTextBoldSelected" />
-        <attr name="wheel_itemSpace" />
-        <attr name="wheel_itemTextAlign" />
-        <attr name="wheel_sameWidthEnabled" />
-        <attr name="wheel_maxWidthText" />
-        <attr name="wheel_cyclicEnabled" />
-        <attr name="wheel_indicatorEnabled" />
-        <attr name="wheel_indicatorColor" />
-        <attr name="wheel_indicatorSize" />
-        <attr name="wheel_curtainEnabled" />
-        <attr name="wheel_curtainColor" />
-        <attr name="wheel_curtainCorner" />
-        <attr name="wheel_curtainRadius" />
-        <attr name="wheel_atmosphericEnabled" />
-        <attr name="wheel_curvedEnabled" />
-        <attr name="wheel_curvedMaxAngle" />
-        <attr name="wheel_curvedIndicatorSpace" />
         <attr name="wheel_timeMode" />
         <attr name="wheel_hourLabel" />
         <attr name="wheel_minuteLabel" />
@@ -158,28 +94,6 @@
     </declare-styleable>
 
     <declare-styleable name="DatimeWheelLayout">
-        <attr name="wheel_visibleItemCount" />
-        <attr name="wheel_itemTextSize" />
-        <attr name="wheel_itemTextSizeSelected" />
-        <attr name="wheel_itemTextColor" />
-        <attr name="wheel_itemTextColorSelected" />
-        <attr name="wheel_itemTextBoldSelected" />
-        <attr name="wheel_itemSpace" />
-        <attr name="wheel_itemTextAlign" />
-        <attr name="wheel_sameWidthEnabled" />
-        <attr name="wheel_maxWidthText" />
-        <attr name="wheel_cyclicEnabled" />
-        <attr name="wheel_indicatorEnabled" />
-        <attr name="wheel_indicatorColor" />
-        <attr name="wheel_indicatorSize" />
-        <attr name="wheel_curtainEnabled" />
-        <attr name="wheel_curtainColor" />
-        <attr name="wheel_curtainCorner" />
-        <attr name="wheel_curtainRadius" />
-        <attr name="wheel_atmosphericEnabled" />
-        <attr name="wheel_curvedEnabled" />
-        <attr name="wheel_curvedMaxAngle" />
-        <attr name="wheel_curvedIndicatorSpace" />
         <attr name="wheel_dateMode" />
         <attr name="wheel_timeMode" />
         <attr name="wheel_yearLabel" />
@@ -191,28 +105,6 @@
     </declare-styleable>
 
     <declare-styleable name="LinkageWheelLayout">
-        <attr name="wheel_visibleItemCount" />
-        <attr name="wheel_itemTextSize" />
-        <attr name="wheel_itemTextSizeSelected" />
-        <attr name="wheel_itemTextColor" />
-        <attr name="wheel_itemTextColorSelected" />
-        <attr name="wheel_itemTextBoldSelected" />
-        <attr name="wheel_itemSpace" />
-        <attr name="wheel_itemTextAlign" />
-        <attr name="wheel_sameWidthEnabled" />
-        <attr name="wheel_maxWidthText" />
-        <attr name="wheel_cyclicEnabled" />
-        <attr name="wheel_indicatorEnabled" />
-        <attr name="wheel_indicatorColor" />
-        <attr name="wheel_indicatorSize" />
-        <attr name="wheel_curtainEnabled" />
-        <attr name="wheel_curtainColor" />
-        <attr name="wheel_curtainCorner" />
-        <attr name="wheel_curtainRadius" />
-        <attr name="wheel_atmosphericEnabled" />
-        <attr name="wheel_curvedEnabled" />
-        <attr name="wheel_curvedMaxAngle" />
-        <attr name="wheel_curvedIndicatorSpace" />
         <attr name="wheel_firstVisible" />
         <attr name="wheel_thirdVisible" />
         <attr name="wheel_firstLabel" />
