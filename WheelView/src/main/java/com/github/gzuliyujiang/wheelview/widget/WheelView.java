@@ -78,7 +78,8 @@ public class WheelView extends View implements Runnable {
     protected int defaultItemPosition;
     protected int currentPosition;
     protected String maxWidthText;
-    protected int textColor, selectedTextColor;
+    protected int textColor;
+    protected int selectedTextColor;
     protected float textSize, selectedTextSize;
     protected boolean selectedTextBold;
     protected float indicatorSize;
@@ -315,6 +316,9 @@ public class WheelView extends View implements Runnable {
         boolean found = false;
         int position = 0;
         for (Object item : data) {
+            if (item == null) {
+                continue;
+            }
             if (item.equals(value)) {
                 found = true;
                 break;
@@ -694,7 +698,7 @@ public class WheelView extends View implements Runnable {
     }
 
     private void computeCurrentItemRect() {
-        if (!curtainEnabled && selectedTextColor == -1) {
+        if (!curtainEnabled && selectedTextColor == 0/* Color.TRANSPARENT */) {
             return;
         }
         rectCurrentItem.set(rectDrawn.left, wheelCenterYCoordinate - halfItemHeight,
@@ -774,7 +778,7 @@ public class WheelView extends View implements Runnable {
 
     private void drawItemRect(Canvas canvas, int dataPosition, boolean isCenterItem, float drawCenterYCoordinate) {
         // Judges need to draw different color for current item or not
-        if (selectedTextColor == -1) {
+        if (selectedTextColor == 0/* Color.TRANSPARENT */) {
             //没有设置选中项颜色，绘制所有项
             canvas.save();
             canvas.clipRect(rectDrawn);
@@ -786,8 +790,8 @@ public class WheelView extends View implements Runnable {
             return;
         }
 
-        if (textSize == selectedTextSize) {
-            //没有设置选中项的字号，绘制所有项
+        if (textSize == selectedTextSize && !selectedTextBold) {
+            //没有设置选中项的加大加粗，绘制所有项
             canvas.save();
             if (curvedEnabled) {
                 canvas.concat(matrixRotate);
