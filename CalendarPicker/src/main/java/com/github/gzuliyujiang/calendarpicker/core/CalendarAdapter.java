@@ -272,27 +272,22 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.VH> im
         if (null == date) {
             return;
         }
-        if (null == lastClickDate || singleMode) {
+        if (singleMode || null == lastClickDate || lastClickDate.getTime() >= date.getTime()) {
             lastClickDate = date;
             select(date, date).refresh();
             if (null != onDateSelectedListener) {
                 onDateSelectedListener.onSingleSelected(date);
+            }
+            if (!singleMode && null != onDateSelectedListener) {
+                onDateSelectedListener.onRangeSelected(date, date);
             }
             return;
         }
-        if (lastClickDate.getTime() >= date.getTime()) {
-            lastClickDate = date;
-            select(date, date).refresh();
-            if (null != onDateSelectedListener) {
-                onDateSelectedListener.onSingleSelected(date);
-            }
-        } else {
-            select(lastClickDate, date).refresh();
-            if (null != onDateSelectedListener) {
-                onDateSelectedListener.onRangeSelected(lastClickDate, date);
-            }
-            lastClickDate = null;
+        select(lastClickDate, date).refresh();
+        if (null != onDateSelectedListener) {
+            onDateSelectedListener.onRangeSelected(lastClickDate, date);
         }
+        lastClickDate = null;
     }
 
     static class VH extends RecyclerView.ViewHolder {
