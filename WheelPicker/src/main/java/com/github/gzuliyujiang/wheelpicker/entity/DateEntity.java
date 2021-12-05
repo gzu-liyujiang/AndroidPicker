@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -39,30 +40,40 @@ public class DateEntity implements Serializable {
         return entity;
     }
 
-    public static DateEntity today() {
-        Calendar calendar = Calendar.getInstance();
+    public static DateEntity target(Calendar calendar) {
         int year = calendar.get(Calendar.YEAR);
+        // 月份的值是从0开始的，转为从1开始
         int month = calendar.get(Calendar.MONTH) + 1;
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         return target(year, month, day);
     }
 
+    public static DateEntity target(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return target(calendar);
+    }
+
+    public static DateEntity today() {
+        return target(Calendar.getInstance());
+    }
+
     public static DateEntity dayOnFuture(int day) {
-        DateEntity entity = today();
-        entity.setDay(entity.getDay() + day);
-        return entity;
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, day);
+        return target(calendar);
     }
 
     public static DateEntity monthOnFuture(int month) {
-        DateEntity entity = today();
-        entity.setMonth(entity.getMonth() + month);
-        return entity;
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, month);
+        return target(calendar);
     }
 
     public static DateEntity yearOnFuture(int year) {
-        DateEntity entity = today();
-        entity.setYear(entity.getYear() + year);
-        return entity;
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.YEAR, year);
+        return target(calendar);
     }
 
     public int getYear() {

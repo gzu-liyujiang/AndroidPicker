@@ -75,7 +75,7 @@ public class DateTimePickerActivity extends BackAbleActivity implements OnDatePi
             }
         });
         wheelLayout.setDateMode(DateMode.YEAR_MONTH_DAY);
-        wheelLayout.setTimeMode(TimeMode.HOUR_12_HAS_SECOND);
+        wheelLayout.setTimeMode(TimeMode.HOUR_24_NO_SECOND);
         wheelLayout.setRange(DatimeEntity.now(), DatimeEntity.yearOnFuture(10));
         wheelLayout.setDateLabel("年", "月", "日");
         wheelLayout.setTimeLabel("时", "分", "秒");
@@ -89,7 +89,8 @@ public class DateTimePickerActivity extends BackAbleActivity implements OnDatePi
         wheelLayout.setDateMode(DateMode.YEAR_MONTH_DAY);
         //wheelLayout.setDateLabel("年", "月", "日");
         wheelLayout.setDateFormatter(new UnitDateFormatter());
-        wheelLayout.setRange(DateEntity.target(2021, 1, 1), DateEntity.target(2050, 12, 31), DateEntity.today());
+        //wheelLayout.setRange(DateEntity.target(2021, 1, 1), DateEntity.target(2050, 12, 31), DateEntity.today());
+        wheelLayout.setRange(DateEntity.today(), DateEntity.monthOnFuture(3));
         wheelLayout.setCurtainEnabled(true);
         wheelLayout.setCurtainColor(0xFFCC0000);
         wheelLayout.setIndicatorEnabled(true);

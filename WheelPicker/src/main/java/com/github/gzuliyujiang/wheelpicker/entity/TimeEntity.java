@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * 时间数据实体
@@ -38,24 +39,33 @@ public class TimeEntity implements Serializable {
         return entity;
     }
 
-    public static TimeEntity now() {
-        Calendar calendar = Calendar.getInstance();
+    public static TimeEntity target(Calendar calendar) {
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
         int second = calendar.get(Calendar.SECOND);
         return target(hour, minute, second);
     }
 
+    public static TimeEntity target(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return target(calendar);
+    }
+
+    public static TimeEntity now() {
+        return target(Calendar.getInstance());
+    }
+
     public static TimeEntity minuteOnFuture(int minute) {
-        TimeEntity entity = now();
-        entity.setMinute(entity.getMinute() + minute);
-        return entity;
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MINUTE, minute);
+        return target(calendar);
     }
 
     public static TimeEntity hourOnFuture(int hour) {
-        TimeEntity entity = now();
-        entity.setHour(entity.getHour() + hour);
-        return entity;
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MINUTE, hour);
+        return target(calendar);
     }
 
     public int getHour() {
