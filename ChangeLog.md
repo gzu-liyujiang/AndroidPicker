@@ -1,5 +1,11 @@
 # 更新日志
 
+## 4.1.5 - 2021.12.05
+
+- 修复日期时间选择器未来日期时间计算错误问题，参阅 [issues#276](https://github.com/gzu-liyujiang/AndroidPicker/issues/276)；
+- 修复滚轮无法设置白色背景及选中项加粗属性可能无效问题，参阅 [issues#274](https://github.com/gzu-liyujiang/AndroidPicker/issues/274) [issues#268](https://github.com/gzu-liyujiang/AndroidPicker/issues/268)；
+- 日历日期选择器范围选择允许选择单个日期，参阅 [issues#271](https://github.com/gzu-liyujiang/AndroidPicker/issues/271)；
+
 ## 4.1.4 - 2021.11.16
 
 - 时间选择器支持设置时分秒间隔，参阅 [issues#270](https://github.com/gzu-liyujiang/AndroidPicker/issues/270)；
