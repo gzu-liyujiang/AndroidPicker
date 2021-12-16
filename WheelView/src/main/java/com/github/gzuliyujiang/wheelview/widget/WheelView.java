@@ -161,6 +161,11 @@ public class WheelView extends View implements Runnable {
     public void setStyle(@StyleRes int style) {
         initAttrs(getContext(), null, R.attr.WheelStyle, style);
         initTextPaint();
+        updatePaintTextAlign();
+        computeTextWidthAndHeight();
+        computeFlingLimitYCoordinate();
+        computeIndicatorRect();
+        computeCurrentItemRect();
         requestLayout();
         invalidate();
     }
@@ -302,16 +307,32 @@ public class WheelView extends View implements Runnable {
     }
 
     public void setData(List<?> newData) {
+        setData(newData, 0);
+    }
+
+    public void setData(List<?> newData, Object defaultValue) {
+        setData(newData, findPosition(defaultValue));
+    }
+
+    public void setData(List<?> newData, int defaultPosition) {
         if (newData == null) {
             newData = new ArrayList<>();
         }
         data = newData;
-        notifyDataSetChanged(0);
+        notifyDataSetChanged(defaultPosition);
     }
 
     public void setDefaultValue(Object value) {
+        setDefaultPosition(findPosition(value));
+    }
+
+    public void setDefaultPosition(int position) {
+        notifyDataSetChanged(position);
+    }
+
+    private int findPosition(Object value) {
         if (value == null) {
-            return;
+            return 0;
         }
         boolean found = false;
         int position = 0;
@@ -343,11 +364,7 @@ public class WheelView extends View implements Runnable {
         if (!found) {
             position = 0;
         }
-        setDefaultPosition(position);
-    }
-
-    public void setDefaultPosition(int position) {
-        notifyDataSetChanged(position);
+        return position;
     }
 
     public boolean isSameWidthEnabled() {
@@ -600,7 +617,18 @@ public class WheelView extends View implements Runnable {
     private void notifyDataSetChanged(int position) {
         position = Math.min(position, getItemCount() - 1);
         position = Math.max(position, 0);
-        scrollTo(position);
+        scrollOffsetYCoordinate = 0;
+        defaultItem = getItem(position);
+        defaultItemPosition = position;
+        currentPosition = position;
+        updatePaintTextAlign();
+        //当设置了选中项文字加大加粗，此处重新计算文字宽高的话滑动会导致其他条目错位
+        //computeTextWidthAndHeight();
+        computeFlingLimitYCoordinate();
+        computeIndicatorRect();
+        computeCurrentItemRect();
+        requestLayout();
+        invalidate();
     }
 
     @Override
@@ -1186,15 +1214,7 @@ public class WheelView extends View implements Runnable {
         post(new Runnable() {
             @Override
             public void run() {
-                scrollOffsetYCoordinate = 0;
-                defaultItem = getItem(position);
-                defaultItemPosition = position;
-                currentPosition = position;
-                computeFlingLimitYCoordinate();
-                updatePaintTextAlign();
-                computeTextWidthAndHeight();
-                requestLayout();
-                invalidate();
+                notifyDataSetChanged(position);
             }
         });
     }

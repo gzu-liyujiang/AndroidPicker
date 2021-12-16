@@ -12,6 +12,7 @@
   -->
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="none">
@@ -64,6 +65,16 @@
             android:layout_height="wrap_content"
             android:onClick="onBirthday"
             android:text="生日选择" />
+
+        <com.github.gzuliyujiang.wheelpicker.widget.TimeWheelLayout
+            android:layout_width="200dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center_horizontal"
+            app:wheel_cyclicEnabled="true"
+            app:wheel_itemTextSize="10dp"
+            app:wheel_itemTextSizeSelected="12dp"
+            app:wheel_timeMode="hour_24_has_second"
+            app:wheel_visibleItemCount="5" />
 
     </LinearLayout>
 
