@@ -53,6 +53,7 @@ public class CarPlateWheelLayout extends LinkageWheelLayout {
 
     @Override
     protected void onAttributeSet(@NonNull Context context, @Nullable AttributeSet attrs) {
+        super.onAttributeSet(context, attrs);
         setFirstVisible(provider.firstLevelVisible());
         setThirdVisible(provider.thirdLevelVisible());
     }

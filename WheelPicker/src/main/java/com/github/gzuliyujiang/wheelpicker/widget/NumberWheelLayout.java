@@ -55,6 +55,7 @@ public class NumberWheelLayout extends OptionWheelLayout {
 
     @Override
     protected void onAttributeSet(@NonNull Context context, @Nullable AttributeSet attrs) {
+        super.onAttributeSet(context, attrs);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.NumberWheelLayout);
         float minNumber = typedArray.getFloat(R.styleable.NumberWheelLayout_wheel_minNumber, 0);
         float maxNumber = typedArray.getFloat(R.styleable.NumberWheelLayout_wheel_maxNumber, 10);
@@ -70,6 +71,7 @@ public class NumberWheelLayout extends OptionWheelLayout {
 
     @Override
     public void onWheelSelected(WheelView view, int position) {
+        super.onWheelSelected(view, position);
         if (onNumberSelectedListener != null) {
             Object item = getWheelView().getItem(position);
             onNumberSelectedListener.onNumberSelected(position, (Number) item);

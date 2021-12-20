@@ -146,7 +146,7 @@
                 android:layout_height="150dp"
                 android:layout_gravity="center_horizontal"
                 app:wheel_label="个"
-                app:wheel_maxNumber="30"
+                app:wheel_maxNumber="50"
                 app:wheel_minNumber="10"
                 app:wheel_stepNumber="5"
                 app:wheel_visibleItemCount="7" />

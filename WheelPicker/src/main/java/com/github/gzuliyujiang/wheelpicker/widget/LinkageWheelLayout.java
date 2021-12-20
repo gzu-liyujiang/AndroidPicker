@@ -19,6 +19,7 @@ import android.util.AttributeSet;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -69,11 +70,13 @@ public class LinkageWheelLayout extends BaseWheelLayout {
         return R.layout.wheel_picker_linkage;
     }
 
+    @CallSuper
     @Override
     protected List<WheelView> provideWheelViews() {
         return Arrays.asList(firstWheelView, secondWheelView, thirdWheelView);
     }
 
+    @CallSuper
     @Override
     protected void onInit(@NonNull Context context) {
         firstWheelView = findViewById(R.id.wheel_picker_linkage_first_wheel);
@@ -85,6 +88,7 @@ public class LinkageWheelLayout extends BaseWheelLayout {
         loadingView = findViewById(R.id.wheel_picker_linkage_loading);
     }
 
+    @CallSuper
     @Override
     protected void onAttributeSet(@NonNull Context context, @Nullable AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.LinkageWheelLayout);
@@ -97,6 +101,7 @@ public class LinkageWheelLayout extends BaseWheelLayout {
         setLabel(firstLabel, secondLabel, thirdLabel);
     }
 
+    @CallSuper
     @Override
     public void onWheelSelected(WheelView view, int position) {
         int id = view.getId();
@@ -122,6 +127,7 @@ public class LinkageWheelLayout extends BaseWheelLayout {
         }
     }
 
+    @CallSuper
     @Override
     public void onWheelScrollStateChanged(WheelView view, @ScrollState int state) {
         int id = view.getId();

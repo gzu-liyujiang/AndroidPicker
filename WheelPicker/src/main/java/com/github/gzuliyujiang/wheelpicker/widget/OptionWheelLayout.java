@@ -18,6 +18,7 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
+import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -61,17 +62,20 @@ public class OptionWheelLayout extends BaseWheelLayout {
         return R.layout.wheel_picker_option;
     }
 
+    @CallSuper
     @Override
     protected List<WheelView> provideWheelViews() {
         return Collections.singletonList(wheelView);
     }
 
+    @CallSuper
     @Override
     protected void onInit(@NonNull Context context) {
         wheelView = findViewById(R.id.wheel_picker_option_wheel);
         labelView = findViewById(R.id.wheel_picker_option_label);
     }
 
+    @CallSuper
     @Override
     protected void onAttributeSet(@NonNull Context context, @Nullable AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.OptionWheelLayout);
@@ -79,6 +83,7 @@ public class OptionWheelLayout extends BaseWheelLayout {
         typedArray.recycle();
     }
 
+    @CallSuper
     @Override
     public void onWheelSelected(WheelView view, int position) {
         if (onOptionSelectedListener != null) {
