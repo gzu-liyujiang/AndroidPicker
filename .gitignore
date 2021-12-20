@@ -39,6 +39,7 @@
 **/debug
 **/release
 **/*.apk
+!**/demo.apk
 **/归档
 
 # NDK related

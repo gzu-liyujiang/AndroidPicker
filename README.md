@@ -10,6 +10,7 @@ requests 贡献您的代码，大家共同学习【[AndroidPicker 交流群 6042
 
 - GitHub：https://github.com/gzu-liyujiang/AndroidPicker
 - 码云(GitEE)：https://gitee.com/li_yu_jiang/AndroidPicker
+- Demo：[https://github.com/gzu-liyujiang/AndroidPicker/blob/master/demo.apk](/demo.apk)
 
 ## 接入指引
 
