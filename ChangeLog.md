@@ -1,5 +1,10 @@
 # 更新日志
 
+## 4.1.6 - 2021.12.20
+
+- 修复滚轮选择器部分XML属性设置无效问题，参阅 [issues#281](https://github.com/gzu-liyujiang/AndroidPicker/issues/281)；
+- 修复滚轮选择器设置了选中项文字加大加粗时滑动会导致其他条目错位问题，参阅 [issues#279](https://github.com/gzu-liyujiang/AndroidPicker/issues/279)；
+
 ## 4.1.5 - 2021.12.05
 
 - 修复日期时间选择器未来日期时间计算错误问题，参阅 [issues#276](https://github.com/gzu-liyujiang/AndroidPicker/issues/276)；
