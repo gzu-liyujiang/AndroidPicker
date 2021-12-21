@@ -32,11 +32,11 @@ public class DateEntity implements Serializable {
     private int month;
     private int day;
 
-    public static DateEntity target(int year, int month, int day) {
+    public static DateEntity target(int year, int month, int dayOfMonth) {
         DateEntity entity = new DateEntity();
         entity.setYear(year);
         entity.setMonth(month);
-        entity.setDay(day);
+        entity.setDay(dayOfMonth);
         return entity;
     }
 
@@ -58,9 +58,9 @@ public class DateEntity implements Serializable {
         return target(Calendar.getInstance());
     }
 
-    public static DateEntity dayOnFuture(int day) {
+    public static DateEntity dayOnFuture(int dayOfMonth) {
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_MONTH, day);
+        calendar.add(Calendar.DAY_OF_MONTH, dayOfMonth);
         return target(calendar);
     }
 

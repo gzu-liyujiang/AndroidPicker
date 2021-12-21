@@ -31,9 +31,9 @@ public class TimeEntity implements Serializable {
     private int minute;
     private int second;
 
-    public static TimeEntity target(int hour, int minute, int second) {
+    public static TimeEntity target(int hourOfDay, int minute, int second) {
         TimeEntity entity = new TimeEntity();
-        entity.setHour(hour);
+        entity.setHour(hourOfDay);
         entity.setMinute(minute);
         entity.setSecond(second);
         return entity;
@@ -62,9 +62,9 @@ public class TimeEntity implements Serializable {
         return target(calendar);
     }
 
-    public static TimeEntity hourOnFuture(int hour) {
+    public static TimeEntity hourOnFuture(int hourOfDay) {
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MINUTE, hour);
+        calendar.add(Calendar.HOUR_OF_DAY, hourOfDay);
         return target(calendar);
     }
 
