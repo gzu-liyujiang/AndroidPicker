@@ -14,8 +14,8 @@ requests 贡献您的代码，大家共同学习【[AndroidPicker 交流群 6042
 
 ## 接入指引
 
-最新版本：[![jitpack](https://jitpack.io/v/gzu-liyujiang/AndroidPicker.svg)](https://jitpack.io/#gzu-liyujiang/AndroidPicker)
-（具体历史版本号参见 [更新日志](/ChangeLog.md)）
+**最新版本** ：[![jitpack](https://jitpack.io/v/gzu-liyujiang/AndroidPicker.svg)](https://jitpack.io/#gzu-liyujiang/AndroidPicker)
+（具体**历史版本号**参见 [更新日志](/ChangeLog.md)）
 
 ### 注意事项
 
@@ -25,7 +25,7 @@ requests 贡献您的代码，大家共同学习【[AndroidPicker 交流群 6042
 
 ### 依赖配置
 
-#### 在项目根目录下的build.gradle中
+#### 在项目根目录下的`build.gradle`中
 
 ```groovy
 allprojects {
@@ -35,7 +35,7 @@ allprojects {
 }
 ```
 
-#### 在项目模块下的build.gradle中（以下依赖性都是独立的，不必全部引入，请按需来）
+#### 在项目模块下的`build.gradle`中（以下依赖项不必全部引入，请按需来）
 
 所有选择器的基础窗体（用于自定义弹窗）：
 
@@ -101,7 +101,7 @@ dependencies {
 }
 ```
 
-旧版本 **AndroidX 稳定版本**：
+旧版本 **AndroidX 稳定版本** （不推荐）：
 
 ```groovy
 dependencies {
@@ -112,7 +112,7 @@ dependencies {
 }
 ```
 
-旧版本 **Support 稳定版本**：
+旧版本 **Support 稳定版本** （不推荐）：
 
 ```groovy
 dependencies {

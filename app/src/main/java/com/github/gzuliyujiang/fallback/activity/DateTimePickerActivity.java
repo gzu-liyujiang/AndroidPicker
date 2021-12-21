@@ -133,10 +133,10 @@ public class DateTimePickerActivity extends BackAbleActivity implements OnDatePi
         TimePicker picker = new TimePicker(this);
         picker.setBodyWidth(140);
         TimeWheelLayout wheelLayout = picker.getWheelLayout();
-        wheelLayout.setRange(TimeEntity.target(1, 0, 0), TimeEntity.target(12, 59, 59));
+        wheelLayout.setRange(TimeEntity.target(0, 0, 0), TimeEntity.target(24, 59, 59));
         wheelLayout.setTimeMode(TimeMode.HOUR_12_NO_SECOND);
         wheelLayout.setTimeLabel(":", " ", "");
-        wheelLayout.setDefaultValue(TimeEntity.now());
+        wheelLayout.setDefaultValue(TimeEntity.target(24, 0, 0));
         wheelLayout.setTimeStep(1, 10, 1);
         picker.setOnTimeMeridiemPickedListener(new OnTimeMeridiemPickedListener() {
             @Override
