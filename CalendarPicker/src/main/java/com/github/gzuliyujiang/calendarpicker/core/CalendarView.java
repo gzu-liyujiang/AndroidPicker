@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.gzuliyujiang.calendarpicker.R;
@@ -54,8 +55,13 @@ public class CalendarView extends LinearLayout {
         weekView.setAdapter(weekAdapter);
         weekView.setSelector(new ColorDrawable(Color.TRANSPARENT));
         bodyView = findViewById(R.id.calendar_body_content);
-        bodyView.setLayoutManager(new LinearLayoutManager(context));
+        bodyView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
         bodyView.setAdapter(calendarAdapter);
+    }
+
+    public void enablePagerSnap() {
+        bodyView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+        new PagerSnapHelper().attachToRecyclerView(bodyView);
     }
 
     public void setColorScheme(ColorScheme colorScheme) {
@@ -72,7 +78,11 @@ public class CalendarView extends LinearLayout {
     }
 
     public final LinearLayoutManager getLayoutManager() {
-        return (LinearLayoutManager) bodyView.getLayoutManager();
+        RecyclerView.LayoutManager layoutManager = bodyView.getLayoutManager();
+        if (layoutManager instanceof LinearLayoutManager) {
+            return (LinearLayoutManager) layoutManager;
+        }
+        throw new IllegalArgumentException("Layout manager must instance of LinearLayoutManager");
     }
 
     public final CalendarAdapter getAdapter() {

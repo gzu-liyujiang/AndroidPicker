@@ -48,12 +48,23 @@ public class CalendarPickerActivity extends BackAbleActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_picker_calendar);
-        CalendarView calendarView = findViewById(R.id.calendar_picker_body);
         Date minDate = new Date(System.currentTimeMillis() - 5 * android.text.format.DateUtils.DAY_IN_MILLIS);
         Calendar calendar = DateUtils.calendar(minDate);
         calendar.add(Calendar.MONTH, 3);
         Date maxDate = calendar.getTime();
-        calendarView.getAdapter()
+        CalendarView horizontalCalendarView = findViewById(R.id.calendar_picker_body_horizontal);
+        horizontalCalendarView.enablePagerSnap();
+        horizontalCalendarView.getAdapter()
+                .notify(false)
+                .single(false)
+                .festivalProvider(new MyFestivalProvider())
+                .valid(minDate, maxDate)
+                .intervalNotes("开始", "结束")
+                .select(minDate.getTime(), minDate.getTime() + 5 * android.text.format.DateUtils.DAY_IN_MILLIS)
+                .range(minDate, maxDate)
+                .refresh();
+        CalendarView verticalCalendarView = findViewById(R.id.calendar_picker_body_vertical);
+        verticalCalendarView.getAdapter()
                 .notify(false)
                 .single(false)
                 .festivalProvider(new MyFestivalProvider())
@@ -124,6 +135,21 @@ public class CalendarPickerActivity extends BackAbleActivity {
             singleTimeInMillis = System.currentTimeMillis();
         }
         picker.setSelectedDate(singleTimeInMillis);
+        picker.setFestivalProvider(new MyFestivalProvider());
+        picker.setOnSingleDatePickListener(new OnSingleDatePickListener() {
+            @Override
+            public void onSingleDatePicked(@NonNull Date date) {
+                singleTimeInMillis = date.getTime();
+                Toast.makeText(getApplicationContext(), DateFormat.getDateTimeInstance().format(date), Toast.LENGTH_SHORT).show();
+            }
+        });
+        picker.show();
+    }
+
+    public void onHorizontalCalendarPicker(View view) {
+        CalendarPicker picker = new CalendarPicker(this);
+        picker.enablePagerSnap();
+        picker.setRangeDateOnFuture(3);
         picker.setFestivalProvider(new MyFestivalProvider());
         picker.setOnSingleDatePickListener(new OnSingleDatePickListener() {
             @Override

@@ -41,8 +41,32 @@
             android:onClick="onCalendarDateSingle"
             android:text="日历单个日期选择（如航班出发日期）" />
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onHorizontalCalendarPicker"
+            android:text="日历日期选择（横向滑动）" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="横向滑动的日历日期选择：" />
+
         <com.github.gzuliyujiang.calendarpicker.core.CalendarView
-            android:id="@+id/calendar_picker_body"
+            android:id="@+id/calendar_picker_body_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="竖向滑动的日历日期选择：" />
+
+        <com.github.gzuliyujiang.calendarpicker.core.CalendarView
+            android:id="@+id/calendar_picker_body_vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="10dp" />

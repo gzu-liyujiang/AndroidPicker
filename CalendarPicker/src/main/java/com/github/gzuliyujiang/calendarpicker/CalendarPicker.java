@@ -13,18 +13,21 @@
 
 package com.github.gzuliyujiang.calendarpicker;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.text.TextUtils;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.gzuliyujiang.calendarpicker.core.CalendarAdapter;
 import com.github.gzuliyujiang.calendarpicker.core.CalendarView;
 import com.github.gzuliyujiang.calendarpicker.core.ColorScheme;
 import com.github.gzuliyujiang.calendarpicker.core.DateUtils;
 import com.github.gzuliyujiang.calendarpicker.core.FestivalProvider;
+import com.github.gzuliyujiang.calendarpicker.core.ItemViewProvider;
 import com.github.gzuliyujiang.calendarpicker.core.OnDateSelectedListener;
 import com.github.gzuliyujiang.dialog.DialogConfig;
 import com.github.gzuliyujiang.dialog.DialogStyle;
@@ -47,6 +50,7 @@ public class CalendarPicker extends ModalDialog implements OnDateSelectedListene
     private ColorScheme colorScheme;
     private boolean singleMode = false;
     private FestivalProvider festivalProvider;
+    private ItemViewProvider itemViewProvider;
     private Date minDate, maxDate;
     private Date selectDate, startDate, endDate;
     private String noteFrom, noteTo;
@@ -137,6 +141,24 @@ public class CalendarPicker extends ModalDialog implements OnDateSelectedListene
     public void onRangeSelected(@NonNull Date start, @NonNull Date end) {
         startDate = start;
         endDate = end;
+    }
+
+    /**
+     * 启用横向滑动模式
+     */
+    public void enablePagerSnap() {
+        setHeight(WRAP_CONTENT);
+        calendarView.enablePagerSnap();
+        calendarView.getBodyView().addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                if (newState != RecyclerView.SCROLL_STATE_IDLE) {
+                    return;
+                }
+                calendarView.getAdapter().notifyDataSetChanged();
+            }
+        });
     }
 
     /**
@@ -251,10 +273,20 @@ public class CalendarPicker extends ModalDialog implements OnDateSelectedListene
     }
 
     /**
-     * 设置是否展示节日文本
+     * 设置节日文本提供者
      */
     public void setFestivalProvider(FestivalProvider festivalProvider) {
         this.festivalProvider = festivalProvider;
+        if (initialized) {
+            refreshData();
+        }
+    }
+
+    /**
+     * 设置条目视图提供者
+     */
+    public void setItemViewProvider(ItemViewProvider itemViewProvider) {
+        this.itemViewProvider = itemViewProvider;
         if (initialized) {
             refreshData();
         }
@@ -265,6 +297,7 @@ public class CalendarPicker extends ModalDialog implements OnDateSelectedListene
         calendarAdapter.notify(false);
         calendarAdapter.single(singleMode);
         calendarAdapter.festivalProvider(festivalProvider);
+        calendarAdapter.itemViewProvider(itemViewProvider);
         if (singleMode) {
             startDate = selectDate;
             endDate = selectDate;

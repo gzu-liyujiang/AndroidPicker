@@ -14,6 +14,7 @@
 package com.github.gzuliyujiang.calendarpicker.core;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Typeface;
 import android.view.Gravity;
 import android.view.View;
@@ -44,6 +45,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.VH> im
     private final Interval<String> selectNote = new Interval<>();
     private boolean singleMode = false;
     private FestivalProvider festivalProvider;
+    private ItemViewProvider itemViewProvider;
     private Date lastClickDate = null;
     private OnDateSelectedListener onDateSelectedListener;
 
@@ -76,6 +78,14 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.VH> im
 
     public CalendarAdapter festivalProvider(FestivalProvider value) {
         festivalProvider = value;
+        if (notify) {
+            refresh();
+        }
+        return this;
+    }
+
+    public CalendarAdapter itemViewProvider(ItemViewProvider value) {
+        itemViewProvider = value;
         if (notify) {
             refresh();
         }
@@ -190,24 +200,32 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.VH> im
     @NonNull
     @Override
     public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LinearLayout linearLayout = new LinearLayout(parent.getContext());
+        Context context = parent.getContext();
+        LinearLayout linearLayout = new LinearLayout(context);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         linearLayout.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
-        TextView titleView = new TextView(parent.getContext());
-        titleView.setGravity(Gravity.CENTER);
-        titleView.setTextSize(14);
-        titleView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-        int padding = (int) (parent.getResources().getDisplayMetrics().density * 10);
-        titleView.setPadding(padding, padding, padding, padding);
+        TextView titleView = itemViewProvider == null ? null : itemViewProvider.provideTitleView(context);
+        if (titleView == null) {
+            titleView = new TextView(context);
+            titleView.setGravity(Gravity.CENTER);
+            titleView.setTextSize(14);
+            titleView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            int padding = (int) (parent.getResources().getDisplayMetrics().density * 10);
+            titleView.setPadding(padding, padding, padding, padding);
+        }
         linearLayout.addView(titleView, new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
-        MonthView monthView = new MonthView(parent.getContext());
-        linearLayout.addView(monthView, new ViewGroup.LayoutParams(
+        MonthView monthView = itemViewProvider == null ? null : itemViewProvider.provideMonthView(context);
+        if (monthView == null) {
+            monthView = new MonthView(context);
+        }
+        monthView.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
+        linearLayout.addView(monthView);
         return new VH(linearLayout, titleView, monthView);
     }
 
@@ -232,6 +250,9 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.VH> im
     public final int getDatePosition(Date date) {
         int size = dates.size();
         if (size <= 1) {
+            return 0;
+        }
+        if (date == null) {
             return 0;
         }
         long time = date.getTime();
