@@ -1,5 +1,12 @@
 # 更新日志
 
+## 4.1.7 - 2022.01.21
+
+- 添加可直接安卓体验的 demo.apk ，参阅 [gitee#note_7765234](https://gitee.com/li_yu_jiang/AndroidPicker#note_7765234)。
+- 修复时间选择器未来小时数计算错误问题。
+- 日历选择器支持启用左右翻页，参阅 [issues#288](https://github.com/gzu-liyujiang/AndroidPicker/issues/288) 。
+- 时间选择器上午下午联动优化，参阅 [issues#284](https://github.com/gzu-liyujiang/AndroidPicker/issues/284) 。
+
 ## 4.1.6 - 2021.12.20
 
 - 修复滚轮选择器部分XML属性设置无效问题，参阅 [issues#281](https://github.com/gzu-liyujiang/AndroidPicker/issues/281)；
