@@ -410,6 +410,8 @@ public class AntFortuneLikePicker extends LinkagePicker {
 
 ## 许可协议
 
+声明：不授权给 [@q88qaz](https://github.com/q88qaz) 这种“吃人家粮还骂人家娘”的厚颜无耻之人及其关联企业使用，其人言行参见 [issue#291](https://github.com/gzu-liyujiang/AndroidPicker/issues/291) 。
+
 ### 3.0.0 之后
 
 ```text
