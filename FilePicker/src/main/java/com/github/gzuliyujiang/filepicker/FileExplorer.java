@@ -21,6 +21,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -34,6 +35,7 @@ import com.github.gzuliyujiang.filepicker.adapter.PathAdapter;
 import com.github.gzuliyujiang.filepicker.adapter.ViewHolder;
 import com.github.gzuliyujiang.filepicker.annotation.ExplorerMode;
 import com.github.gzuliyujiang.filepicker.contract.OnFileClickedListener;
+import com.github.gzuliyujiang.filepicker.contract.OnFileLoadedListener;
 import com.github.gzuliyujiang.filepicker.contract.OnPathClickedListener;
 
 import java.io.File;
@@ -46,12 +48,13 @@ import java.util.Locale;
  * @since 2021/6/10 18:50
  */
 @SuppressWarnings("unused")
-public class FileExplorer extends FrameLayout implements OnPathClickedListener {
+public class FileExplorer extends FrameLayout implements OnFileLoadedListener, OnPathClickedListener {
     private int explorerMode = ExplorerMode.FILE;
     private File initDir;
     private CharSequence emptyHint;
     private FileAdapter fileAdapter;
     private PathAdapter pathAdapter;
+    private ProgressBar loadingView;
     private RecyclerView fileListView;
     private TextView emptyHintView;
     private RecyclerView pathListView;
@@ -85,7 +88,9 @@ public class FileExplorer extends FrameLayout implements OnPathClickedListener {
         pathAdapter.setOnPathClickedListener(this);
         pathListView = contentView.findViewById(R.id.file_picker_path_list);
         pathListView.setAdapter(pathAdapter);
+        loadingView = contentView.findViewById(R.id.file_picker_loading);
         fileAdapter = new FileAdapter(context);
+        fileAdapter.setOnFileLoadedListener(this);
         fileAdapter.setOnPathClickedListener(this);
         fileAdapter.setOnlyListDir(false);
         fileAdapter.setShowHideDir(true);
@@ -97,6 +102,32 @@ public class FileExplorer extends FrameLayout implements OnPathClickedListener {
         emptyHint = Locale.getDefault().getDisplayLanguage().contains("中文") ? "<空>" : "<Empty>";
         emptyHintView = contentView.findViewById(R.id.file_picker_empty_hint);
         emptyHintView.setText(emptyHint);
+    }
+
+    @Override
+    public void onFileLoaded(@NonNull File file) {
+        loadingView.setVisibility(INVISIBLE);
+        int itemCount = fileAdapter.getItemCount();
+        if (fileAdapter.isShowHomeDir()) {
+            itemCount--;
+        }
+        if (fileAdapter.isShowUpDir()) {
+            itemCount--;
+        }
+        if (itemCount < 1) {
+            DialogLog.print("no files, or dir is empty");
+            emptyHintView.setVisibility(View.VISIBLE);
+            emptyHintView.setText(emptyHint);
+        } else {
+            DialogLog.print("files or dirs count: " + itemCount);
+            emptyHintView.setVisibility(View.INVISIBLE);
+        }
+        pathListView.post(new Runnable() {
+            @Override
+            public void run() {
+                pathListView.scrollToPosition(pathAdapter.getItemCount() - 1);
+            }
+        });
     }
 
     @Override
@@ -129,11 +160,22 @@ public class FileExplorer extends FrameLayout implements OnPathClickedListener {
         }
     }
 
+    /**
+     * 设置浏览模式及初始目录
+     */
     public void setInitDir(@ExplorerMode int explorerMode, File initDir) {
+        setInitDir(explorerMode, initDir, true);
+    }
+
+    /**
+     * 设置浏览模式、初始目录及是否异步加载
+     */
+    public void setInitDir(@ExplorerMode int explorerMode, File initDir, boolean loadAsync) {
         if (this.explorerMode != explorerMode) {
             this.explorerMode = explorerMode;
             fileAdapter.setOnlyListDir(explorerMode == ExplorerMode.DIRECTORY);
         }
+        fileAdapter.setLoadAsync(loadAsync);
         if (initDir == null) {
             initDir = getDefaultDir();
         }
@@ -158,29 +200,13 @@ public class FileExplorer extends FrameLayout implements OnPathClickedListener {
         if (current == null) {
             return;
         }
+        loadingView.setVisibility(VISIBLE);
+        emptyHintView.setVisibility(View.INVISIBLE);
+        long millis = System.currentTimeMillis();
         pathAdapter.updatePath(current);
         fileAdapter.loadData(current);
-        int itemCount = fileAdapter.getItemCount();
-        if (fileAdapter.isShowHomeDir()) {
-            itemCount--;
-        }
-        if (fileAdapter.isShowUpDir()) {
-            itemCount--;
-        }
-        if (itemCount < 1) {
-            DialogLog.print("no files, or dir is empty");
-            emptyHintView.setVisibility(View.VISIBLE);
-            emptyHintView.setText(emptyHint);
-        } else {
-            DialogLog.print("files or dirs count: " + itemCount);
-            emptyHintView.setVisibility(View.GONE);
-        }
-        pathListView.post(new Runnable() {
-            @Override
-            public void run() {
-                pathListView.scrollToPosition(pathAdapter.getItemCount() - 1);
-            }
-        });
+        long spent = System.currentTimeMillis() - millis;
+        DialogLog.print("spent: " + spent + " ms" + ", async=" + fileAdapter.isLoadAsync() + ", thread=" + Thread.currentThread());
     }
 
     public void setOnFileClickedListener(OnFileClickedListener listener) {

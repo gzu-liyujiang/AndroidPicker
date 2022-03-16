@@ -39,6 +39,7 @@ import java.io.File;
 public class FilePicker extends ModalDialog {
     private int explorerMode = ExplorerMode.FILE;
     private File initDir;
+    private boolean loadAsync = true;
     private FileExplorer fileExplorer;
     private OnFilePickedListener onFilePickedListener;
     private boolean initialized = false;
@@ -71,7 +72,7 @@ public class FilePicker extends ModalDialog {
     protected void initData() {
         super.initData();
         initialized = true;
-        setInitDir(explorerMode, initDir);
+        setInitDir(explorerMode, initDir, loadAsync);
     }
 
     @Override
@@ -89,10 +90,15 @@ public class FilePicker extends ModalDialog {
     }
 
     public void setInitDir(@ExplorerMode int explorerMode, File initDir) {
+        setInitDir(explorerMode, initDir, true);
+    }
+
+    public void setInitDir(@ExplorerMode int explorerMode, File initDir, boolean loadAsync) {
         this.explorerMode = explorerMode;
         this.initDir = initDir;
+        this.loadAsync = loadAsync;
         if (initialized) {
-            fileExplorer.setInitDir(explorerMode, initDir);
+            fileExplorer.setInitDir(explorerMode, initDir, loadAsync);
         }
     }
 

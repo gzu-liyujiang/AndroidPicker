@@ -52,6 +52,14 @@
             tools:text="&lt;Empty&gt;"
             tools:visibility="visible" />
 
+        <ProgressBar
+            android:id="@+id/file_picker_loading"
+            style="@android:style/Widget.ProgressBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="invisible" />
+
     </FrameLayout>
 
 </LinearLayout>

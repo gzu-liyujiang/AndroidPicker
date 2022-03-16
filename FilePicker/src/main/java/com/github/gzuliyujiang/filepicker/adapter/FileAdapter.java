@@ -18,6 +18,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +35,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.github.gzuliyujiang.dialog.DialogLog;
 import com.github.gzuliyujiang.filepicker.R;
 import com.github.gzuliyujiang.filepicker.annotation.FileSort;
+import com.github.gzuliyujiang.filepicker.contract.OnFileLoadedListener;
 import com.github.gzuliyujiang.filepicker.contract.OnPathClickedListener;
 import com.github.gzuliyujiang.filepicker.filter.SimpleFilter;
 import com.github.gzuliyujiang.filepicker.sort.SortByExtension;
@@ -45,7 +48,12 @@ import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
 
 /**
  * 文件目录数据适配
@@ -55,6 +63,8 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public class FileAdapter extends RecyclerView.Adapter<ViewHolder> {
+    private static final ExecutorService THREAD_POOL = Executors.newCachedThreadPool();
+    private static final Handler UI_HANDLER = new Handler(Looper.getMainLooper());
     private final Context context;
     public static final String DIR_ROOT = ".";
     public static final String DIR_PARENT = "..";
@@ -62,6 +72,8 @@ public class FileAdapter extends RecyclerView.Adapter<ViewHolder> {
     private File rootDir = null;
     private File currentFile = null;
     private String[] allowExtensions = null;
+    private boolean loadAsync = true;
+    private final LinkedList<FutureTask<?>> futureTasks = new LinkedList<>();
     private boolean onlyListDir = false;
     private boolean showHomeDir = true;
     private boolean showUpDir = true;
@@ -72,6 +84,7 @@ public class FileAdapter extends RecyclerView.Adapter<ViewHolder> {
     private Drawable upIcon;
     private Drawable folderIcon;
     private Drawable fileIcon;
+    private OnFileLoadedListener onFileLoadedListener;
     private OnPathClickedListener onPathClickedListener;
 
     public FileAdapter(@NonNull Context context) {
@@ -182,6 +195,20 @@ public class FileAdapter extends RecyclerView.Adapter<ViewHolder> {
     }
 
     /**
+     * 是否异步加载文件夹或文件
+     */
+    public void setLoadAsync(boolean loadAsync) {
+        if (this.loadAsync == loadAsync) {
+            return;
+        }
+        this.loadAsync = loadAsync;
+    }
+
+    public boolean isLoadAsync() {
+        return loadAsync;
+    }
+
+    /**
      * 是否仅仅读取目录
      */
     public void setOnlyListDir(boolean onlyListDir) {
@@ -261,12 +288,58 @@ public class FileAdapter extends RecyclerView.Adapter<ViewHolder> {
         loadData(currentFile);
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    public void loadData(File dir) {
-        if (dir == null) {
-            DialogLog.print("current directory is null");
+    public void loadData(final File dir) {
+        if (!loadAsync) {
+            reallyRefresh(loadDataSync(dir));
             return;
         }
+        if (!futureTasks.isEmpty()) {
+            FutureTask<?> futureTask = futureTasks.getFirst();
+            if (futureTask != null && !futureTask.isDone()) {
+                futureTask.cancel(true);
+            }
+        }
+        FutureTask<?> futureTask = new FutureTask<>(new Callable<Void>() {
+            @Override
+            public Void call() {
+                final List<FileEntity> temp = loadDataSync(dir);
+                if (!futureTasks.isEmpty()) {
+                    FutureTask<?> futureTask = futureTasks.removeFirst();
+                    if (futureTask != null && futureTask.isCancelled()) {
+                        DialogLog.print("data load is canceled: " + currentFile);
+                        return null;
+                    }
+                }
+                UI_HANDLER.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        reallyRefresh(temp);
+                    }
+                });
+                return null;
+            }
+        });
+        futureTasks.addLast(futureTask);
+        THREAD_POOL.execute(futureTask);
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void reallyRefresh(List<FileEntity> temp) {
+        data.clear();
+        data.addAll(temp);
+        notifyDataSetChanged();
+        if (onFileLoadedListener != null) {
+            onFileLoadedListener.onFileLoaded(currentFile);
+        }
+        DialogLog.print("notify changed when data loaded: " + currentFile);
+    }
+
+    private List<FileEntity> loadDataSync(File dir) {
+        if (dir == null) {
+            DialogLog.print("current directory is null");
+            return new ArrayList<>();
+        }
+        long millis = System.currentTimeMillis();
         List<FileEntity> entities = new ArrayList<>();
         if (rootDir == null) {
             rootDir = dir;
@@ -305,9 +378,9 @@ public class FileAdapter extends RecyclerView.Adapter<ViewHolder> {
             FileEntity.setFile(file);
             entities.add(FileEntity);
         }
-        data.clear();
-        data.addAll(entities);
-        notifyDataSetChanged();
+        long spent = System.currentTimeMillis() - millis;
+        DialogLog.print("spent: " + spent + " ms" + ", async=" + loadAsync + ", thread=" + Thread.currentThread());
+        return entities;
     }
 
     public final void recycleData() {
@@ -336,6 +409,10 @@ public class FileAdapter extends RecyclerView.Adapter<ViewHolder> {
                 fileBitmap.recycle();
             }
         }
+    }
+
+    public void setOnFileLoadedListener(OnFileLoadedListener listener) {
+        onFileLoadedListener = listener;
     }
 
     public void setOnPathClickedListener(OnPathClickedListener listener) {
