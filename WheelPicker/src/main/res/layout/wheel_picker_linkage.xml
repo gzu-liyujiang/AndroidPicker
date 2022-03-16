@@ -66,7 +66,7 @@
 
     <ProgressBar
         android:id="@+id/wheel_picker_linkage_loading"
-        style="@android:style/Widget.ProgressBar"
+        style="@android:style/Widget.ProgressBar.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

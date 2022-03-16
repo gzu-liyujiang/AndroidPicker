@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-       xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
         android:id="@+id/ImageView_image"
@@ -8,7 +8,7 @@
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
         android:scaleType="centerInside"
-        tools:ignore="contentDescription"/>
+        tools:ignore="contentDescription" />
 
     <com.github.gzuliyujiang.imagepicker.CropOverlayView
         android:id="@+id/CropOverlayView"
@@ -18,8 +18,9 @@
 
     <ProgressBar
         android:id="@+id/CropProgressBar"
+        style="@android:style/Widget.ProgressBar.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center" />
 
 </merge>
