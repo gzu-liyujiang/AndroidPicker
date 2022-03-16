@@ -116,10 +116,12 @@ public class FileExplorer extends FrameLayout implements OnFileLoadedListener, O
         }
         if (itemCount < 1) {
             DialogLog.print("no files, or dir is empty");
+            fileListView.setVisibility(View.INVISIBLE);
             emptyHintView.setVisibility(View.VISIBLE);
             emptyHintView.setText(emptyHint);
         } else {
             DialogLog.print("files or dirs count: " + itemCount);
+            fileListView.setVisibility(View.VISIBLE);
             emptyHintView.setVisibility(View.INVISIBLE);
         }
         pathListView.post(new Runnable() {
@@ -201,6 +203,7 @@ public class FileExplorer extends FrameLayout implements OnFileLoadedListener, O
             return;
         }
         loadingView.setVisibility(VISIBLE);
+        fileListView.setVisibility(View.INVISIBLE);
         emptyHintView.setVisibility(View.INVISIBLE);
         long millis = System.currentTimeMillis();
         pathAdapter.updatePath(current);

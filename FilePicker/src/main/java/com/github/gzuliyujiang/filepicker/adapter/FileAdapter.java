@@ -48,9 +48,9 @@ import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
@@ -73,7 +73,7 @@ public class FileAdapter extends RecyclerView.Adapter<ViewHolder> {
     private File currentFile = null;
     private String[] allowExtensions = null;
     private boolean loadAsync = true;
-    private final LinkedList<FutureTask<?>> futureTasks = new LinkedList<>();
+    private final ConcurrentLinkedQueue<FutureTask<?>> futureTasks = new ConcurrentLinkedQueue<>();
     private boolean onlyListDir = false;
     private boolean showHomeDir = true;
     private boolean showUpDir = true;
@@ -293,22 +293,18 @@ public class FileAdapter extends RecyclerView.Adapter<ViewHolder> {
             reallyRefresh(loadDataSync(dir));
             return;
         }
-        if (!futureTasks.isEmpty()) {
-            FutureTask<?> futureTask = futureTasks.getFirst();
-            if (futureTask != null && !futureTask.isDone()) {
-                futureTask.cancel(true);
-            }
+        FutureTask<?> lastTask = futureTasks.peek();
+        if (lastTask != null && !lastTask.isDone()) {
+            lastTask.cancel(true);
         }
-        FutureTask<?> futureTask = new FutureTask<>(new Callable<Void>() {
+        FutureTask<?> newTask = new FutureTask<>(new Callable<Void>() {
             @Override
             public Void call() {
                 final List<FileEntity> temp = loadDataSync(dir);
-                if (!futureTasks.isEmpty()) {
-                    FutureTask<?> futureTask = futureTasks.removeFirst();
-                    if (futureTask != null && futureTask.isCancelled()) {
-                        DialogLog.print("data load is canceled: " + currentFile);
-                        return null;
-                    }
+                FutureTask<?> task = futureTasks.poll();
+                if (task != null && task.isCancelled()) {
+                    DialogLog.print("data load is canceled: " + currentFile);
+                    return null;
                 }
                 UI_HANDLER.post(new Runnable() {
                     @Override
@@ -319,8 +315,8 @@ public class FileAdapter extends RecyclerView.Adapter<ViewHolder> {
                 return null;
             }
         });
-        futureTasks.addLast(futureTask);
-        THREAD_POOL.execute(futureTask);
+        futureTasks.add(newTask);
+        THREAD_POOL.execute(newTask);
     }
 
     @SuppressLint("NotifyDataSetChanged")
