@@ -72,7 +72,7 @@ public class FileAdapter extends RecyclerView.Adapter<ViewHolder> {
     private File rootDir = null;
     private File currentFile = null;
     private String[] allowExtensions = null;
-    private boolean loadAsync = true;
+    private boolean loadAsync = false;
     private final ConcurrentLinkedQueue<FutureTask<?>> futureTasks = new ConcurrentLinkedQueue<>();
     private boolean onlyListDir = false;
     private boolean showHomeDir = true;

@@ -84,11 +84,13 @@ public class FileExplorer extends FrameLayout implements OnFileLoadedListener, O
     private void init(Context context) {
         initDir = getDefaultDir();
         View contentView = inflate(context, R.layout.file_picker_content, this);
+        pathListView = contentView.findViewById(R.id.file_picker_path_list);
+        loadingView = contentView.findViewById(R.id.file_picker_loading);
+        fileListView = contentView.findViewById(R.id.file_picker_file_list);
+        emptyHintView = contentView.findViewById(R.id.file_picker_empty_hint);
         pathAdapter = new PathAdapter(context);
         pathAdapter.setOnPathClickedListener(this);
-        pathListView = contentView.findViewById(R.id.file_picker_path_list);
         pathListView.setAdapter(pathAdapter);
-        loadingView = contentView.findViewById(R.id.file_picker_loading);
         fileAdapter = new FileAdapter(context);
         fileAdapter.setOnFileLoadedListener(this);
         fileAdapter.setOnPathClickedListener(this);
@@ -97,10 +99,8 @@ public class FileExplorer extends FrameLayout implements OnFileLoadedListener, O
         fileAdapter.setShowHomeDir(true);
         fileAdapter.setShowUpDir(true);
         fileAdapter.loadData(initDir);
-        fileListView = contentView.findViewById(R.id.file_picker_file_list);
         fileListView.setAdapter(fileAdapter);
         emptyHint = Locale.getDefault().getDisplayLanguage().contains("中文") ? "<空>" : "<Empty>";
-        emptyHintView = contentView.findViewById(R.id.file_picker_empty_hint);
         emptyHintView.setText(emptyHint);
     }
 
@@ -165,7 +165,7 @@ public class FileExplorer extends FrameLayout implements OnFileLoadedListener, O
      * 设置浏览模式及初始目录
      */
     public void setInitDir(@ExplorerMode int explorerMode, File initDir) {
-        setInitDir(explorerMode, initDir, true);
+        setInitDir(explorerMode, initDir, false);
     }
 
     /**

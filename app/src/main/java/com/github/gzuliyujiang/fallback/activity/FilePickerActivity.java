@@ -41,7 +41,9 @@ public class FilePickerActivity extends BackAbleActivity implements OnFilePicked
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_picker_file);
         FileExplorer fileExplorer = findViewById(R.id.file_picker_explorer);
-        fileExplorer.setInitDir(ExplorerMode.FILE, getExternalFilesDir(null));
+        fileExplorer.setInitDir(ExplorerMode.FILE, getExternalFilesDir(null), true);
+        fileExplorer.setShowHomeDir(false);
+        fileExplorer.setShowUpDir(false);
     }
 
     @Override
@@ -58,7 +60,7 @@ public class FilePickerActivity extends BackAbleActivity implements OnFilePicked
 
     public void onDirPick(View view) {
         FilePicker picker = new FilePicker(this);
-        picker.setInitDir(ExplorerMode.DIRECTORY, getFilesDir());
+        picker.setInitDir(ExplorerMode.DIRECTORY, getFilesDir(), true);
         picker.setOnFilePickedListener(this);
         picker.show();
     }
