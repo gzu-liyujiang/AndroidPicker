@@ -107,6 +107,7 @@ public class FileExplorer extends FrameLayout implements OnFileLoadedListener, O
     @Override
     public void onFileLoaded(@NonNull File file) {
         loadingView.setVisibility(INVISIBLE);
+        fileListView.setVisibility(View.VISIBLE);
         int itemCount = fileAdapter.getItemCount();
         if (fileAdapter.isShowHomeDir()) {
             itemCount--;
@@ -116,12 +117,10 @@ public class FileExplorer extends FrameLayout implements OnFileLoadedListener, O
         }
         if (itemCount < 1) {
             DialogLog.print("no files, or dir is empty");
-            fileListView.setVisibility(View.INVISIBLE);
             emptyHintView.setVisibility(View.VISIBLE);
             emptyHintView.setText(emptyHint);
         } else {
             DialogLog.print("files or dirs count: " + itemCount);
-            fileListView.setVisibility(View.VISIBLE);
             emptyHintView.setVisibility(View.INVISIBLE);
         }
         pathListView.post(new Runnable() {
