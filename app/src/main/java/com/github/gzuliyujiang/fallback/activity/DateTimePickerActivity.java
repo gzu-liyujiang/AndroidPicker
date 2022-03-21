@@ -100,7 +100,6 @@ public class DateTimePickerActivity extends BackAbleActivity implements OnDatePi
         wheelLayout.setTextSize(14 * getResources().getDisplayMetrics().scaledDensity);
         //注：建议通过`setStyle`定制样式设置文字加大，若通过`setSelectedTextSize`设置，该解决方案会导致选择器展示时跳动一下
         //wheelLayout.setSelectedTextSize(16 * getResources().getDisplayMetrics().scaledDensity);
-        wheelLayout.setStyle(R.style.WheelStyleDemo);
         wheelLayout.setSelectedTextColor(0xFFFF0000);
         //wheelLayout.getYearLabelView().setTextColor(0xFF999999);
         //wheelLayout.getMonthLabelView().setTextColor(0xFF999999);
@@ -123,6 +122,8 @@ public class DateTimePickerActivity extends BackAbleActivity implements OnDatePi
         DatePicker picker = new DatePicker(this);
         picker.setBodyWidth(200);
         DateWheelLayout wheelLayout = picker.getWheelLayout();
+        //注：`setStyle`只能在其他设置项之前调用，否则会导致其他项设置失效
+        wheelLayout.setStyle(R.style.WheelStyleDemo);
         wheelLayout.setDateMode(DateMode.MONTH_DAY);
         wheelLayout.setDateFormatter(new UnitDateFormatter());
         picker.setOnDatePickedListener(this);
