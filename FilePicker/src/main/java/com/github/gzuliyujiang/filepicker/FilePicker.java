@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,7 +26,6 @@ import com.github.gzuliyujiang.dialog.DialogLog;
 import com.github.gzuliyujiang.dialog.ModalDialog;
 import com.github.gzuliyujiang.filepicker.annotation.ExplorerMode;
 import com.github.gzuliyujiang.filepicker.contract.OnFileClickedListener;
-import com.github.gzuliyujiang.filepicker.contract.OnFilePickedListener;
 
 import java.io.File;
 
@@ -37,12 +37,9 @@ import java.io.File;
  */
 @SuppressWarnings("unused")
 public class FilePicker extends ModalDialog {
-    private int explorerMode = ExplorerMode.FILE;
-    private File initDir;
-    private boolean loadAsync = false;
     private FileExplorer fileExplorer;
-    private OnFilePickedListener onFilePickedListener;
     private boolean initialized = false;
+    private ExplorerConfig explorerConfig;
 
     public FilePicker(Activity activity) {
         super(activity);
@@ -63,16 +60,26 @@ public class FilePicker extends ModalDialog {
     protected void initView() {
         super.initView();
         setHeight((int) (activity.getResources().getDisplayMetrics().heightPixels * 0.6f));
-        if (explorerMode == ExplorerMode.FILE) {
-            okView.setVisibility(View.GONE);
-        }
     }
 
     @Override
     protected void initData() {
         super.initData();
         initialized = true;
-        setInitDir(explorerMode, initDir, loadAsync);
+        setExplorerConfig(explorerConfig);
+        final ExplorerConfig config = fileExplorer.getExplorerConfig();
+        config.setOnFileClickedListener(new OnFileClickedListener() {
+            @Override
+            public void onFileClicked(@NonNull File file) {
+                if (config.getExplorerMode() == ExplorerMode.FILE) {
+                    dismiss();
+                    config.getOnFilePickedListener().onFilePicked(file);
+                }
+            }
+        });
+        if (config.getExplorerMode() == ExplorerMode.FILE) {
+            okView.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -84,35 +91,16 @@ public class FilePicker extends ModalDialog {
     protected void onOk() {
         File currentFile = fileExplorer.getCurrentFile();
         DialogLog.print("picked directory: " + currentFile);
-        if (onFilePickedListener != null) {
-            onFilePickedListener.onFilePicked(currentFile);
+        if (fileExplorer.getExplorerConfig().getOnFilePickedListener() != null) {
+            fileExplorer.getExplorerConfig().getOnFilePickedListener().onFilePicked(currentFile);
         }
     }
 
-    public void setInitDir(@ExplorerMode int explorerMode, File initDir) {
-        setInitDir(explorerMode, initDir, false);
-    }
-
-    public void setInitDir(@ExplorerMode int explorerMode, File initDir, boolean loadAsync) {
-        this.explorerMode = explorerMode;
-        this.initDir = initDir;
-        this.loadAsync = loadAsync;
+    public void setExplorerConfig(@Nullable ExplorerConfig config) {
+        explorerConfig = config;
         if (initialized) {
-            fileExplorer.setInitDir(explorerMode, initDir, loadAsync);
+            fileExplorer.load(config);
         }
-    }
-
-    public void setOnFilePickedListener(OnFilePickedListener listener) {
-        this.onFilePickedListener = listener;
-        fileExplorer.setOnFileClickedListener(new OnFileClickedListener() {
-            @Override
-            public void onFileClicked(@NonNull File file) {
-                if (explorerMode == ExplorerMode.FILE) {
-                    dismiss();
-                    onFilePickedListener.onFilePicked(file);
-                }
-            }
-        });
     }
 
     public final File getCurrentFile() {

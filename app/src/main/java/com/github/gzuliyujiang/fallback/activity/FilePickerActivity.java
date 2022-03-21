@@ -14,6 +14,7 @@
 package com.github.gzuliyujiang.fallback.activity;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.github.gzuliyujiang.fallback.R;
+import com.github.gzuliyujiang.filepicker.ExplorerConfig;
 import com.github.gzuliyujiang.filepicker.FileExplorer;
 import com.github.gzuliyujiang.filepicker.FilePicker;
 import com.github.gzuliyujiang.filepicker.annotation.ExplorerMode;
@@ -40,10 +42,15 @@ public class FilePickerActivity extends BackAbleActivity implements OnFilePicked
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_picker_file);
+        ExplorerConfig config = new ExplorerConfig(this);
+        config.setRootDir(Environment.getExternalStorageDirectory());
+        config.setLoadAsync(true);
+        config.setExplorerMode(ExplorerMode.FILE);
+        config.setShowHomeDir(false);
+        config.setShowUpDir(false);
+        config.setShowHideDir(true);
         FileExplorer fileExplorer = findViewById(R.id.file_picker_explorer);
-        fileExplorer.setInitDir(ExplorerMode.FILE, getExternalFilesDir(null), true);
-        fileExplorer.setShowHomeDir(false);
-        fileExplorer.setShowUpDir(false);
+        fileExplorer.load(config);
     }
 
     @Override
@@ -52,17 +59,29 @@ public class FilePickerActivity extends BackAbleActivity implements OnFilePicked
     }
 
     public void onFilePick(View view) {
+        ExplorerConfig config = new ExplorerConfig(this);
+        config.setRootDir(getExternalFilesDir(null));
+        config.setLoadAsync(false);
+        config.setExplorerMode(ExplorerMode.FILE);
+        config.setOnFilePickedListener(this);
         FilePicker picker = new FilePicker(this);
-        picker.setInitDir(ExplorerMode.FILE, getExternalFilesDir(null));
-        picker.setOnFilePickedListener(this);
+        picker.setExplorerConfig(config);
         picker.show();
     }
 
     public void onDirPick(View view) {
+        ExplorerConfig config = new ExplorerConfig(this);
+        config.setRootDir(getFilesDir());
+        config.setLoadAsync(false);
+        config.setExplorerMode(ExplorerMode.DIRECTORY);
+        config.setOnFilePickedListener(this);
         FilePicker picker = new FilePicker(this);
-        picker.setInitDir(ExplorerMode.DIRECTORY, getFilesDir(), true);
-        picker.setOnFilePickedListener(this);
+        picker.setExplorerConfig(config);
         picker.show();
+    }
+
+    public void onDialogPick(View view) {
+        new FileExplorerFragment().show(getSupportFragmentManager(), getClass().getName());
     }
 
 }
