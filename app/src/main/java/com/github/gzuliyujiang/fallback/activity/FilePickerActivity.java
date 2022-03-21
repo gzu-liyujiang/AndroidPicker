@@ -46,8 +46,8 @@ public class FilePickerActivity extends BackAbleActivity implements OnFilePicked
         config.setRootDir(Environment.getExternalStorageDirectory());
         config.setLoadAsync(true);
         config.setExplorerMode(ExplorerMode.FILE);
-        config.setShowHomeDir(false);
-        config.setShowUpDir(false);
+        config.setShowHomeDir(true);
+        config.setShowUpDir(true);
         config.setShowHideDir(true);
         FileExplorer fileExplorer = findViewById(R.id.file_picker_explorer);
         fileExplorer.load(config);
