@@ -741,9 +741,9 @@ public class WheelView extends View implements Runnable {
         if (itemHeight - halfDrawnItemCount <= 0) {
             return;
         }
-        drawAllItem(canvas);
         drawCurtain(canvas);
         drawIndicator(canvas);
+        drawAllItem(canvas);
     }
 
     private void drawAllItem(Canvas canvas) {
