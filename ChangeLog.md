@@ -1,5 +1,12 @@
 # 更新日志
 
+## 4.1.8 - 2022.07.12
+
+- Fix [issues#313](https://github.com/gzu-liyujiang/AndroidPicker/issues/313) 。
+- Fix [issues#304](https://github.com/gzu-liyujiang/AndroidPicker/issues/304) 。
+- Fix `setStyle`只能在其他设置项之前调用，否则会导致其他设置项失效。
+- Fix [issues#293](https://github.com/gzu-liyujiang/AndroidPicker/issues/293) 。
+
 ## 4.1.7 - 2022.01.21
 
 - 添加可直接安卓体验的 demo.apk ，参阅 [gitee#note_7765234](https://gitee.com/li_yu_jiang/AndroidPicker#note_7765234)。
