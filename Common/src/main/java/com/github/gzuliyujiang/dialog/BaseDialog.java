@@ -254,6 +254,10 @@ public abstract class BaseDialog extends Dialog implements DialogInterface.OnSho
         if (isShowing()) {
             return;
         }
+        showSafe();
+    }
+
+    protected void showSafe() {
         try {
             super.show();
             DialogLog.print("dialog show");
@@ -271,6 +275,10 @@ public abstract class BaseDialog extends Dialog implements DialogInterface.OnSho
         if (!isShowing()) {
             return;
         }
+        dismissSafe();
+    }
+
+    protected void dismissSafe() {
         try {
             super.dismiss();
             DialogLog.print("dialog dismiss");
