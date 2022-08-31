@@ -20,7 +20,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Camera;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -950,10 +949,7 @@ public class WheelView extends View implements Runnable {
         if (!curtainEnabled) {
             return;
         }
-        int red = Color.red(curtainColor);
-        int green = Color.green(curtainColor);
-        int blue = Color.blue(curtainColor);
-        paint.setColor(Color.argb(128, red, green, blue));
+        paint.setColor(curtainColor);
         paint.setStyle(Paint.Style.FILL);
         if (curtainRadius > 0) {
             Path path = new Path();
