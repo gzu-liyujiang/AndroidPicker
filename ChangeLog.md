@@ -1,5 +1,11 @@
 # 更新日志
 
+## 4.1.9 - 2022.08.31
+
+- Fix [issues#292](https://github.com/gzu-liyujiang/AndroidPicker/issues/292) 。
+- Fix [issues#290](https://github.com/gzu-liyujiang/AndroidPicker/issues/290) 。
+- 增加 API 说明文档。
+
 ## 4.1.8 - 2022.07.12
 
 - Fix [issues#313](https://github.com/gzu-liyujiang/AndroidPicker/issues/313) 。
