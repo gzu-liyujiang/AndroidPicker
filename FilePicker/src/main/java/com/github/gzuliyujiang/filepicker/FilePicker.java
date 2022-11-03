@@ -26,7 +26,6 @@ import com.github.gzuliyujiang.dialog.DialogLog;
 import com.github.gzuliyujiang.dialog.ModalDialog;
 import com.github.gzuliyujiang.filepicker.annotation.ExplorerMode;
 import com.github.gzuliyujiang.filepicker.contract.OnFileClickedListener;
-import com.github.gzuliyujiang.filepicker.contract.OnFilePickedListener;
 
 import java.io.File;
 
@@ -97,6 +96,9 @@ public class FilePicker extends ModalDialog {
         }
     }
 
+    /**
+     * 设置文件管理器配置
+     */
     public void setExplorerConfig(@Nullable ExplorerConfig config) {
         explorerConfig = config;
         if (initialized) {
@@ -104,22 +106,13 @@ public class FilePicker extends ModalDialog {
         }
     }
 
-    public void setInitDir(@ExplorerMode int explorerMode, File initDir) {
-        throw new IllegalArgumentException("Use setExplorerConfig instead");
-    }
-
-    public void setInitDir(@ExplorerMode int explorerMode, File initDir, boolean loadAsync) {
-        throw new IllegalArgumentException("Use setExplorerConfig instead");
-    }
-
-    public void setOnFilePickedListener(OnFilePickedListener listener) {
-        throw new IllegalArgumentException("Use setExplorerConfig instead");
-    }
-
     public final File getCurrentFile() {
         return fileExplorer.getCurrentFile();
     }
 
+    /**
+     * 获取文件管理器对象
+     */
     public final FileExplorer getFileExplorer() {
         return fileExplorer;
     }
