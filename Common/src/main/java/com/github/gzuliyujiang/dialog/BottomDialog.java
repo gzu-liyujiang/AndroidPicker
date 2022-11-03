@@ -100,7 +100,9 @@ public abstract class BottomDialog extends BaseDialog {
             });
             activity.getWindowManager().addView(maskView, params);
             DialogLog.print("dialog add mask view");
-        } catch (Exception e) {
+        } catch (Throwable e) {
+            //...not attached to window manager
+            // Activity ...... has leaked window android.view.View
             DialogLog.print(e);
         }
     }
@@ -119,7 +121,9 @@ public abstract class BottomDialog extends BaseDialog {
         try {
             activity.getWindowManager().removeViewImmediate(maskView);
             DialogLog.print("dialog remove mask view");
-        } catch (Exception e) {
+        } catch (Throwable e) {
+            //...not attached to window manager
+            // Activity ...... has leaked window android.view.View
             DialogLog.print(e);
         }
     }
