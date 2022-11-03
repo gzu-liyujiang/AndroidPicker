@@ -386,6 +386,31 @@ public class AntFortuneLikePicker extends LinkagePicker {
 }
 ````
 
+### 和`DialogFragment`结合
+
+`XXXPicker` 都继承自 `android.app.Dialog` ，因此可以直接和`androidx.fragment.app.DialogFragment`结合使用。
+
+```java
+public class OptionPickerFragment extends DialogFragment {
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        OptionPicker picker = new OptionPicker(requireActivity());
+        picker.setData("土人", "里民子", "羡民", "穿青人", "不在56个民族之内", "未定民族");
+        picker.setOnOptionPickedListener(new OnOptionPickedListener() {
+            @Override
+            public void onOptionPicked(int position, Object item) {
+                Toast.makeText(requireContext(), item.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        picker.getWheelView().setStyle(R.style.WheelStyleDemo);
+        return picker;
+    }
+
+}
+```
+
 ## 效果预览
 
 以下图片显示的效果可能已修改过，实际效果请运行 demo 查看。

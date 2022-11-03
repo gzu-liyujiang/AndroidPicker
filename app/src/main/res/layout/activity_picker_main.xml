@@ -45,6 +45,12 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="onDialogFragment"
+                android:text="结合DialogFragment" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:onClick="onDateTimePicker"
                 android:text="日期时间滚轮选择器"
                 android:textColor="#FF333333" />

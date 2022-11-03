@@ -3,6 +3,8 @@
 ## 4.1.10 - 2022.11.04
 
 - Fix [issues#324](https://github.com/gzu-liyujiang/AndroidPicker/issues/324) 。
+- Opt [issues#294](https://github.com/gzu-liyujiang/AndroidPicker/issues/294) [issues#296](https://github.com/gzu-liyujiang/AndroidPicker/issues/296) 。
+- `XXXPicker`和`DialogFragment`结合使用示例。
 
 ## 4.1.9 - 2022.08.31
 

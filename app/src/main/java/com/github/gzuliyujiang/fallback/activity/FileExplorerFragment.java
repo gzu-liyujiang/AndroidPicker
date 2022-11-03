@@ -40,9 +40,6 @@ import java.util.Objects;
  */
 public class FileExplorerFragment extends DialogFragment {
 
-    public FileExplorerFragment() {
-    }
-
     @Override
     @SuppressLint("PrivateResource")
     public void onCreate(@Nullable Bundle savedInstanceState) {

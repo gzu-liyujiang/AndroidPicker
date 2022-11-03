@@ -109,7 +109,7 @@ public class AddressPickerActivity extends BackAbleActivity implements OnAddress
         wheelLayout.setSelectedTextSize(17 * view.getResources().getDisplayMetrics().scaledDensity);
         wheelLayout.setSelectedTextBold(true);
         wheelLayout.setCurtainEnabled(true);
-        wheelLayout.setCurtainColor(0xEE0081FF);
+        wheelLayout.setCurtainColor(0xFF22EEFF);
         wheelLayout.setCurtainRadius(8 * view.getResources().getDisplayMetrics().density);
         int padding = (int) (10 * view.getResources().getDisplayMetrics().density);
         wheelLayout.setPadding(padding, 0, padding, 0);

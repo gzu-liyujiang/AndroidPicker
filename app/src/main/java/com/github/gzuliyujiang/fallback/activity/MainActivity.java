@@ -81,6 +81,10 @@ public class MainActivity extends FragmentActivity {
         picker.show();
     }
 
+    public void onDialogFragment(View view) {
+        new OptionPickerFragment().show(getSupportFragmentManager(), OptionPickerFragment.class.getName());
+    }
+
     public void onDateTimePicker(View view) {
         startActivity(DateTimePickerActivity.class);
     }
