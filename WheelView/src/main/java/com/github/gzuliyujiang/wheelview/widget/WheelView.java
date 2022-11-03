@@ -876,6 +876,8 @@ public class WheelView extends View implements Runnable {
             if (length > 1) {
                 data = data.substring(0, length - 1);
                 hasCut = true;
+            } else {
+                break;
             }
         }
         if (hasCut) {
