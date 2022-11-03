@@ -324,6 +324,9 @@ public class CalendarPicker extends ModalDialog implements OnDateSelectedListene
         });
     }
 
+    /**
+     * 获取日历视图
+     */
     public final CalendarView getCalendarView() {
         return calendarView;
     }

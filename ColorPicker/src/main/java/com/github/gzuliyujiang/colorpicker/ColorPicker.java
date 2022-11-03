@@ -115,10 +115,16 @@ public class ColorPicker extends ModalDialog implements OnColorChangedListener {
         }
     }
 
+    /**
+     * 设置颜色选择监听器
+     */
     public void setOnColorPickListener(OnColorPickedListener onColorPickedListener) {
         this.onColorPickedListener = onColorPickedListener;
     }
 
+    /**
+     * 获取当前选择的颜色
+     */
     @ColorInt
     public final int getCurrentColor() {
         try {
@@ -129,14 +135,23 @@ public class ColorPicker extends ModalDialog implements OnColorChangedListener {
         }
     }
 
+    /**
+     * 获取16进制颜色值视图
+     */
     public final TextView getHexView() {
         return getTitleView();
     }
 
+    /**
+     * 获取颜色面板视图
+     */
     public final ColorGradientView getColorGradientView() {
         return colorGradientView;
     }
 
+    /**
+     * 获取亮度面板视图
+     */
     public final BrightnessGradientView getBrightnessGradientView() {
         return brightnessGradientView;
     }

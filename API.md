@@ -103,3 +103,10 @@
 | getWheelView  | 获取滚轮视图 |
 | getLabelView  | 获取文本标签视图 |
 
+### FilePicker
+
+|  方法   | 说明  |
+|  ----  | ----  |
+| setExplorerConfig  | 设置文件管理器配置 |
+| getFileExplorer  | 获取文件管理器对象 |
+| ……  | 更多项参见源码及相应的注释 |

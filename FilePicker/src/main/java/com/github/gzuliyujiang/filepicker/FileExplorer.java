@@ -92,10 +92,16 @@ public class FileExplorer extends FrameLayout implements OnFileLoadedListener, O
         emptyHintView.setText(emptyHint);
     }
 
+    /**
+     * 以默认配置加载文件列表
+     */
     public void load() {
         load(null);
     }
 
+    /**
+     * 以自定义配置加载文件列表
+     */
     public void load(@Nullable ExplorerConfig config) {
         if (config != null) {
             explorerConfig = config;
@@ -153,6 +159,9 @@ public class FileExplorer extends FrameLayout implements OnFileLoadedListener, O
         }
     }
 
+    /**
+     * 设置指定路径下没有文件或目录时的提示语
+     */
     public void setEmptyHint(@NonNull CharSequence emptyHint) {
         if (TextUtils.equals(this.emptyHint, emptyHint)) {
             return;
@@ -161,6 +170,9 @@ public class FileExplorer extends FrameLayout implements OnFileLoadedListener, O
         emptyHintView.setText(emptyHint);
     }
 
+    /**
+     * 重新加载指定路径下的文件或目录到当前列表
+     */
     public final void refreshCurrent(File current) {
         if (current == null) {
             DialogLog.print("current dir is null");
@@ -192,14 +204,23 @@ public class FileExplorer extends FrameLayout implements OnFileLoadedListener, O
         return explorerConfig.getRootDir();
     }
 
+    /**
+     * 获取当前加载的文件夹
+     */
     public final File getCurrentFile() {
         return fileAdapter.getCurrentFile();
     }
 
+    /**
+     * 获取各级路径所在的视图
+     */
     public final RecyclerView getPathListView() {
         return pathListView;
     }
 
+    /**
+     * 获取文件或目录列表所在的视图
+     */
     public final RecyclerView getFileListView() {
         return fileListView;
     }

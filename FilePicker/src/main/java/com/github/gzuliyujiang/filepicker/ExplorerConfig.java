@@ -35,6 +35,7 @@ import java.util.Arrays;
  * @author liyujiang
  * @since 2022/3/16 19:57
  */
+@SuppressWarnings({"UnusedReturnValue", "unused"})
 public class ExplorerConfig implements Serializable {
     private final Context context;
     private File rootDir;
@@ -63,6 +64,9 @@ public class ExplorerConfig implements Serializable {
         fileIcon = ContextCompat.getDrawable(context, R.mipmap.file_picker_file);
     }
 
+    /**
+     * 设置根目录
+     */
     public void setRootDir(File rootDir) {
         this.rootDir = rootDir;
     }
@@ -78,6 +82,9 @@ public class ExplorerConfig implements Serializable {
         return rootDir;
     }
 
+    /**
+     * 设置是否异步加载文件列表，默认是同步列出文件
+     */
     public void setLoadAsync(boolean loadAsync) {
         this.loadAsync = loadAsync;
     }
@@ -86,6 +93,9 @@ public class ExplorerConfig implements Serializable {
         return loadAsync;
     }
 
+    /**
+     * 设置列表条目的显示高度
+     */
     public ExplorerConfig setItemHeight(@Dimension(unit = Dimension.DP) int itemHeight) {
         if (itemHeight < 10 || itemHeight > 100) {
             return this;
@@ -98,6 +108,9 @@ public class ExplorerConfig implements Serializable {
         return itemHeight;
     }
 
+    /**
+     * 设置文件的图标
+     */
     public ExplorerConfig setFileIcon(Drawable fileIcon) {
         if (fileIcon == null) {
             return this;
@@ -110,6 +123,9 @@ public class ExplorerConfig implements Serializable {
         return fileIcon;
     }
 
+    /**
+     * 设置文件夹的图标
+     */
     public ExplorerConfig setFolderIcon(Drawable folderIcon) {
         if (folderIcon == null) {
             return this;
@@ -122,6 +138,9 @@ public class ExplorerConfig implements Serializable {
         return folderIcon;
     }
 
+    /**
+     * 设置“返回主页”的图标
+     */
     public ExplorerConfig setHomeIcon(Drawable homeIcon) {
         if (homeIcon == null) {
             return this;
@@ -134,6 +153,9 @@ public class ExplorerConfig implements Serializable {
         return homeIcon;
     }
 
+    /**
+     * 设置“返回上级”的图标
+     */
     public ExplorerConfig setUpIcon(Drawable upIcon) {
         if (upIcon == null) {
             return this;
@@ -147,7 +169,7 @@ public class ExplorerConfig implements Serializable {
     }
 
     /**
-     * 允许的扩展名
+     * 设置允许的扩展名,如[".kml",".kmz"]
      */
     public ExplorerConfig setAllowExtensions(String[] allowExtensions) {
         if (this.allowExtensions != null && Arrays.equals(this.allowExtensions, allowExtensions)) {
@@ -166,12 +188,15 @@ public class ExplorerConfig implements Serializable {
         return explorerMode;
     }
 
+    /**
+     * 设置是目录模式还是文件模式
+     */
     public void setExplorerMode(@ExplorerMode int explorerMode) {
         this.explorerMode = explorerMode;
     }
 
     /**
-     * 是否显示返回主目录
+     * 设置是否显示返回主目录
      */
     public ExplorerConfig setShowHomeDir(boolean showHomeDir) {
         if (this.showHomeDir == showHomeDir) {
@@ -186,7 +211,7 @@ public class ExplorerConfig implements Serializable {
     }
 
     /**
-     * 是否显示返回上一级
+     * 设置是否显示返回上一级
      */
     public ExplorerConfig setShowUpDir(boolean showUpDir) {
         if (this.showUpDir == showUpDir) {
@@ -201,7 +226,7 @@ public class ExplorerConfig implements Serializable {
     }
 
     /**
-     * 是否显示隐藏的目录（以“.”开头）
+     * 设置是否显示隐藏的目录（以“.”开头）
      */
     public ExplorerConfig setShowHideDir(boolean showHideDir) {
         if (this.showHideDir == showHideDir) {
@@ -215,6 +240,9 @@ public class ExplorerConfig implements Serializable {
         return showHideDir;
     }
 
+    /**
+     * 设置文件排序方式，支持的排序方式已枚举为{@link FileSort}
+     */
     public ExplorerConfig setFileSort(@FileSort int fileSort) {
         if (this.fileSort == fileSort) {
             return this;
@@ -228,6 +256,9 @@ public class ExplorerConfig implements Serializable {
         return fileSort;
     }
 
+    /**
+     * 设置文件加载监听器
+     */
     public ExplorerConfig setOnFileLoadedListener(OnFileLoadedListener listener) {
         onFileLoadedListener = listener;
         return this;
@@ -237,6 +268,9 @@ public class ExplorerConfig implements Serializable {
         return onFileLoadedListener;
     }
 
+    /**
+     * 设置各层级路径点击监听器
+     */
     public ExplorerConfig setOnPathClickedListener(OnPathClickedListener listener) {
         onPathClickedListener = listener;
         return this;
@@ -250,6 +284,9 @@ public class ExplorerConfig implements Serializable {
         return onFileClickedListener;
     }
 
+    /**
+     * 设置文件或目录点击监听器
+     */
     public void setOnFileClickedListener(OnFileClickedListener onFileClickedListener) {
         this.onFileClickedListener = onFileClickedListener;
     }
@@ -258,6 +295,9 @@ public class ExplorerConfig implements Serializable {
         return onFilePickedListener;
     }
 
+    /**
+     * 设置文件或目录选择监听器
+     */
     public void setOnFilePickedListener(OnFilePickedListener onFilePickedListener) {
         this.onFilePickedListener = onFilePickedListener;
     }
