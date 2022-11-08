@@ -268,7 +268,7 @@ public class FileAdapter extends RecyclerView.Adapter<ViewHolder> {
      * 列出指定目录下的所有子目录
      */
     private List<File> listFiles(File startDir, FileFilter fileFilter) {
-        DialogLog.print(String.format("list dir %s", startDir));
+        DialogLog.print(String.format("list dir %s by filter %s", startDir, fileFilter.getClass().getName()));
         if (!startDir.isDirectory()) {
             return new ArrayList<>();
         }

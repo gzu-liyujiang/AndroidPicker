@@ -61,6 +61,7 @@ public class FileExplorerFragment extends DialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        FileExplorer fileExplorer = view.findViewById(R.id.fileExplorer);
         ExplorerConfig config = new ExplorerConfig(requireContext());
         config.setRootDir(new File("sdcard"));
         config.setLoadAsync(true);
@@ -68,7 +69,7 @@ public class FileExplorerFragment extends DialogFragment {
         config.setShowHomeDir(false);
         config.setShowUpDir(false);
         config.setShowHideDir(false);
-        FileExplorer fileExplorer = view.findViewById(R.id.fileExplorer);
+        //config.setAllowExtensions(new String[]{".txt", ".jpg"});
         fileExplorer.load(config);
     }
 

@@ -13,8 +13,12 @@
 
 package com.github.gzuliyujiang.fallback.activity;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Toast;
 
@@ -42,6 +46,7 @@ public class FilePickerActivity extends BackAbleActivity implements OnFilePicked
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_picker_file);
+        FileExplorer fileExplorer = findViewById(R.id.file_picker_explorer);
         ExplorerConfig config = new ExplorerConfig(this);
         config.setRootDir(Environment.getExternalStorageDirectory());
         config.setLoadAsync(true);
@@ -49,13 +54,26 @@ public class FilePickerActivity extends BackAbleActivity implements OnFilePicked
         config.setShowHomeDir(true);
         config.setShowUpDir(true);
         config.setShowHideDir(true);
-        FileExplorer fileExplorer = findViewById(R.id.file_picker_explorer);
+        config.setAllowExtensions(new String[]{".txt", ".jpg"});
         fileExplorer.load(config);
     }
 
     @Override
     public void onFilePicked(@NonNull File file) {
         Toast.makeText(getApplicationContext(), file.getAbsolutePath(), Toast.LENGTH_SHORT).show();
+    }
+
+    public void onPermission(View view) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (Environment.isExternalStorageManager()) {
+                Toast.makeText(getApplicationContext(), "isExternalStorageManager==true", Toast.LENGTH_SHORT).show();
+            } else {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                intent.setData(Uri.parse("package:" + getApplicationContext().getPackageName()));
+                startActivity(intent);
+            }
+        }
+        Toast.makeText(getApplicationContext(), "当前系统版本不支持", Toast.LENGTH_SHORT).show();
     }
 
     public void onFilePick(View view) {

@@ -27,6 +27,12 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="onPermission"
+            android:text="所有文件访问权限" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:onClick="onFilePick"
             android:text="文件选择" />
 

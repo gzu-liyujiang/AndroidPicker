@@ -15,6 +15,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.github.gzuliyujiang.fallback">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+
     <application
         android:name=".DemoApp"
         android:allowBackup="false"

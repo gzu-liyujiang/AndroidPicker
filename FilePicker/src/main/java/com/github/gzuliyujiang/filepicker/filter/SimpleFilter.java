@@ -13,7 +13,11 @@
 
 package com.github.gzuliyujiang.filepicker.filter;
 
+import android.text.TextUtils;
+
 import androidx.annotation.Nullable;
+
+import com.github.gzuliyujiang.dialog.DialogLog;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -35,33 +39,51 @@ public class SimpleFilter implements FileFilter {
     @Override
     public boolean accept(File pathname) {
         if (pathname == null) {
+            DialogLog.print("Filter>>>pathname is null");
             return false;
         }
+        if (pathname.isDirectory()) {
+            DialogLog.print("Filter>>>pathname is directory: " + pathname);
+            return true;
+        }
         if (isOnlyDir && pathname.isFile()) {
+            DialogLog.print("Filter>>>except directory but is file: " + pathname);
             return false;
         }
         if (allowExtensions == null || allowExtensions.length == 0) {
+            DialogLog.print("Filter>>>allow extensions is empty: " + pathname);
             return true;
         }
         //返回当前目录所有以某些扩展名结尾的文件
         String extension = getExtension(pathname.getPath());
-        return Arrays.toString(allowExtensions).contains(extension);
+        DialogLog.print("Filter>>>extension of " + pathname + ": " + extension);
+        boolean contains = false;
+        for (String allowExtension : allowExtensions) {
+            if (TextUtils.isEmpty(allowExtension) || allowExtension.contains(extension)) {
+                contains = true;
+                break;
+            }
+        }
+        DialogLog.print("Filter>>>allow extensions is " + Arrays.toString(allowExtensions) + ", contains: " + contains);
+        return contains;
     }
 
     private String getExtension(String path) {
         if (path == null) {
             return "";
         }
+        String ext = "";
         int slashPos = path.lastIndexOf(File.separator);
         if (slashPos != -1) {
             path = path.substring(slashPos);
         }
         int dotPos = path.lastIndexOf('.');
-        if (0 <= dotPos) {
-            return path.substring(dotPos + 1);
+        if (dotPos != -1) {
+            ext = path.substring(dotPos + 1);
         } else {
-            return "";
+            ext = path;
         }
+        return ext;
     }
 
 }

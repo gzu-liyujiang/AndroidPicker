@@ -41,7 +41,7 @@ public class ExplorerConfig implements Serializable {
     private File rootDir;
     private boolean loadAsync;
     private String[] allowExtensions = null;
-    private int explorerMode = ExplorerMode.DIRECTORY;
+    private int explorerMode = ExplorerMode.FILE;
     private boolean showHomeDir = true;
     private boolean showUpDir = true;
     private boolean showHideDir = true;
