@@ -1,5 +1,9 @@
 # 更新日志
 
+## 4.1.11 - 2022.11.09
+
+- Fix [issues#322](https://github.com/gzu-liyujiang/AndroidPicker/issues/322) 。
+
 ## 4.1.10 - 2022.11.04
 
 - Fix [issues#324](https://github.com/gzu-liyujiang/AndroidPicker/issues/324) 。
