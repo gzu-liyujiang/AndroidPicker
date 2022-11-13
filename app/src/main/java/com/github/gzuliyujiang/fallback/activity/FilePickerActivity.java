@@ -72,8 +72,9 @@ public class FilePickerActivity extends BackAbleActivity implements OnFilePicked
                 intent.setData(Uri.parse("package:" + getApplicationContext().getPackageName()));
                 startActivity(intent);
             }
+            return;
         }
-        Toast.makeText(getApplicationContext(), "当前系统版本不支持", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "当前系统版本不支持文件管理权限", Toast.LENGTH_SHORT).show();
     }
 
     public void onFilePick(View view) {
