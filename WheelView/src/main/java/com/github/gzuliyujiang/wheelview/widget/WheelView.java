@@ -1113,7 +1113,7 @@ public class WheelView extends View implements Runnable {
                 if (moveCount < 0) {
                     scrollTo(Math.max(0, currentPosition + moveCount));
                 } else if (moveCount > 0) {
-                    scrollTo(Math.min(getItemCount(), currentPosition + moveCount));
+                    scrollTo(Math.min(getItemCount() - 1, currentPosition + moveCount));
                 }
             } else {
                 scroller.startScroll(0, scrollOffsetYCoordinate, 0, endPoint);
