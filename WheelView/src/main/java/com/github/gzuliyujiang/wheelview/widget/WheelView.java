@@ -1108,7 +1108,16 @@ public class WheelView extends View implements Runnable {
             scroller.setFinalY(scroller.getFinalY() + endPoint);
         } else {
             int endPoint = computeDistanceToEndPoint(scrollOffsetYCoordinate % itemHeight);
-            scroller.startScroll(0, scrollOffsetYCoordinate, 0, endPoint);
+            if (endPoint == 0) {
+                int moveCount = getMoveCount(event.getY());
+                if (moveCount < 0) {
+                    scrollTo(Math.max(0, currentPosition + moveCount));
+                } else if (moveCount > 0) {
+                    scrollTo(Math.min(getItemCount(), currentPosition + moveCount));
+                }
+            } else {
+                scroller.startScroll(0, scrollOffsetYCoordinate, 0, endPoint);
+            }
         }
         // Correct coordinates
         if (!cyclicEnabled) {
@@ -1159,6 +1168,25 @@ public class WheelView extends View implements Runnable {
         } else {
             return -1 * remainder;
         }
+    }
+
+    /**
+     * 计算点击需要上下滚动的条目数
+     */
+    private int getMoveCount(float clickY) {
+        float centerPoint = itemHeight * visibleItemCount / 2f;
+        float distanceToCenter = clickY - centerPoint;
+        int count = 0;
+        if (Math.abs(distanceToCenter) > halfItemHeight) {
+            count = (int) (distanceToCenter / itemHeight) - 1;
+            if (distanceToCenter % halfItemHeight > 0) {
+                count++;
+            }
+        }
+        if (count > 0 && distanceToCenter < 0) {
+            return -count;
+        }
+        return count;
     }
 
     @Override
