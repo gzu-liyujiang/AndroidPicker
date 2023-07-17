@@ -27,10 +27,21 @@ requests 贡献您的代码，大家共同学习【[AndroidPicker 交流群 6042
 
 #### 在项目根目录下的`build.gradle`中
 
+如果你的项目 Gradle 配置是在 7.0 以下，需要在 build.gradle 文件中加入：
 ```groovy
 allprojects {
     repositories {
-        maven { url 'https://www.jitpack.io' }
+        // JitPack 远程仓库：https://jitpack.io
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
+如果你的 Gradle 配置是 7.0 及以上，则需要在 settings.gradle 文件中加入：
+```groovy
+dependencyResolutionManagement {
+    repositories {
+        // JitPack 远程仓库：https://jitpack.io
+        maven { url 'https://jitpack.io' }
     }
 }
 ```
