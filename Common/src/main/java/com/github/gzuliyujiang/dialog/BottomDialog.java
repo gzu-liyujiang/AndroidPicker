@@ -126,6 +126,7 @@ public abstract class BottomDialog extends BaseDialog {
             // Activity ...... has leaked window android.view.View
             DialogLog.print(e);
         }
+        maskView = null;
     }
 
 }
