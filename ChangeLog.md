@@ -1,5 +1,10 @@
 # 更新日志
 
+## 4.1.12 - 2023.07.22
+
+- 避免内存泄露，参阅 [issues#337](https://github.com/gzu-liyujiang/AndroidPicker/issues/337) 。
+- 地址选择器内置的省市区数据更新（2022版）。
+
 ## 4.1.11 - 2022.11.09
 
 - Fix [issues#322](https://github.com/gzu-liyujiang/AndroidPicker/issues/322) 。
