@@ -33,7 +33,7 @@ dependencies {
 android {
     defaultConfig {
         //应用的实际包名
-        applicationId "com.github.gzuliyujiang.demo"
+        applicationId "com.github.gzuliyujiang.demo.picker"
         // 配合 productFlavors 节点按不同维度打包
         flavorDimensions "MODE"
         // 修改 AndroidManifest.xml 里的变量，占位值无法覆盖的坑可参阅 https://www.jianshu.com/p/1d5271c2c366
