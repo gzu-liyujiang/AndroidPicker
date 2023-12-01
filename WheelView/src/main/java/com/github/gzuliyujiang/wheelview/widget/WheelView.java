@@ -1080,7 +1080,24 @@ public class WheelView extends View implements Runnable {
         if (Math.abs(move) < 1) {
             return;
         }
-        scrollOffsetYCoordinate += move;
+
+        // Scroll limit
+        float topLimit = (defaultItemPosition) * itemHeight;
+        float bottomLimit = -(getItemCount() - 1 - defaultItemPosition) * itemHeight;
+        boolean disableScrollTop = scrollOffsetYCoordinate >=topLimit && move > 0;
+        boolean disableScrollBottom = scrollOffsetYCoordinate <= bottomLimit && move < 0;
+        if(!cyclicEnabled)
+        {
+            if(!disableScrollBottom && !disableScrollTop)
+            {
+                scrollOffsetYCoordinate += move;
+            }
+        }else
+        {
+            scrollOffsetYCoordinate += move;
+        }
+        //
+        
         lastPointYCoordinate = (int) event.getY();
         invalidate();
     }
