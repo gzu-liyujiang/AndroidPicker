@@ -275,7 +275,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.VH> im
             maxDate.set(Calendar.HOUR_OF_DAY, 23);
             maxDate.set(Calendar.MINUTE, 59);
             maxDate.set(Calendar.SECOND, 59);
-            maxDate.set(Calendar.MILLISECOND, 1000);
+            maxDate.set(Calendar.MILLISECOND, 999);
             if (time >= minDate.getTime().getTime() && time <= maxDate.getTime().getTime()) {
                 return i;
             }
