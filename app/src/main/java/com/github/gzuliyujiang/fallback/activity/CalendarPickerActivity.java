@@ -94,6 +94,11 @@ public class CalendarPickerActivity extends BackAbleActivity {
                 Toast.makeText(getApplicationContext(), DateFormat.getDateTimeInstance().format(startDate)
                         + "\n" + DateFormat.getDateTimeInstance().format(endDate), Toast.LENGTH_SHORT).show();
             }
+
+            @Override
+            public void onMonthChanged(Date date) {
+                Toast.makeText(getApplicationContext(), DateFormat.getDateTimeInstance().format(date), Toast.LENGTH_SHORT).show();
+            }
         });
         picker.show();
     }
@@ -124,6 +129,11 @@ public class CalendarPickerActivity extends BackAbleActivity {
                 Toast.makeText(getApplicationContext(), DateFormat.getDateTimeInstance().format(startDate)
                         + "\n" + DateFormat.getDateTimeInstance().format(endDate), Toast.LENGTH_SHORT).show();
             }
+
+            @Override
+            public void onMonthChanged(Date date) {
+                Toast.makeText(getApplicationContext(), DateFormat.getDateTimeInstance().format(date), Toast.LENGTH_SHORT).show();
+            }
         });
         picker.show();
     }
@@ -142,6 +152,11 @@ public class CalendarPickerActivity extends BackAbleActivity {
                 singleTimeInMillis = date.getTime();
                 Toast.makeText(getApplicationContext(), DateFormat.getDateTimeInstance().format(date), Toast.LENGTH_SHORT).show();
             }
+
+            @Override
+            public void onMonthChanged(Date date) {
+                Toast.makeText(getApplicationContext(), DateFormat.getDateTimeInstance().format(date), Toast.LENGTH_SHORT).show();
+            }
         });
         picker.show();
     }
@@ -155,6 +170,11 @@ public class CalendarPickerActivity extends BackAbleActivity {
             @Override
             public void onSingleDatePicked(@NonNull Date date) {
                 singleTimeInMillis = date.getTime();
+                Toast.makeText(getApplicationContext(), DateFormat.getDateTimeInstance().format(date), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onMonthChanged(Date date) {
                 Toast.makeText(getApplicationContext(), DateFormat.getDateTimeInstance().format(date), Toast.LENGTH_SHORT).show();
             }
         });
