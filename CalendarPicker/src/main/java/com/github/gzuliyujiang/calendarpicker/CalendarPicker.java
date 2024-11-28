@@ -29,6 +29,8 @@ import com.github.gzuliyujiang.calendarpicker.core.DateUtils;
 import com.github.gzuliyujiang.calendarpicker.core.FestivalProvider;
 import com.github.gzuliyujiang.calendarpicker.core.ItemViewProvider;
 import com.github.gzuliyujiang.calendarpicker.core.OnDateSelectedListener;
+import com.github.gzuliyujiang.calendarpicker.listener.OnPageChangeCallback;
+import com.github.gzuliyujiang.calendarpicker.listener.ScrollEventAdapter;
 import com.github.gzuliyujiang.dialog.DialogConfig;
 import com.github.gzuliyujiang.dialog.DialogStyle;
 import com.github.gzuliyujiang.dialog.ModalDialog;
@@ -47,6 +49,7 @@ import java.util.Locale;
 public class CalendarPicker extends ModalDialog implements OnDateSelectedListener {
     private CalendarView calendarView;
     private CalendarAdapter calendarAdapter;
+    private ScrollEventAdapter mScrollEventAdapter;
     private ColorScheme colorScheme;
     private boolean singleMode = false;
     private FestivalProvider festivalProvider;
@@ -104,8 +107,26 @@ public class CalendarPicker extends ModalDialog implements OnDateSelectedListene
             maxCalendar.set(Calendar.DAY_OF_MONTH, DateUtils.maxDaysOfMonth(maxCalendar.getTime()));
             maxDate = maxCalendar.getTime();
         }
+        if (mScrollEventAdapter == null) {
+            mScrollEventAdapter = new ScrollEventAdapter(calendarView.getBodyView());
+            calendarView.getBodyView().addOnScrollListener(mScrollEventAdapter);
+        }
         calendarAdapter = calendarView.getAdapter();
         calendarAdapter.setOnCalendarSelectedListener(this);
+        mScrollEventAdapter.setOnPageChangeCallback(new OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                if (calendarAdapter != null) {
+                    Date cDate = calendarAdapter.getDateValue(position);
+                    if (onSingleDatePickListener != null) {
+                        onSingleDatePickListener.onMonthChanged(cDate);
+                    }
+                    if (onRangeDatePickListener != null) {
+                        onRangeDatePickListener.onMonthChanged(cDate);
+                    }
+                }
+            }
+        });
         refreshData();
     }
 
@@ -329,6 +350,16 @@ public class CalendarPicker extends ModalDialog implements OnDateSelectedListene
      */
     public final CalendarView getCalendarView() {
         return calendarView;
+    }
+
+    @Override
+    public void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (mScrollEventAdapter != null && calendarView != null) {
+            mScrollEventAdapter.setOnPageChangeCallback(null);
+            calendarView.getBodyView().removeOnScrollListener(mScrollEventAdapter);
+            mScrollEventAdapter = null;
+        }
     }
 
 }

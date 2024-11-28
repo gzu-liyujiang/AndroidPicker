@@ -25,4 +25,6 @@ public interface OnSingleDatePickListener {
 
     void onSingleDatePicked(@NonNull Date date);
 
+    void onMonthChanged(Date date);
+
 }
