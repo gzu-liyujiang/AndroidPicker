@@ -39,12 +39,12 @@ android {
             //目前主流手机都支持armeabi-v7a，armeabi已过时，arm64-v8a是未来的主流，电脑上的模拟器支持x86，mips基本不用于手机
             if (enableX86Support as boolean) {
                 //需要的架构，调用前需要先用`reset`将默认架构清除
-                include 'armeabi-v7a', 'x86'
+                include 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
             } else {
-                include 'armeabi-v7a'
+                include 'armeabi-v7a', 'arm64-v8a'
             }
             //是否打一个包含全部架构的包
-            universalApk false
+            universalApk true
         }
         //分辨率分包
         density {
