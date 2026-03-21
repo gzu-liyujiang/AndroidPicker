@@ -1,6 +1,6 @@
-@rem JAVA_HOME -> jdk1.8
+chcp 65001
+
+@rem JAVA_HOME -> jdk17
 @echo build and proguard apk
 cd /d ./
-gradlew.bat clean assembleRelease --info --warning-mode all
-pause
-
+start gradlew.bat clean assembleRelease --info --warning-mode all

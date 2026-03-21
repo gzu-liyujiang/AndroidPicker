@@ -1,6 +1,7 @@
-@rem JAVA_HOME -> jdk1.8
+chcp 65001
+
+@rem JAVA_HOME -> jdk17
 @echo publish aar to local repository
 cd /d ./
-gradlew.bat clean publishReleasePublicationToLocalRepository --info --warning-mode all
-pause
+start gradlew.bat clean publishReleasePublicationToLocalRepository --info --warning-mode all
 
