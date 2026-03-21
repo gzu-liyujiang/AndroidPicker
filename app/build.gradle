@@ -31,6 +31,7 @@ dependencies {
 }
 
 android {
+    namespace "com.github.gzuliyujiang.demo.picker"
     defaultConfig {
         //应用的实际包名
         applicationId "com.github.gzuliyujiang.demo.picker"

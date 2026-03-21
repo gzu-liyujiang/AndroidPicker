@@ -48,17 +48,19 @@ public abstract class BaseWheelLayout extends LinearLayout implements OnWheelCha
 
     public BaseWheelLayout(Context context) {
         super(context);
-        init(context, null, R.attr.WheelStyle, R.style.WheelDefault);
+        init(context, null, com.github.gzuliyujiang.wheelview.R.attr.WheelStyle,
+                com.github.gzuliyujiang.wheelview.R.style.WheelDefault);
     }
 
     public BaseWheelLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        init(context, attrs, R.attr.WheelStyle, R.style.WheelDefault);
+        init(context, attrs, com.github.gzuliyujiang.wheelview.R.attr.WheelStyle,
+                com.github.gzuliyujiang.wheelview.R.style.WheelDefault);
     }
 
     public BaseWheelLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context, attrs, defStyleAttr, R.style.WheelDefault);
+        init(context, attrs, defStyleAttr, com.github.gzuliyujiang.wheelview.R.style.WheelDefault);
     }
 
     public BaseWheelLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
@@ -122,7 +124,7 @@ public abstract class BaseWheelLayout extends LinearLayout implements OnWheelCha
     protected abstract List<WheelView> provideWheelViews();
 
     public void setStyle(@StyleRes int style) {
-        initAttrs(getContext(), null, R.attr.WheelStyle, style);
+        initAttrs(getContext(), null, com.github.gzuliyujiang.wheelview.R.attr.WheelStyle, style);
         requestLayout();
         invalidate();
     }

@@ -11,10 +11,4 @@
   ~ See the Mulan PSL v2 for more details.
   -->
 
-<manifest package="com.github.gzuliyujiang.addresspicker">
-
-    <application>
-
-    </application>
-
-</manifest>
+<manifest />

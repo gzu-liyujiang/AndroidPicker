@@ -20,7 +20,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.github.gzuliyujiang.fallback.R;
+import com.github.gzuliyujiang.demo.picker.R;
 import com.github.gzuliyujiang.fallback.bean.GoodsCategoryBean;
 import com.github.gzuliyujiang.wheelpicker.ConstellationPicker;
 import com.github.gzuliyujiang.wheelpicker.EthnicPicker;

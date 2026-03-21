@@ -25,7 +25,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.github.gzuliyujiang.fallback.R;
+import com.github.gzuliyujiang.demo.picker.R;
 import com.github.gzuliyujiang.filepicker.ExplorerConfig;
 import com.github.gzuliyujiang.filepicker.FileExplorer;
 import com.github.gzuliyujiang.filepicker.FilePicker;

@@ -16,38 +16,43 @@ buildscript {
     apply from: "${rootDir}/gradle/config.gradle"
     apply from: "${rootDir}/gradle/dependency.gradle"
     repositories {
-        //noinspection JcenterRepositoryObsolete http://developer.android.google.cn/r/tools/jcenter-end-of-service
-        jcenter()
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/central' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
         google()
         mavenCentral()
-        maven { url 'https://repo1.maven.org/maven2/' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.2'
+        classpath 'com.android.tools.build:gradle:8.2.0'
     }
 }
 
 allprojects {
     repositories {
-        //noinspection JcenterRepositoryObsolete
-        jcenter()
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/central' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
         google()
         mavenCentral()
-        maven { url "https://www.jitpack.io" }
-        maven { url 'https://repo1.maven.org/maven2/' }
+        maven { url "https://jitpack.io" }
+        maven { url 'https://developer.huawei.com/repo' }
+        maven { url 'https://developer.hihonor.com/repo' }
     }
 }
 
 subprojects {
     gradle.projectsEvaluated {
-        tasks.withType(JavaCompile) {
-            //增加一些编译选项
-            //options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+        tasks.withType(JavaCompile).tap {
+            configureEach {
+                //增加一些编译选项
+                //options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+            }
         }
     }
 }
 
-task clean(type: Delete) {
+tasks.register('clean', Delete) {
     println("********** clean build **********")
     println("delete project dir: " + rootProject.buildDir)
     rootProject.buildDir.deleteDir()

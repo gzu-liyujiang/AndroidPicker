@@ -21,7 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.github.gzuliyujiang.fallback.R;
+import com.github.gzuliyujiang.demo.picker.R;
 import com.github.gzuliyujiang.wheelpicker.OptionPicker;
 import com.github.gzuliyujiang.wheelpicker.contract.OnOptionPickedListener;
 

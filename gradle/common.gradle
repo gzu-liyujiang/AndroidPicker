@@ -13,6 +13,10 @@
 
 android {
 
+    buildFeatures {
+        buildConfig true
+    }
+
     compileSdkVersion rootProject.ext.compileSdkVersion as Integer
     buildToolsVersion rootProject.ext.buildToolsVersion
     // 配置资源名前缀提示，避免资源名重复
@@ -37,8 +41,7 @@ android {
             assets.srcDirs = ['src/main/assets']
             aidl.srcDirs = ['src/main/aidl']
             jni.srcDirs = ['cpp', 'jni', 'src/main/cpp', 'src/main/jni']
-            // See https://developer.android.google.cn/studio/releases/gradle-plugin#cmake-imported-targets
-            jniLibs.srcDirs = ['src/main/jniLibs']
+            jniLibs.srcDirs = ['libs', 'src/main/jniLibs']
         }
     }
 
@@ -55,7 +58,7 @@ android {
 
     compileOptions {
         encoding 'UTF-8'
-        // jdk 1.8 开始支持 lambda 表达式
+        // JDK 1.8 开始支持 lambda 表达式
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }

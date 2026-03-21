@@ -18,4 +18,15 @@ android {
     defaultConfig {
         consumerProguardFiles 'consumer-rules.pro'
     }
+
+    // Fixed error: Could not get unknown property 'release' for SoftwareComponentInternal
+    // See https://developer.android.google.cn/reference/tools/gradle-api/8.0/com/android/build/api/dsl/PublishingOptions
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
+            //withJavadocJar()
+            //allVariants()
+        }
+    }
+
 }

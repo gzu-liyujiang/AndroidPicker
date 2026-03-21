@@ -25,7 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.github.gzuliyujiang.fallback.R;
+import com.github.gzuliyujiang.demo.picker.R;
 import com.github.gzuliyujiang.filepicker.ExplorerConfig;
 import com.github.gzuliyujiang.filepicker.FileExplorer;
 import com.github.gzuliyujiang.filepicker.annotation.ExplorerMode;
@@ -44,7 +44,7 @@ public class FileExplorerFragment extends DialogFragment {
     @SuppressLint("PrivateResource")
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(STYLE_NORMAL, R.style.Theme_Design_Light_BottomSheetDialog);
+        setStyle(STYLE_NORMAL, com.google.android.material.R.style.Theme_Design_Light_BottomSheetDialog);
     }
 
     @Nullable

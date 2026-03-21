@@ -23,7 +23,6 @@ import androidx.annotation.Nullable;
 
 import com.github.gzuliyujiang.dialog.DialogConfig;
 import com.github.gzuliyujiang.dialog.DialogStyle;
-import com.github.gzuliyujiang.fallback.R;
 import com.github.gzuliyujiang.wheelpicker.LinkagePicker;
 
 /**
@@ -34,7 +33,7 @@ public class AntFortuneLikePicker extends LinkagePicker {
     private int lastDialogStyle;
 
     public AntFortuneLikePicker(@NonNull Activity activity) {
-        super(activity, R.style.DialogTheme_Sheet);
+        super(activity, com.github.gzuliyujiang.dialog.R.style.DialogTheme_Sheet);
     }
 
     @Override

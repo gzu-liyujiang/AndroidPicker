@@ -31,38 +31,25 @@ android {
     splits {
         //CPU架构分包
         abi {
-            //是否开启
-            enable true
+            //是否开启CPU架构分包
+            enable enableAbiSplit as boolean
             //清除默认架构列表
             reset()
             //支持的架构：armeabi、armeabi-v7a、arm64-v8a、x86、x86_64、mips、mips64
-            //目前主流手机都支持armeabi-v7a，armeabi已过时，arm64-v8a是未来的主流，电脑上的模拟器支持x86，mips基本不用于手机
+            //目前主流手机都支持arm64-v8a，armeabi及armeabi-v7a已过时，电脑上的模拟器支持x86，mips基本不用于手机
             if (enableX86Support as boolean) {
                 //需要的架构，调用前需要先用`reset`将默认架构清除
-                include 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+                include 'arm64-v8a', 'x86'
             } else {
-                include 'armeabi-v7a', 'arm64-v8a'
+                include 'arm64-v8a'
             }
             //是否打一个包含全部架构的包
-            universalApk true
-        }
-        //分辨率分包
-        density {
-            // 是否开启
-            enable false
-        }
-        //语言分包
-        language {
-            // 是否开启
-            enable = false
+            universalApk false
         }
     }
 
     defaultConfig {
         multiDexEnabled enableMultiDex
-        dexOptions {
-            preDexLibraries = false
-        }
         signingConfigs {
             //直接使用真实的密钥库文件，避免微信、高德地图等第三方SDK校验失败
             releaseConfig {

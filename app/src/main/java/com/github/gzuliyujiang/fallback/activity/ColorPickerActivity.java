@@ -24,7 +24,7 @@ import com.github.gzuliyujiang.colorpicker.ColorGradientView;
 import com.github.gzuliyujiang.colorpicker.ColorPicker;
 import com.github.gzuliyujiang.colorpicker.OnColorChangedListener;
 import com.github.gzuliyujiang.colorpicker.OnColorPickedListener;
-import com.github.gzuliyujiang.fallback.R;
+import com.github.gzuliyujiang.demo.picker.R;
 
 /**
  * 颜色选择器

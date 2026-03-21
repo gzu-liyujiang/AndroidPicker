@@ -18,8 +18,8 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
+import com.github.gzuliyujiang.demo.picker.R;
 import com.github.gzuliyujiang.dialog.BottomDialog;
-import com.github.gzuliyujiang.fallback.R;
 import com.github.gzuliyujiang.wheelpicker.annotation.AddressMode;
 import com.github.gzuliyujiang.wheelpicker.contract.AddressLoader;
 import com.github.gzuliyujiang.wheelpicker.contract.AddressReceiver;

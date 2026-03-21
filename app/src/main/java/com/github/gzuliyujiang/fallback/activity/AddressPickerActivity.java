@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import com.github.gzuliyujiang.fallback.R;
+import com.github.gzuliyujiang.demo.picker.R;
 import com.github.gzuliyujiang.fallback.custom.CustomAddressPicker;
 import com.github.gzuliyujiang.fallback.custom.TextAddressLoader;
 import com.github.gzuliyujiang.fallback.custom.TextAddressParser;

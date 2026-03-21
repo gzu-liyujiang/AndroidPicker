@@ -14,6 +14,10 @@
 apply from: "${rootDir}/gradle/library.gradle"
 apply from: "${rootDir}/gradle/publish.gradle"
 
+android {
+    namespace "com.github.gzuliyujiang.filepicker"
+}
+
 dependencies {
     implementation androidxLibrary.annotation
     implementation androidxLibrary.recyclerview

@@ -13,11 +13,16 @@
 
 ext {
 
-    //Android版本（4.4-19、5.0-21、5.1-22、6.0-23、7.0-24、8.0-26、9.0-28、10-29、11-30）
-    minSdkVersion = 19
+    //Android版本号及对应的API级别：
+    // 5.0-21 5.1-22 6.0-23 7.0-24 8.0-26 9.0-28 10-29 11-30 12.0-31 12L-32 13.0-33、14.0-34
+    // 15.0-35 16.0-36
+    minSdkVersion = 21
     targetSdkVersion = 30
-    compileSdkVersion = 30
-    buildToolsVersion = '30.0.3'
+    compileSdkVersion = 33
+    // Android Gradle Plugin 8 要求 Android SDK Build Tools 至少是 33.0.1
+    buildToolsVersion = '33.0.1'
+    //启用CPU架构分包
+    enableAbiSplit = false
     //启用x86架构支持（模拟器运行时需要）
     enableX86Support = true
     //发布包是否混淆Java代码

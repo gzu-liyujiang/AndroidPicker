@@ -22,7 +22,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.github.gzuliyujiang.fallback.R;
+import com.github.gzuliyujiang.demo.picker.R;
 import com.github.gzuliyujiang.imagepicker.ActivityBuilder;
 import com.github.gzuliyujiang.imagepicker.CropImageView;
 import com.github.gzuliyujiang.imagepicker.ImagePicker;

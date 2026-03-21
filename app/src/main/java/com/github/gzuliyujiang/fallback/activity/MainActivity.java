@@ -20,9 +20,9 @@ import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
+import com.github.gzuliyujiang.demo.picker.R;
 import com.github.gzuliyujiang.dialog.DialogConfig;
 import com.github.gzuliyujiang.dialog.DialogStyle;
-import com.github.gzuliyujiang.fallback.R;
 import com.github.gzuliyujiang.fallback.custom.AntFortuneLikeProvider;
 import com.github.gzuliyujiang.wheelpicker.OptionPicker;
 import com.github.gzuliyujiang.wheelpicker.contract.OnOptionPickedListener;

@@ -27,7 +27,7 @@ import com.github.gzuliyujiang.calendarpicker.core.CalendarView;
 import com.github.gzuliyujiang.calendarpicker.core.ColorScheme;
 import com.github.gzuliyujiang.calendarpicker.core.DateUtils;
 import com.github.gzuliyujiang.calendarpicker.core.FestivalProvider;
-import com.github.gzuliyujiang.fallback.R;
+import com.github.gzuliyujiang.demo.picker.R;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
